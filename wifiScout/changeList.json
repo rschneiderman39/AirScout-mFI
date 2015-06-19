@@ -67,14 +67,16 @@
     "res\\screens\\ios\\screen-ipad-portrait.png",
     "res\\screens\\android\\screen-xhdpi-landscape.png",
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
-    "res\\screens\\android\\screen-mdpi-portrait.png"
+    "res\\screens\\android\\screen-mdpi-portrait.png",
+    "www\\images\\channelsIcon.PNG"
   ],
-  "deletedFilesIos": [],
+  "deletedFilesIos": [
+    "www\\images\\Channels Icon.PNG"
+  ],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
-    "plugins\\android.json",
-    "www\\index.html"
+    "plugins\\android.json"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
