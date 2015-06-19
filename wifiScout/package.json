@@ -1,0 +1,16 @@
+{
+      "name": "wifiScout",
+      "version": "0.0.1",
+      "author": "Christopher Welch, Rachel Schneiderman",
+      "description": "blah blah blah something",
+      "scripts": {
+        "start": "node app.js"
+      },
+      "dependencies": {
+        "angular" : "*",
+        "body-parser": "1.12.2"
+      },
+      "engines": {
+        "node": "0.10.x"
+      }
+    }
