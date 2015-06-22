@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	id="cordova-plugin-wifi"
+	version="0.5.0">
+      
+    <name>WiFi Admin</name>
+	<description>Cordova plugin to access mobile device WiFi</description>
+	<author>Liming Xie</author>
+	<license>MIT</license>
+
+	<engines>
+	    <engine name="cordova" version=">=2.9" />
+	</engines>
+
+    <js-module src="www/WifiAdmin.js" name="WifiAdmin">
+        <clobbers target="window.plugins.WifiAdmin" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="WifiAdmin">
+                <param name="android-package" value="com.rjfun.cordova.plugin.WifiAdmin"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.INTERNET"/>
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+        </config-file>
+          
+        <source-file src="src/android/WifiAdmin.java" target-dir="src/com/rjfun/cordova/plugin" />
+        <source-file src="src/android/WifiAdmRef.java" target-dir="src/com/rjfun/cordova/plugin" />
+     </platform>
+     
+     <!-- ios -->
+
+</plugin>
