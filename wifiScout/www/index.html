@@ -6,21 +6,41 @@
 
   <!-- wifiScout references -->
   <link href="css/index.css" rel="stylesheet" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
 
   <!-- scripts -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="js/lib/angular.min.js"></script>
+  <script src="js/lib/angular-route.min.js"></script>
+  <script src="js/lib/angular-touch.min.js"></script>
+  <script src="js/lib/jquery-2.1.4.min.js"></script>
+  <script src="js/lib/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <div ng-app>
-    <p>Name : <input type="text" ng-model="name"></p>
-    <h1>Hello {{name}}</h1>
+  <div ng-app="wifiApp">
+    <div ng-controller="test-controller">
+      <p>Name : <input type="text" ng-model="name"></p>
+      <h1>{{name}} is {{adjective}}</h1>
+      <button type="button" id="test">JQuery Test</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-8">Bootstrap Test</div>
+    <div class="col-xs-6 col-md-4">Bootstrap Test</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-md-4">Bootstrap Test</div>
+    <div class="col-xs-6 col-md-4">Bootstrap Test</div>
+    <div class="col-xs-6 col-md-4">Bootstrap Test</div>
   </div>
 
     <!-- Cordova reference, this is added to your app when it's built. -->
-  <script src="cordova.js"></script>    
-  <script src="scripts/platformOverrides.js"></script>
+  <script src="cordova.js"></script>
+  <script src="js/platformOverrides.js"></script>
 
-  <script src="scripts/index.js"></script>
+  <script src="js/controllers/test-controller.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html>
