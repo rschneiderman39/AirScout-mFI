@@ -1,12 +1,14 @@
-var wifiApp = angular.module('wifiApp', ['ngRoute']);
+var app = angular.module('wifiApp', ['ngRoute']);
 
-wifiApp.config(function ($routeProvider) {
+app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'views/settings.html'
+            templateUrl: 'views/settings.html',
+            controller: settingsCtrl
         })
         .when('/channels', {
-            templateUrl: 'views/channels.html'
+            templateUrl: 'views/channels.html',
+            controller: channelsCtrl
         })
         .when('/table', {
             templateUrl: 'views/table.html'
@@ -22,9 +24,31 @@ wifiApp.config(function ($routeProvider) {
         })
         .otherwise({
             redirectTo: 'views/settings.html'
-        })
+        });
 });
 
-wifiApp.controller('navController', function ($scope) {
-
+app.factory('Page', function () {
+    console.log("PAGE THINGS WE ARE IN PAGE");
+    var title = 'default';
+    return {
+        printTitle: function () {
+            console.log("RETURNING TITLE");
+            return title;
+        },
+        setTitle: function (newTitle) {
+            console.log("SETTING TITLE: " + newTitle);
+            title = newTitle;
+        }
+    };
 });
+
+function MainCtrl($scope, Page) {
+    $scope.Page = Page;
+}
+
+function settingsCtrl($scope, Page) {
+    Page.setTitle('WOOO SETTINGS TITLE');
+}
+function channelsCtrl($scope, Page) {
+    Page.setTitle('WOOO CHANNELS TITLE');
+}
