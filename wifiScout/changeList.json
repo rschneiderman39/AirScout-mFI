@@ -93,14 +93,25 @@
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "www\\views\\timegraph.html",
-    "www\\views\\singlespeed.html"
+    "www\\views\\singlespeed.html",
+    "plugins\\cordova-plugin-wifi\\src\\android\\WifiAdmin.java",
+    "plugins\\cordova-plugin-wifi\\plugin.xml",
+    "plugins\\cordova-plugin-wifi\\www\\WifiAdmin.js",
+    "plugins\\cordova-plugin-wifi\\.project",
+    "plugins\\cordova-plugin-wifi\\test\\main.js",
+    "plugins\\cordova-plugin-wifi\\LICENSE",
+    "plugins\\cordova-plugin-wifi\\src\\android\\WifiAdmRef.java",
+    "plugins\\cordova-plugin-wifi\\package.json",
+    "plugins\\cordova-plugin-wifi\\test\\index.html",
+    "plugins\\cordova-plugin-wifi\\README.md",
+    "plugins\\cordova-plugin-wifi\\test\\jquery-1.9.js"
   ],
   "deletedFilesIos": [],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
     "plugins\\android.json",
-    "www\\css\\index.css"
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
