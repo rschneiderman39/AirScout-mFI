@@ -1,9 +1,12 @@
-<html ng-app="wifiApp" ng-controller="tableCtrl">
+<html ng-app="wifiApp">
 <head>
 	<!-- CSS Stylesheets -->
 	<link href="../css/table.css" rel="stylesheet" />
 
-	<script src="../app.js"></script>
+	<!-- Scripts -->
+	<script src="../app/app.js"></script>
+	<script src="../app/controllers/tableCtrl.js"></script>
+	<script src="../app/services/tableService.js"></script>
 </head>
 
 <body>
@@ -14,8 +17,7 @@
     		<span class="hyperspan"></span>
     	</a>
     </div>
-    <div class="container-fluid">
-    	
+    <div ng-controller="tableCtrl">
     </div>
 </div>
 </body>

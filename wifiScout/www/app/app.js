@@ -1,4 +1,5 @@
 /* Globals */
+console.log("IN APP.JS");
 var REQUIRE_CORDOVA = true
 
 var app = angular.module('app', ['ngRoute', 'fsCordova']);
@@ -27,7 +28,4 @@ app.config(function ($routeProvider, $sceProvider) {
         .otherwise({
             redirectTo: 'views/settings.html'
         })
-});
-
-app.controller('navController', function ($scope) {
 });
