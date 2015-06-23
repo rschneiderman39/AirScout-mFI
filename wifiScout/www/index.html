@@ -18,7 +18,6 @@
   </head>
 
   <body onload="setActive('Settings')">
-    <ng-view></ng-view>
 
     <div ng-controller="testCtrl">
       <button type="button" ng-click="alertInfo()">{{buttonText}}</button>
@@ -28,6 +27,7 @@
         <div id="top-bar" class="container-fluid">
             <h1 id="greenTitle" class="text-center"></h1>
         </div>
+
         <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
             <ul class="views nav nav-justified">
                 <li><a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">Parabola</a></li>
