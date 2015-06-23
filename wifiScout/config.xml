@@ -17,6 +17,8 @@
     <icon src="res/icons/android/icon-96-xhdpi.png" density="xhdpi" />
   </platform>
 
+  <log level="debug"/>
+
   <platform name="ios">
     <!-- iOS 8.0+ -->
     <!-- iPhone 6 Plus  -->
