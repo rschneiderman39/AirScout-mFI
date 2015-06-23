@@ -1,6 +1,10 @@
-var wifiApp = angular.module('wifiApp', ['ngRoute']);
+/* Globals */
+var REQUIRE_CORDOVA = false
 
-wifiApp.config(function ($routeProvider) {
+var wifiApp = angular.module('wifiApp', ['ngRoute', 'fsCordova']);
+
+wifiApp.config(function ($routeProvider, $sceProvider) {
+    $sceProvider.enabled(false);
     $routeProvider
         .when('/', {
             templateUrl: 'views/settings.html'

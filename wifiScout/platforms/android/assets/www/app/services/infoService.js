@@ -13,8 +13,6 @@ wifiApp.factory('infoService', function() {
 
   service.updateInfo = function() {
     this._info = $.Deferred();
-    this._info.resolve(navigator.connection.type)
-    /*
     // plugin api call
     getWifiInfo(
       // on success
@@ -26,7 +24,6 @@ wifiApp.factory('infoService', function() {
         this._info.reject();
       }
     );
-    */
   };
 
   return service;

@@ -7,12 +7,7 @@
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
 
-
-
     function onDeviceReady() {
-      alert("device is ready");
-      angular.bootstrap(document, ["wifiApp"]);
-
       document.addEventListener( 'pause', onPause.bind( this ), false );
       document.addEventListener( 'resume', onResume.bind( this ), false );
     };

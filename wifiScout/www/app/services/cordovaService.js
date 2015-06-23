@@ -13,7 +13,11 @@ angular.module('fsCordova', [])
       if ($window.cordova){
         defer.resolve($window.cordova);
       } else {
-        defer.reject("Cordova failed to load");
+        if (REQUIRE_CORDOVA) {
+          defer.reject("Cordova failed to load");
+        } else {
+          defer.resolve({});
+        }
       }
     }, 1200);
 

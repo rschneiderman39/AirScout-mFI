@@ -1,10 +1,18 @@
-wifiApp.controller('testCtrl', function($scope, infoService) {
-    $scope.buttonText = "default";
+wifiApp.controller('testCtrl', function($scope, infoService, cordovaService) {
+    cordovaService.ready.then(
+      function resolved() {
+        $scope.buttonText = "default";
 
-    $scope.alertInfo = function() {
-      $scope.buttonText = "changed";
-    };
-});
+        $scope.alertInfo = function() {
+          $scope.buttonText = "changed";
+        };
+      },
+      function rejected() {
+        console.log("testCtrl is unavailable because Cordova is not loaded.")
+      }
+    );
+  }
+);
     /*
     infoService.updateInfo();
     infoService.getInfo().done(
