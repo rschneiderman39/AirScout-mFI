@@ -13,3 +13,7 @@
   height: 40px;
   background-color: #f5f5f5;
 }
+
+.active_view {
+	background-color: #eeeeee
+}

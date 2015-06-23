@@ -2,7 +2,7 @@
 <html ng-app="wifiApp">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>WifiScout</title>
+        <title class="text-center"></title>
 
         <!-- CSS Stylesheets -->
         <link href="css/index.css" rel="stylesheet" />
@@ -18,23 +18,32 @@
         <script src="app.js"></script>
     </head>
 
-    <body>
+    <body onload="setActive('Settings')">
         <div>
             <div id="top-bar" class="container-fluid">
-                <h1 class="text-center">{{ Page.printTitle() }}</h1>
+                <h1 id="greenTitle" class="text-center"></h1>
             </div>
             <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-                <ul class="nav nav-justified">
-                    <li><a href="#/parabola">Parabola</a></li>
-                    <li><a href="#/singleSpeed">Single Speed</a></li>
-                    <li><a href="#/timeGraph">Time Graph</a></li>
-                    <li><a href="#/table">Table</a></li>
-                    <li><a href="#/channels">Channels</a></li>
-                    <li><a href="#/">Settings</a></li>
+                <ul class="views nav nav-justified">
+                    <li><a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">Parabola</a></li>
+                    <li><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></li>
+                    <li><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></li>
+                    <li><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></li>
+                    <li><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></li>
+                    <li><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></li>
                 </ul>
             </nav>
         </div>
         <ng-view></ng-view>
+
+        <script>
+          function setActive(title) {
+            var curView = document.getElementById(title);
+            $('a').removeClass("active_view");
+            $(curView).addClass("active_view");
+            document.getElementById('greenTitle').innerHTML = title;
+          };
+        </script>
 
         <script src="cordova.js"></script>
         <script src="scripts/platformOverrides.js"></script>
