@@ -1,5 +1,5 @@
 /* Globals */
-var REQUIRE_CORDOVA = true
+var REQUIRE_CORDOVA = false
 
 var app = angular.module('app', ['ngRoute', 'fsCordova']);
 

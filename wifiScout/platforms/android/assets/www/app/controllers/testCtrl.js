@@ -1,4 +1,4 @@
-wifiApp.controller('testCtrl', function($scope, infoService, cordovaService) {
+app.controller('testCtrl', function($scope, infoService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.buttonText = "default";

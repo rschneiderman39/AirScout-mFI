@@ -1,27 +1,22 @@
 app.factory('infoService', function() {
-  var _info = undefined;
+  var _info = $.Deferred().reject();
   var service = {};
 
   service.getInfo = function() {
-    if (this._info !== undefined) {
-      return this._info;
-    } else {
-      this.updateInfo();
-      return this._info;
-    }
+      return _info;
   };
 
   service.updateInfo = function() {
-    this._info = $.Deferred();
+    _info = $.Deferred();
     // plugin api call
-    getWifiInfo(
+    window.plugins.WifiAdmin.getWifiInfo(
       // on success
       function(data) {
-        this._info.resolve(data);
+        _info.resolve(data);
       },
       // on failure
       function() {
-        this._info.reject();
+        _info.reject();
       }
     );
   };
