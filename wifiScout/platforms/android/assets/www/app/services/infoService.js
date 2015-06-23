@@ -1,5 +1,3 @@
-app.factory('infoService', function() {
-  var _info = undefined;
 /*
 * infoService provides an interface for getting AP information
 * from the device.
