@@ -1,16 +1,16 @@
 /* Globals */
 var REQUIRE_CORDOVA = false
 
-var wifiApp = angular.module('wifiApp', ['ngRoute', 'fsCordova']);
+var app = angular.module('app', ['ngRoute', 'fsCordova']);
 
-wifiApp.config(function ($routeProvider, $sceProvider) {
+app.config(function ($routeProvider, $sceProvider) {
     $sceProvider.enabled(false);
     $routeProvider
         .when('/', {
-            templateUrl: 'views/settings.html'
+            templateUrl: 'views/settings.html',
         })
         .when('/channels', {
-            templateUrl: 'views/channels.html'
+            templateUrl: 'views/channels.html',
         })
         .when('/table', {
             templateUrl: 'views/table.html'
@@ -29,6 +29,5 @@ wifiApp.config(function ($routeProvider, $sceProvider) {
         })
 });
 
-wifiApp.controller('navController', function ($scope) {
-
+app.controller('navController', function ($scope) {
 });
