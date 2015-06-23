@@ -23,6 +23,7 @@
     "res\\icons\\android\\icon-48-mdpi.png",
     "www\\scripts\\lib\\angular.js",
     "plugins\\org.apache.cordova.network-information\\RELEASENOTES.md",
+    "www\\sampleData.json",
     "res\\icons\\ios\\icon-72.png",
     "res\\icons\\ios\\icon-76.png",
     "plugins\\org.apache.cordova.network-information\\src\\ios\\CDVReachability.m",
@@ -54,6 +55,7 @@
     "plugins\\org.apache.cordova.network-information\\src\\ios\\CDVConnection.m",
     "res\\icons\\ios\\icon-60-3x.png",
     "plugins\\fetch.json",
+    "config.xml",
     "www\\scripts\\lib\\angular.min.js",
     "res\\screens\\wp8\\SplashScreenImage.jpg",
     "plugins\\org.apache.cordova.network-information\\tests\\plugin.xml",
@@ -76,6 +78,7 @@
     "plugins\\org.apache.cordova.network-information\\doc\\ko\\index.md",
     "res\\icons\\ios\\icon-72-2x.png",
     "res\\icons\\ios\\icon-76-2x.png",
+    "www\\app\\controllers\\APS.js",
     "plugins\\org.apache.cordova.network-information\\src\\firefoxos\\NetworkProxy.js",
     "plugins\\org.apache.cordova.network-information\\src\\windows\\NetworkInfoProxy.js",
     "res\\icons\\ios\\icon-small.png",
@@ -102,6 +105,7 @@
     "taco.json",
     "res\\icons\\windows\\Square150x150Logo.scale-240.png",
     "res\\icons\\android\\icon-36-ldpi.png",
+    "www\\css\\table.css",
     "merges\\windows\\scripts\\platformOverrides.js",
     "res\\screens\\ios\\screen-iphone-portrait.png",
     "Project_Readme.html",
@@ -139,19 +143,14 @@
     "res\\screens\\android\\screen-xhdpi-landscape.png",
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
     "res\\screens\\android\\screen-mdpi-portrait.png",
-    "plugins\\org.apache.cordova.network-information\\www\\Connection.js",
-    "www\\css\\table.css",
-    "config.xml"
+    "plugins\\org.apache.cordova.network-information\\www\\Connection.js"
   ],
-  "deletedFilesIos": [
-    "www\\css\\tab;e.css",
-    "plugins\\cordova-plugin-wifi\\.project",
-    "www\\cordova.js"
-  ],
+  "deletedFilesIos": [],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
-    "plugins\\android.json"
+    "plugins\\android.json",
+    "www\\app.js"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
