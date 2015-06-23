@@ -1,4 +1,4 @@
-wifiApp.factory('infoService', function() {
+app.factory('infoService', function() {
   var _info = undefined;
   var service = {};
 

@@ -21,7 +21,7 @@ var mobileDevice;
     };
 } )();
 
-//Checks what device type user is accessing application from.
+// Checks what device type user is accessing application from.
 //  Return: True - mobile device
 //          False - tablet, PC/Desktop device
 function windowCheck() {
@@ -30,6 +30,7 @@ function windowCheck() {
     return mobileDevice;
 };
 
+// Changes title and highlighting on list when a new view is selected
 function setActive(title) {
             var curView = document.getElementById(title);
             $('a').removeClass("active_view");
