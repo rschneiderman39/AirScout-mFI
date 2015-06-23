@@ -10,7 +10,6 @@
     "plugins\\org.apache.cordova.network-information\\CONTRIBUTING.md",
     "res\\icons\\ios\\icon-60.png",
     "www\\css\\bootstrap.min.css",
-    "www\\cordova.js",
     "res\\screens\\ios\\screen-iphone-landscape-736h.png",
     "www\\app\\app.js",
     "res\\icons\\windows\\StoreLogo.scale-100.png",
@@ -23,7 +22,6 @@
     "plugins\\org.apache.cordova.network-information\\doc\\ru\\index.md",
     "res\\icons\\android\\icon-48-mdpi.png",
     "www\\scripts\\lib\\angular.js",
-    "plugins\\cordova-plugin-wifi\\.project",
     "plugins\\org.apache.cordova.network-information\\RELEASENOTES.md",
     "res\\icons\\ios\\icon-72.png",
     "res\\icons\\ios\\icon-76.png",
@@ -56,7 +54,6 @@
     "plugins\\org.apache.cordova.network-information\\src\\ios\\CDVConnection.m",
     "res\\icons\\ios\\icon-60-3x.png",
     "plugins\\fetch.json",
-    "config.xml",
     "www\\scripts\\lib\\angular.min.js",
     "res\\screens\\wp8\\SplashScreenImage.jpg",
     "plugins\\org.apache.cordova.network-information\\tests\\plugin.xml",
@@ -143,16 +140,20 @@
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "plugins\\org.apache.cordova.network-information\\www\\Connection.js",
-    "www\\css\\table.css"
+    "www\\css\\table.css",
+    "config.xml"
   ],
   "deletedFilesIos": [
-    "www\\css\\tab;e.css"
+    "www\\css\\tab;e.css",
+    "plugins\\cordova-plugin-wifi\\.project",
+    "www\\cordova.js"
   ],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
     "plugins\\android.json",
-    "www\\views\\table.html"
+    "config.xml",
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],

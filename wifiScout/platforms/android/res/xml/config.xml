@@ -29,4 +29,5 @@
     <preference name="windows-target-version" value="8.1" />
     <preference name="windows-phone-target-version" value="8.1" />
     <log level="debug" />
+    <preference name="Orientation" value="Landscape" />
 </widget>
