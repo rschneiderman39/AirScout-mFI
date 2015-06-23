@@ -1,16 +1,10 @@
-<<<<<<< HEAD:wifiScout/platforms/android/assets/www/app/app.js
 /* Globals */
-var REQUIRE_CORDOVA = false
+var REQUIRE_CORDOVA = true
 
-var wifiApp = angular.module('wifiApp', ['ngRoute', 'fsCordova']);
+var app = angular.module('app', ['ngRoute', 'fsCordova']);
 
-wifiApp.config(function ($routeProvider, $sceProvider) {
+app.config(function ($routeProvider, $sceProvider) {
     $sceProvider.enabled(false);
-=======
-var app = angular.module('wifiApp', ['ngRoute']);
-
-app.config(function ($routeProvider) {
->>>>>>> bc3eb313ee064b560f1db24a1a9595e90dd0e59e:wifiScout/www/app.js
     $routeProvider
         .when('/', {
             templateUrl: 'views/settings.html',
@@ -32,14 +26,8 @@ app.config(function ($routeProvider) {
         })
         .otherwise({
             redirectTo: 'views/settings.html'
-<<<<<<< HEAD:wifiScout/platforms/android/assets/www/app/app.js
         })
 });
 
-wifiApp.controller('navController', function ($scope) {
-
+app.controller('navController', function ($scope) {
 });
-=======
-        });
-});
->>>>>>> bc3eb313ee064b560f1db24a1a9595e90dd0e59e:wifiScout/www/app.js

@@ -1,31 +1,56 @@
 ﻿<!DOCTYPE HTML>
 <html ng-app="wifiApp">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title class="text-center"></title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title class="text-center"></title>
 
-        <!-- CSS Stylesheets -->
-        <link href="css/index.css" rel="stylesheet" />
-        <link href="css/bootstrap.min.css" rel="stylesheet" />
-        <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+      <!-- CSS Stylesheets -->
+      <link href="css/index.css" rel="stylesheet" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
 
-<<<<<<< HEAD
-    <!-- Scripts -->
-    <script src="scripts/lib/jquery-2.1.4.min.js"></script>
-    <script src="scripts/lib/angular.min.js"></script>
-    <script src="scripts/lib/angular-route.min.js"></script>
-    <script src="scripts/lib/angular-touch.min.js"></script>
-    <script src="scripts/lib/bootstrap.min.js"></script>
+      <!-- Scripts -->
+      <script src="scripts/lib/jquery-2.1.4.min.js"></script>
+      <script src="scripts/lib/angular.min.js"></script>
+      <script src="scripts/lib/angular-route.min.js"></script>
+      <script src="scripts/lib/angular-touch.min.js"></script>
+      <script src="scripts/lib/bootstrap.min.js"></script>
   </head>
 
-  <body>
-    <ng-view></ng-view>
+  <body onload="setActive('Settings')">
 
     <div ng-controller="testCtrl">
       <button type="button" ng-click="alertInfo()">{{buttonText}}</button>
     </div>
 
-    <!-- Cordova -->
+    <div>
+        <div id="top-bar" class="container-fluid">
+            <h1 id="greenTitle" class="text-center"></h1>
+        </div>
+
+        <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
+            <ul class="views nav nav-justified">
+                <li><a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">Parabola</a></li>
+                <li><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></li>
+                <li><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></li>
+                <li><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></li>
+                <li><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></li>
+                <li><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></li>
+            </ul>
+        </nav>
+    </div>
+    <ng-view></ng-view>
+
+    <script>
+      function setActive(title) {
+        var curView = document.getElementById(title);
+        $('a').removeClass("active_view");
+        $(curView).addClass("active_view");
+        document.getElementById('greenTitle').innerHTML = title;
+      };
+    </script>
+
+      <!-- Cordova -->
     <script src="cordova.js"></script>
     <script src="scripts/platformOverrides.js"></script>
 
@@ -37,37 +62,3 @@
     <script src="scripts/index.js"></script>
   </body>
 </html>
-=======
-        <!-- Scripts -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-route.min.js"></script>
-        <script src="scripts/lib/angular-touch.min.js"></script>
-        <script src="scripts/lib/jquery-2.1.4.min.js"></script>
-        <script src="scripts/lib/bootstrap.min.js"></script>
-        <script src="app.js"></script>
-    </head>
-
-    <body onload="setActive('Settings')">
-        <div>
-            <div id="top-bar" class="container-fluid">
-                <h1 id="greenTitle" class="text-center"></h1>
-            </div>
-            <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-                <ul class="views nav nav-justified">
-                    <li><a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">Parabola</a></li>
-                    <li><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></li>
-                    <li><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></li>
-                    <li><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></li>
-                    <li><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></li>
-                    <li><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></li>
-                </ul>
-            </nav>
-        </div>
-        <ng-view></ng-view>
-
-        <script src="cordova.js"></script>
-        <script src="scripts/platformOverrides.js"></script>
-        <script src="scripts/index.js"></script>
-    </body>
-</html>
->>>>>>> bc3eb313ee064b560f1db24a1a9595e90dd0e59e

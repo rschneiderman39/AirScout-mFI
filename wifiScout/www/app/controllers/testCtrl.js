@@ -1,9 +1,13 @@
-wifiApp.controller('testCtrl', function($scope, infoService, cordovaService) {
+app.controller('testCtrl', function($scope, infoService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.buttonText = "default";
 
         $scope.alertInfo = function() {
+          infoService.updateInfo();
+          infoService.getInfo()
+          .done(function(data) {alert(data);})
+          .fail(function() {alert("Failed to fetch data.");})
           $scope.buttonText = "changed";
         };
       },
