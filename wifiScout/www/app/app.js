@@ -1,6 +1,10 @@
-var app = angular.module('wifiApp', ['ngRoute']);
+/* Globals */
+var REQUIRE_CORDOVA = false
 
-app.config(function ($routeProvider) {
+var app = angular.module('app', ['ngRoute', 'fsCordova']);
+
+app.config(function ($routeProvider, $sceProvider) {
+    $sceProvider.enabled(false);
     $routeProvider
         .when('/', {
             templateUrl: 'views/settings.html',
@@ -22,5 +26,8 @@ app.config(function ($routeProvider) {
         })
         .otherwise({
             redirectTo: 'views/settings.html'
-        });
+        })
+});
+
+app.controller('navController', function ($scope) {
 });
