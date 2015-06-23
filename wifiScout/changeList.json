@@ -110,7 +110,12 @@
   "changedFiles": [
     "plugins\\android.json",
     "www\\scripts\\index.js",
-    "www\\index.html"
+    "www\\views\\parabola.html",
+    "www\\views\\channels.html",
+    "www\\views\\settings.html",
+    "www\\views\\singleSpeed.html",
+    "www\\views\\table.html",
+    "www\\views\\timeGraph.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
