@@ -1,27 +1,33 @@
 app.factory('infoService', function() {
   var _info = undefined;
+/*
+* infoService provides an interface for getting AP information
+* from the device.
+*
+* getInfo - Returns a deferred object which will resolve to the data fetched
+            and stored by updateInfo.  updateInfo should always be called first.
+* updateInfo - Fetch and store AP info from the device.
+*
+*/
+app.factory('infoService', function() {
+  var _info = $.Deferred().reject();
   var service = {};
 
   service.getInfo = function() {
-    if (this._info !== undefined) {
-      return this._info;
-    } else {
-      this.updateInfo();
-      return this._info;
-    }
-  };
+    return _info;
+  }
 
   service.updateInfo = function() {
-    this._info = $.Deferred();
+    _info = $.Deferred();
     // plugin api call
-    getWifiInfo(
+    window.plugins.WifiAdmin.getWifiInfo(
       // on success
-      function(data) {
-        this._info.resolve(data);
+      function(info) {
+        _info.resolve(info);
       },
       // on failure
       function() {
-        this._info.reject();
+        _info.reject();
       }
     );
   };

@@ -9,11 +9,11 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"WifiAdmin\"><param name=\"android-package\" value=\"com.rjfun.cordova.plugin.WifiAdmin\" /></feature>",
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "xml": "<feature name=\"WifiAdmin\"><param name=\"android-package\" value=\"com.rjfun.cordova.plugin.WifiAdmin\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -23,12 +23,12 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-                            "count": 1
-                        },
-                        {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
                             "count": 2
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\" />",
@@ -48,10 +48,10 @@
         }
     },
     "installed_plugins": {
-        "cordova-plugin-wifi": {
+        "org.apache.cordova.network-information": {
             "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
         },
-        "org.apache.cordova.network-information": {
+        "cordova-plugin-wifi": {
             "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
         }
     },
