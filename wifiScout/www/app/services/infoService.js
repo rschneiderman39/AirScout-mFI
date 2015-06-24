@@ -1,7 +1,4 @@
-/*
-* infoService provides an interface for getting AP information
-* from the device.
-*/
+// Gets AP info from the device.
 app.factory('infoService', function() {
   var service = {};
 

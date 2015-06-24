@@ -33,7 +33,7 @@
 	          </tr>
 	        </thead>
 	        <tbody class="container-fluid">
-	          <tr data-ng-repeat="ap in accessPoints | orderBy:predicate:reverse">
+	          <tr data-ng-repeat="ap in selectedAPs | orderBy:predicate:reverse">
 	            <td>{{ap.BSSID}}</td>
 	            <td>{{ap.SSID}}</td>
 	            <td>{{ap.frequency}}</td>

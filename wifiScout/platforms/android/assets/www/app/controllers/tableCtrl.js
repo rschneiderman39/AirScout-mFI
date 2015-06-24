@@ -1,28 +1,34 @@
-app.controller('tableCtrl', ['$scope', '$timeout', 'infoService', 'cordovaService',
-  function($scope, $timeout, infoService, cordovaService) {
+app.controller('tableCtrl', ['$scope', '$timeout', 'infoService',
+                             'filterService', 'cordovaService',
+  function($scope, $timeout, infoService, filterService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.accessPoints = {};
+        $scope.selectedAPs = [];
         $scope.predicate = 'level';
         $scope.reverse = false;
 
+        // Serves as both a switc
         $scope.order = function(predicate) {
           $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
           $scope.predicate = predicate;
         }
 
+        var _accessPoints = [];
+        var _selection = ['Orion2', 'NETGEAR85'];
+
         var _update = function() {
           infoService.getInfo()
           .done(function(info) {
-            $scope.accessPoints = info.available;
+            _accessPoints = info.available;
           })
           .fail(function() {
-            $scope.accessPoints = {};
+            _accessPoints = [];
           });
+          $scope.selectedAPs = filterService.filterBySSID(_accessPoints, _selection);
           $timeout(_update, 1000);
         };
 
-          _update();
+          $scope.$apply(_update());
         },
         function rejected() {
           console.log("tableCtrl is unavailable because Cordova is not loaded.")
