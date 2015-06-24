@@ -1,14 +1,10 @@
 <html ng-app="app">
 <head>
-	
+
 </head>
 	<script src="scripts/lib/angular.min.js"></script>
 <body>
-	<div ng-controller="testCtrl">
-          <button type="button" ng-click="alertInfo()">{{buttonText}}</button>
-        </div>
 	<div ng-controller="tableCtrl">
-      <button type="button" ng-click="getTableInfo()">{{buttons}}</button>
       	<div class="table-responsive">
 	      <table class="table table-striped">
 	        <thead>
@@ -21,7 +17,7 @@
 	          </tr>
 	        </thead>
 	        <tbody class="container-fluid">
-	          <tr data-ng-repeat="ap in accesspoints">
+	          <tr data-ng-repeat="ap in accessPoints">
 	            <td>{{ap.BSSID}}</td>
 	            <td>{{ap.SSID}}</td>
 	            <td>{{ap.frequency}}</td>
@@ -34,6 +30,6 @@
     </div>
 
     <!-- Scripts -->
-    
+
 </body>
 </html>

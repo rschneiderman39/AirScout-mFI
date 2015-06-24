@@ -1,23 +1,24 @@
-app.controller('tableCtrl', function($scope, tableService, cordovaService) {
+app.controller('tableCtrl', ['$scope', '$timeout', 'infoService', 'cordovaService',
+  function($scope, $timeout, infoService, cordovaService) {
     cordovaService.ready.then(
-        function resolved() {
-            console.log("IN TABLE CONTROLLER");
-            $scope.buttons = "get table info";
+      function resolved() {
+        $scope.accessPoints = {};
 
-            $scope.getTableInfo = function() {
-                console.log("GETTING TABLE INFO");
-                var promise = tableService.getAPS();
+        var _update = function() {
+          infoService.getInfo()
+          .done(function(info) {
+            $scope.accessPoints = info.available;
+          })
+          .fail(function() {
+            $scope.accessPoints = {};
+          });
+          $timeout(_update, 1000);
+        };
 
-                promise.then(function (data) {
-                    $scope.accesspoints = data.data.available;
-                    console.log("HERE");
-                    console.log($scope.accesspoints);
-                    $scope.buttons = "we did it!";
-                })
-            };
+          _update();
         },
         function rejected() {
-            console.log("tableCtrl is unavailable because Cordova is not loaded.")
+          console.log("tableCtrl is unavailable because Cordova is not loaded.")
         }
     );
-});
+}]);

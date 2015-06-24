@@ -92,5 +92,5 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
-  <preference name="Orientation" value="Landscape" />
+  <preference name="Orientation" value="landscape" />
 </widget>
