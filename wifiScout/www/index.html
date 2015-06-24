@@ -18,22 +18,49 @@
   </head>
 
   <body onload="setActive('Settings')">
-    <div>
-        <div id="top-bar" class="container-fluid">
-            <h1 id="greenTitle" class="text-center"></h1>
-        </div>
-
-        <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-            <ul class="views">
-                <div class="col-xs-2"><a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">Parabola</a></div>
-                <div class="col-xs-2"><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></div>
-                <div class="col-xs-2"><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></div>
-                <div class="col-xs-2"><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></div>
-                <div class="col-xs-2"><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></div>
-                <div class="col-xs-2"><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></div>
-            </ul>
-        </nav>
+    <div id="top-bar" class="container-fluid">
+      <h1 id="greenTitle" class="text-center"></h1>
     </div>
+    
+    <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
+      <ul class="nav nav-pills nav-justified">
+        <li role="presentation">
+          <a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">
+            <div class="container-fluid">
+              <img src="../images/parabola.png" />
+            </div>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a>
+        </li>
+        <li role="presentation">
+          <a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a>
+        </li>
+        <li role="presentation">
+          <a href="#/table" onclick="setActive('Table')" id="Table">Table</a>
+        </li>
+        <li role="presentation">
+          <a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a>
+        </li>
+        <li role="presentation">
+          <a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!--
+    <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
+      <ul class="views nav nav-justified">
+        <a href="#/parabola" class="navButton" onclick="setActive('Parabola')" id="Parabola"><img src="../images/parabola.png" height="75" width="75"></a></li>
+        <li><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></li>
+        <li><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></li>
+        <li><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></li>
+        <li><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></li>
+        <li><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></li>
+      </ul>
+    </nav>
+    -->
     <ng-view></ng-view>
 
     <!-- Cordova -->
