@@ -13,7 +13,7 @@ app.factory('infoService', function() {
 
   service.getInfo = function() {
     return _info;
-  }
+  };
 
   service.updateInfo = function() {
     _info = $.Deferred();

@@ -32,8 +32,8 @@ function windowCheck() {
 
 // Changes title and highlighting on list when a new view is selected
 function setActive(title) {
-            var curView = document.getElementById(title);
-            $('a').removeClass("active_view");
-            $(curView).addClass("active_view");
-            document.getElementById('greenTitle').innerHTML = title;
+    var curView = document.getElementById(title);
+    $('a').removeClass("active_view");
+    $(curView).addClass("active_view");
+    document.getElementById('greenTitle').innerHTML = title;
 };

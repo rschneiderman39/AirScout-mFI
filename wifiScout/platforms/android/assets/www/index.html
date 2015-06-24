@@ -40,21 +40,12 @@
     </div>
     <ng-view></ng-view>
 
-    <script>
-      function setActive(title) {
-        var curView = document.getElementById(title);
-        $('a').removeClass("active_view");
-        $(curView).addClass("active_view");
-        document.getElementById('greenTitle').innerHTML = title;
-      };
-    </script>
-
-      <!-- Cordova -->
+    <!-- Cordova -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
     <script src="scripts/platformOverrides.js"></script>
 
-    <!-- Modules -->
+    <!-- Scripts -->
     <script src="app/services/cordovaService.js"></script>
     <script src="app/app.js"></script>
     <script src="app/services/infoService.js"></script>
