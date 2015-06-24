@@ -2,8 +2,11 @@
 <head>
 	
 </head>
-
+	<script src="scripts/lib/angular.min.js"></script>
 <body>
+	<div ng-controller="testCtrl">
+          <button type="button" ng-click="alertInfo()">{{buttonText}}</button>
+        </div>
 	<div ng-controller="tableCtrl">
       <button type="button" ng-click="getTableInfo()">{{buttons}}</button>
       <table class="table table-striped">
@@ -16,7 +19,7 @@
             <th>Capabilities</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="container-fluid">
           <tr data-ng-repeat="ap in accesspoints">
             <td>{{ap.BSSID}}</td>
             <td>{{ap.SSID}}</td>
@@ -29,9 +32,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="../app/services/cordovaService.js"></script>
-    <script src="../app/app.js"></script>
-    <script src="../app/controllers/tableCtrl.js"></script>
-    <script src="../app/services/tableService.js"></script>
+    
 </body>
 </html>
