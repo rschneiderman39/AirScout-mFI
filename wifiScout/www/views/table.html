@@ -9,26 +9,28 @@
         </div>
 	<div ng-controller="tableCtrl">
       <button type="button" ng-click="getTableInfo()">{{buttons}}</button>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>BSSID</th>
-            <th>SSID</th>
-            <th>Frequency</th>
-            <th>Level</th>
-            <th>Capabilities</th>
-          </tr>
-        </thead>
-        <tbody class="container-fluid">
-          <tr data-ng-repeat="ap in accesspoints">
-            <td>{{ap.BSSID}}</td>
-            <td>{{ap.SSID}}</td>
-            <td>{{ap.frequency}}</td>
-            <td>{{ap.level}}</td>
-            <td>{{ap.capabilities}}</td>
-          </tr>
-        </tbody>
-      </table>
+      	<div class="table-responsive">
+	      <table class="table table-striped">
+	        <thead>
+	          <tr>
+	            <th>BSSID</th>
+	            <th>SSID</th>
+	            <th>Frequency</th>
+	            <th>Level</th>
+	            <th>Capabilities</th>
+	          </tr>
+	        </thead>
+	        <tbody class="container-fluid">
+	          <tr data-ng-repeat="ap in accesspoints">
+	            <td>{{ap.BSSID}}</td>
+	            <td>{{ap.SSID}}</td>
+	            <td>{{ap.frequency}}</td>
+	            <td>{{ap.level}}</td>
+	            <td>{{ap.capabilities}}</td>
+	          </tr>
+	        </tbody>
+	      </table>
+	    </div>
     </div>
 
     <!-- Scripts -->
