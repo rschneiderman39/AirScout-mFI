@@ -1,0 +1,10 @@
+{
+    "cordova-plugin-wifi": {
+        "source": {
+            "type": "local",
+            "path": "c:\\Users\\cwelch\\Desktop\\cordova-plugin-wifi"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
