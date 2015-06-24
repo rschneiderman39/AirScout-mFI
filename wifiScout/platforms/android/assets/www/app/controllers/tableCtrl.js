@@ -14,7 +14,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'infoService',
         }
 
         var _accessPoints = [];
-        var _selection = ['Orion2', 'NETGEAR85'];
+        var _selection = null;
 
         var _update = function() {
           infoService.getInfo()
@@ -28,7 +28,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'infoService',
           $timeout(_update, 1000);
         };
 
-          $scope.$apply(_update());
+        _update();
         },
         function rejected() {
           console.log("tableCtrl is unavailable because Cordova is not loaded.")
