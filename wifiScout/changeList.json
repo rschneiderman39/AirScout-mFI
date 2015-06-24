@@ -97,7 +97,9 @@
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "www\\images\\singlespeed.png",
-    "plugins\\android.json"
+    "plugins\\android.json",
+    "www\\images\\singlespeed2.png",
+    "www\\images\\parabola2.png"
   ],
   "deletedFilesIos": [
     "plugins\\org.apache.cordova.network-information\\src\\ubuntu\\network_information.h",
@@ -150,7 +152,9 @@
   "deletedPluginsIos": [],
   "changedFiles": [
     "plugins\\android.json",
-    "www\\images\\singlespeed.png"
+    "www\\images\\singlespeed2.png",
+    "www\\images\\parabola2.png",
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
