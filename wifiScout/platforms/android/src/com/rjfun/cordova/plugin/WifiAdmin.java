@@ -15,17 +15,18 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 
-public class WifiAdmin extends CordovaPlugin { 
-	
+public class WifiAdmin extends CordovaPlugin {
+
 	private static final String LOGTAG = "WifiAdmin";
-	
+
     /** Cordova Actions. */
     private static final String ACTION_GET_WIFI_INFO = "getWifiInfo";
     private static final String ACTION_ENABLE_WIFI = "enableWifi";
     private static final String ACTION_CONNECT_WIFI = "connectWifi";
     private static final String ACTION_ENABLE_WIFI_AP = "enableWifiAP";
     private static final String ACTION_ENABLE_WIFI_LOCK = "enableWifiLock";
-    
+		private static final String ACTION_SCAN = "scan";
+
     private WifiLock wifiLock = null;
 
     @Override
@@ -33,32 +34,35 @@ public class WifiAdmin extends CordovaPlugin {
         PluginResult result = null;
         if (ACTION_GET_WIFI_INFO.equals(action)) {
             result = executeGetWifiInfo(inputs, callbackContext);
-            
+
         } else if (ACTION_ENABLE_WIFI.equals(action)) {
             result = executeEnableWifi(inputs, callbackContext);
-            
+
         } else if (ACTION_CONNECT_WIFI.equals(action)) {
             result = executeConnectWifi(inputs, callbackContext);
-            
+
         } else if (ACTION_ENABLE_WIFI_AP.equals(action)) {
             result = executeEnableWifiAP(inputs, callbackContext);
-            
+
         } else if (ACTION_ENABLE_WIFI_LOCK.equals(action)) {
             result = executeEnableWifiLock(inputs, callbackContext);
-            
-        } else {
+
+        } else if (ACTION_SCAN.equals(action)) {
+						result = executeScan(inputs, callbackContext);
+				}
+				else {
             Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
             result = new PluginResult(Status.INVALID_ACTION);
         }
-        
+
         if(result != null) callbackContext.sendPluginResult( result );
-        
+
         return true;
     }
-    
+
     private PluginResult executeGetWifiInfo(JSONArray inputs, CallbackContext callbackContext) {
     	Log.w(LOGTAG, "executeGetWifiInfo");
-    	
+
 		Context context = cordova.getActivity().getApplicationContext();
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -74,7 +78,7 @@ public class WifiAdmin extends CordovaPlugin {
 			activity.put("NetworkId", wifiInfo.getNetworkId());
 			activity.put("RSSI", wifiInfo.getRssi());
 			activity.put("LinkSpeed", wifiInfo.getLinkSpeed());
-			obj.put("activity", activity); 
+			obj.put("activity", activity);
 
 			JSONArray available = new JSONArray();
 	        for (ScanResult scanResult : wifiManager.getScanResults()) {
@@ -87,7 +91,7 @@ public class WifiAdmin extends CordovaPlugin {
 	        	ap.put("capabilities", scanResult.capabilities);
 	        	available.put(ap);
 	        }
-	        obj.put("available", available); 
+	        obj.put("available", available);
 
 
 		} catch (JSONException e) {
@@ -112,10 +116,10 @@ public class WifiAdmin extends CordovaPlugin {
 		      Log.w(LOGTAG, String.format("Got JSON Exception: %s", e.getMessage()));
 		      return new PluginResult(Status.JSON_EXCEPTION);
 		}
-        
+
 		wifiManager.setWifiEnabled( toEnable );
 		callbackContext.success();
-		
+
     	return null;
     }
 
@@ -157,14 +161,14 @@ public class WifiAdmin extends CordovaPlugin {
 		      Log.w(LOGTAG, String.format("Got JSON Exception: %s", e.getMessage()));
 		      return new PluginResult(Status.JSON_EXCEPTION);
 		}
-		
+
 		Context context = cordova.getActivity().getApplicationContext();
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
 		if(wifiLock == null) {
 			wifiLock = wifiManager.createWifiLock("Test");
 		}
-		
+
 		if(wifiLock != null) {
 			if(toEnable) {
 				wifiLock.acquire();
@@ -174,9 +178,22 @@ public class WifiAdmin extends CordovaPlugin {
 		        }
 			}
 		}
-		
+
 		callbackContext.success();
 
+    	return null;
+    }
+
+		private PluginResult executeScan(JSONArray inputs, CallbackContext callbackContext) {
+    	Log.w(LOGTAG, "executeScan");
+
+			Context context = cordova.getActivity().getApplicationContext();
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			if (wifiManager.startScan()) {
+				callbackContext.success();
+			} else {
+				callbackContext.error("Scan failed");
+			}
     	return null;
     }
 }

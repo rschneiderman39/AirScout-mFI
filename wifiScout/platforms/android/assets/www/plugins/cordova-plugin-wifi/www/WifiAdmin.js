@@ -1,4 +1,4 @@
-cordova.define("cordova-plugin-wifi.WifiAdmin", function(require, exports, module) { /* 
+cordova.define("cordova-plugin-wifi.WifiAdmin", function(require, exports, module) { /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -49,7 +49,10 @@ wifiExport.enableWifiLock = function(istrue, okcallback, failcallback) {
 	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'enableWifiLock', [ istrue ]);
 };
 
-module.exports = wifiExport;
+wifiExport.scan = function(okcallback, failcallback) {
+  cordova.exec(okcallback, failcallback, 'WifiAdmin', 'scan', []);
+};
 
+module.exports = wifiExport;
 
 });
