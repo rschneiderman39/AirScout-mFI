@@ -6,6 +6,11 @@
 	background-color: #62bf01;
 }
 
+#bottom-bar {
+	padding-top: 15px;
+ 	padding-bottom: 10px;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -15,5 +20,5 @@
 }
 
 .active_view {
-	background-color: #eeeeee
+	background-color: #eeeeee;
 }
