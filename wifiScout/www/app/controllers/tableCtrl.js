@@ -3,6 +3,13 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'infoService', 'cordovaServic
     cordovaService.ready.then(
       function resolved() {
         $scope.accessPoints = {};
+        $scope.predicate = 'level';
+        $scope.reverse = false;
+
+        $scope.order = function(predicate) {
+          $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+          $scope.predicate = predicate;
+        }
 
         var _update = function() {
           infoService.getInfo()
