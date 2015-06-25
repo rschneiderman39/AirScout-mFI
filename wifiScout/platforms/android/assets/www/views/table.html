@@ -60,7 +60,9 @@
 								<span class="sortArrow" ng-show="table.predicate === 'capabilities'" ng-class="{reverse:table.reverse}"></span>
 							</th>
 							<th>
-								<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tableModal">Select...</button>
+								<div align="right">
+									<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tableModal">Select...</button>
+								</div>
 							</th>
 	          </tr>
 	        </thead>
@@ -71,6 +73,7 @@
 	            <td>{{ap.frequency}}</td>
 	            <td>{{ap.level}}</td>
 	            <td>{{ap.capabilities}}</td>
+							<td></td>
 	          </tr>
 	        </tbody>
 	      </table>
