@@ -1,37 +1,84 @@
-app.controller('tableCtrl', ['$scope', '$timeout', 'infoService',
+app.controller('tableCtrl', ['$scope', '$timeout', 'APService',
                              'filterService', 'cordovaService',
-  function($scope, $timeout, infoService, filterService, cordovaService) {
+  function($scope, $timeout, APService, filterService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.selectedAPs = [];
-        $scope.predicate = 'level';
-        $scope.reverse = false;
+        $scope.modal = {
+          allAPs: [],
+          selectedAPs: [],
+          selector: 'SSID',
+          buttonText: 'List by BSSID',
+          toggleSelector: function() {
+            this.buttonText = 'List by ' + this.selector;
+            this.selector = this.selector === 'BSSID' ? 'SSID' : 'BSSID';
+          },
+          showAll: function() {
+            this.selectedAPs = this.allAPs.slice();
+            _showAll = true;
+          },
+          hideAll: function() {
+            this.selectedAPs = [];
+            _showAll = false;
+            _modalToTable();
+          }
+        };
 
-        // Serves as both a switc
-        $scope.order = function(predicate) {
-          $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-          $scope.predicate = predicate;
-        }
+        $scope.table = {
+          selectedAPs: [],
+          predicate: 'BSSID',
+          reverse: false,
+          order: function(predicate) {
+            this.reverse = (this.predicate === predicate) ? !this.reverse : false;
+            this.predicate = predicate;
+          }
+        };
 
-        var _accessPoints = [];
-        var _selection = null;
+        var _showAll = true;
+        var _selectedBSSIDs = [];
 
         var _update = function() {
-          infoService.getInfo()
-          .done(function(info) {
-            _accessPoints = info.available;
-          })
-          .fail(function() {
-            _accessPoints = [];
-          });
-          $scope.selectedAPs = filterService.filterBySSID(_accessPoints, _selection);
+          if (_showAll) {
+            $scope.table.selectedAPs = APService.namedAPs;
+          } else {
+            $scope.table.selectedAPs = filterService.filter(
+              APService.namedAPs,
+              _selectedBSSIDs
+            );
+          }
           $timeout(_update, 1000);
         };
 
-        _update();
-        },
-        function rejected() {
-          console.log("tableCtrl is unavailable because Cordova is not loaded.")
+        var _updateModal = function() {
+          $scope.modal.allAPs = APService.namedAPs;
+          if (_showAll) {
+            $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
+          } else {
+            $scope.modal.selectedAPs = filterService.filter(
+              $scope.modal.allAPs,
+              _selectedBSSIDs
+            );
+          }
         }
+
+        var _modalToTable = function() {
+          _selectedBSSIDs = $scope.modal.selectedAPs.map(
+            function(ap) {return ap.BSSID; }
+          );
+        }
+
+        var _onCheckboxClick = function() {
+          _showAll = false;
+          $timeout(_modalToTable, 100);
+        }
+        // Init
+        $('#tableModal').on('show.bs.modal', _updateModal);
+        $('#tableModal').on('hide.bs.modal', _modalToTable);
+        $('#tableModalList').on('click', _onCheckboxClick);
+
+        _update();
+      },
+      function rejected() {
+        console.log("tableCtrl is unavailable because Cordova is not loaded.")
+      }
     );
 }]);
