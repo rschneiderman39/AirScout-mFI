@@ -25,7 +25,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService',
 
         $scope.table = {
           selectedAPs: [],
-          predicate: 'BSSID',
+          predicate: 'SSID',
           reverse: false,
           order: function(predicate) {
             this.reverse = (this.predicate === predicate) ? !this.reverse : false;

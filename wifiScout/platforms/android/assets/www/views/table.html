@@ -7,9 +7,6 @@
 <body>
 	<div ng-controller="tableCtrl">
 
-		<!-- modal toggle -->
-
-
 		<!-- modal -->
 		<div class="modal fade" id="tableModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-sm">
@@ -43,12 +40,12 @@
 	        <thead>
 	          <tr>
 	            <th>
-								<a href="" ng-click="table.order('BSSID')">BSSID</a>
-								<span class="sortArrow" ng-show="table.predicate === 'BSSID'" ng-class="{reverse:table.reverse}"></span>
-							</th>
-							<th>
 								<a href="" ng-click="table.order('SSID')">SSID</a>
 								<span class="sortArrow" ng-show="table.predicate === 'SSID'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<a href="" ng-click="table.order('BSSID')">BSSID</a>
+								<span class="sortArrow" ng-show="table.predicate === 'BSSID'" ng-class="{reverse:table.reverse}"></span>
 							</th>
 							<th>
 								<a href="" ng-click="table.order('frequency')">Frequency</a>
@@ -69,8 +66,8 @@
 	        </thead>
 	        <tbody class="container-fluid">
 	          <tr data-ng-repeat="ap in table.selectedAPs | orderBy:table.predicate:table.reverse">
-	            <td>{{ap.BSSID}}</td>
 	            <td>{{ap.SSID}}</td>
+	            <td>{{ap.BSSID}}</td>
 	            <td>{{ap.frequency}}</td>
 	            <td>{{ap.level}}</td>
 	            <td>{{ap.capabilities}}</td>
@@ -79,8 +76,6 @@
 	      </table>
 	    </div>
     </div>
-
-    <!-- Scripts -->
 
 </body>
 </html>
