@@ -4,7 +4,7 @@
 	<link href="css/sortArrow.css" rel="stylesheet" />
 </head>
 
-<body>
+<body ng-controller="navBarCtrl">
 	<div ng-controller="tableCtrl">
 
 		<!-- modal -->
@@ -60,8 +60,13 @@
 								<span class="sortArrow" ng-show="table.predicate === 'capabilities'" ng-class="{reverse:table.reverse}"></span>
 							</th>
 							<th>
+							<!--
 								<div align="right">
 									<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tableModal">Filter...</button>
+								</div>
+								-->
+								<div align="right">
+									<button type="button" class="btn btn-primary btn-sm" ng-click="pageLeft('channels.html')">Swipe Left.....</button>
 								</div>
 							</th>
 	          </tr>
