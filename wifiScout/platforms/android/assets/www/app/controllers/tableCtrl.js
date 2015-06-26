@@ -23,11 +23,6 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
           }
         };
 
-        $scope.pageLeft = function(view) {
-         console.log("HEY SWIPING LEFT");
-          $location.path(view);
-        };
-
         $scope.table = {
           selectedAPs: [],
           predicate: 'SSID',

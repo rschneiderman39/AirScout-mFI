@@ -1,5 +1,5 @@
-app.controller('navCtrl', ['$scope', 'cordovaService',
-  function($scope, cordovaService) {
+app.controller('navCtrl', ['$scope', '$location', 'cordovaService',
+  function($scope, $location, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
       	console.log("IN NAV CONTROLLER");
