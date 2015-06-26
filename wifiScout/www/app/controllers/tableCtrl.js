@@ -1,6 +1,6 @@
-app.controller('tableCtrl', ['$scope', '$timeout', 'APService',
+app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
                              'filterService', 'cordovaService',
-  function($scope, $timeout, APService, filterService, cordovaService) {
+  function($scope, $timeout, $location, APService, filterService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.modal = {
@@ -21,6 +21,11 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService',
             _showAll = false;
             _modalToTable();
           }
+        };
+
+        $scope.pageLeft = function(view) {
+         console.log("HEY SWIPING LEFT");
+          $location.path(view);
         };
 
         $scope.table = {
