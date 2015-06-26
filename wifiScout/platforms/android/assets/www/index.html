@@ -26,50 +26,44 @@
     <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom" ng-controller="navCtrl">
       <ul class="nav nav-pills nav-justified">
         <li role="presentation">
-          <a href="#/parabola" onclick="setActive('Parabola'); selected = 'Parabola'" id="Parabola">
+          <a href="#/parabola" onclick="setActive('Parabola')" ng-click="select('parabola-img')" id="Parabola">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Parabola'" src="images/parabola-wide.png" />
-              <img ng-if="selected === 'Parabola'" src="images/parabola-wide-selected.png" />
+              <img id="parabola-img" src="images/parabola-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/singleSpeed" onclick="setActive('Single Speed'); selected = 'Single Speed'" id="Single Speed">
+          <a href="#/singleSpeed" onclick="setActive('Single Speed')" ng-click="select('speedometer-img')" id="Single Speed">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Single Speed'" src="images/speedometer-wide.png" />
-              <img ng-if="selected === 'Single Speed'" src="images/parabola-wide-selected.png" />
+              <img id="speedometer-img" src="images/speedometer-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/timeGraph" onclick="setActive('Time Graph'); selected = 'Time Graph'" id="Time Graph">
+          <a href="#/timeGraph" onclick="setActive('Time Graph')" ng-click="select('timegraph-img')" id="Time Graph">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Time Graph'" src="images/timegraph-wide.png" />
-              <img ng-if="selected === 'Time Graph'" src="images/parabola-wide-selected.png" />
+              <img id="timegraph-img" src="images/timegraph-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/table" onclick="setActive('Table'); selected = 'Table'" id="Table">
+          <a href="#/table" onclick="setActive('Table')" ng-click="select('table-img')" id="Table">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Table'" src="images/table-wide.png" />
-              <img ng-if="selected === 'Table'" src="images/parabola-wide-selected.png" />
+              <img id="table-img" src="images/table-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/channels" onclick="setActive('Channels'); selected = 'Channels'" id="Channels">
+          <a href="#/channels" onclick="setActive('Channels')" ng-click="select('channels-img')" id="Channels">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Channels'" src="images/channels-wide.png" />
-              <img ng-if="selected === 'Channels'" src="images/parabola-wide-selected.png" />
+              <img id="channels-img" src="images/channels-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/" onclick="setActive('Settings'); selected = 'Settings'" id="Settings">
+          <a href="#/" onclick="setActive('Settings')" ng-click="select('settings-img')" id="Settings">
             <div class="container-fluid">
-              <img ng-if="selected !== 'Settings'" src="images/settings-wide.png" />
-              <img ng-if="selected === 'Settings'" src="images/settings-wide-selected.png" />
+              <img id="settings-img" src="images/settings-wide-selected.png" />
             </div>
           </a>
         </li>
@@ -106,4 +100,8 @@
     <script src="app/controllers/navBarCtrl.js"></script>
     <script src="scripts/index.js"></script>
   </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 4aeff0a45da0a32efa0b5c9fcb7e47f4ff53311c
