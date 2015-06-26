@@ -1,5 +1,5 @@
 // Gets AP info from the device.
-app.factory('infoService', function() {
+app.factory('rawDataService', function() {
   var service = {};
 
   service.getInfo = function() {
