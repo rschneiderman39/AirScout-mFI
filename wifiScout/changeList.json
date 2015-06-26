@@ -115,7 +115,9 @@
     "www\\app\\services\\tableService.js",
     "www\\app\\services\\infoService.js",
     "www\\images\\table.png",
-    "www\\images\\timegraph.png"
+    "www\\images\\timegraph.png",
+    "www\\images\\settings.png",
+    "www\\images\\channels.png"
   ],
   "deletedFilesIos": [
     "www\\images\\parabola2.png",
@@ -126,7 +128,7 @@
   "deletedPluginsIos": [],
   "changedFiles": [
     "plugins\\android.json",
-    "www\\images\\timegraph.png"
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
