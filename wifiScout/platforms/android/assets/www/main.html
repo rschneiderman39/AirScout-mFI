@@ -1,0 +1,103 @@
+﻿<!DOCTYPE HTML>
+<html ng-app="app">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title class="text-center"></title>
+
+      <!-- CSS Stylesheets -->
+      <link href="css/index.css" rel="stylesheet" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+
+      <!-- Scripts -->
+      <script src="scripts/lib/jquery-2.1.4.min.js"></script>
+      <script src="scripts/lib/angular.min.js"></script>
+      <script src="scripts/lib/angular-route.min.js"></script>
+      <script src="scripts/lib/angular-touch.min.js"></script>
+      <script src="scripts/lib/checklist-model.js"></script>
+      <script src="scripts/lib/bootstrap.min.js"></script>
+  </head>
+
+  <body onload="setActive('Settings')">
+    <div id="top-bar" class="container-fluid">
+      <h1 id="greenTitle" class="text-center"></h1>
+    </div>
+
+    <div>
+      <button id="dropDownClose" type="button">Click Me!</button>
+    </div>
+
+    <div id="dropDownOpen">
+      <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
+        <ul class="nav nav-pills nav-justified">
+          <li role="presentation">
+            <a href="#/parabola" onclick="setActive('Parabola')" id="Parabola">
+              <div class="container-fluid">
+                <img src="/images/parabola3.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">
+              <div class="container-fluid">
+                <img src="images/singlespeed.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">
+              <div class="container-fluid">
+                <img src="images/timegraph.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/table" onclick="setActive('Table')" id="Table">
+              <div class="container-fluid">
+                <img src="images/table.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/channels" onclick="setActive('Channels')" id="Channels">
+              <div class="container-fluid">
+                <img src="images/channels.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/" onclick="setActive('Settings')" class="" id="Settings">
+              <div class="container-fluid">
+                <img src="images/settings.png" />
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <ng-view></ng-view>
+
+    <!-- Cordova -->
+    <script src="cordova.js"></script>
+    <script src="cordova_plugins.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+      $('#dropDownClose').click(function () {
+        $('#dropDownOpen').slideToggle({
+          direction: "up"
+        }, 300);
+    }); // end click
+    </script>
+
+    <script src="app/services/cordovaService.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/services/rawDataService.js"></script>
+    <script src="app/services/APService.js"></script>
+    <script src="app/services/filterService.js"></script>
+    <script src="app/controllers/tableCtrl.js"></script>
+    <script src="scripts/index.js"></script>
+  </body>
+</html>
