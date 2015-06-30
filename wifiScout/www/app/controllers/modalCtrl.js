@@ -11,31 +11,35 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
           buttonText: 'List by MAC',
         };
 
-        var view = undefined;
+        var _view = undefined;
 
         // Toggle between listing APs by SSID and by MAC
         var _toggleSelector = function() {
-          if ($scope.modal.selector === 'SSID') {
-            $scope.modal.buttonText = 'List by SSID';
-            $scope.modal.selector = 'BSSID';
-          } else {
-            $scope.modal.buttonText = 'List by MAC';
-            $scope.modal.selector = 'SSID';
-          }
+          $scope.$apply(function() {
+            if ($scope.modal.selector === 'SSID') {
+              $scope.modal.buttonText = 'List by SSID';
+              $scope.modal.selector = 'BSSID';
+            } else {
+              $scope.modal.buttonText = 'List by MAC';
+              $scope.modal.selector = 'SSID';
+            }
+          })
         };
 
         // Select all APs, and show any new AP that later becomes visible
         var _showAll = function() {
           filterSettingsService.setShowAll(_view, true);
           filterSettingsService.setSelectedBSSIDs(_view, []);
-          $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
+          $scope.$apply(function() {
+            $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
+          });
         }
 
         // Unselect all APs
         var _hideAll = function() {
           filterSettingsService.setShowAll(_view, false);
           filterSettingsService.setSelectedBSSIDs(_view, []);
-          $scope.modal.selectedAPs = [];
+          $scope.$apply(function() { $scope.modal.selectedAPs = []; });
         }
 
         // Initialize the modal with the settings used previously

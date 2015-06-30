@@ -54,7 +54,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
         var _update = function() {
           _forceUpdate();
           $timeout(_update, 500);
-        }
+        };
 
         // Pull settings from filterSettingsService, and start waiting on settings changes
         filterSettingsService.getSettingsImmediate('table').done(
@@ -67,7 +67,6 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
           }
         );
 
-        // Start table update loop
         _update();
 
         // When we navigate away, remember our sort settings

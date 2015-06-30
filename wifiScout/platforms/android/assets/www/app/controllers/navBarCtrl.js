@@ -1,4 +1,4 @@
-app.controller('navCtrl', ['$scope', '$location', 'cordovaService',
+app.controller('navBarCtrl', ['$scope', '$location', 'cordovaService',
   function($scope, $location, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
