@@ -3,18 +3,16 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
   function($scope, $timeout, APService, filterService, singleSpeedSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.singleSpeed = {
-          allAPs: [],
-          listBy: 'SSID',
-          level: 0,
-          minLevel: 0,
-          maxLevel: 0,
-          isSelected: function(MAC) {
-            return MAC === _selectedBSSID;
-          },
-          setSelected: function(MAC) {
-            _selectedBSSID = MAC;
-          }
+        $scope.allAPs = [];
+        $scope.listBy = 'SSID';
+        $scope.level = 0;
+        $scope.minLevel = 0;
+        $scope.maxLevel = 0;
+        $scope.isSelected = function(MAC) {
+          return MAC === _selectedBSSID;
+        };
+        $scope.setSelected = function(MAC) {
+          _selectedBSSID = MAC;
         };
 
         var _selectedBSSID = null;
@@ -35,7 +33,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
 
         var _update = function () {
           _forceUpdate();
-          $timeout(_update, 100)
+          $timeout(_update, 500)
         };
 
         _update();
