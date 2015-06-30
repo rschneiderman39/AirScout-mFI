@@ -1,14 +1,4 @@
 {
- "activity": {
-   "BSSID": "28:34:a2:24:96:e2",
-   "HiddenSSID": false,
-   "SSID": "\"TxGuest*\"",
-   "MacAddress": "b4:ce:f6:07:ad:6d",
-   "IpAddress": 1048191148,
-   "NetworkId": 0,
-   "RSSI": -57,
-   "LinkSpeed": 54
- },
  "available": [
    {
      "BSSID": "28:34:a2:24:96:e2",

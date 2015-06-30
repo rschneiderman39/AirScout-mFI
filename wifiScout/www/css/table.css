@@ -1,9 +1,38 @@
-.table-fixed tbody {
-    height: 50vh;
-    overflow-y: auto;
+.table-striped thead {
+  width: 97%;
 }
 
-.btn-filter{
+.table-striped tbody {
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-striped thead, .table-striped tbody, .table-striped tr, .table-striped td, .table-striped th {
+  display: block;
+}
+
+.table-striped tbody td, .table-striped thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
+}
+
+.mac {
+    padding-left: 6px
+}
+
+.frequency {
+    padding-left: 13px
+}
+
+.level {
+    padding-left: 20px
+}
+
+.capabilities {
+    padding-left: 23px
+}
+
+/*.btn-filter{
 	border-bottom: 25px solid #62bf01;
 	border-right: 25px solid transparent;
 	height: 0;
@@ -24,4 +53,4 @@
     left:0;
     top:0;
     z-index:1;
-}
+}*/
