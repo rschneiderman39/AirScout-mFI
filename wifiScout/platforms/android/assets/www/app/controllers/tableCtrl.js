@@ -7,14 +7,20 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
           allAPs: [],
           selectedAPs: [],
           selector: 'SSID',
-          buttonText: 'List by BSSID',
+          buttonText: 'List by MAC',
           toggleSelector: function() {
-            this.buttonText = 'List by ' + this.selector;
-            this.selector = this.selector === 'BSSID' ? 'SSID' : 'BSSID';
+            if (this.selector === 'SSID') {
+              this.buttonText = 'List by SSID';
+              this.selector = 'BSSID';
+            } else {
+              this.buttonText = 'List by MAC';
+              this.selector = 'SSID';
+            }
           },
           showAll: function() {
             this.selectedAPs = this.allAPs.slice();
             _showAll = true;
+            _forceUpdate();
           },
           hideAll: function() {
             this.selectedAPs = [];
@@ -46,7 +52,14 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
         var _showAll = true;
         var _selectedBSSIDs = [];
 
+        // Updates the table every quantum
         var _update = function() {
+          _forceUpdate();
+          $timeout(_update, 1000);
+        };
+
+        // Updates the table immediately
+        var _forceUpdate = function() {
           if (_showAll) {
             $scope.table.selectedAPs = APService.namedAPs;
           } else {
@@ -55,10 +68,10 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
               _selectedBSSIDs
             );
           }
-          $timeout(_update, 1000);
-        };
+        }
 
-        var _updateModal = function() {
+        // Updates the state of the modal each time it's opened
+        var _initModal = function() {
           $scope.modal.allAPs = APService.namedAPs;
           if (_showAll) {
             $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
@@ -70,18 +83,24 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
           }
         }
 
+        // Updates the table with the user's new selection
         var _modalToTable = function() {
           _selectedBSSIDs = $scope.modal.selectedAPs.map(
             function(ap) {return ap.BSSID; }
           );
+          _forceUpdate();
         }
 
+        // When a checkbox is clicked, turn off showAll mode, and
+        // update the table as soon as angular has dealt with the two way
+        // data rebinding.
         var _onCheckboxClick = function() {
           _showAll = false;
           $timeout(_modalToTable, 100);
         }
+
         // Init
-        $('#tableModal').on('show.bs.modal', _updateModal);
+        $('#tableModal').on('show.bs.modal', _initModal);
         $('#tableModal').on('hide.bs.modal', _modalToTable);
         $('#tableModalList').on('click', _onCheckboxClick);
 

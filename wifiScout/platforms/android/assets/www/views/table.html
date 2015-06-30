@@ -75,5 +75,54 @@
 		        </tbody>
 	      </table>
 	    </div>
+				<div class="table-responsive">
+	      <table class="table table-striped">
+	        <thead>
+	          <tr>
+	            <th>
+								<a href="" ng-click="table.order('SSID')">SSID</a>
+								<span class="sortArrow" ng-show="table.predicate === 'SSID'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<a href="" ng-click="table.order('BSSID')">MAC Address</a>
+								<span class="sortArrow" ng-show="table.predicate === 'BSSID'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<a href="" ng-click="table.order('frequency')">Frequency</a>
+								<span class="sortArrow" ng-show="table.predicate === 'frequency'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<a href="" ng-click="table.order('level')">Level</a>
+								<span class="sortArrow" ng-show="table.predicate === 'level'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<a href="" ng-click="table.order('capabilities')">Capabilities</a>
+								<span class="sortArrow" ng-show="table.predicate === 'capabilities'" ng-class="{reverse:table.reverse}"></span>
+							</th>
+							<th>
+								<div align="right">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tableModal">Filter...</button>
+								</div>
+								<!--
+								<div align="right">
+									<button type="button" class="btn btn-primary btn-sm" ng-click="pageLeft('channels.html')">Swipe Left.....</button>
+								</div>
+							-->
+							</th>
+	          </tr>
+	        </thead>
+	        <tbody class="container-fluid">
+	          <tr data-ng-repeat="ap in table.selectedAPs | orderBy:table.predicate:table.reverse">
+	            <td>{{ap.SSID}}</td>
+	            <td>{{ap.BSSID}}</td>
+	            <td>{{ap.frequency}}</td>
+	            <td>{{ap.level}}</td>
+	            <td>{{ap.capabilities}}</td>
+							<td></td>
+	          </tr>
+	        </tbody>
+	      </table>
+	    </div>
+	</div>
 </body>
 </html>
