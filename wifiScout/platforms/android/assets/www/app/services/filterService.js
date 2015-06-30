@@ -24,7 +24,7 @@ app.factory('filterService', function() {
     if (BSSID !== null) {
       for (var i = 0; i < APs.length; ++i) {
         if (APs[i].BSSID === BSSID) {
-          selectedAP = AP[i];
+          selectedAP = APs[i];
           break;
         }
       }
