@@ -26,21 +26,21 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
 
         // Select all APs, and show any new AP that later becomes visible
         var _showAll = function() {
-          settingsService[_view].setShowAll(true);
-          settingsService[_view].setSelectedBSSIDs([]);
+          settingsService.setShowAll(_view, true);
+          settingsService.setSelectedBSSIDs(_view, []);
           $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
         }
 
         // Unselect all APs
         var _hideAll = function() {
-          settingsService[_view].setShowAll(false);
-          settingsService[_view].setSelectedBSSIDs([]);
+          settingsService.setShowAll(_view, false);
+          settingsService.setSelectedBSSIDs(_view, []);
           $scope.modal.selectedAPs = [];
         }
 
         // Initialize the modal with the settings used previously
         var _init = function() {
-          settingsService[_view].getSettingsImmediate().done(
+          settingsService.getSettingsImmediate(_view).done(
             function(settings) {
               $scope.modal.allAPs = APService.getNamedAPs();
               if (settings.showAll) {
@@ -57,7 +57,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
 
         // Update the settings service with our new selection
         var _pushSelection = function() {
-          settingsService[_view].setSelectedBSSIDs($scope.modal.selectedAPs.map(
+          settingsService.setSelectedBSSIDs(_view, $scope.modal.selectedAPs.map(
             function(ap) {return ap.BSSID; }
           ));
         };
@@ -65,6 +65,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
         // Set up button and checkbox event handlers
         $('#modal').on('show.bs.modal', _init);
         $('#modalList').on('click', _pushSelection);
+        $('#btnTog').on('click', _toggleSelector);
         $('#btnShow').on('click', _showAll);
         $('#btnHide').on('click', _hideAll);
 

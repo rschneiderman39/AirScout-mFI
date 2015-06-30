@@ -28,13 +28,13 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
           _selectedBSSIDs = settings.selectedBSSIDs.slice();
           _showAll = settings.showAll;
           _forceUpdate();
-          settingsService.table.getSettings().done(_onSettingsChange);
+          settingsService.getSettings('table').done(_onSettingsChange);
         };
 
         // Save our sort settings to the settings service
         var _pushSortSettings = function() {
-          settingsService.table.setSortPredicate($scope.table.sortPredicate);
-          settingsService.table.setSortReverse($scope.table.sortReverse);
+          settingsService.setSortPredicate('table', $scope.table.sortPredicate);
+          settingsService.setSortReverse('table', $scope.table.sortReverse);
         };
 
         // Update the table now
@@ -57,13 +57,13 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
         }
 
         // Pull settings from settingsService, and start waiting on settings changes
-        settingsService.table.getSettingsImmediate().done(
+        settingsService.getSettingsImmediate('table').done(
           function(settings) {
             $scope.table.sortPredicate = settings.sortPredicate;
             $scope.table.sortReverse = settings.sortReverse;
             _selectedBSSIDs = settings.selectedBSSIDs.slice();
             _showAll = settings.showAll;
-            settingsService.table.getSettings().done(_onSettingsChange);
+            settingsService.getSettings('table').done(_onSettingsChange);
           }
         );
 
