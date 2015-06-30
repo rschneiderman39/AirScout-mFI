@@ -8,20 +8,18 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
           listBy = 'SSID',
           level: 0,
           minLevel: 0,
-          maxLevel: 0
+          maxLevel: 0,
+          isSelected: function(MAC) {
+            return MAC === _selectedBSSID;
+          },
+          setSelected: function(MAC) {
+            _selectedBSSID = MAC;
+          }
         };
 
         var _selectedBSSID = null;
 
-        $scope.isSelected = function(MAC) {
-          return MAC === _selectedBSSID;
-        };
-
-        $scope.setSelected = function(MAC) {
-          _selectedBSSID = MAC;
-        };
-
-        var _update() {
+        var _forceUpdate() {
           $scope.allAPs = APService.getNamedAPs();
           var selectedAP = filterService.select($scope.allAPs, _selectedBSSID);
           if (ap !== null) {
@@ -34,6 +32,14 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
             }
           }
         };
+
+        var _update() {
+          _forceUpdate();
+          $timeout(_update, 100)
+        };
+
+        _update();
+
       },
       function rejected() {
         console.log("singelSpeedCtrl is unavailable because Cordova is not loaded.");

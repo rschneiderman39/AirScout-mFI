@@ -19,7 +19,7 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
       _allAPs = [];
       _namedAPs = [];
     });
-    setTimeout(_update, 500);
+    setTimeout(_update, 100);
   };
 
   _update();

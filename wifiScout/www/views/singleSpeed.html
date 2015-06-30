@@ -35,9 +35,9 @@
 				<h5><center>Select an AP to view its connection speed:</center></h5>
 				<ul class="list-group scrollable-list">
 					<span data-ng-repeat="ap in singleSpeed.allAPs">
-			    <li class="listgroupitem" 
-			    		ng-class="{ active: isSelected(ap.BSSID) }"
-			    		ng-click="setSelected(ap.BSSID)">
+			    <li class="listgroupitem"
+			    		ng-class="{ active: singleSpeed.isSelected(ap.BSSID) }"
+			    		ng-click="singleSpeed.setSelected(ap.BSSID)">
 			    		{{ap.SSID}}
 			    </li>
 			    </span>
