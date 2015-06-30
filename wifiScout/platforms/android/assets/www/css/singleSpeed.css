@@ -1,4 +1,7 @@
-.apList {
+.fooCanvas {
+  width: 300px;
+  height: 300px;
+  padding-left: 175px;
 }
 
 .scrollable-list {

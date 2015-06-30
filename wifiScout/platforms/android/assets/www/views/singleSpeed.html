@@ -2,6 +2,30 @@
 <html ng-app="app">
 	<head>
 		<link href="css/singleSpeed.css" rel="stylesheet" />
+
+		<script>
+			var opts = {
+			  lines: 12, // The number of lines to draw
+			  angle: 0, // The length of each line
+			  lineWidth: 0.1, // The line thickness
+			  pointer: {
+			    length: 0.75, // The radius of the inner circle
+			    strokeWidth: 0.038, // The rotation offset
+			    color: '#000000' // Fill color
+			  },
+			  limitMax: 'false',   // If true, the pointer will not go past the end of the gauge
+			  colorStart: '#6F6EA0',   // Colors
+			  colorStop: '#C0C0DB',    // just experiment with them
+			  strokeColor: '#EEEEEE',   // to see which ones work best for you
+			  generateGradient: true
+			};
+
+			var target = document.getElementById('foo'); // your canvas element
+			var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+			gauge.maxValue = 3000; // set max gauge value
+			gauge.animationSpeed = 27; // set animation speed (32 is default value)
+			gauge.set(1250);
+		</script>
 	</head>
 
 	<body>
@@ -18,6 +42,9 @@
 			    </li>
 			    </span>
 				</ul>
+			</div>
+			<div class="col-xs-8 fooCanvas">
+				<canvas id="foo"></canvas>
 			</div>
 		</div>
 	</body>
