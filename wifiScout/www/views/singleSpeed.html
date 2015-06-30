@@ -6,10 +6,10 @@
 		<script>
 			var opts = {
 			  lines: 12,
-			  angle: 0.1,
+			  angle: 0.0,
 			  lineWidth: 0.3,
 			  pointer: {
-			    length: 0.9,
+			    length: 0.48,
 			    strokeWidth: 0.035,
 			    color: '#000000'
 			  },
@@ -27,8 +27,9 @@
 
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
-	    deviceHeight = deviceHeight - 212;
-	    $('.apList').css('height', deviceHeight);
+	    console.log(deviceHeight);
+	    deviceHeight = deviceHeight - 237;
+	    $('.scrollable-list	').css('height', deviceHeight);
   	</script>
 	</head>
 
