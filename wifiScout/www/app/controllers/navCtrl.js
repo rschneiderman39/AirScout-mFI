@@ -2,7 +2,6 @@ app.controller('navCtrl', ['$scope', '$location', 'cordovaService',
   function($scope, $location, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-      	console.log("IN NAV CONTROLLER");
         $scope.select = function(id) {
           var old_selected = $('#' + _selected)[0],
               new_selected = $('#' + id)[0];

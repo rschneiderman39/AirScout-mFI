@@ -1,21 +1,25 @@
 app.factory('APService', ['rawDataService', function(rawDataService) {
   var service = {};
-  service.allAPs = [];
-  service.namedAPs = [];
+
+  service.getAllAPs = function() { return _allAPs; };
+  service.getNamedAPs = function() { return _namedAPs; };
+
+  var _allAPs = [];
+  var _namedAPs = [];
 
   var _update = function() {
     rawDataService.getInfo()
     .done(function(info) {
-      service.allAPs = info.available;
-      service.namedAPs = info.available.filter(
+      _allAPs = info.available;
+      _namedAPs = info.available.filter(
         function(ap) { return ap.SSID !== ""; }
       );
     })
     .fail(function() {
-      service.allAPs = [];
-      service.namedAPs = [];
+      _allAPs = [];
+      _namedAPs = [];
     });
-    setTimeout(_update, 1000);
+    setTimeout(_update, 500);
   };
 
   _update();

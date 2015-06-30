@@ -1,6 +1,6 @@
-app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
-                             'filterService', 'cordovaService',
-  function($scope, $timeout, $location, APService, filterService, cordovaService) {
+app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
+                             'settingsService', 'cordovaService',
+  function($scope, $timeout, APService, filterService, settingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.modal = {
@@ -45,7 +45,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
         // Updates the table every quantum
         var _update = function() {
           _forceUpdate();
-          $timeout(_update, 1000);
+          $timeout(_update, 500);
         };
 
         // Updates the table immediately
@@ -90,7 +90,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
         }
 
         // Init
-        $('#tableModal').on('show.bs.modal', _initModal);
+        $('#tableModal').on('show.bs.modal', _initMSodal);
         $('#tableModal').on('hide.bs.modal', _modalToTable);
         $('#tableModalList').on('click', _onCheckboxClick);
 
