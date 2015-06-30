@@ -4,15 +4,14 @@ app.factory('rawDataService', function() {
 
   service.getInfo = function() {
     var defer = $.Deferred();
-    // plugin api calls
+    // force a scan
     window.plugins.WifiAdmin.scan();
+    // grab the data
     window.plugins.WifiAdmin.getWifiInfo(
-      // on success
-      function(info) {
+      function resolved(info) {
         defer.resolve(info);
       },
-      // on failure
-      function() {
+      function rejected() {
         defer.reject();
       }
     );

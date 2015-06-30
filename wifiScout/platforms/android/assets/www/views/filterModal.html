@@ -1,0 +1,31 @@
+<span id="viewTitle" type="hidden" ng-class="{{view}}"></span>
+
+<div align="right">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">Filter...</button>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-sm">
+<div class="modal-content">
+  <div class="modal-header">
+    <h5>Choose which access points to display:</h5>
+    <button id="btnTog" class="btn btn-default btn-sm" type="button">{{modal.buttonText}}</button>
+    <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
+    <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
+  </div>
+  <div class="modal-body">
+    <ul class="dropdown-menu" role="menu">
+      <li role="presentation"><a role="menuitem" ng-click="modal.selector = 'MAC Address'">BSSID</a></li>
+      <li role="presentation"><a role="menuitem" ng-click="modal.selector = 'SSID'">SSID</a></li>
+    </ul>
+    <table class="table table-striped">
+      <tbody class="table" id="modalList">
+        <tr data-ng-repeat="ap in modal.allAPs | orderBy:modal.selector">
+          <td><input type="checkbox" checklist-model="modal.selectedAPs" checklist-value="ap">{{ap[modal.selector]}}</input></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
