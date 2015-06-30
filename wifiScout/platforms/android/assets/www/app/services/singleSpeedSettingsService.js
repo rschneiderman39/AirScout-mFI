@@ -3,8 +3,8 @@ app.factory('singleSpeedSettingsService', function() {
       settings = {};
 
   settings.singleSpeed = {
-    selectedBSSID = "",
-    listBy = "SSID"
+    selectedBSSID: "",
+    listBy: "SSID"
   };
 
   return service;

@@ -5,7 +5,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
       function resolved() {
         $scope.singleSpeed = {
           allAPs: [],
-          listBy = 'SSID',
+          listBy: 'SSID',
           level: 0,
           minLevel: 0,
           maxLevel: 0,
@@ -19,10 +19,10 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
 
         var _selectedBSSID = null;
 
-        var _forceUpdate() {
+        var _forceUpdate = function () {
           $scope.allAPs = APService.getNamedAPs();
           var selectedAP = filterService.select($scope.allAPs, _selectedBSSID);
-          if (ap !== null) {
+          if (selectedAP !== null) {
             $scope.level = selectedAP.level;
             if ($scope.level < $scope.minLevel) {
               $scope.minLevel = $scope.level;
@@ -33,7 +33,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
           }
         };
 
-        var _update() {
+        var _update = function () {
           _forceUpdate();
           $timeout(_update, 100)
         };

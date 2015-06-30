@@ -21,7 +21,7 @@ app.factory('filterService', function() {
   // value.
   service.select = function(APs, BSSID) {
     var selectedAP = null;
-    if (BSSIDs !== null) {
+    if (BSSID !== null) {
       for (var i = 0; i < APs.length; ++i) {
         if (APs[i].BSSID === BSSID) {
           selectedAP = AP[i];
