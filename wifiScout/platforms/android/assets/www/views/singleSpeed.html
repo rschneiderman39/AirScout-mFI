@@ -3,29 +3,34 @@
 	<head>
 		<link href="css/singleSpeed.css" rel="stylesheet" />
 
+<!--
 		<script>
 			var opts = {
-			  lines: 12, // The number of lines to draw
-			  angle: 0, // The length of each line
-			  lineWidth: 0.1, // The line thickness
+			  lines: 12,
+			  angle: 0.1,
+			  lineWidth: 0.3,
 			  pointer: {
-			    length: 0.75, // The radius of the inner circle
-			    strokeWidth: 0.038, // The rotation offset
-			    color: '#000000' // Fill color
+			    length: 0.9,
+			    strokeWidth: 0.035,
+			    color: '#000000'
 			  },
-			  limitMax: 'false',   // If true, the pointer will not go past the end of the gauge
-			  colorStart: '#6F6EA0',   // Colors
-			  colorStop: '#C0C0DB',    // just experiment with them
-			  strokeColor: '#EEEEEE',   // to see which ones work best for you
+			  limitMax: 'false',
+			  percentColors: [[0.0, "#FF0000" ], [0.1, "#FF3300"], [0.20, "#ff6600" ],  [0.30, "#ff9900"], [0.40, "#FFCC00"], [0.50, "#FFFF00"], [0.60, "#ccff00"], [0.70, "#99ff00"], [0.80, "#66ff00"], [0.90, "#00FF00"], [1.0, "#00FF00"]], // !!!!
+			  strokeColor: '#E0E0E0',
 			  generateGradient: true
 			};
-
-			var target = document.getElementById('foo'); // your canvas element
-			var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-			gauge.maxValue = 3000; // set max gauge value
-			gauge.animationSpeed = 27; // set animation speed (32 is default value)
-			gauge.set(1250);
+			var target = document.getElementById('foo');
+			var gauge = new Gauge(target).setOptions(opts);
+			gauge.maxValue = 3000;
+			gauge.animationSpeed = 120;
+			gauge.set(2100);
 		</script>
+-->
+		<script type="text/javascript">
+	    var deviceHeight = $(window).height();
+	    deviceHeight = deviceHeight - 212;
+	    $('.apList').css('height', deviceHeight);
+  	</script>
 	</head>
 
 	<body>

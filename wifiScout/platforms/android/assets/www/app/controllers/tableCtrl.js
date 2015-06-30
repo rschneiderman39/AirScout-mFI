@@ -4,16 +4,14 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
     cordovaService.ready.then(
       function resolved() {
         // Settings for this session
-        $scope.table = {
-          selectedAPs: [],         // The AP objects representing the APs we want to display
-          sortPredicate: 'SSID',   // Sorting options
-          sortReverse: false,      // ..
-          // Change the sort predicate, or reverse the sort direction
-          order: function(predicate) {
-            this.sortReverse = (this.sortPredicate === predicate) ? !this.sortReverse : false;
-            this.sortPredicate = predicate;
-          }
-        };
+        $scope.selectedAPs = [];         // The AP objects representing the APs we want to display
+        $scope.sortPredicate = 'SSID';    // Sorting options
+        $scope.sortReverse = false;       // ..
+        // Change the sort predicate, or reverse the sort direction
+        $scope.order = function(predicate) {
+          $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
+          $scope.sortPredicate = predicate;
+        }
 
         // true: show all APs, including new ones as they are discovered
         // false: only show selected APs
@@ -33,17 +31,17 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
 
         // Save our sort settings to the settings service
         var _pushSortSettings = function() {
-          filterSettingsService.setSortPredicate('table', $scope.table.sortPredicate);
-          filterSettingsService.setSortReverse('table', $scope.table.sortReverse);
+          filterSettingsService.setSortPredicate('table', $scope.sortPredicate);
+          filterSettingsService.setSortReverse('table', $scope.sortReverse);
         };
 
         // Update the table now
         var _forceUpdate = function() {
           if (_showAll) {
-            $scope.table.selectedAPs = APService.getNamedAPs();
+            $scope.selectedAPs = APService.getNamedAPs();
           } else {
             // Show only the APs whose BSSIDs match those we've selected
-            $scope.table.selectedAPs = filterService.filter(
+            $scope.selectedAPs = filterService.filter(
               APService.getNamedAPs(),
               _selectedBSSIDs
             );
@@ -59,8 +57,8 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
         // Pull settings from filterSettingsService, and start waiting on settings changes
         filterSettingsService.getSettingsImmediate('table').done(
           function(settings) {
-            $scope.table.sortPredicate = settings.sortPredicate;
-            $scope.table.sortReverse = settings.sortReverse;
+            $scope.sortPredicate = settings.sortPredicate;
+            $scope.sortReverse = settings.sortReverse;
             _selectedBSSIDs = settings.selectedBSSIDs.slice();
             _showAll = settings.showAll;
             filterSettingsService.getSettings('table').done(_onSettingsChange);
