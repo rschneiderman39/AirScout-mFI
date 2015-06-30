@@ -7,8 +7,11 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
           allAPs: [],
           selectedAPs: [],
           selector: 'SSID',
-          buttonText: 'List by MAC'
-        }
+          buttonText: 'List by MAC',
+        };
+
+        alert(document.getElementById('viewTitle').innerHTML);
+        var _view = 'table';
 
         var _toggleSelector = function() {
           if ($scope.modal.selector === 'SSID') {
@@ -21,21 +24,19 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
         };
 
         var _showAll = function() {
-          console.log('show all');
-          settingsService.table.setShowAll(true);
-          settingsService.table.setSelectedBSSIDs([]);
+          settingsService[_view].setShowAll(true);
+          settingsService[_view].setSelectedBSSIDs([]);
           $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
         }
 
         var _hideAll = function() {
-          console.log('hide all');
-          settingsService.table.setShowAll(false);
-          settingsService.table.setSelectedBSSIDs([]);
+          settingsService[_view].setShowAll(false);
+          settingsService[_view].setSelectedBSSIDs([]);
           $scope.modal.selectedAPs = [];
         }
 
         var _init = function() {
-          settingsService.table.getSettingsImmediate().done(
+          settingsService[_view].getSettingsImmediate().done(
             function(settings) {
               $scope.modal.allAPs = APService.getNamedAPs();
               if (settings.showAll) {
@@ -51,7 +52,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
         };
 
         var _pushSelection = function() {
-          settingsService.table.setSelectedBSSIDs($scope.modal.selectedAPs.map(
+          settingsService[_view].setSelectedBSSIDs($scope.modal.selectedAPs.map(
             function(ap) {return ap.BSSID; }
           ));
         };
@@ -60,6 +61,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
         $('#modalList').on('click', _pushSelection);
         $('#btnShow').on('click', _showAll);
         $('#btnHide').on('click', _hideAll);
+
       },
       function rejected() {
         console.log("modalCtrl is unavailable because Cordova is not loaded.")

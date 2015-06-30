@@ -1,4 +1,4 @@
-app.controller('tableCtrl2', ['$scope', '$timeout', 'APService', 'filterService',
+app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterService',
                              'settingsService', 'cordovaService',
   function($scope, $timeout, APService, filterService, settingsService, cordovaService) {
     cordovaService.ready.then(
@@ -24,7 +24,6 @@ app.controller('tableCtrl2', ['$scope', '$timeout', 'APService', 'filterService'
         };
 
         var _pushSortSettings = function() {
-          console.log('pushing settings');
           settingsService.table.setSortPredicate($scope.table.sortPredicate);
           settingsService.table.setSortReverse($scope.table.sortReverse);
         };
@@ -50,8 +49,6 @@ app.controller('tableCtrl2', ['$scope', '$timeout', 'APService', 'filterService'
         // Pull settings from settingsService, and start settings update loop
         settingsService.table.getSettingsImmediate().done(
           function(settings) {
-            console.log(settings.sortPredicate);
-            console.log(settings.sortReverse);
             $scope.table.sortPredicate = settings.sortPredicate;
             $scope.table.sortReverse = settings.sortReverse;
             _selectedBSSIDs = settings.selectedBSSIDs.slice();
