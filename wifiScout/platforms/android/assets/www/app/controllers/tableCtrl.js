@@ -1,6 +1,6 @@
 app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
-                             'filterService', 'cordovaService',
-  function($scope, $timeout, $location, APService, filterService, cordovaService) {
+                             'filterService', 'cordovaService', '$element',
+  function($scope, $timeout, $location, APService, filterService, cordovaService, $element) {
     cordovaService.ready.then(
       function resolved() {
         $scope.modal = {
@@ -23,11 +23,6 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
           }
         };
 
-        $scope.pageLeft = function(view) {
-         console.log("HEY SWIPING LEFT");
-          $location.path(view);
-        };
-
         $scope.table = {
           selectedAPs: [],
           predicate: 'SSID',
@@ -36,6 +31,16 @@ app.controller('tableCtrl', ['$scope', '$timeout', '$location', 'APService',
             this.reverse = (this.predicate === predicate) ? !this.reverse : false;
             this.predicate = predicate;
           }
+        };
+
+        $scope.isSelected = function(MAC) {
+          return $scope.selected == MAC;
+        };
+
+        $scope.setSelected = function(level, MAC) {
+          console.log("**** AP HAS BEEN CLICKED *****");
+          console.log("Signal strength for this AP is: " + level);
+          $scope.selected = MAC;
         };
 
         var _showAll = true;

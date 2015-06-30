@@ -1,3 +1,24 @@
-﻿<div>
-    <h1>THIS IS THE SINGLE SPEED VIEW</h1>
-</div>
+﻿<!DOCTYPE HTML>
+<html ng-app="app">
+	<head>
+		<link href="css/singleSpeed.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="container-fluid fluidHeight" ng-controller="tableCtrl">
+		<br>
+			<div class="col-xs-4 apList">
+				<h5><center>Select an AP to view its connection speed:</center></h5>
+				<ul class="list-group scrollable-list">
+					<span data-ng-repeat="ap in table.selectedAPs">
+			    <li class="listgroupitem" 
+			    		ng-class="{ active: isSelected(ap.BSSID) }"
+			    		ng-click="setSelected(ap.level, ap.BSSID)">
+			    		{{ap.SSID}}
+			    </li>
+			    </span>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
