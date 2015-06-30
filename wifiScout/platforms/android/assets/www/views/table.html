@@ -5,8 +5,82 @@
 </head>
 
 <body>
+<<<<<<< HEAD
 				<!-- table -->
 				<div class="table-responsive" ng-controller="tableCtrl">
+=======
+	<div ng-controller="tableCtrl">
+
+		<!-- modal -->
+		<div class="modal fade" id="tableModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+		  		<div class="modal-header">
+						<h5>Choose which access points to display:</h5>
+		    		<button class="btn btn-default btn-sm" type="button" ng-click="modal.toggleSelector()">{{modal.buttonText}}</button>
+						<button class="btn btn-default btn-sm" type="button" ng-click="modal.showAll()">Select All</button>
+						<button class="btn btn-default btn-sm" type="button" ng-click="modal.hideAll()">Deselect All</button>
+					</div>
+					<div class="modal-body">
+		    		<ul class="dropdown-menu" role="menu">
+		      		<li role="presentation"><a role="menuitem" ng-click="modal.selector = 'MAC Address'">BSSID</a></li>
+		      		<li role="presentation"><a role="menuitem" ng-click="modal.selector = 'SSID'">SSID</a></li>
+		    		</ul>
+						<table class="table table-striped">
+							<tbody class="table" id="tableModalList">
+		        	<tr data-ng-repeat="ap in modal.allAPs | orderBy:modal.selector">
+		          	<td><input type="checkbox" checklist-model="modal.selectedAPs" checklist-value="ap">{{ap[modal.selector]}}</input></td>
+		        	</tr>
+							</tbody>
+						</table>
+		  		</div>
+				</div>
+			</div>
+		</div>
+
+				<!-- table -->
+		<div>
+	    <table data-toggle="table">
+		    <thead>
+		      <tr>
+		        <th>
+									<a href="" ng-click="table.order('SSID')">SSID</a>
+									<span class="sortArrow" ng-show="table.predicate === 'SSID'" ng-class="{reverse:table.reverse}"></span>
+								</th>
+								<th>
+									<a href="" ng-click="table.order('BSSID')">MAC Address</a>
+									<span class="sortArrow" ng-show="table.predicate === 'BSSID'" ng-class="{reverse:table.reverse}"></span>
+								</th>
+								<th>
+									<a href="" ng-click="table.order('frequency')">Frequency</a>
+									<span class="sortArrow" ng-show="table.predicate === 'frequency'" ng-class="{reverse:table.reverse}"></span>
+								</th>
+								<th>
+									<a href="" ng-click="table.order('level')">Level</a>
+									<span class="sortArrow" ng-show="table.predicate === 'level'" ng-class="{reverse:table.reverse}"></span>
+								</th>
+								<th>
+									<a href="" ng-click="table.order('capabilities')">Capabilities</a>
+									<span class="sortArrow" ng-show="table.predicate === 'capabilities'" ng-class="{reverse:table.reverse}"></span>
+								</th>
+								<th>
+								</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+		          <tr data-ng-repeat="ap in table.selectedAPs | orderBy:table.predicate:table.reverse">
+		            <td>{{ap.SSID}}</td>
+		            <td>{{ap.BSSID}}</td>
+		            <td>{{ap.frequency}}</td>
+		            <td>{{ap.level}}</td>
+		            <td>{{ap.capabilities}}</td>
+								<td></td>
+		          </tr>
+		        </tbody>
+	      </table>
+	    </div>
+				<div class="table-responsive">
+>>>>>>> 1fe7fdb919f9b953bb8b24bf829de388420cbaa9
 	      <table class="table table-striped">
 	        <thead>
 	          <tr>
@@ -47,6 +121,10 @@
 	        </tbody>
 	      </table>
 	    </div>
+<<<<<<< HEAD
 
+=======
+	</div>
+>>>>>>> 1fe7fdb919f9b953bb8b24bf829de388420cbaa9
 </body>
 </html>

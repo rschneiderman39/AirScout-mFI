@@ -10,6 +10,12 @@
       <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
       <link href="css/bootstrap-table.min.css" rel="stylesheet" />
 
+      <!-- RACHELS STUFF RIGHT HERE -->
+      <link rel="stylesheet" href="css/bootstrap-table.min.css" />
+      <script src="scripts/lib/bootstrap-table.min.js"></script>
+      <script src="scripts/lib/bootstrap-table-zh-CN.min.js"></script>
+      <!-- END RACHELS STUFF --> 
+
       <!-- Scripts -->
       <script src="scripts/lib/jquery-2.1.4.min.js"></script>
       <script src="scripts/lib/angular.min.js"></script>
@@ -20,7 +26,7 @@
       <script src="scripts/lib/boostrap-table.min.js"></script>
   </head>
 
-  <body onload="setActive('Settings')">
+  <body onload="setActive('Settings')" ng-controller="navBarCtrl">
     <div id="top-bar" class="container-fluid">
       <h1 id="greenTitle" class="text-center"></h1>
     </div>
@@ -72,19 +78,9 @@
       </ul>
     </nav>
 
-    <!--
-    <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-      <ul class="views nav nav-justified">
-        <a href="#/parabola" class="navButton" onclick="setActive('Parabola')" id="Parabola"><img src="../images/parabola.png" height="75" width="75"></a></li>
-        <li><a href="#/singleSpeed" onclick="setActive('Single Speed')" id="Single Speed">Single Speed</a></li>
-        <li><a href="#/timeGraph" onclick="setActive('Time Graph')" id="Time Graph">Time Graph</a></li>
-        <li><a href="#/table" onclick="setActive('Table')" id="Table">Table</a></li>
-        <li><a href="#/channels" onclick="setActive('Channels')" id="Channels">Channels</a></li>
-        <li><a href="#/" onclick="setActive('Settings')" class="" id="Settings">Settings</a></li>
-      </ul>
-    </nav>
-    -->
-    <ng-view></ng-view>
+    <div class="container-fluid">
+      <ng-view></ng-view>
+    </div>
 
     <!-- Cordova -->
     <script src="cordova.js"></script>
@@ -92,6 +88,16 @@
     <script src="scripts/platformOverrides.js"></script>
 
     <!-- Scripts -->
+    <!--
+    <script type="text/javascript">
+      $('#bottom-bar').delay(3000).hide(0);
+    </script>
+    -->
+    <script type="text/javascript">
+      var deviceHeight = $(window).height();
+      console.log("device height is: " + deviceHeight);
+    </script>
+    
     <script src="app/services/cordovaService.js"></script>
     <script src="app/app.js"></script>
     <script src="app/services/rawDataService.js"></script>

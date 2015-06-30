@@ -1,3 +1,8 @@
+.table-fixed tbody {
+    height: 50vh;
+    overflow-y: auto;
+}
+
 .btn-filter{
 	border-bottom: 25px solid #62bf01;
 	border-right: 25px solid transparent;
@@ -11,7 +16,7 @@
 
 .hyperspan
 {
-    background: 62bf01;
+    background: #62bf01;
     opacity: .3;
     position: absolute;
     width:100%;
