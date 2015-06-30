@@ -60,7 +60,7 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
         // Start table update loop
         _update();
 
-
+        // When we navigate away, remember our sort settings
         $scope.$on('$destroy', _pushSortSettings);
 
       },

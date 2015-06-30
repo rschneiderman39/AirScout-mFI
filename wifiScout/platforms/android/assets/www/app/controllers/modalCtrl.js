@@ -10,8 +10,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
           buttonText: 'List by MAC',
         };
 
-        alert(document.getElementById('viewTitle').innerHTML);
-        var _view = 'table';
+        var view = undefined;
 
         var _toggleSelector = function() {
           if ($scope.modal.selector === 'SSID') {
@@ -57,11 +56,17 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
           ));
         };
 
+        // Set up button and checkbox event handlers
         $('#modal').on('show.bs.modal', _init);
         $('#modalList').on('click', _pushSelection);
         $('#btnShow').on('click', _showAll);
         $('#btnHide').on('click', _hideAll);
 
+        var _setView = function() {
+          _view = $('#viewTitle').attr('ng-class');
+        }
+
+        setTimeout(_setView, 0);
       },
       function rejected() {
         console.log("modalCtrl is unavailable because Cordova is not loaded.")
