@@ -1,6 +1,6 @@
-app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
+app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
                              'filterService', 'cordovaService',
-  function($scope, APService, settingsService, filterService, cordovaService) {
+  function($scope, APService, filterSettingsService, filterService, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
         // Settings for this session
@@ -26,21 +26,21 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
 
         // Select all APs, and show any new AP that later becomes visible
         var _showAll = function() {
-          settingsService.setShowAll(_view, true);
-          settingsService.setSelectedBSSIDs(_view, []);
+          filterSettingsService.setShowAll(_view, true);
+          filterSettingsService.setSelectedBSSIDs(_view, []);
           $scope.modal.selectedAPs = $scope.modal.allAPs.slice();
         }
 
         // Unselect all APs
         var _hideAll = function() {
-          settingsService.setShowAll(_view, false);
-          settingsService.setSelectedBSSIDs(_view, []);
+          filterSettingsService.setShowAll(_view, false);
+          filterSettingsService.setSelectedBSSIDs(_view, []);
           $scope.modal.selectedAPs = [];
         }
 
         // Initialize the modal with the settings used previously
         var _init = function() {
-          settingsService.getSettingsImmediate(_view).done(
+          filterSettingsService.getSettingsImmediate(_view).done(
             function(settings) {
               $scope.modal.allAPs = APService.getNamedAPs();
               if (settings.showAll) {
@@ -57,8 +57,8 @@ app.controller('modalCtrl', ['$scope', 'APService', 'settingsService',
 
         // Update the settings service with our new selection
         var _pushSelection = function() {
-          settingsService.setSelectedBSSIDs(_view, $scope.modal.selectedAPs.map(
-            function(ap) {return ap.BSSID; }
+          filterSettingsService.setSelectedBSSIDs(_view, $scope.modal.selectedAPs.map(
+            function(ap) { return ap.BSSID; }
           ));
         };
 

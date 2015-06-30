@@ -1,6 +1,6 @@
-app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterService',
-                             'settingsService', 'cordovaService',
-  function($scope, $timeout, APService, filterService, settingsService, cordovaService) {
+app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
+                             'filterSettingsService', 'cordovaService',
+  function($scope, $timeout, APService, filterService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         // Settings for this session
@@ -8,7 +8,7 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
           selectedAPs: [],         // The AP objects representing the APs we want to display
           sortPredicate: 'SSID',   // Sorting options
           sortReverse: false,      // ..
-          // Change or toggle the sort predicate
+          // Change the sort predicate, or reverse the sort direction
           order: function(predicate) {
             this.sortReverse = (this.sortPredicate === predicate) ? !this.sortReverse : false;
             this.sortPredicate = predicate;
@@ -28,13 +28,13 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
           _selectedBSSIDs = settings.selectedBSSIDs.slice();
           _showAll = settings.showAll;
           _forceUpdate();
-          settingsService.getSettings('table').done(_onSettingsChange);
+          filterSettingsService.getSettings('table').done(_onSettingsChange);
         };
 
         // Save our sort settings to the settings service
         var _pushSortSettings = function() {
-          settingsService.setSortPredicate('table', $scope.table.sortPredicate);
-          settingsService.setSortReverse('table', $scope.table.sortReverse);
+          filterSettingsService.setSortPredicate('table', $scope.table.sortPredicate);
+          filterSettingsService.setSortReverse('table', $scope.table.sortReverse);
         };
 
         // Update the table now
@@ -56,14 +56,14 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
           $timeout(_update, 500);
         }
 
-        // Pull settings from settingsService, and start waiting on settings changes
-        settingsService.getSettingsImmediate('table').done(
+        // Pull settings from filterSettingsService, and start waiting on settings changes
+        filterSettingsService.getSettingsImmediate('table').done(
           function(settings) {
             $scope.table.sortPredicate = settings.sortPredicate;
             $scope.table.sortReverse = settings.sortReverse;
             _selectedBSSIDs = settings.selectedBSSIDs.slice();
             _showAll = settings.showAll;
-            settingsService.getSettings('table').done(_onSettingsChange);
+            filterSettingsService.getSettings('table').done(_onSettingsChange);
           }
         );
 
@@ -75,7 +75,7 @@ app.controller('tableCtrlNew', ['$scope', '$timeout', 'APService', 'filterServic
 
       },
       function rejected() {
-        console.log("tableCtrl is unavailable because Cordova is not loaded.")
+        console.log("tableCtrl is unavailable because Cordova is not loaded.");
       }
     );
   }]);
