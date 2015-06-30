@@ -1,7 +1,8 @@
 app.factory('filterService', function() {
   var service = {};
 
-  // Filter an array of APs by BSSID
+  // Returns an array containing the elements of "APs" whose BSSID is
+  // listed in "BSSIDs". Don't modify the return value.
   service.filter = function(APs, BSSIDs) {
     var selectedAPs = [];
     if (BSSIDs !== null) {
@@ -15,6 +16,21 @@ app.factory('filterService', function() {
     }
     return selectedAPs;
   };
+
+  // Returns the AP specified by the passed BSSID. Don't modify the return
+  // value.
+  service.select = function(APs, BSSID) {
+    var selectedAP = null;
+    if (BSSIDs !== null) {
+      for (var i = 0; i < APs.length; ++i) {
+        if (APs[i].BSSID === BSSID) {
+          selectedAP = AP[i];
+          break;
+        }
+      }
+    }
+    return selectedAP;
+  }
 
   return service;
 });

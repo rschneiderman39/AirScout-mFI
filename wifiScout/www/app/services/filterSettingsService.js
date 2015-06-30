@@ -1,9 +1,11 @@
-// holds the filter settings for each view
-app.factory('settingsService', function() {
+// holds the filter settings for view that use the filter modal
+app.factory('filterSettingsService', function() {
   var service = {},
       settings = {},
-      views = ['table'];
+      views = ['table']; // Views that will use this service
 
+  // Create an associative settings array for each view that will
+  // use this service
   for (var i = 0; i < views.length; ++i) {
     settings[views[i]] = {
       selectedBSSIDs: [],
