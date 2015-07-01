@@ -17,6 +17,12 @@
       <script src="scripts/lib/checklist-model.js"></script>
       <script src="scripts/lib/bootstrap.min.js"></script>
       <script src="scripts/lib/gauge.min.js"></script>
+
+      <script type="text/javascript">
+        var deviceHeight = $(window).height();
+        deviceHeight = deviceHeight;
+        $('#bottom-bar').css('height', deviceHeight);
+      </script>
   </head>
 
   <body ng-controller="navCtrl">
@@ -26,6 +32,11 @@
       </div>
       <div class="col-xs-4" id="title">
           <center><h1 id="greenTitle"></h1></center>
+      </div>
+      <div class="col-xs-4">
+        <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
+          <img id="helpButton" src="images/questionMark.png" />
+        </a>
       </div>
     </div>
 
