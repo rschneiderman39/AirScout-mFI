@@ -8,7 +8,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
         $scope.listBy = 'SSID';
         $scope.level = 0;
         $scope.minLevel = 0;
-        $scope.maxLevel = 0;
+        $scope.maxLevel = -1000;
         $scope.isSelected = function(MAC) {
           return MAC === _selectedBSSID;
         };
@@ -52,7 +52,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
     			  angle: 0.1,
     			  lineWidth: 0.3,
     			  pointer: {
-    			    length: 0.9,
+    			    length: 0.75,
     			    strokeWidth: 0.035,
     			    color: '#000000'
     			  },

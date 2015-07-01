@@ -68,7 +68,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
         };
 
         // Set up button and checkbox event handlers
-        $('#modal').on('show.bs.modal', _init);
+        $('#filterModal').on('show.bs.modal', _init);
         $('#modalList').on('click', _pushSelection);
         $('#btnTog').on('click', _toggleSelector);
         $('#btnShow').on('click', _showAll);
