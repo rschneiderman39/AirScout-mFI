@@ -25,6 +25,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
         var _forceUpdate = function () {
           $scope.allAPs = APService.getNamedAPs();
           var selectedAP = filterService.select($scope.allAPs, _selectedBSSID);
+          $scope.currAP = selectedAP.SSID; 
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
             $scope.minLevel = APService.getMinLevel(selectedAP.BSSID);
@@ -57,11 +58,11 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
     			    color: '#000000'
     			  },
     			  limitMax: 'false',
-    			  percentColors: [[0.0, "#FF0000" ], [0.1, "#FF3300"],
-                            [0.20, "#ff6600" ],  [0.30, "#ff9900"],
-                            [0.40, "#FFCC00"], [0.50, "#FFFF00"],
-                            [0.60, "#ccff00"], [0.70, "#99ff00"],
-                            [0.80, "#66ff00"], [0.90, "#00FF00"],
+    			  percentColors: [[0.0, "#FF0000" ], [0.1, "#FF0000"],
+                            [0.20, "#FF3300" ],  [0.30, "#ff6600"],
+                            [0.40, "#FF9900"], [0.50, "#FFcc00"],
+                            [0.60, "#ffff00"], [0.70, "#ccff00"],
+                            [0.80, "#99ff00"], [0.90, "#66FF00"],
                             [1.0, "#00FF00"]],
     			  strokeColor: '#E0E0E0',
     			  generateGradient: true

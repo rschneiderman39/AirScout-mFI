@@ -15,10 +15,8 @@
 
 	    deviceHeight = deviceHeight - 237;
 	    $('.scrollable-list	').css('height', deviceHeight);
-	    
-	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
 
-	    //$('.speedometer').append("<center><canvas id='foo' width='" + speedometerW + "' height='" + speedometerH "'></canvas></center>");
+	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
   	</script>
 	</head>
 
@@ -37,6 +35,8 @@
 			    </span>
 				</ul>
 			</div>
+			<br>
+			<center><h3></h3></center>
 			<div class="speedometer">
 				
 			</div>
@@ -50,6 +50,14 @@
 		    		<center>{{minLevel}}</center>
 		  		</div>
 				</div>
+			</div>
+			<div class="col-xs-2 three">
+				<center>Current</center>
+				<div class="panel panel-default">
+	  			<div class="panel-body">
+		    		<center>{{level}}</center>
+	  			</div>
+				</div>
 			</div> 
 			<div class="col-xs-2 two">
 			<center>Max Level</center>
@@ -59,14 +67,6 @@
 		  		</div>
 				</div>
 				</div>
-			<div class="col-xs-2 three">
-				<center>Current</center>
-				<div class="panel panel-default">
-	  			<div class="panel-body">
-		    		<center>{{level}}</center>
-	  			</div>
-				</div>
-			</div>
 		</div>
 	</body>
 </html>
