@@ -1,6 +1,7 @@
-app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterService',
-                                   'singleSpeedSettingsService', 'cordovaService',
-  function($scope, $timeout, APService, filterService, singleSpeedSettingsService, cordovaService) {
+app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
+  'filterService', 'singleSpeedSettingsService', 'levelTransformService',
+  'cordovaService', function($scope, $timeout, APService, filterService,
+  singleSpeedSettingsService, levelTransformService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPs = [];
@@ -31,7 +32,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
               $scope.maxLevel = $scope.level;
             }
             console.log('setting guage');
-            _gauge.set(Math.abs($scope.level) * 30);
+            _gauge.set(levelTransformService.gaugeTransform($scope.level));
           }
         };
 
@@ -62,9 +63,9 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
     			};
           var target = document.getElementById('foo');
     			_gauge = new Gauge(target).setOptions(opts);
-    			_gauge.maxValue = 3000;
+    			_gauge.maxValue = 60;
     			_gauge.animationSpeed = 120;
-          _gauge.set(0);
+          _gauge.set(1);
         })();
 
         _update();
