@@ -5,10 +5,10 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPs = [];
-        $scope.listBy = 'SSID';
-        $scope.level = 0;
-        $scope.minLevel = 0;
-        $scope.maxLevel = -1000;
+        $scope.selector = 'SSID';
+        $scope.level;
+        $scope.minLevel;
+        $scope.maxLevel;
         $scope.isSelected = function(MAC) {
           return MAC === _selectedBSSID;
         };
