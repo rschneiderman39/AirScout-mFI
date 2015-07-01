@@ -6,15 +6,19 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
       function resolved() {
         $scope.allAPs = [];
         $scope.selector = 'SSID';
+        $scope.selectedSSID;
         $scope.level;
         $scope.minLevel;
         $scope.maxLevel;
-        $scope.isSelected = function(MAC) {
-          return MAC === _selectedBSSID;
+        $scope.isSelected = function(ap) {
+          if (typeof ap.BSSID !== 'undefined') {
+            return ap.BSSID === _selectedBSSID;
+          }
         };
-        $scope.setSelected = function(MAC) {
-          if (typeof MAC === 'string') {
-            _selectedBSSID = MAC;
+        $scope.setSelected = function(ap) {
+          if (typeof ap.BSSID !== 'undefined') {
+            _selectedBSSID = ap.BSSID;
+            $scope.selectedSSID = ap.SSID;
           }
         };
 
@@ -40,10 +44,12 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
 
         var _pushSettings = function() {
           singleSpeedSettingsService.setSelectedBSSID(_selectedBSSID);
+          singleSpeedSettingsService.setSelectedSSID($scope.selectedSSID);
         };
 
         var _pullSettings = function() {
           _selectedBSSID = singleSpeedSettingsService.getSelectedBSSID();
+          $scope.selectedSSID = singleSpeedSettingsService.getSelectedSSID();
         };
 
         (function initGauge() {
