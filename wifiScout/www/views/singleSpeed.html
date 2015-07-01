@@ -6,8 +6,19 @@
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
 	    console.log(deviceHeight);
+
+	    var speedometerW = .75 * deviceHeight;
+	    var speedometerH = .5 * speedometerW;
+
+	    console.log("Speedometer height is: " + speedometerH);
+	    console.log("Speedometer width is: " + speedometerW);
+
 	    deviceHeight = deviceHeight - 237;
 	    $('.scrollable-list	').css('height', deviceHeight);
+	    
+	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
+
+	    //$('.speedometer').append("<center><canvas id='foo' width='" + speedometerW + "' height='" + speedometerH "'></canvas></center>");
   	</script>
 	</head>
 
@@ -26,44 +37,35 @@
 			    </span>
 				</ul>
 			</div>
-			<div class-"speedometer">
-				<center><canvas id="foo" width="400" height="200"></canvas></center>
-					<br>
-					<div class="col-xs-1">
-					</div>
-					<div class="col-xs-2 one">
-						<center>Min Level</center>
-					</div>
-					<div class="col-xs-2 two">
-						<center>Max Level</center>
-					</div>
-					<div class="col-xs-2 three">
-						<center>Current Level</center>
-					</div>
-					<br>
-					<div class="col-xs-1">
-					</div>
-					<div class="col-xs-2 one">
-						<div class="panel panel-default">
-		  				<div class="panel-body">
-		    				<center>{{minLevel}}</center>
-		  				</div>
-						</div>
-					</div>
-					<div class="col-xs-2 two">
-						<div class="panel panel-default">
-		  				<div class="panel-body">
-		    				<center>{{maxLevel}}</center>
-		  				</div>
-						</div>
-					</div>
-					<div class="col-xs-2 three">
-						<div class="panel panel-default">
-		  				<div class="panel-body">
-		    				<center>{{level}}</center>
-		  				</div>
-						</div>
-					</div>
+			<div class="speedometer">
+				
+			</div>
+			<br>
+			<div class="col-xs-1">
+			</div>
+			<div class="col-xs-2 one">
+				<center>Min Level</center>
+				<div class="panel panel-default">
+	  			<div class="panel-body">
+		    		<center>{{minLevel}}</center>
+		  		</div>
+				</div>
+			</div> 
+			<div class="col-xs-2 two">
+			<center>Max Level</center>
+				<div class="panel panel-default">
+	 				<div class="panel-body">
+		   			<center>{{maxLevel}}</center>
+		  		</div>
+				</div>
+				</div>
+			<div class="col-xs-2 three">
+				<center>Current</center>
+				<div class="panel panel-default">
+	  			<div class="panel-body">
+		    		<center>{{level}}</center>
+	  			</div>
+				</div>
 			</div>
 		</div>
 	</body>

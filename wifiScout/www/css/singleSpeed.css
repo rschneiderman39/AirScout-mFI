@@ -1,16 +1,3 @@
-.levels {
-  font-size: 15pt;
-}
-
-.one .two .three {
-  padding-left: 20px;
-}
-
-.panel {
-  width: 100;
-  height: 50;
-}
-
 .scrollable-list {
   overflow-x: hidden;
 }
