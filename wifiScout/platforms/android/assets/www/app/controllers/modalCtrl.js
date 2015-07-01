@@ -61,6 +61,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Update the settings service with our new selection
         var _pushSelection = function() {
+          filterSettingsService.setShowAll(_view, false);
           filterSettingsService.setSelectedBSSIDs(_view, $scope.modal.selectedAPs.map(
             function(ap) { return ap.BSSID; }
           ));

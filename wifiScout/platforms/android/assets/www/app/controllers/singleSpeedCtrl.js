@@ -13,10 +13,12 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
           return MAC === _selectedBSSID;
         };
         $scope.setSelected = function(MAC) {
-          _selectedBSSID = MAC;
+          if (typeof MAC === 'string') {
+            _selectedBSSID = MAC;
+          }
         };
 
-        var _selectedBSSID = null;
+        var _selectedBSSID = "";
 
         var _gauge = undefined;
 
@@ -25,13 +27,8 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
           var selectedAP = filterService.select($scope.allAPs, _selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
-            if ($scope.level < $scope.minLevel) {
-              $scope.minLevel = $scope.level;
-            }
-            if ($scope.level > $scope.maxLevel) {
-              $scope.maxLevel = $scope.level;
-            }
-            console.log('setting guage');
+            $scope.minLevel = APService.getMinLevel(selectedAP.BSSID);
+            $scope.maxLevel = APService.getMaxLevel(selectedAP.BSSID);
             _gauge.set(levelTransformService.gaugeTransform($scope.level));
           }
         };
@@ -39,6 +36,14 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
         var _update = function () {
           _forceUpdate();
           $timeout(_update, 500)
+        };
+
+        var _pushSettings = function() {
+          singleSpeedSettingsService.setSelectedBSSID(_selectedBSSID);
+        };
+
+        var _pullSettings = function() {
+          _selectedBSSID = singleSpeedSettingsService.getSelectedBSSID();
         };
 
         (function initGauge() {
@@ -67,6 +72,10 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
     			_gauge.animationSpeed = 120;
           _gauge.set(1);
         })();
+
+        _pullSettings();
+
+        $scope.$on('$destroy', _pushSettings);
 
         _update();
 
