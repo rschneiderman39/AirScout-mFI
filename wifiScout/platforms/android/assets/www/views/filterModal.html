@@ -19,9 +19,11 @@
       <li role="presentation"><a role="menuitem" ng-click="modal.selector = 'SSID'">SSID</a></li>
     </ul>
     <table class="table table-striped">
-      <tbody class="table" id="modalList">
+      <tbody id="modalList">
         <tr data-ng-repeat="ap in modal.allAPs | orderBy:modal.selector">
-          <td><input type="checkbox" checklist-model="modal.selectedAPs" checklist-value="ap">{{ap[modal.selector]}}</input></td>
+          <td>
+            <input type="checkbox" checklist-model="modal.selectedAPs" checklist-value="ap">{{ap[modal.selector]}}</input>
+          </td>
         </tr>
       </tbody>
     </table>
