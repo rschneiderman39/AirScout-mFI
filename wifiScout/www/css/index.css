@@ -2,13 +2,18 @@
 	background: #eeeeee !important;
 }
 
+.filterDiv {
+  height: 70px;
+}
+
 .filterButton {
-  top-padding: 10px;
+  position: relative;
+  top: 18px;
 }
 
 #top-bar {
 	background-color: #62bf01;
-  height: 69px;
+  height: 70px;
 }
 
 #bottom-bar {
