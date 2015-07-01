@@ -1,14 +1,14 @@
-﻿/*body {
+﻿body {
 	background: #eeeeee !important;
-  height: 598px;
 }
 
-.angularViews {
-  background-color: red;
-}*/
+.filterButton {
+  top-padding: 10px;
+}
 
 #top-bar {
 	background-color: #62bf01;
+  height: 69px;
 }
 
 #bottom-bar {

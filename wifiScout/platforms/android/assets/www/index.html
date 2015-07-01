@@ -21,13 +21,12 @@
 
   <body ng-controller="navCtrl">
     <div id="top-bar" class="container-fluid">
-      <div style="display:inline-block">
-        <div>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal" ng-show="isActive('Table')">Filter...</button>
-        </div>
-        <div style="text-align:center">
-          <p id="greenTitle"></p>
-        </div>
+      <div class="col-xs-4">
+        <br>
+        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="isActive('Table')">Filter...</button>
+      </div>
+      <div class="col-xs-4" id="title">
+          <center><h1 id="greenTitle"></h1></center>
       </div>
     </div>
 
