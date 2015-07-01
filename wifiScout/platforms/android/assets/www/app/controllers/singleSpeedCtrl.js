@@ -68,7 +68,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
     			};
           var target = document.getElementById('foo');
     			_gauge = new Gauge(target).setOptions(opts);
-    			_gauge.maxValue = 60;
+    			_gauge.maxValue = 600;
     			_gauge.animationSpeed = 120;
           _gauge.set(1);
         })();
