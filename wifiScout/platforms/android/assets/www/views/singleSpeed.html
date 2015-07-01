@@ -3,49 +3,11 @@
 	<head>
 		<link href="css/singleSpeed.css" rel="stylesheet" />
 
-<!--
-		<script>
-			var opts = {
-			  lines: 12,
-<<<<<<< HEAD
-			  angle: 0.0,
-			  lineWidth: 0.3,
-			  pointer: {
-			    length: 0.48,
-=======
-			  angle: 0.1,
-			  lineWidth: 0.3,
-			  pointer: {
-			    length: 0.9,
->>>>>>> a5d8e0a572b7751c6720302dcf28413db58c3d1d
-			    strokeWidth: 0.035,
-			    color: '#000000'
-			  },
-			  limitMax: 'false',
-			  percentColors: [[0.0, "#FF0000" ], [0.1, "#FF3300"], [0.20, "#ff6600" ],  [0.30, "#ff9900"], [0.40, "#FFCC00"], [0.50, "#FFFF00"], [0.60, "#ccff00"], [0.70, "#99ff00"], [0.80, "#66ff00"], [0.90, "#00FF00"], [1.0, "#00FF00"]], // !!!!
-			  strokeColor: '#E0E0E0',
-			  generateGradient: true
-			};
-			var target = document.getElementById('foo');
-			var gauge = new Gauge(target).setOptions(opts);
-			gauge.maxValue = 3000;
-			gauge.animationSpeed = 120;
-			gauge.set(2100);
-		</script>
-<<<<<<< HEAD
-
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
 	    console.log(deviceHeight);
 	    deviceHeight = deviceHeight - 237;
 	    $('.scrollable-list	').css('height', deviceHeight);
-=======
--->
-		<script type="text/javascript">
-	    var deviceHeight = $(window).height();
-	    deviceHeight = deviceHeight - 212;
-	    $('.apList').css('height', deviceHeight);
->>>>>>> a5d8e0a572b7751c6720302dcf28413db58c3d1d
   	</script>
 	</head>
 
@@ -64,8 +26,44 @@
 			    </span>
 				</ul>
 			</div>
-			<div class="col-xs-8 fooCanvas">
-				<canvas id="foo"></canvas>
+			<div class-"speedometer">
+				<center><canvas id="foo" width="400" height="200"></canvas></center>
+					<br>
+					<div class="col-xs-1">
+					</div>
+					<div class="col-xs-2 one">
+						<center>Min Level</center>
+					</div>
+					<div class="col-xs-2 two">
+						<center>Max Level</center>
+					</div>
+					<div class="col-xs-2 three">
+						<center>Current Level</center>
+					</div>
+					<br>
+					<div class="col-xs-1">
+					</div>
+					<div class="col-xs-2 one">
+						<div class="panel panel-default">
+		  				<div class="panel-body">
+		    				<center>{{minLevel}}</center>
+		  				</div>
+						</div>
+					</div>
+					<div class="col-xs-2 two">
+						<div class="panel panel-default">
+		  				<div class="panel-body">
+		    				<center>{{maxLevel}}</center>
+		  				</div>
+						</div>
+					</div>
+					<div class="col-xs-2 three">
+						<div class="panel panel-default">
+		  				<div class="panel-body">
+		    				<center>{{level}}</center>
+		  				</div>
+						</div>
+					</div>
 			</div>
 		</div>
 	</body>

@@ -7,7 +7,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
         $scope.listBy = 'SSID';
         $scope.level = 0;
         $scope.minLevel = 0;
-        $scope.maxLevel = 0;
+        $scope.maxLevel = -1000;
         $scope.isSelected = function(MAC) {
           return MAC === _selectedBSSID;
         };
@@ -46,7 +46,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
     			  angle: 0.1,
     			  lineWidth: 0.3,
     			  pointer: {
-    			    length: 0.9,
+    			    length: 0.75,
     			    strokeWidth: 0.035,
     			    color: '#000000'
     			  },
@@ -64,7 +64,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService', 'filterSer
     			_gauge = new Gauge(target).setOptions(opts);
     			_gauge.maxValue = 3000;
     			_gauge.animationSpeed = 120;
-          _gauge.set(0);
+          _gauge.set(1);
         })();
 
         _update();

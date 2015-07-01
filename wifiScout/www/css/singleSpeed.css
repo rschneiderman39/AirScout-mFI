@@ -1,12 +1,14 @@
-#foo {
-  width: 400px;
-  height: 400px;
+.levels {
+  font-size: 15pt;
 }
 
-.fooCanvas {
-  width: 400px;
-  height: 400px;
-  padding-left: 175px;
+.one .two .three {
+  padding-left: 20px;
+}
+
+.panel {
+  width: 100;
+  height: 50;
 }
 
 .scrollable-list {
