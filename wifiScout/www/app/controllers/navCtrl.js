@@ -1,5 +1,6 @@
 app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
   cordovaService) {
+    console.log("IN NAV CTRL");
     cordovaService.ready.then(
       function resolved() {
         $scope.setActive = function(view) {
@@ -13,7 +14,7 @@ app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
 
           oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
           newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
-
+          
           _activeView = view;
         };
 

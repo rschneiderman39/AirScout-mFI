@@ -87,7 +87,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
 
       },
       function rejected() {
-        console.log("singelSpeedCtrl is unavailable because Cordova is not loaded.");
+        console.log("singleSpeedCtrl is unavailable because Cordova is not loaded.");
       }
     )
   }]);
