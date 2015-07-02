@@ -31,18 +31,16 @@
   <body ng-controller="navCtrl">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
-        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="isActive('Table')">Filter...</button>
+        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="isActive('Plot')">Filter...</button>
       </div>
       <div class="col-xs-4" id="title">
           <center><h1 id="greenTitle"></h1></center>
       </div>
-      <!-- Help and Context button.. This needs to be finished later.. 
-      <div class="col-xs-4">
-        <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
-          <img id="helpButton" src="images/questionMark.png" />
-        </a>
+      <div class="col-xs-2">
       </div>
-      -->
+      <div class="col-xs-2" id="helpContext">
+        <input type="image" src="images/questionMark2.png" alt="Submit" id="helpButton" data-toggle="modal" data-target="#myModal">
+      </div>
     </div>
 
     <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
@@ -92,22 +90,39 @@
       </ul>
     </nav>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
+          </div>
+          <div class="modal-body">
+            Here is some help and context!
+            <br>
+            <br>
+            Did it help?...
+            <br>
+            <br>  
+            Yay!
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container-fluid">
       <ng-view></ng-view>
     </div>
 
     </div>
-    <!-- Cordova -->
+
+    <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
     <script src="scripts/platformOverrides.js"></script>
-
-    <!-- Scripts -->
-    <!--
-    <script type="text/javascript">
-      $('#bottom-bar').delay(3000).hide(0);
-    </script>
-    -->
     <script src="app/services/cordovaService.js"></script>
     <script src="app/app.js"></script>
     <script src="app/services/rawDataService.js"></script>
