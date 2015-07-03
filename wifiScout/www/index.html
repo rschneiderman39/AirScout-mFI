@@ -50,42 +50,42 @@
         <li role="presentation">
           <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
             <div class="container-fluid">
-              <img id="Parabola Img" src="images/parabola-small.png" />
+              <img id="Parabola Img" src="images/parabola-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/singleSpeed" ng-click="setActive('Performance')" id="Performance">
+          <a href="#/performance" ng-click="setActive('Performance')" id="Performance">
             <div class="container-fluid">
-              <img id="Performance Img" src="images/speedometer-small.png" />
+              <img id="Performance Img" src="images/performance-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
-          <a href="#/timeGraph" ng-click="setActive('Plot')" id="Plot">
+          <a href="#/plot" ng-click="setActive('Plot')" id="Plot">
             <div class="container-fluid">
-              <img id="Plot Img" src="images/timegraph-small.png" />
+              <img id="Plot Img" src="images/plot-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
           <a href="#/table" ng-click="setActive('Table')" id="Table">
             <div class="container-fluid">
-              <img id="Table Img" src="images/table-small.png" />
+              <img id="Table Img" src="images/table-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
           <a href="#/channels" ng-click="setActive('Channels')" id="Channels">
             <div class="container-fluid">
-              <img id="Channels Img" src="images/channels-small.png" />
+              <img id="Channels Img" src="images/channels-wide.png" />
             </div>
           </a>
         </li>
         <li role="presentation">
           <a href="#/" ng-click="setActive('Settings')" id="Settings">
             <div class="container-fluid">
-              <img id="Settings Img" src="images/settings-small.png" />
+              <img id="Settings Img" src="images/settings-wide.png" />
             </div>
           </a>
         </li>
@@ -110,18 +110,22 @@
     -->
     <script src="app/services/cordovaService.js"></script>
     <script src="app/app.js"></script>
+
     <script src="app/services/rawDataService.js"></script>
     <script src="app/services/APService.js"></script>
     <script src="app/services/APSelectorService.js"></script>
     <script src="app/services/filterSettingsService.js"></script>
-    <script src="app/services/singleSpeedSettingsService.js"></script>
+    <script src="app/services/performanceSettingsService.js"></script>
     <script src="app/services/levelTransformService.js"></script>
+
     <script src="app/controllers/tableCtrl.js"></script>
     <script src="app/controllers/modalCtrl.js"></script>
     <script src="app/controllers/navCtrl.js"></script>
-    <script src="app/controllers/singleSpeedCtrl.js"></script>
-    <script src="app/controllers/timeGraphCtrl.js"></script>
+    <script src="app/controllers/performanceCtrl.js"></script>
+    <script src="app/controllers/plotCtrl.js"></script>
+
     <script src="app/directives/filterModal.js"></script>
+
     <script src="scripts/index.js"></script>
   </body>
 </html>

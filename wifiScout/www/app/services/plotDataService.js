@@ -8,18 +8,39 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
         _orderedSSIDs = [],
         _orderedLevels = [],
         _orderedColors = [],
-        _colorPool = [],
+        _colorPool = [
+          '#97BBCD', // blue
+          '#DCDCDC', // light grey
+          '#F7464A', // red
+          '#46BFBD', // green
+          '#FDB45C', // yellow
+          '#949FB1', // grey
+          '#4D5360'  // dark grey
+        ],
         _colorIndex = 0,
         _DATA_POINTS = 20,
         _UPDATE_INTERVAL = 1000;
 
+    service.getOrderedSSIDs = function() {
+      return _orderedSSIDs.slice();
+    };
+    service.getOrderedLevels = function() {
+      return _orderedLevels.slice();
+    };
+    service.getOrderedColors = function() {
+      return _orderedColors.slice();
+    };
+
+    /* Update our model every UPDATE_INTERVAL */
     var _update = function() {
-      _updateNo();
+      _updateNow();
       setTimeout(_update, _UPDATE_INTERVAL);
     };
 
     /* Helper function. Add a new AP to our model */
     var _addAP = function(APData) {
+      /* Create an array of length DATA_POINTS filled with -100 (Our arbitrary
+         "0" value for RSSI) */
       var initLevels = Array.apply(null, Array(_DATA_POINTS))
                                         .map(Number.prototype.valueOf,-100);
       initLevels.shift();
@@ -62,7 +83,7 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
     }
 
     /* Pull new data from APService, and update our model as necessary */
-    var _updateNow = function() {
+    var _updateModel = function() {
       var _selectedAPData = APSelectorService.filter(APService.getNamedAPData(),
                                                      _selectedBSSIDs);
       for (var i = 0; i < _selectedAPData.length; ++i) {
@@ -78,6 +99,18 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
       }
       _cullAPs();
     };
+
+    var _updateNow = function() {
+      filterSettingsService.getSettingsImmediate.done(
+        function(settings) {
+          _selectedBSSIDs = settings.selectedBSSIDs;
+          _updateModel();
+        }
+      );
+    };
+
+    /* Init */
+    _update();
 
     return service;
   }]);

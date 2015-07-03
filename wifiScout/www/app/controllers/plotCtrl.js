@@ -1,4 +1,4 @@
-app.controller('timeGraphCtrl', ['$scope', 'APService', 'APSelectorService',
+app.controller('plotCtrl', ['$scope', 'APService', 'APSelectorService',
 	'cordovaService', function($scope, APService, APSelectorService, cordovaService) {
 		cordovaService.ready.then (
 			function resolved() {
@@ -38,7 +38,7 @@ app.controller('timeGraphCtrl', ['$scope', 'APService', 'APSelectorService',
   			};
 			},
       function rejected() {
-        console.log("timeGraphCtrl is unavailable because Cordova is not loaded.");
+        console.log("plotCtrl is unavailable because Cordova is not loaded.");
       }
 		)
 	}

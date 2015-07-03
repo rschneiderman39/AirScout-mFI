@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE HTML>
 <html>
 	<head>
-		<link href="css/timeGraph.css" rel="stylesheet" />
+		<link href="css/plot.css" rel="stylesheet" />
 
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
@@ -23,7 +23,7 @@
 	</head>
 
 	<body>
-		<div ng-controller="timeGraphCtrl">
+		<div ng-controller="plotCtrl">
 			<div class="container-fluid" id="lineChart">
 				<canvas id="line" class="chart chart-line" data="data" labels="labels" legend="true" series="series" colours="colors" click="updateData">
 				</canvas>

@@ -15,11 +15,11 @@ app.config(function ($routeProvider, $sceProvider) {
         .when('/table', {
             templateUrl: 'views/table.html'
         })
-        .when('/timeGraph', {
-            templateUrl: 'views/timeGraph.html'
+        .when('/plot', {
+            templateUrl: 'views/plot.html'
         })
-        .when('/singleSpeed', {
-            templateUrl: 'views/singleSpeed.html'
+        .when('/performance', {
+            templateUrl: 'views/performance.html'
         })
         .when('/parabola', {
             templateUrl: 'views/parabola.html'

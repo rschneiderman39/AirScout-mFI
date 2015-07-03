@@ -1,4 +1,4 @@
-app.factory('singleSpeedSettingsService', function() {
+app.factory('performanceSettingsService', function() {
   var service = {},
       _settings = {
         selectedBSSID: "",
