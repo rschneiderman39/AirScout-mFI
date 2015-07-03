@@ -5,3 +5,10 @@
 .span8 {
 	background-color: #bbd839 !important
 }
+
+.modal-body {
+    position: relative;
+    overflow-y: auto;
+    max-height: 400px;
+    padding: 15px;
+}
