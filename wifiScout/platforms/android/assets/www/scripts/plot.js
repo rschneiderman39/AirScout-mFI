@@ -1,8 +1,6 @@
 var deviceHeight = $(window).height();
 console.log(deviceHeight);
 
-deviceHeight = deviceHeight - 200;
-
-var lineChartH = deviceHeight;
+var lineChartH = deviceHeight - 70;
 
 $('#line').css('max-height', lineChartH);

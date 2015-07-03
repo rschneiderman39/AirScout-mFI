@@ -1,27 +1,27 @@
 <!DOCTYPE HTML>
 <html ng-app="app">
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title class="text-center"></title>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title class="text-center"></title>
 
-      <!-- CSS Stylesheets -->
-      <link href="css/index.css" rel="stylesheet" />
-      <link href="css/angular-chart.css" rel="stylesheet" />
-      <link href="css/bootstrap.min.css" rel="stylesheet" />
-      <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+    <!-- CSS Stylesheets -->
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/angular-chart.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
 
-      <!-- Scripts -->
-      <script src="scripts/lib/jquery-2.1.4.min.js"></script>
-      <script src="scripts/lib/angular.min.js"></script>
-      <script src="scripts/lib/angular-route.min.js"></script>
-      <script src="scripts/lib/angular-touch.min.js"></script>
-      <script src="scripts/lib/checklist-model.js"></script>
-      <script src="scripts/lib/bootstrap.min.js"></script>
-      <script src="scripts/lib/gauge.min.js"></script>
-      <script src="scripts/lib/Chart.min.js"></script>
-      <script src="scripts/lib/angular-chart.min.js"></script>
+    <!-- Scripts -->
+    <script src="scripts/lib/jquery-2.1.4.min.js"></script>
+    <script src="scripts/lib/angular.min.js"></script>
+    <script src="scripts/lib/angular-route.min.js"></script>
+    <script src="scripts/lib/angular-touch.min.js"></script>
+    <script src="scripts/lib/checklist-model.js"></script>
+    <script src="scripts/lib/bootstrap.min.js"></script>
+    <script src="scripts/lib/gauge.min.js"></script>
+    <script src="scripts/lib/Chart.min.js"></script>
+    <script src="scripts/lib/angular-chart.min.js"></script>
   </head>
-
+  
   <body ng-controller="navCtrl">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
@@ -37,12 +37,16 @@
       </div>
     </div>
 
+    <div id="ngView" class="container-fluid">
+      <ng-view></ng-view>
+    </div>
+
     <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
       <ul class="nav nav-pills nav-justified">
         <li role="presentation">
           <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
             <div class="container-fluid">
-              <img id="Parabola Img" src="images/parabola-wide.png" />
+               <img id="Parabola Img" src="images/parabola-wide.png" />
             </div>
           </a>
         </li>
@@ -84,11 +88,13 @@
       </ul>
     </nav>
 
-    <div class="container-fluid">
-      <ng-view></ng-view>
-    </div>
+    <center>
+      <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </center>
 
-    </div>
+    <center>
+      <span id="navTriangleUp" class="glyphicon glyphicon-triangle-top" aria-hidden="false"></span>
+    </center>
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>

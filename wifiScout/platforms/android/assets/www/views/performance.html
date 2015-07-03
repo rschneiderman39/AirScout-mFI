@@ -2,71 +2,58 @@
 <html ng-app="app">
 	<head>
 		<link href="css/performance.css" rel="stylesheet" />
-<<<<<<< HEAD
 		<script src="scripts/performance.js"></script>
-=======
-
-		<script type="text/javascript">
-	    var deviceHeight = $(window).height();
-
-	    var speedometerW = .75 * deviceHeight;
-	    var speedometerH = .5 * speedometerW;
-
-	    deviceHeight = deviceHeight - 225;
-
-	    $('.scrollable-list	').css('height', deviceHeight);
-	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
-  	</script>
->>>>>>> 7066e300a8dbd15c666b27611831ab1ccd903f66
 	</head>
 
 	<body>
-		<div class="container-fluid fluidHeight" ng-controller="performanceCtrl">
-		<br>
-			<div class="col-xs-4 apList">
-				<h5><center>Select an AP to view its connection speed:</center></h5>
-				<ul class="list-group scrollable-list">
-					<span data-ng-repeat="ap in allAPData | orderBy:selector">
-			    <li class="listgroupitem"
-			    		ng-class="{ active: isSelected(ap) }"
-			    		ng-click="setSelected(ap)">
-			    		{{ap.SSID}}
-			    </li>
-			    </span>
-				</ul>
-			</div>
+		<div id="wrapper">
+			<div class="container-fluid fluidHeight" ng-controller="performanceCtrl">
 			<br>
-			<center><h4>{{selectedSSID !== "" ? selectedSSID : "---"}}</h4></center>
-			<div class="speedometer">
+				<div class="col-xs-4 apList">
+					<h5><center>Select an AP to view its connection speed:</center></h5>
+					<ul class="list-group scrollable-list">
+						<span data-ng-repeat="ap in allAPData | orderBy:selector">
+				    <li class="listgroupitem"
+				    		ng-class="{ active: isSelected(ap) }"
+				    		ng-click="setSelected(ap)">
+				    		{{ap.SSID}}
+				    </li>
+				    </span>
+					</ul>
+				</div>
+				<br>
+				<center><h4>{{selectedSSID !== "" ? selectedSSID : "---"}}</h4></center>
+				<div class="speedometer">
 
-			</div>
+				</div>
 
-			<div class="col-xs-1">
+				<div class="col-xs-1">
+				</div>
+				<div class="col-xs-2 one">
+					<center>Min Level</center>
+					<div class="panel panel-default">
+		  			<div class="panel-body">
+			    		<center>{{selectedSSID !== "" ? minLevel + " dBm" : "---"}}</center>
+			  		</div>
+					</div>
+				</div>
+				<div class="col-xs-2 three">
+					<center>Current</center>
+					<div class="panel panel-default">
+		  			<div class="panel-body">
+			    		<center>{{selectedSSID !== "" ? level + " dBm" : "---"}}</center>
+		  			</div>
+					</div>
+				</div>
+				<div class="col-xs-2 two">
+				<center>Max Level</center>
+					<div class="panel panel-default">
+		 				<div class="panel-body">
+			   			<center>{{selectedSSID !== "" ? maxLevel + " dBm" : "---"}}</center>
+			  		</div>
+					</div>
+					</div>
 			</div>
-			<div class="col-xs-2 one">
-				<center>Min Level</center>
-				<div class="panel panel-default">
-	  			<div class="panel-body">
-		    		<center>{{selectedSSID !== "" ? minLevel + " dBm" : "---"}}</center>
-		  		</div>
-				</div>
-			</div>
-			<div class="col-xs-2 three">
-				<center>Current</center>
-				<div class="panel panel-default">
-	  			<div class="panel-body">
-		    		<center>{{selectedSSID !== "" ? level + " dBm" : "---"}}</center>
-	  			</div>
-				</div>
-			</div>
-			<div class="col-xs-2 two">
-			<center>Max Level</center>
-				<div class="panel panel-default">
-	 				<div class="panel-body">
-		   			<center>{{selectedSSID !== "" ? maxLevel + " dBm" : "---"}}</center>
-		  		</div>
-				</div>
-				</div>
 		</div>
 	</body>
 </html>

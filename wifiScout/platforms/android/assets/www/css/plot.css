@@ -2,3 +2,9 @@
 	position: relative;
 	top: 10px;
 }
+
+#wrapper {
+	position: relative;
+	overflow: hidden;
+	z-index:-1;
+}

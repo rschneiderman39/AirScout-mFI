@@ -11,10 +11,6 @@
   top: 18px;
 }
 
-#helpContext {
-  
-}
-
 #helpButton {
   position: relative;
   top: 18px;
@@ -26,18 +22,17 @@
 #top-bar {
 	background-color: #62bf01;
   height: 70px;
+  z-index: 1;
 }
 
 #bottom-bar {
 	padding-top: 5px;
  	padding-bottom: 5px;
+  min-height: 0px;
 }
 
 .footer {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
   background-color: #fafafa;
 }
 
@@ -52,4 +47,12 @@
   padding-bottom:2%;
   z-index: 100;
   display: none;
+}
+
+#navTriangleDown {
+  position: relative;
+}
+
+#navTriangleUp {
+  position: relative;
 }
