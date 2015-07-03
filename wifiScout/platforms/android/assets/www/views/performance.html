@@ -2,7 +2,22 @@
 <html ng-app="app">
 	<head>
 		<link href="css/performance.css" rel="stylesheet" />
+<<<<<<< HEAD
 		<script src="scripts/performance.js"></script>
+=======
+
+		<script type="text/javascript">
+	    var deviceHeight = $(window).height();
+
+	    var speedometerW = .75 * deviceHeight;
+	    var speedometerH = .5 * speedometerW;
+
+	    deviceHeight = deviceHeight - 225;
+
+	    $('.scrollable-list	').css('height', deviceHeight);
+	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
+  	</script>
+>>>>>>> 7066e300a8dbd15c666b27611831ab1ccd903f66
 	</head>
 
 	<body>
