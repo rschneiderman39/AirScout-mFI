@@ -1,6 +1,5 @@
 app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
   cordovaService) {
-    console.log("IN NAV CTRL");
     cordovaService.ready.then(
       function resolved() {
         $scope.setActive = function(view) {
@@ -20,7 +19,11 @@ app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
 
         $scope.isActive = function(view) {
           return _activeView === view;
-        }
+        };
+
+        $scope.usesFilterBtn = function() {
+          return _activeView === 'Table' || _activeView === 'Plot';
+        };
 
         var _activeView = "Settings";
 
