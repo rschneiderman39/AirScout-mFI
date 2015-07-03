@@ -9,7 +9,7 @@ app.factory('filterSettingsService', function() {
   for (var i = 0; i < views.length; ++i) {
     settings[views[i]] = {
       selectedBSSIDs: [],
-      showAll: true,
+      showAll: false,
       sortPredicate: 'SSID',
       sortReverse: false,
       settings: $.Deferred(),

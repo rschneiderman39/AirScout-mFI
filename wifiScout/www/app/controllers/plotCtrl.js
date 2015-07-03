@@ -1,41 +1,41 @@
-app.controller('plotCtrl', ['$scope', 'APService', 'APSelectorService',
-	'cordovaService', function($scope, APService, APSelectorService, cordovaService) {
+app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
+	'plotDataService', 'cordovaService', function($scope, $timeout, APService,
+	APSelectorService, plotDataService, cordovaService) {
 		cordovaService.ready.then (
 			function resolved() {
-				$scope.labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-          "11", "12", "13", "14", "15", "16", "17", "18", "19"];
-  			$scope.series = ['NETGEAR', 'UCSD-PROTECTED', 'UCSD-GUEST', 'RESNET-SIXTH', 'TX-GUEST', 'AIRSCOUT-AE039'];
-  			$scope.data = [
-    			[81, 35, 86, 81],
-    			[48, 37, 16, 57, 66, 35, 33, 47, 59, 28, 81, 70, 33, 1, 4, 60, 8, 21, 43],
-          [33, 10, 50, 7, 55, 26, 37, 51, 60, 61, 86, 79, 66, 78, 5, 57, 31, 36, 55],
-          [43, 59, 3, 60, 90, 76, 71, 27, 81, 77, 89, 44, 4, 13, 6, 46, 34, 61, 68],
-          [8, 15, 12, 88, 15, 6, 87, 88, 15, 25, 20, 74, 43, 16, 67, 79, 33, 84, 10],
-          [18, 85, 76, 71, 10, 32, 15, 69, 26, 13, 37, 63, 39, 79, 52, 1, 31, 39, 16]
-  			];
-				$scope.colors = [
-					'#97BBCD',
-					'#97BBCD',
-					'#F7464A',
-					'#97BBCD',
-					'#F7464A',
-					'#FDB45C'
-				];
+				$scope.labels = [];
+  			$scope.SSIDs;
+  			$scope.levels;
+				$scope.colors;
+				$scope.chart;
+				$scope.options = {
+					animation: false,
+					scaleOverride: true,
+					scaleStartValue: -100,
+					scaleStepWidth: 5,
+					scaleSteps: 14,
+					datasetFill: false,
+					pointDot: false
+				};
 
-        $scope.updateData = function() {
-          $scope.data =  [
-            [35, 86, 81, 12, 1, 82, 4, 42, 69, 36, 16, 13, 88, 67, 56, 26, 70, 35, 7],
-            [37, 16, 57, 66, 35, 33, 47, 59, 28, 81, 70, 33, 1, 4, 60, 8, 21, 43, 56],
-            [10, 50, 7, 55, 26, 37, 51, 60, 61, 86, 79, 66, 78, 5, 57, 31, 36, 55, 16],
-            [59, 3, 60, 90, 76, 71, 27, 81, 77, 89, 44, 4, 13, 6, 46, 34, 61, 68, 76],
-            [15, 12, 88, 15, 6, 87, 88, 15, 25, 20, 74, 43, 16, 67, 79, 33, 84, 10, 37],
-            [85, 76, 71, 10, 32, 15, 69, 26, 13, 37, 63, 39, 79, 52, 1, 31, 39, 16, 6]
-          ];
-        }
+				var _UPDATE_INTERVAL = 2000;
 
-  			$scope.onClick = function (points, evt) {
-    			console.log(points, evt);
-  			};
+        var _updateNow = function() {
+          $scope.SSIDs = plotDataService.getOrderedSSIDs();
+					$scope.levels = plotDataService.getOrderedLevels();
+					$scope.colors = plotDataService.getOrderedColors();
+        };
+
+				var _update = function() {
+					_updateNow();
+					$timeout(_update, _UPDATE_INTERVAL);
+				};
+
+				for (var i = 30; i >= 0; --i) {
+					$scope.labels.push(i.toString());
+				};
+
+				_update();
 			},
       function rejected() {
         console.log("plotCtrl is unavailable because Cordova is not loaded.");

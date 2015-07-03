@@ -4,6 +4,7 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
     var service = {},
         _dataManager = {},
         _selectedBSSIDs = [],
+        _showAll = false,
         _orderedBSSIDs = [],
         _orderedSSIDs = [],
         _orderedLevels = [],
@@ -18,7 +19,7 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
           '#4D5360'  // dark grey
         ],
         _colorIndex = 0,
-        _DATA_POINTS = 20,
+        _DATA_POINTS = 31,
         _UPDATE_INTERVAL = 1000;
 
     service.getOrderedSSIDs = function() {
@@ -39,21 +40,22 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
 
     /* Helper function. Add a new AP to our model */
     var _addAP = function(APData) {
+      console.log('adding AP: ' + APData.SSID);
       /* Create an array of length DATA_POINTS filled with -100 (Our arbitrary
          "0" value for RSSI) */
       var initLevels = Array.apply(null, Array(_DATA_POINTS))
                                         .map(Number.prototype.valueOf,-100);
       initLevels.shift();
-      initLevels.push(newData.level);
+      initLevels.push(APData.level);
 
-      _dataManager[newData.BSSID] = {
+      _dataManager[APData.BSSID] = {
         levelsRef: initLevels,
         index: _orderedBSSIDs.length,
         exists: true
       };
 
-      _orderedBSSIDs.push(newData.BSSID);
-      _orderedSSIDs.push(newData.SSID);
+      _orderedBSSIDs.push(APData.BSSID);
+      _orderedSSIDs.push(APData.SSID);
       _orderedLevels.push(initLevels);
       _orderedColors.push(_colorPool[(_colorIndex++ % _colorPool.length)]);
     };
@@ -84,8 +86,13 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
 
     /* Pull new data from APService, and update our model as necessary */
     var _updateModel = function() {
-      var _selectedAPData = APSelectorService.filter(APService.getNamedAPData(),
-                                                     _selectedBSSIDs);
+      var _selectedAPData;
+      if (_showAll) {
+        _selectedAPData = APService.getNamedAPData();
+      } else {
+        _selectedAPData = APSelectorService.filter(APService.getNamedAPData(),
+                                                      _selectedBSSIDs);
+      }
       for (var i = 0; i < _selectedAPData.length; ++i) {
         var newData = _selectedAPData[i],
             localData = _dataManager[newData.BSSID];
@@ -98,12 +105,14 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
         }
       }
       _cullAPs();
+      console.log('Data model: ' + JSON.stringify(_dataManager));
     };
 
     var _updateNow = function() {
-      filterSettingsService.getSettingsImmediate.done(
+      filterSettingsService.getSettingsImmediate('plot').done(
         function(settings) {
           _selectedBSSIDs = settings.selectedBSSIDs;
+          _showAll = settings.showAll;
           _updateModel();
         }
       );
