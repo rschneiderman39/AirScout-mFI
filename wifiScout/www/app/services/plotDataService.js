@@ -19,7 +19,7 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
           '#4D5360'  // dark grey
         ],
         _colorIndex = 0,
-        _DATA_POINTS = 31,
+        _DATA_POINTS = 16,
         _UPDATE_INTERVAL = 2000;
 
     service.getOrderedSSIDs = function() {

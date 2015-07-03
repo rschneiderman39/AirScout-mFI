@@ -31,7 +31,7 @@ app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServic
 					$timeout(_update, _UPDATE_INTERVAL);
 				};
 
-				for (var i = 30; i >= 0; --i) {
+				for (var i = 30; i >= 0; i -= 2) {
 					$scope.labels.push(i.toString());
 				};
 
