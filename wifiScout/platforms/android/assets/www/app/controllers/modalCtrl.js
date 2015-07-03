@@ -44,7 +44,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Initialize the modal with the settings used previously
         var _init = function() {
-          filterSettingsService.getSettingsImmediate(_view).done(
+          filterSettingsService.getInitSettings(_view).done(
             function(settings) {
               $scope.modal.allAPData = APService.getNamedAPData();
               if (settings.showAll) {

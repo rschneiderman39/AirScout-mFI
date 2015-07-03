@@ -55,7 +55,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
         };
 
         // Pull settings from filterSettingsService, and start waiting on settings changes
-        filterSettingsService.getSettingsImmediate('table').done(
+        filterSettingsService.getInitSettings('table').done(
           function(settings) {
             $scope.sortPredicate = settings.sortPredicate;
             $scope.sortReverse = settings.sortReverse;

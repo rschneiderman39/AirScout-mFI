@@ -4,11 +4,15 @@ app.factory('APSelectorService', function() {
   // Returns an array containing the elements of "APs" whose BSSID is
   // listed in "BSSIDs". Don't modify the return value.
   service.filter = function(APData, BSSIDs) {
-    var selectedAPData = [];
+    var selectedAPData = [],
+        BSSIDMap = {};
+    for (var i = 0; i < BSSIDs.length; ++i) {
+      BSSIDMap[BSSIDs[i]] = true;
+    }
     if (BSSIDs.length > 0) {
       for (var i = 0; i < APData.length; ++i) {
-        for (var j = 0; j < BSSIDs.length; ++j) {
-          if (APData[i].BSSID === BSSIDs[j]) { selectedAPData.push(APData[i]); }
+        if (BSSIDMap[APData[i].BSSID] === true) {
+          selectedAPData.push(APData[i]);
         }
       }
     }
