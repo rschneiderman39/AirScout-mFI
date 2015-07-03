@@ -11,14 +11,22 @@
   top: 18px;
 }
 
+#helpButton {
+  position: relative;
+  top: 10px;
+  left: 40px;
+  height: 45px;
+  width: 45px;
+}
+
 #top-bar {
 	background-color: #62bf01;
   height: 70px;
 }
 
 #bottom-bar {
-	padding-top: 15px;
- 	padding-bottom: 10px;
+	padding-top: 5px;
+ 	padding-bottom: 5px;
 }
 
 .footer {

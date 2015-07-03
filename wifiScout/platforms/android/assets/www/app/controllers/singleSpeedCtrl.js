@@ -1,10 +1,10 @@
 app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
-  'filterService', 'singleSpeedSettingsService', 'levelTransformService',
-  'cordovaService', function($scope, $timeout, APService, filterService,
+  'APSelectorService', 'singleSpeedSettingsService', 'levelTransformService',
+  'cordovaService', function($scope, $timeout, APService, APSelectorService,
   singleSpeedSettingsService, levelTransformService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.allAPs = [];
+        $scope.allAPData = [];
         $scope.selector = 'SSID';
         $scope.selectedSSID;
         $scope.level;
@@ -27,8 +27,8 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
         var _gauge = undefined;
 
         var _forceUpdate = function () {
-          $scope.allAPs = APService.getNamedAPs();
-          var selectedAP = filterService.select($scope.allAPs, _selectedBSSID);
+          $scope.allAPData = APService.getNamedAPData();
+          var selectedAP = APSelectorService.select($scope.allAPData, _selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
             $scope.minLevel = APService.getMinLevel(selectedAP.BSSID);
@@ -87,7 +87,7 @@ app.controller('singleSpeedCtrl', ['$scope', '$timeout', 'APService',
 
       },
       function rejected() {
-        console.log("singelSpeedCtrl is unavailable because Cordova is not loaded.");
+        console.log("singleSpeedCtrl is unavailable because Cordova is not loaded.");
       }
     )
   }]);

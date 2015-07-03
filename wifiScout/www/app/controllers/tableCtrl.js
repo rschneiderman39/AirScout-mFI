@@ -1,10 +1,10 @@
-app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
+app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
                              'filterSettingsService', 'cordovaService',
-  function($scope, $timeout, APService, filterService, filterSettingsService, cordovaService) {
+  function($scope, $timeout, APService, APSelectorService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         // Settings for this session
-        $scope.selectedAPs = [];         // The AP objects representing the APs we want to display
+        $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
         $scope.sortPredicate = 'SSID';    // Sorting options
         $scope.sortReverse = false;       // ..
         // Change the sort predicate, or reverse the sort direction
@@ -38,11 +38,11 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'filterService',
         // Update the table now
         var _forceUpdate = function() {
           if (_showAll) {
-            $scope.selectedAPs = APService.getNamedAPs();
+            $scope.selectedAPData = APService.getNamedAPData();
           } else {
             // Show only the APs whose BSSIDs match those we've selected
-            $scope.selectedAPs = filterService.filter(
-              APService.getNamedAPs(),
+            $scope.selectedAPData = APSelectorService.filter(
+              APService.getNamedAPData(),
               _selectedBSSIDs
             );
           }

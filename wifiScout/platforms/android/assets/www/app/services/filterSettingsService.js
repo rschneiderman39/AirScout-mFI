@@ -2,7 +2,7 @@
 app.factory('filterSettingsService', function() {
   var service = {},
       settings = {},
-      views = ['table']; // Views that will use this service
+      views = ['table', 'plot']; // Views that will use this service
 
   // Create an associative settings array for each view that will
   // use this service

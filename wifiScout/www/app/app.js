@@ -1,7 +1,7 @@
 /* Globals */
 var REQUIRE_CORDOVA = true
 
-var app = angular.module('app', ['ngRoute', 'fsCordova', 'checklist-model']);
+var app = angular.module('app', ['ngRoute', 'fsCordova', 'checklist-model', 'chart.js']);
 
 app.config(function ($routeProvider, $sceProvider) {
     $sceProvider.enabled(false);

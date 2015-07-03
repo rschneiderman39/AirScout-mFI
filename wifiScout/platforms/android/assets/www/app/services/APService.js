@@ -1,15 +1,15 @@
 app.factory('APService', ['rawDataService', function(rawDataService) {
   var service = {},
-      _allAPs = [],
-      _namedAPs = [],
+      _allAPData = [],
+      _namedAPData = [],
       _minLevels = {},
       _maxLevels = {};
 
-  service.getAllAPs = function() {
-    return _allAPs;
+  service.getAllAPData = function() {
+    return _allAPData;
   };
-  service.getNamedAPs = function() {
-    return _namedAPs;
+  service.getNamedAPData = function() {
+    return _namedAPData;
   };
   service.getMinLevel = function(BSSID) {
     var minLevel = _minLevels[BSSID];
@@ -29,8 +29,8 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
   };
 
   var _updateMinLevels = function() {
-    for (var i = 0; i < _allAPs.length; ++i) {
-      var ap = _allAPs[i];
+    for (var i = 0; i < _allAPData.length; ++i) {
+      var ap = _allAPData[i];
       var minLevel = _minLevels[ap.BSSID];
       if (typeof minLevel !== 'undefined') {
         if (ap.level < minLevel) {
@@ -43,8 +43,8 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
   };
 
   var _updateMaxLevels = function() {
-    for (var i = 0; i < _allAPs.length; ++i) {
-      var ap = _allAPs[i];
+    for (var i = 0; i < _allAPData.length; ++i) {
+      var ap = _allAPData[i];
       var maxLevel = _maxLevels[ap.BSSID];
       if (typeof maxLevel !== 'undefined') {
         if (ap.level > maxLevel) {
@@ -59,16 +59,16 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
   var _update = function() {
     rawDataService.getInfo()
     .done(function(info) {
-      _allAPs = info.available;
-      _namedAPs = info.available.filter(
+      _allAPData = info.available;
+      _namedAPData = info.available.filter(
         function(ap) { return ap.SSID !== ""; }
       );
       _updateMinLevels();
       _updateMaxLevels();
     })
     .fail(function() {
-      _allAPs = [];
-      _namedAPs = [];
+      _allAPData = [];
+      _namedAPData = [];
     });
     setTimeout(_update, 100);
   };

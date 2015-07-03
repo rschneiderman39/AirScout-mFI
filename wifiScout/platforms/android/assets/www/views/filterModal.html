@@ -19,8 +19,8 @@
           </div>
           <div class="modal-body">
             <ul class="list-group" id="modalList">
-              <li class="list-group-item" data-ng-repeat="ap in modal.allAPs | orderBy:modal.selector">
-                <input type="checkbox" checklist-model="modal.selectedAPs" checklist-value="ap">{{ap[modal.selector]}}
+              <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | orderBy:modal.selector">
+                <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap">{{ap[modal.selector]}}
                 </input>
               </li>
             </ul>

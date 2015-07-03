@@ -1,5 +1,6 @@
 app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
   cordovaService) {
+    console.log("IN NAV CTRL");
     cordovaService.ready.then(
       function resolved() {
         $scope.setActive = function(view) {

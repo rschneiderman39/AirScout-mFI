@@ -6,11 +6,15 @@
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
 	    console.log(deviceHeight);
+
 	    var speedometerW = .75 * deviceHeight;
 	    var speedometerH = .5 * speedometerW;
+
 	    console.log("Speedometer height is: " + speedometerH);
 	    console.log("Speedometer width is: " + speedometerW);
-	    deviceHeight = deviceHeight - 237;
+
+	    deviceHeight = deviceHeight - 225;
+
 	    $('.scrollable-list	').css('height', deviceHeight);
 	    $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
   	</script>
@@ -22,7 +26,7 @@
 			<div class="col-xs-4 apList">
 				<h5><center>Select an AP to view its connection speed:</center></h5>
 				<ul class="list-group scrollable-list">
-					<span data-ng-repeat="ap in allAPs | orderBy:selector">
+					<span data-ng-repeat="ap in allAPData | orderBy:selector">
 			    <li class="listgroupitem"
 			    		ng-class="{ active: isSelected(ap) }"
 			    		ng-click="setSelected(ap)">
@@ -36,7 +40,7 @@
 			<div class="speedometer">
 
 			</div>
-			<br>
+
 			<div class="col-xs-1">
 			</div>
 			<div class="col-xs-2 one">
