@@ -12,9 +12,3 @@
     max-height: 400px;
     padding: 15px;
 }
-
-#wrapper {
-	position: relative;
-	overflow: hidden;
-	z-index:-1;
-}

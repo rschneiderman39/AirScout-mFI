@@ -36,7 +36,7 @@ function windowCheck() {
 
 $('#ngView').css('height', document.deviceHeight-document.navBarUpPadding);
 
-$('#navTriangleDown').click(function() {
+/*$('#navTriangleDown').click(function() {
     navBarShown = false;
     $('#ngView').css('height', document.deviceHeight-document.navBarDownPadding);
     $(this).hide();
@@ -58,4 +58,23 @@ $('#navTriangleUp').click(function() {
     $('#wrapper').animate({
             marginTop: '-97px'
     });
-});
+});*/
+
+(function () {
+  var shown = 0;
+  var view = $('#slidingNav');
+  var navBar = $('#bottomBar');
+  $('#navTriangleDown').click( function() {
+    console.log('clicked!');
+    shown++;
+    view.toggleClass('view-closed');
+    if( shown % 2 == 0 ) {
+      navBar.css('bottom', '-98px');
+      view.css('top', '0px');
+    }
+    else {
+      navBar.css('bottom', '-15px');
+     view.css('top', '-70px');
+    }
+  });
+})();

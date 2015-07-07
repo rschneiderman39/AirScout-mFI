@@ -3,6 +3,7 @@
 }
 
 .filterDiv {
+  position: relative;
   height: 70px;
 }
 
@@ -20,20 +21,45 @@
 }
 
 #top-bar {
+  position: absolute;
 	background-color: #62bf01;
   height: 70px;
-  z-index: 1;
+  width: 100%;
 }
 
-#bottom-bar {
-	padding-top: 5px;
- 	padding-bottom: 5px;
+#bottomBar {
+  position: fixed;
+  bottom: -98px;
+  height: 97px;
+  width: 100%;
+	padding: 5px;
   min-height: 0px;
 }
 
-.footer {
-  position: absolute;
-  background-color: #fafafa;
+#bottomBar {
+  -webkit-transition: bottom 0.5s ease;
+  -moz-transition: bottom 0.5s ease;
+  transition: bottom 0.5s ease;
+}
+
+#slidingNav {
+  position: relative;
+  overflow-y: hidden;
+}
+
+#ngView {
+  position: relative;
+  top: 70px;
+}
+
+.view {
+  top: 0px;
+}
+
+#slidingNav {
+  -webkit-transition: top 0.5s ease !important;
+  -moz-transition: top 0.5s ease !important;
+  transition: top 0.5s ease !important;
 }
 
 .active_view {
@@ -47,12 +73,4 @@
   padding-bottom:2%;
   z-index: 100;
   display: none;
-}
-
-#navTriangleDown {
-  position: relative;
-}
-
-#navTriangleUp {
-  position: relative;
 }

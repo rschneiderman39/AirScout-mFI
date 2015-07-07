@@ -22,7 +22,7 @@
     <script src="scripts/lib/angular-chart.min.js"></script>
   </head>
   
-  <body ng-controller="navCtrl">
+  <body id="slidingNav" ng-controller="navCtrl" class="view">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
         <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
@@ -39,63 +39,61 @@
 
     <div id="ngView" class="container-fluid">
       <ng-view></ng-view>
+
+      <center>
+        <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+      </center>
     </div>
 
-    <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-      <ul class="nav nav-pills nav-justified">
-        <li role="presentation">
-          <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
-            <div class="container-fluid">
-               <img id="Parabola Img" src="images/parabola-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/performance" ng-click="setActive('Performance')" id="Performance">
-            <div class="container-fluid">
-              <img id="Performance Img" src="images/performance-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/plot" ng-click="setActive('Plot')" id="Plot">
-            <div class="container-fluid">
-              <img id="Plot Img" src="images/plot-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/table" ng-click="setActive('Table')" id="Table">
-            <div class="container-fluid">
-              <img id="Table Img" src="images/table-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/channels" ng-click="setActive('Channels')" id="Channels">
-            <div class="container-fluid">
-              <img id="Channels Img" src="images/channels-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/" ng-click="setActive('Settings')" id="Settings">
-            <div class="container-fluid">
-              <img id="Settings Img" src="images/settings-wide-selected.png" />
-            </div>
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-    <center>
-      <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-    </center>
-
-    <center>
-      <span id="navTriangleUp" class="glyphicon glyphicon-triangle-top" aria-hidden="false"></span>
-    </center>
-
+    <header>
+      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
+        <ul class="nav nav-pills nav-justified">
+          <li role="presentation">
+            <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
+              <div class="container-fluid">
+                 <img id="Parabola Img" src="images/parabola-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/performance" ng-click="setActive('Performance')" id="Performance">
+              <div class="container-fluid">
+                <img id="Performance Img" src="images/performance-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/plot" ng-click="setActive('Plot')" id="Plot">
+              <div class="container-fluid">
+                <img id="Plot Img" src="images/plot-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/table" ng-click="setActive('Table')" id="Table">
+              <div class="container-fluid">
+                <img id="Table Img" src="images/table-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/channels" ng-click="setActive('Channels')" id="Channels">
+              <div class="container-fluid">
+                <img id="Channels Img" src="images/channels-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#/" ng-click="setActive('Settings')" id="Settings">
+              <div class="container-fluid">
+                <img id="Settings Img" src="images/settings-wide-selected.png" />
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
