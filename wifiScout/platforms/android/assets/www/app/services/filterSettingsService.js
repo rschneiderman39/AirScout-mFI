@@ -1,23 +1,46 @@
-// holds the filter settings for view that use the filter modal
+/* Stores the filter settings for all view that use a filter modal. Pushes
+   new settings to listening services whenever they are changed.
+*/
 app.factory('filterSettingsService', function() {
   var service = {},
       _settings = {},
       _views = ['table', 'plot']; // Views that will use this service
 
+  /* Get a deferred object which will be resolved to a view's settings whenever
+     those settings are changed.
+     @param {String} view The name of the view that's fetching the settings
+     @returns {Deferred} A deferred object that will be resolved whenever
+              the settings for a view are changed.  In order to continuously
+              listen for settings changes, a service can include requestSettings
+              as part of the success callback for the returned deferred object.
+              The deferred object will resolve to a settings object of the form:
+                {
+                  selectedBSSIDs: <Array>,
+                  showAll: <Boolean>,
+                  sortPredicate: <String>,
+                  sortReverse: <Boolean>
+                }
+  */
   service.requestSettings = function(view) {
     return _settings[view].settings;
   };
-  service.requestInitSettings = function(view) {
-    var init_settings = _settings[view].settings;
-    _settings[view].settings = $.Deferred();
-    return init_settings.resolve(
-      {
+  /* Get a view's settings. Intended only for view initialization.
+     @param {String} The name of the view that's fetching the settings
+     @returns {Object} A settings object of the form:
+       {
+         selectedBSSIDs: <Array>,
+         showAll: <Boolean>,
+         sortPredicate: <String>,
+         sortReverse: <Boolean>
+       }
+  */
+  service.getInitSettings = function(view) {
+    return {
         selectedBSSIDs: _settings[view].selectedBSSIDs,
         showAll: _settings[view].showAll,
         sortPredicate: _settings[view].sortPredicate,
         sortReverse: _settings[view].sortReverse
-      }
-    );
+    };
   };
   service.setSelectedBSSIDs = function(view, selected) {
     if (typeof selected === 'object') {

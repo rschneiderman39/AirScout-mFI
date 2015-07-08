@@ -44,21 +44,18 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Initialize the modal with the settings used previously
         var _init = function() {
-          filterSettingsService.requestInitSettings(_view).done(
-            function(settings) {
-              $scope.$apply(function() {
-                $scope.modal.allAPData = APService.getNamedAPData();
-                if (settings.showAll) {
-                  $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
-                } else {
-                  $scope.modal.selectedAPData = APSelectorService.filter(
-                    $scope.modal.allAPData,
-                    settings.selectedBSSIDs
-                  );
-                }
-              });
+          var settings = filterSettingsService.getInitSettings(_view);
+          $scope.$apply(function() {
+            $scope.modal.allAPData = APService.getNamedAPData();
+            if (settings.showAll) {
+              $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
+            } else {
+              $scope.modal.selectedAPData = APSelectorService.filter(
+                $scope.modal.allAPData,
+                settings.selectedBSSIDs
+              );
             }
-          )
+          });
         };
 
         // Update the settings service with our new selection
@@ -76,7 +73,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
         $('#btnShow').on('click', _showAll);
         $('#btnHide').on('click', _hideAll);
 
-        // Determine the view from the hidden viewTitle DOM element
+        /* Determine the view from the hidden viewTitle DOM element. */
         var _setView = function() {
           _view = $('#viewTitle').attr('ng-class');
         }

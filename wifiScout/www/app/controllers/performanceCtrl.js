@@ -22,9 +22,9 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
           }
         };
 
-        var _selectedBSSID = "";
-
-        var _gauge = undefined;
+        var _selectedBSSID = "",
+            _gauge = undefined,
+            _UPDATE_INTERVAL = 500;
 
         var _forceUpdate = function () {
           $scope.allAPData = APService.getNamedAPData();
@@ -39,7 +39,7 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
 
         var _update = function () {
           _forceUpdate();
-          $timeout(_update, 500)
+          $timeout(_update, _UPDATE_INTERVAL)
         };
 
         var _pushSettings = function() {

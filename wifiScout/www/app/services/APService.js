@@ -1,16 +1,42 @@
+/* Maintains current data about every AP the device can see. Each view
+   should use this service whenever it wants to update its local data */
 app.factory('APService', ['rawDataService', function(rawDataService) {
   var service = {},
       _allAPData = [],
-      _namedAPData = [],
       _minLevels = {},
-      _maxLevels = {};
+      _maxLevels = {},
+      _UPDATE_INTERVAL = 100;
 
+  /* Get the data for every known AP
+     @returns {Array} An array of AP data objects of the form:
+                {
+                  BSSID: <String>,
+                  SSID: <String>,
+                  frequency: <Number>
+                  level: <Number>
+                  capabilities: <String>
+                }
+  */
   service.getAllAPData = function() {
     return _allAPData;
   };
+  /* Get the data for only the APs that advertise their SSIDs
+     @returns {Array} An array of AP data objects of the form:
+                {
+                  BSSID: <String>,
+                  SSID: <String>,
+                  frequency: <Number>
+                  level: <Number>
+                  capabilities: <String>
+                }
+  */
   service.getNamedAPData = function() {
-    return _namedAPData;
+    return _allAPData.filter(function(ap) { return ap.SSID !== ""; });
   };
+  /* Get the minimum measured RSSI for a particular AP
+     @param {String} BSSID - The hardware address of the AP
+     @returns {Number} The minimum RSSI of the AP
+  */
   service.getMinLevel = function(BSSID) {
     var minLevel = _minLevels[BSSID];
     if (typeof minLevel !== 'undefined') {
@@ -19,6 +45,10 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
       return -100;
     }
   };
+  /* Get the maximum measured RSSI for a particular AP
+     @param {String} BSSID - The hardware address of the AP
+     @returns {Number} The maximum RSSI of the AP
+  */
   service.getMaxLevel = function(BSSID) {
     var maxLevel = _maxLevels[BSSID];
     if (typeof maxLevel !== 'undefined') {
@@ -28,6 +58,7 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
     }
   };
 
+  /* Iterate through the current batch of AP data and update minimum levels */
   var _updateMinLevels = function() {
     for (var i = 0; i < _allAPData.length; ++i) {
       var ap = _allAPData[i];
@@ -42,6 +73,7 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
     }
   };
 
+  /* Iterate through the current batch of AP data and update maximum levels */
   var _updateMaxLevels = function() {
     for (var i = 0; i < _allAPData.length; ++i) {
       var ap = _allAPData[i];
@@ -56,23 +88,23 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
     }
   };
 
+  /* Get data from the device and update internal state accordingly */
   var _update = function() {
-    rawDataService.getInfo()
-    .done(function(info) {
-      _allAPData = info.available;
-      _namedAPData = info.available.filter(
-        function(ap) { return ap.SSID !== ""; }
-      );
+    rawDataService.getData()
+    .done(function(data) {
+      _allAPData = data.available;
       _updateMinLevels();
       _updateMaxLevels();
     })
     .fail(function() {
       _allAPData = [];
-      _namedAPData = [];
     });
-    setTimeout(_update, 100);
+    setTimeout(_update, _UPDATE_INTERVAL);
   };
 
+  /* INIT */
+
+  /* Start the update loop */
   _update();
 
   return service;

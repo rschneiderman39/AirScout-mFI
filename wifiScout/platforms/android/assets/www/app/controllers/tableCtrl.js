@@ -57,18 +57,7 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
           }
         };
 
-        // Pull settings from filterSettingsService, and start waiting on settings changes
-        filterSettingsService.requestInitSettings('table').done(
-          function(settings) {
-            $scope.sortPredicate = settings.sortPredicate;
-            $scope.sortReverse = settings.sortReverse;
-            _selectedBSSIDs = settings.selectedBSSIDs.slice();
-            _showAll = settings.showAll;
-            filterSettingsService.requestSettings('table').done(_onSettingsChange);
-          }
-        );
-
-        _update();
+        /* INIT */
 
         // When we navigate away, remember our sort settings
         $scope.$on('$destroy', function() {
@@ -76,6 +65,16 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
           _pushSortSettings();
         });
 
+        // Pull settings from filterSettingsService, and start waiting on settings changes
+        var settings = filterSettingsService.getInitSettings('table');
+        $scope.sortPredicate = settings.sortPredicate;
+        $scope.sortReverse = settings.sortReverse;
+        _selectedBSSIDs = settings.selectedBSSIDs.slice();
+        _showAll = settings.showAll;
+        filterSettingsService.requestSettings('table').done(_onSettingsChange);
+
+        // Start update loop
+        _update();
       },
       function rejected() {
         console.log("tableCtrl is unavailable because Cordova is not loaded.");
