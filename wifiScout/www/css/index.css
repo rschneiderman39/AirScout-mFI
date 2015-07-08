@@ -3,21 +3,21 @@
 }
 
 .filterDiv {
-  height: 70px;
+  height: 50px;
 }
 
 .filterButton {
   position: relative;
-  top: 18px;
+  top: 8px;
 }
 
 #helpContext {
-  
+
 }
 
 #helpButton {
   position: relative;
-  top: 18px;
+  top: 8px;
   left: 90px;
   height: 34px;
   width: 34px;
@@ -25,7 +25,12 @@
 
 #top-bar {
 	background-color: #62bf01;
-  height: 70px;
+  height: 50px;
+}
+
+#greenTitle {
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 #bottom-bar {
@@ -52,4 +57,8 @@
   padding-bottom:2%;
   z-index: 100;
   display: none;
+}
+
+.modal-backdrop.in {
+  opacity: 0
 }

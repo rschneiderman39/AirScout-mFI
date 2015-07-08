@@ -6,10 +6,10 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
       function resolved() {
         $scope.allAPData = [];
         $scope.selector = 'SSID';
-        $scope.selectedSSID;
-        $scope.level;
-        $scope.minLevel;
-        $scope.maxLevel;
+        $scope.selectedSSID = undefined;
+        $scope.level = undefined;
+        $scope.minLevel = undefined;
+        $scope.maxLevel = undefined;
         $scope.isSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
             return ap.BSSID === _selectedBSSID;
@@ -74,7 +74,7 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
     			};
           var target = document.getElementById('foo');
     			_gauge = new Gauge(target).setOptions(opts);
-    			_gauge.maxValue = 600;
+    			_gauge.maxValue = 700;
     			_gauge.animationSpeed = 120;
           _gauge.set(1);
         })();

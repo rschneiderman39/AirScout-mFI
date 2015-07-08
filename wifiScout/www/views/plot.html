@@ -5,14 +5,12 @@
 
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
-	    console.log(deviceHeight);
 
 	    deviceHeight = deviceHeight - 200;
 
 	    //var lineChartW = deviceHeight;
 	    var lineChartH = deviceHeight;
 
-	    console.log("Line chart height is: " + lineChartH);
 	    //console.log("Line chart width is: " + lineChartW);
 
 	   	$('#line').css('max-height', lineChartH);
@@ -24,12 +22,44 @@
 
 	<body>
 		<div ng-controller="plotCtrl">
-			<div class="container-fluid">
-				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options"></canvas>
+			<div class="container-fluid" id="plotContainer">
+				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" onclick="$('#legendModal').modal('show')"></canvas>
 			</div>
+
+			<div class="modal" id="legendModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="table-responsive">
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>Color</th>
+											<th>SSID</th>
+											<th>MAC Address</th>
+											<th>Level (dBm)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr data-ng-repeat="d in datasets | orderBy:'label'">
+											<td>
+												<div style="width:20px;height:20px" ng-style="{'background-color':d.strokeColor}"></div>
+											</td>
+											<td>{{d.label}}</td>
+											<td>{{d.BSSID}}</td>
+											<td>{{d.data[d.data.length - 1]}}
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
+
 		</div>
 
 		<div filter-modal view="plot"></div>
+
 	</body>
 </html>

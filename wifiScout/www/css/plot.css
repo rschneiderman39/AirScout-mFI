@@ -2,3 +2,13 @@
 	position: relative;
 	top: 10px;
 }
+
+#legendModal > .modal-dialog {
+  width: 55%;
+	opacity: 0.5;
+	margin: 70px auto;
+}
+
+#plotContainer {
+	margin-top: 20px;
+}

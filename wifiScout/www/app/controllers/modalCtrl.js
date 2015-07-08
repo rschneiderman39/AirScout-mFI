@@ -7,24 +7,10 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
         $scope.modal = {
           allAPData: [],             // Every AP we know about
           selectedAPData: [],        // The set of selected APs
-          selector: 'SSID',       // Determines how APs are listed
           buttonText: 'List by MAC',
         };
 
         var _view = undefined;
-
-        // Toggle between listing APs by SSID and by MAC
-        var _toggleSelector = function() {
-          $scope.$apply(function() {
-            if ($scope.modal.selector === 'SSID') {
-              $scope.modal.buttonText = 'List by SSID';
-              $scope.modal.selector = 'BSSID';
-            } else {
-              $scope.modal.buttonText = 'List by MAC';
-              $scope.modal.selector = 'SSID';
-            }
-          })
-        };
 
         // Select all APs, and show any new AP that later becomes visible
         var _showAll = function() {
@@ -69,7 +55,6 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
         // Set up button and checkbox event handlers
         $('#filterModal').on('show.bs.modal', _init);
         $('#modalList').on('click', _pushSelection);
-        $('#btnTog').on('click', _toggleSelector);
         $('#btnShow').on('click', _showAll);
         $('#btnHide').on('click', _hideAll);
 

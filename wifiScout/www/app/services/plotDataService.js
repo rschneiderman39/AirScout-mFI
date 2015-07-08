@@ -23,11 +23,13 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
 					scaleSteps: 7,
 					datasetFill: false,
 					pointDot: false,
-          bezierCurve: false
+          bezierCurve: false,
+          tooltipEvents: []
 				},
         _plotData = $.Deferred(),
         _updateInterval,
-        _numDataPoints;
+        _numDataPoints,
+        _performanceMultiplier = 1;
 
     /* API */
 
@@ -47,28 +49,35 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
       return _updateInterval;
     };
     service.increasePerformance = function() {
-      for (var i = 0; i < _datasets.length; ++i) {
-        var newLevels = [];
-        for (var j = 0; j < _datasets[i].data.length; j += 2) {
-          newLevels.push(_datasets[i].data[j]);
+      // If the number of data points can be halved...
+      if ((_numDataPoints - 1) % 2 === 0) {
+        for (var i = 0; i < _datasets.length; ++i) {
+          var newLevels = [];
+          for (var j = 0; j < _datasets[i].data.length; j += 2) {
+            newLevels.push(_datasets[i].data[j]);
+          }
+          _datasets[i].data = newLevels;
         }
-        _datasets[i].data = newLevels;
+        _updateInterval *= 2;
+        _performanceMultiplier *= 2;
+        _generateLabels();
       }
-      _updateInterval *= 2;
-      _generateLabels();
     };
     service.increaseGranularity = function() {
-      for (var i = 0; i < _datasets.length; ++i) {
-        var newLevels = [];
-        for (var j = 0; j < _datasets[i].data.length - 1; ++j) {
-          newLevels.push(_datasets[i].data[j]);
-          newLevels.push(_datasets[i].data[j]);
+      if (_performanceMultiplier > 1) {
+        for (var i = 0; i < _datasets.length; ++i) {
+          var newLevels = [];
+          for (var j = 0; j < _datasets[i].data.length - 1; ++j) {
+            newLevels.push(_datasets[i].data[j]);
+            newLevels.push(_datasets[i].data[j]);
+          }
+          newLevels.push(_datasets[i].data[_datasets[i].data.length - 1]);
+          _dataManager[_datasets[i].BSSID].datasetRef.data = newLevels;
         }
-        newLevels.push(_datasets[i].data[_datasets[i].data.length - 1]);
-        _dataManager[_datasets[i].BSSID].datasetRef.data = newLevels;
+        _updateInterval /= 2;
+        _performanceMultiplier /= 2;
+        _generateLabels();
       }
-      _updateInterval /= 2;
-      _generateLabels();
     };
 
 
@@ -214,7 +223,7 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
     /* Return a dataset that will allow the plot to render, but won't
        be visible */
     var _getPlaceholderDataset = function() {
-      return _makeDataset('placeholder', "", [-100], 'rgba(0,0,0,0)');
+      return _makeDataset("", "", [""], 'rgba(0,0,0,0)');
     };
 
 
