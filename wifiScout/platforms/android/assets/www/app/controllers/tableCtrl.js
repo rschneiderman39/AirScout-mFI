@@ -15,18 +15,19 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
 
         // true: show all APs, including new ones as they are discovered
         // false: only show selected APs
-        var _showAll = true;
-
-        // Because AP data is constantly changing, we use MAC addresses
-        // as a permanent ID for the APs we've selected
-        var _selectedBSSIDs = [];
+        var _showAll = true,
+            // Because AP data is constantly changing, we use MAC addresses
+            // as a permanent ID for the APs we've selected
+            _selectedBSSIDs = [],
+            _update = true,
+            _UPDATE_INTERVAL = 500;
 
         // Update the table whenever settings are changed
         var _onSettingsChange = function(settings) {
           _selectedBSSIDs = settings.selectedBSSIDs.slice();
           _showAll = settings.showAll;
           _forceUpdate();
-          filterSettingsService.getSettings('table').done(_onSettingsChange);
+          filterSettingsService.requestSettings('table').done(_onSettingsChange);
         };
 
         // Save our sort settings to the settings service
@@ -50,25 +51,30 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
 
         // Update the table every quantum
         var _update = function() {
-          _forceUpdate();
-          $timeout(_update, 500);
+          if (_update) {
+            _forceUpdate();
+            $timeout(_update, _UPDATE_INTERVAL);
+          }
         };
 
         // Pull settings from filterSettingsService, and start waiting on settings changes
-        filterSettingsService.getInitSettings('table').done(
+        filterSettingsService.requestInitSettings('table').done(
           function(settings) {
             $scope.sortPredicate = settings.sortPredicate;
             $scope.sortReverse = settings.sortReverse;
             _selectedBSSIDs = settings.selectedBSSIDs.slice();
             _showAll = settings.showAll;
-            filterSettingsService.getSettings('table').done(_onSettingsChange);
+            filterSettingsService.requestSettings('table').done(_onSettingsChange);
           }
         );
 
         _update();
 
         // When we navigate away, remember our sort settings
-        $scope.$on('$destroy', _pushSortSettings);
+        $scope.$on('$destroy', function() {
+          _update = false;
+          _pushSortSettings();
+        });
 
       },
       function rejected() {

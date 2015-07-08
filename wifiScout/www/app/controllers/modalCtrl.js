@@ -44,17 +44,19 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Initialize the modal with the settings used previously
         var _init = function() {
-          filterSettingsService.getInitSettings(_view).done(
+          filterSettingsService.requestInitSettings(_view).done(
             function(settings) {
-              $scope.modal.allAPData = APService.getNamedAPData();
-              if (settings.showAll) {
-                $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
-              } else {
-                $scope.modal.selectedAPData = APSelectorService.filter(
-                  $scope.modal.allAPData,
-                  settings.selectedBSSIDs
-                );
-              }
+              $scope.$apply(function() {
+                $scope.modal.allAPData = APService.getNamedAPData();
+                if (settings.showAll) {
+                  $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
+                } else {
+                  $scope.modal.selectedAPData = APSelectorService.filter(
+                    $scope.modal.allAPData,
+                    settings.selectedBSSIDs
+                  );
+                }
+              });
             }
           )
         };

@@ -1,100 +1,58 @@
+"use strict";
+
 app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
 	'plotDataService', 'cordovaService', function($scope, $timeout, APService,
 	APSelectorService, plotDataService, cordovaService) {
 		cordovaService.ready.then (
 			function resolved() {
-				/*
-				$scope.labels;
-				$scope.initSSIDs;
-				$scope.initLevels;
-				$scope.initColors;
-				$scope.options
-				*/
-  			var _labels,
-				    _options,
-				    _SSIDs,
-  			    _levels,
-				    _colors,
-						_chart;
 
-/*
-				var _processPlotData = function(data) {
-					$scope.$apply(function() {
-						$scope.SSIDs = data.orderedSSIDs;
-						$scope.levels = data.orderedLevels;
-						$scope.colors = data.orderedColors;
-					});
-					plotDataService.getPlotData().done(_processPlotData);
-				};
-*/
+  			var _ctx,
+						_plot,
+						_update = true,
+						_performanceMultiplier = 1;
 
-				var _processPlotData = function(data) {
-					_SSIDs = data.orderedSSIDs;
-					_levels = data.orderedLevels;
-					_colors = data.orderedColors;
-					_updatePlot();
-					plotDataService.getPlotData().done(_processPlotData);
-				};
-
-				var _updatePlot = function() {
-					var oldDataLen = _chart.datasets.length,
-					    newDataLen = _SSIDS.length;
-
-					for (var i = 0 ; i < newDataLen; ++i) {
-						if (i < oldDataLen) {
-							_chart.datasets[i].label = _SSIDs[i];
-							_chart.datasets[i].strokeColor = _colors[i];
-							_chart.datasets[i].data = _levels[i];
-						} else {
-							_chart.datasets.push(
-								{
-									label: _SSIDs[i],
-									fillColor: "rgba(0,0,0,0.5)",
-									pointColor: "rgba(0,0,0,1)",
-									pointStrokeColor: "#000",
-									strokeColor: _colors[i],
-									data: _levels[i]
-								}
-							);
-						}
-						if (i === newDataLen - 1 && i < oldDataLen - 1) {
-							_chart.datasets.splice(i+1, oldDataLen - newDataLen);
+				var _updatePlot = function(data) {
+					if (_update) {
+						var before = (new Date()).getTime(),
+						    renderTime;
+						plotDataService.requestPlotData().done(_updatePlot);
+						_plot = new Chart(_ctx).Line(
+							{
+								labels: plotDataService.getLabels(),
+								datasets: data
+							},
+							plotDataService.getOptions()
+						);
+						renderTime = (new Date()).getTime() - before;
+						console.log(renderTime);
+						if (renderTime >= plotDataService.getInterval()) {
+							console.log('performance');
+							_performanceMultiplier *= 2;
+							plotDataService.enablePerformanceMode();
+						} else if (_performanceMultiplier > 1 &&
+											 renderTime < plotDataService.getInterval() * .2) {
+						  console.log('normal');
+							_performanceMultiplier /= 2;
+							plotDataService.enableNormalMode();
 						}
 					}
-					_chart.update();
 				};
 
+				$scope.$on('$destroy', function() {
+					_update = false;
+				});
 
-				_labels = plotDataService.getLabels();
-				_options = plotDataService.getOptions();
-
-				plotDataService.getInitPlotData().done(
+				plotDataService.requestInitPlotData().done(
 					function(data) {
-						_SSIDs = data.orderedSSIDs;
-						_levels = data.orderedLevels;
-						_colors = data.orderedColors;
-
-						var ctx = $("#line").get(0).getContext("2d");
-						_chart = new Chart(ctx).Line(
+						_ctx = $("#line").get(0).getContext("2d");
+						_plot = new Chart(_ctx).Line(
 							{
-								labels: _labels,
-								datasets: [
-									{
-										label: "",
-            				fillColor: "rgba(220,220,220,0.5)",
-            				strokeColor: "rgba(220,220,220,1)",
-            				pointColor: "rgba(220,220,220,1)",
-            				pointStrokeColor: "#fff",
-            				data: [-100]
-	        				}
-								]
+								labels: plotDataService.getLabels(),
+								datasets: data
 							},
-							_options
+							plotDataService.getOptions()
 						);
-						/*
-						_updatePlot();
-						plotDataService.getPlotData().done(_processPlotData);
-						*/
+						plotDataService.requestPlotData().done(_updatePlot);
 					}
 				);
 			},

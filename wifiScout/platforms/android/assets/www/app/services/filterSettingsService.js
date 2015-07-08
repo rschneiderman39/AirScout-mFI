@@ -4,10 +4,10 @@ app.factory('filterSettingsService', function() {
       _settings = {},
       _views = ['table', 'plot']; // Views that will use this service
 
-  service.getSettings = function(view) {
+  service.requestSettings = function(view) {
     return _settings[view].settings;
   };
-  service.getInitSettings = function(view) {
+  service.requestInitSettings = function(view) {
     var init_settings = _settings[view].settings;
     _settings[view].settings = $.Deferred();
     return init_settings.resolve(

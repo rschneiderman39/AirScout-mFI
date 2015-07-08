@@ -24,8 +24,9 @@
 
 	<body>
 		<div ng-controller="plotCtrl">
-			<div class="container-fluid" id="lineChart">
-				<canvas id="line"></canvas>
+			<div class="container-fluid">
+				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options"></canvas>
+			</div>
 			</div>
 		</div>
 
