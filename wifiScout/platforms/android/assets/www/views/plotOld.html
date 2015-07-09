@@ -1,0 +1,65 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<link href="css/plot.css" rel="stylesheet" />
+
+		<script type="text/javascript">
+	    var deviceHeight = $(window).height();
+
+	    deviceHeight = deviceHeight - 200;
+
+	    //var lineChartW = deviceHeight;
+	    var lineChartH = deviceHeight;
+
+	    //console.log("Line chart width is: " + lineChartW);
+
+	   	$('#line').css('max-height', lineChartH);
+	   	//$('#line').css('max-width', lineChartW);
+
+	    //$('#lineChart').append("<canvas id='line' class='chart chart-line' data='data' labels='labels' legend='true' series='series' click='onClick' height='100' width='200'></canvas>");
+  	</script>
+	</head>
+
+	<body>
+		<div ng-controller="plotCtrl">
+			<div id="plotContainer">
+				<canvas id="line" onclick="$('#legendModal').modal('show')"></canvas>
+			</div>
+
+			<div class="modal" id="legendModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="table-responsive">
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>Color</th>
+											<th>SSID</th>
+											<th>MAC Address</th>
+											<th>Level (dBm)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr data-ng-repeat="d in datasets | orderBy:'label'">
+											<td>
+												<div style="width:20px;height:20px" ng-style="{'background-color':d.strokeColor}"></div>
+											</td>
+											<td>{{d.label}}</td>
+											<td>{{d.BSSID}}</td>
+											<td>{{d.data[d.data.length - 1]}}
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div filter-modal view="plot"></div>
+
+	</body>
+</html>

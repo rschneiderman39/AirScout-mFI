@@ -4,7 +4,7 @@
 app.factory('filterSettingsService', function() {
   var service = {},
       _settings = {},
-      _views = ['table', 'plot']; // Views that will use this service
+      _views = ['table', 'plot', 'parabola']; // Views that will use this service
 
   /* Get a deferred object which will be resolved to a view's settings whenever
      those settings are changed.
@@ -89,10 +89,6 @@ app.factory('filterSettingsService', function() {
         );
       }
     };
-  }
-
-  if (typeof _settings['plot'] !== 'undefined') {
-    _settings['plot'].showAll = false;
   }
 
   return service;

@@ -22,7 +22,7 @@ app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
         };
 
         $scope.usesFilterBtn = function() {
-          return _activeView === 'Table' || _activeView === 'Plot';
+          return _activeView === 'Table' || _activeView === 'Plot' || _activeView === 'Parabola';
         };
 
         var _activeView = "Settings";

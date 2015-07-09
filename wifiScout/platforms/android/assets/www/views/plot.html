@@ -1,65 +1,78 @@
-﻿<!DOCTYPE HTML>
-<html>
-	<head>
-		<link href="css/plot.css" rel="stylesheet" />
 
-		<script type="text/javascript">
-	    var deviceHeight = $(window).height();
+<head>
+  <link href="css/plot.css" rel="stylesheet" />
 
-	    deviceHeight = deviceHeight - 200;
+  <script type="text/javascript">
+    var canvasHeight = $(window).height() - 200,
+        canvasWidth = $(window).width() - 50,
+        labelMargin = Math.floor($(window).height() * 0.4).toString() + "px";
 
-	    //var lineChartW = deviceHeight;
-	    var lineChartH = deviceHeight;
+   document.getElementById('plot').height = canvasHeight;
+   document.getElementById('plot').width = canvasWidth;
 
-	    //console.log("Line chart width is: " + lineChartW);
+  // $('#yLabel').attr('style','margin-top: ' + labelMargin + '; margin-right: 10px; float:left');
+  </script>
+</head>
 
-	   	$('#line').css('max-height', lineChartH);
-	   	//$('#line').css('max-width', lineChartW);
+<body>
+  <div ng-controller="plotCtrl">
 
-	    //$('#lineChart').append("<canvas id='line' class='chart chart-line' data='data' labels='labels' legend='true' series='series' click='onClick' height='100' width='200'></canvas>");
-  	</script>
-	</head>
+      <center><canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas></center>
+      <p id="yLabel">Level (dBm)</p>
 
-	<body>
-		<div ng-controller="plotCtrl">
-			<div class="container-fluid" id="plotContainer">
-				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" onclick="$('#legendModal').modal('show')"></canvas>
-			</div>
+  <div class="modal" id="legendModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Color</th>
+                  <th>SSID</th>
+                  <th>MAC Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-ng-repeat="d in legendData | orderBy:'SSID'">
+                  <td>
+                    <div style="width:20px;height:20px" ng-style="{'background-color':d.color}"></div>
+                  </td>
+                  <td>{{d.SSID}}</td>
+                  <td>{{d.BSSID}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-			<div class="modal" id="legendModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-condensed">
-									<thead>
-										<tr>
-											<th>Color</th>
-											<th>SSID</th>
-											<th>MAC Address</th>
-											<th>Level (dBm)</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr data-ng-repeat="d in datasets | orderBy:'label'">
-											<td>
-												<div style="width:20px;height:20px" ng-style="{'background-color':d.strokeColor}"></div>
-											</td>
-											<td>{{d.label}}</td>
-											<td>{{d.BSSID}}</td>
-											<td>{{d.data[d.data.length - 1]}}
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+</div>
 
-		</div>
+  <!-- Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
+          </div>
+          <div class="modal-body">
+            Now here is context for the plot view!
+            <br>
+            <br>
+            Did it help?...
+            <br>
+            <br>
+            Yay!
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
 
-		<div filter-modal view="plot"></div>
-
-	</body>
-</html>
+    <div filter-modal view="plot"></div>
+  </body>
