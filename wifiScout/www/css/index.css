@@ -3,28 +3,31 @@
 }
 
 .filterDiv {
+  height: 50px;
   position: relative;
-  height: 70px;
 }
 
 .filterButton {
   position: relative;
-  top: 18px;
+  top: 8px;
 }
 
 #helpButton {
   position: relative;
-  top: 18px;
+  top: 8px;
   left: 90px;
   height: 34px;
   width: 34px;
 }
 
 #top-bar {
-  position: relative;
 	background-color: #62bf01;
-  height: 70px;
-  width: 100%;
+  height: 50px;
+}
+
+#greenTitle {
+	margin-top: 8px;
+	margin-bottom: 8px
 }
 
 #bottomBar {
@@ -44,6 +47,19 @@
 
 .active_view {
 	background-color: #eeeeee;
+}
+
+#dropDownOpen {
+  position:absolute;
+  bottom:0;
+  width: 100%;
+  padding-bottom:2%;
+  z-index: 100;
+  display: none;
+}
+
+.modal-backdrop.in {
+  opacity: 0
 }
 
 #currentView {

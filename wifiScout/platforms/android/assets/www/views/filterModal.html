@@ -9,21 +9,32 @@
     <span id="viewTitle" type="hidden" ng-class="{{view}}"></span>
 
     <div class="modal fade" id="filterModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-sm">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5>Choose which access points to display:</h5>
-            <button id="btnTog" class="btn btn-default btn-sm" type="button">{{modal.buttonText}}</button>
             <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
             <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
           </div>
           <div class="modal-body">
-            <ul class="list-group" id="modalList">
-              <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | orderBy:modal.selector">
-                <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap">{{ap[modal.selector]}}
-                </input>
-              </li>
-            </ul>
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th>SSID</th>
+                    <th>MAC Address</th>
+                  </tr>
+                </thead>
+                <tbody id="modalList">
+                  <tr data-ng-repeat="ap in modal.allAPData | orderBy:'SSID'">
+                    <td>
+                      <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap"> {{ap['SSID']}}</input>
+                    </td>
+                    <td>{{ap['BSSID']}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
