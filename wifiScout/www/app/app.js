@@ -33,30 +33,30 @@ var app = angular.module('app', ['ui.router', 'fsCordova', 'checklist-model', 'c
 
 app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('settings');
-    
+
     $stateProvider
-        .state('Settings', {
+        .state('settings', {
             url: "/settings",
             templateUrl: 'views/settings.html'
         })
-        .state('Channels', {
-            url: "/channels",
-            templateUrl: 'views/channels.html'
+        .state('channelTable', {
+            url: "/channelTable",
+            templateUrl: 'views/channelTable.html'
         })
-        .state('Table', {
-            url: "/table",
-            templateUrl: 'views/table.html'
+        .state('APTable', {
+            url: "/APTable",
+            templateUrl: 'views/APTable.html'
         })
-        .state('Plot', {
-            url: "/plot",
-            templateUrl: 'views/plot.html'
+        .state('timeGraph', {
+            url: "/timeGraph",
+            templateUrl: 'views/timeGraph.html'
         })
-        .state('Performance', {
-            url: "/performance",
-            templateUrl: 'views/performance.html'
+        .state('signalStrength', {
+            url: "/signalStrength",
+            templateUrl: 'views/signalStrength.html'
         })
-        .state('Parabola', {
-            url: "/parabola",
-            templateUrl: 'views/parabola.html'
+        .state('channelGraph', {
+            url: "/channelGraph",
+            templateUrl: 'views/channelGraph.html'
         })
 });

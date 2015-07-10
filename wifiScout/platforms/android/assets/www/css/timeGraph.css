@@ -1,0 +1,30 @@
+#lineChart {
+	position: relative;
+	top: 10px;
+}
+
+#legendModal > .modal-dialog {
+  width: 55%;
+	opacity: 0.5;
+	margin: 70px auto;
+}
+
+.axis-label {
+	float: left;
+}
+
+.legend-item {
+	float: left;
+}
+
+.legend-box {
+	float: left;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.legend-label {
+	float: left
+}

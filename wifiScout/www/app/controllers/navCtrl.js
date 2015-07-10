@@ -6,10 +6,34 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           var newViewLink = document.getElementById(view);
           $('a').removeClass("active_view");
           $(newViewLink).addClass("active_view");
-          document.getElementById('greenTitle').innerHTML = view;
 
-          var oldHighlightedImg = $('#' + activeView + " Img")[0],
-              newHighlightedImg = $('#' + view + " Img")[0];
+          var titleText;
+          switch (view) {
+            case "channelsGraph":
+              titleText = "Channels Graph";
+              break;
+            case "signalStrength":
+              titleText = "Signal Strength";
+              break;
+            case "timeGraph":
+              titleText = "Time Graph";
+              break;
+            case "APTable":
+              titleText = "AP Table";
+              break;
+            case "channelTable":
+              titleText = "Channel Table";
+              break;
+            case "settings":
+              titleText = "Settings";
+              break;
+            default:
+              titleText = "";
+          }
+          document.getElementById('greenTitle').innerHTML = titleText;
+
+          var oldHighlightedImg = $('#' + activeView + "-img")[0],
+              newHighlightedImg = $('#' + view + "-img")[0];
 
           oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
           newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
@@ -37,9 +61,9 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           $scope.setActive(view);
         }
 
-        var activeView = "Settings";
+        var activeView = "settings";
 
-        $scope.setActive('Settings');
+        $scope.setActive('settings');
       },
       function rejected() {
         console.log("navCtrl is unavailable because Cordova is not loaded.");
