@@ -1,8 +1,12 @@
-app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope, $state,
+app.controller('settingsCtrl', ['$scope', '$location', 'cordovaService', function($scope, $location,
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.setActive = function(view) {
+        console.log("IN SETTINGS CTRL!");
+        $scope.swipeRight = function(view) {
+          console.log("swiping right");
+          $location.path(view);
+
           var newViewLink = document.getElementById(view);
           $('a').removeClass("active_view");
           $(newViewLink).addClass("active_view");
@@ -25,24 +29,13 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           return _activeView === 'Table' || _activeView === 'Plot';
         };
 
-        $scope.swipeRight = function (view) {
-          console.log("swiping right");
-          $state.go(view);
-          $scope.setActive(view);
-        }
-
-        $scope.swipeLeft = function (view) {
-          console.log("swiping left");
-          $state.go(view);
-          $scope.setActive(view);
-        }
-
         var _activeView = "Settings";
 
         $scope.setActive('Settings');
       },
       function rejected() {
-        console.log("navCtrl is unavailable because Cordova is not loaded.");
+        console.log("settingsCtrl is unavailable because Cordova is not loaded.");
       }
     )
-  }])
+  }
+]);

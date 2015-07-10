@@ -13,7 +13,8 @@
     <!-- Scripts -->
     <script src="scripts/lib/jquery-2.1.4.min.js"></script>
     <script src="scripts/lib/angular.min.js"></script>
-    <script src="scripts/lib/angular-route.min.js"></script>
+    
+    <script src="scripts/lib/angular-ui-router.min.js"></script>
     <script src="scripts/lib/angular-touch.min.js"></script>
     <script src="scripts/lib/checklist-model.js"></script>
     <script src="scripts/lib/bootstrap.min.js"></script>
@@ -36,55 +37,53 @@
         <input type="image" src="images/questionMark2.png" alt="Submit" id="helpButton" data-toggle="modal" data-target="#helpModal">
       </div>
     </div>
+    
+    <div id="currentView" ui-view></div>
 
-    <div id="ngView" class="container-fluid">
-      <ng-view></ng-view>
-
-      <center>
-        <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-      </center>
-    </div>
+    <center>
+      <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </center>
 
     <header>
       <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
         <ul class="nav nav-pills nav-justified">
           <li role="presentation">
-            <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
+            <a ui-sref="Parabola" ng-click="setActive('Parabola')" id="Parabola">
               <div class="container-fluid">
                  <img id="Parabola Img" src="images/parabola-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a href="#/performance" ng-click="setActive('Performance')" id="Performance">
+            <a ui-sref="Performance" ng-click="setActive('Performance')" id="Performance">
               <div class="container-fluid">
                 <img id="Performance Img" src="images/performance-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a href="#/plot" ng-click="setActive('Plot')" id="Plot">
+            <a ui-sref="Plot" ng-click="setActive('Plot')" id="Plot">
               <div class="container-fluid">
                 <img id="Plot Img" src="images/plot-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a href="#/table" ng-click="setActive('Table')" id="Table">
+            <a ui-sref="Table" ng-click="setActive('Table')" id="Table">
               <div class="container-fluid">
                 <img id="Table Img" src="images/table-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a href="#/channels" ng-click="setActive('Channels')" id="Channels">
+            <a ui-sref="Channels" ng-click="setActive('Channels')" id="Channels">
               <div class="container-fluid">
                 <img id="Channels Img" src="images/channels-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a href="#/" ng-click="setActive('Settings')" id="Settings">
+            <a ui-sref="Settings" ng-click="setActive('Settings')" id="Settings">
               <div class="container-fluid">
                 <img id="Settings Img" src="images/settings-wide-selected.png" />
               </div>
@@ -93,7 +92,7 @@
         </ul>
       </nav>
     </header>
-    
+
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
@@ -115,6 +114,7 @@
     <script src="app/controllers/navCtrl.js"></script>
     <script src="app/controllers/performanceCtrl.js"></script>
     <script src="app/controllers/plotCtrl.js"></script>
+    <script src="app/controllers/settingsCtrl.js"></script>
 
     <script src="app/directives/filterModal.js"></script>
 

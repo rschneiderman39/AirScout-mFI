@@ -1,32 +1,45 @@
-﻿<head>
-  <link href="css/parabola.css" rel="stylesheet" />
-</head>
+﻿<!DOCTYPE HTML>
+<html>
+  <head>
+    <link href="css/parabola.css" rel="stylesheet" />
+    <script src="scripts/parabola.js"></script>
+  </head>
 
-<body>
-  <div id="wrapper">
-    <h1>THIS IS THE PARABOLA VIEW</h1>
-  </div>
+  <body>
+    <div class="container-fluid" ng-swipe-left="swipeLeft('Performance')">
+      <h1><br>
+        THIS 
+        <br>
+        IS 
+        <br>
+        THE 
+        <br>
+        PARABOLA
+        <br>
+        VIEW</h1>
+    </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
-        </div>
-        <div class="modal-body">
-          Now here is context for the parabola view!
-          <br>
-          <br>
-          Did it help?...
-          <br>
-          <br>
-          Yay!
-        </div>
-        <div class="modal-footer">
+    <!-- Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
+          </div>
+          <div class="modal-body">
+            Now here is context for the parabola view!
+            <br>
+            <br>
+            Did it help?...
+            <br>
+            <br>
+            Yay!
+          </div>
+          <div class="modal-footer">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-<body>
+  <body>
+</html>

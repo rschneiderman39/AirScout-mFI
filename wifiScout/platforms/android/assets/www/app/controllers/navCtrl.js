@@ -1,4 +1,4 @@
-app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
+app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope, $state,
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
@@ -24,6 +24,18 @@ app.controller('navCtrl', ['$scope', 'cordovaService', function($scope,
         $scope.usesFilterBtn = function() {
           return _activeView === 'Table' || _activeView === 'Plot';
         };
+
+        $scope.swipeRight = function (view) {
+          console.log("swiping right");
+          $state.go(view);
+          $scope.setActive(view);
+        }
+
+        $scope.swipeLeft = function (view) {
+          console.log("swiping left");
+          $state.go(view);
+          $scope.setActive(view);
+        }
 
         var _activeView = "Settings";
 

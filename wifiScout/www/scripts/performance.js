@@ -1,12 +1,7 @@
-var deviceHeight = $(window).height();
-console.log(deviceHeight);
-
-var speedometerW = .75 * deviceHeight;
+var speedometerW = .75 * document.deviceHeight;
 var speedometerH = .5 * speedometerW;
-console.log("Speedometer height is: " + speedometerH);
-console.log("Speedometer width is: " + speedometerW);
 
-deviceHeight = deviceHeight - 225;
+var viewHeight = document.deviceHeight - 225;
 
-$('.scrollable-list	').css('height', deviceHeight);
+$('.scrollable-list	').css('height', viewHeight);
 $('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");

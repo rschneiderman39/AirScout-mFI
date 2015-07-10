@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<link href="css/table.css" rel="stylesheet" />
@@ -6,13 +7,13 @@
 	</head>
 
 	<body>
-		<div ng-controller="tableCtrl">
-				<div class="container-fluid">
-			  	<div class="row">
-						<!-- table -->
-			      <table class="table table-striped">
-			      	<div class="container-fluid">
-			        <thead>
+		<div ng-swipe-right="swipeRight('Plot')" ng-swipe-left="swipeLeft('Channels')" ng-controller="tableCtrl">
+			<div class="container-fluid">
+			  <div class="row">
+					<!-- table -->
+			    <table class="table table-striped">
+			      <div class="container-fluid">
+			      	<thead>
 			          <tr>
 			            <th class="col-xs-3 ssid">
 			            	<a href="" ng-click="order('SSID')">SSID</a>
@@ -36,21 +37,20 @@
 			            </th>
 			          </tr>
 			        </thead>
-			        </div>
-			        <tbody>
-			          <tr data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
-			            <td class="col-xs-3">{{ap.SSID}}</td>
-			            <td class="col-xs-3">{{ap.BSSID}}</td>
-			            <td class="col-xs-2">{{ap.frequency}}</td>
-			            <td class="col-xs-2">{{ap.level}}</td>
-			            <td class="col-xs-2">{{ap.capabilities}}</td>
-			          </tr>
-			        </tbody>
-			      </table>
-			    </div>
-				</div>
+			      </div>
+			    	<tbody>
+			    		<tr data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
+			      		<td class="col-xs-3">{{ap.SSID}}</td>
+			      		<td class="col-xs-3">{{ap.BSSID}}</td>
+			      		<td class="col-xs-2">{{ap.frequency}}</td>
+			      		<td class="col-xs-2">{{ap.level}}</td>
+			      		<td class="col-xs-2">{{ap.capabilities}}</td>
+			      	</tr>
+			    	</tbody>
+			    </table>
+			  </div>
 			</div>
-		
+		</div>	
 		<div filter-modal view="table"></div>
 	</body>
 </html>
