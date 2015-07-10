@@ -2,11 +2,11 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.setActive = function(view) {
+        $scope.setActive = function(title, view) {
           var newViewLink = document.getElementById(view);
           $('a').removeClass("active_view");
           $(newViewLink).addClass("active_view");
-          document.getElementById('greenTitle').innerHTML = view;
+          document.getElementById('greenTitle').innerHTML = title;
 
           var oldHighlightedImg = $('#' + activeView + " Img")[0],
               newHighlightedImg = $('#' + view + " Img")[0];
@@ -25,7 +25,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         };
 
         $scope.usesFilterBtn = function() {
-          return activeView === 'AP Table' || activeView === 'Time Graph' || activeView === 'Channel Graph';
+          return activeView === 'apTable' || activeView === 'timeGraph' || activeView === 'channelGraph';
         };
 
         $scope.swipeRight = function (view) {
