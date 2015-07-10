@@ -1,7 +1,7 @@
-app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
-  'APSelectorService', 'performanceSettingsService', 'levelTransformService',
+app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
+  'APSelectorService', 'signalStrengthSettingsService', 'levelTransformService',
   'cordovaService', function($scope, $timeout, APService, APSelectorService,
-  performanceSettingsService, levelTransformService, cordovaService) {
+  signalStrengthSettingsService, levelTransformService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPData = [];
@@ -43,13 +43,13 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
         };
 
         var _pushSettings = function() {
-          performanceSettingsService.setSelectedBSSID(_selectedBSSID);
-          performanceSettingsService.setSelectedSSID($scope.selectedSSID);
+          signalStrengthSettingsService.setSelectedBSSID(_selectedBSSID);
+          signalStrengthSettingsService.setSelectedSSID($scope.selectedSSID);
         };
 
         var _pullSettings = function() {
-          _selectedBSSID = performanceSettingsService.getSelectedBSSID();
-          $scope.selectedSSID = performanceSettingsService.getSelectedSSID();
+          _selectedBSSID = signalStrengthSettingsService.getSelectedBSSID();
+          $scope.selectedSSID = signalStrengthSettingsService.getSelectedSSID();
         };
 
         (function initGauge() {
@@ -87,7 +87,7 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
 
       },
       function rejected() {
-        console.log("performanceCtrl is unavailable because Cordova is not loaded.");
+        console.log("signalStrengthCtrl is unavailable because Cordova is not loaded.");
       }
     )
   }]);

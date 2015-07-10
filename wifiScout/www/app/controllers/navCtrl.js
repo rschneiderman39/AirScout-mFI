@@ -22,11 +22,12 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         };
 
         $scope.usesFilterBtn = function() {
-          return _activeView === 'Table' || _activeView === 'Plot';
+          return _activeView === 'AP Table' || _activeView === 'Time Graph';
         };
 
         $scope.swipeRight = function (view) {
           console.log("swiping right");
+          console.log(view);
           $state.go(view);
           $scope.setActive(view);
         }

@@ -1,4 +1,4 @@
-app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
+app.controller('apTableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
                              'filterSettingsService', 'cordovaService',
   function($scope, $timeout, APService, APSelectorService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(

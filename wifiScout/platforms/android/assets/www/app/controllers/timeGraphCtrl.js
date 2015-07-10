@@ -1,6 +1,6 @@
-app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
-	'plotDataService', 'cordovaService', function($scope, $timeout, APService,
-	APSelectorService, plotDataService, cordovaService) {
+app.controller('timeGraphCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
+	'timeGraphDataService', 'cordovaService', function($scope, $timeout, APService,
+	APSelectorService, timeGraphDataService, cordovaService) {
 		cordovaService.ready.then (
 			function resolved() {
 				$scope.labels = [];
@@ -21,9 +21,9 @@ app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServic
 				var _UPDATE_INTERVAL = 2000;
 
         var _updateNow = function() {
-          $scope.SSIDs = plotDataService.getOrderedSSIDs();
-					$scope.levels = plotDataService.getOrderedLevels();
-					$scope.colors = plotDataService.getOrderedColors();
+          $scope.SSIDs = timeGraphDataService.getOrderedSSIDs();
+					$scope.levels = timeGraphDataService.getOrderedLevels();
+					$scope.colors = timeGraphDataService.getOrderedColors();
         };
 
 				var _update = function() {
@@ -38,7 +38,7 @@ app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServic
 				_update();
 			},
       function rejected() {
-        console.log("plotCtrl is unavailable because Cordova is not loaded.");
+        console.log("timeGraphCtrl is unavailable because Cordova is not loaded.");
       }
 		)
 	}

@@ -1,13 +1,13 @@
 ﻿<!DOCTYPE HTML>
 <html>
 	<head>
-		<link href="css/plot.css" rel="stylesheet" />
-		<script src="scripts/plot.js"></script>
+		<link href="css/timeGraph.css" rel="stylesheet" />
+		<script src="scripts/timeGraph.js"></script>
 	</head>
 
 	<body>
-		<div ng-swipe-right="swipeRight('Performance')" ng-swipe-left="swipeLeft('Table')">
-			<div ng-controller="plotCtrl">
+		<div ng-swipe-right="swipeRight('Signal Strength')" ng-swipe-left="swipeLeft('AP Table')">
+			<div ng-controller="timeGraphCtrl">
 				<div class="container-fluid" id="lineChart">
 					<canvas id="line" class="chart chart-line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" chart="chart"></canvas>
 				</div>

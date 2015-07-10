@@ -35,30 +35,6 @@ function windowCheck() {
     return mobileDevice;
 };
 
-/*$('#navTriangleDown').click(function() {
-    navBarShown = false;
-    $('#ngView').css('height', document.deviceHeight-document.navBarDownPadding);
-    $(this).hide();
-    $('#navTriangleUp').show();
-    $('#bottom-bar').slideToggle('1500');
-
-    $('#wrapper').animate({
-            marginTop: '0px'
-    });
-});
-
-$('#navTriangleUp').click(function() {
-    navBarShown = false;
-    $('#ngView').css('height', document.deviceHeight-document.navBarUpPadding);
-    $(this).hide();
-    $('#navTriangleDown').show();
-    $('#bottom-bar').slideToggle('1500');
-
-    $('#wrapper').animate({
-            marginTop: '-97px'
-    });
-});*/
-
 (function () {
   var shown = 0;
   var navBar = $('#bottomBar');

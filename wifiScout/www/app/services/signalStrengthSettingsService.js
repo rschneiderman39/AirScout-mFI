@@ -1,4 +1,4 @@
-app.factory('performanceSettingsService', function() {
+app.factory('signalStrengthSettingsService', function() {
   var service = {},
       _settings = {
         selectedBSSID: "",

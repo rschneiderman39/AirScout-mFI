@@ -1,4 +1,4 @@
-app.factory('plotDataService', ['APService', 'filterSettingsService',
+app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
   'APSelectorService', function(APService, filterSettingsService,
   APSelectorService) {
     var service = {},
