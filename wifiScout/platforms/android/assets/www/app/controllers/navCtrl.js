@@ -11,6 +11,9 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           var oldHighlightedImg = $('#' + activeView + " Img")[0],
               newHighlightedImg = $('#' + view + " Img")[0];
 
+          console.log(oldHighlightedImg.src);
+          console.log(newHighlightedImg.src);
+
           oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
           newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
 
@@ -22,7 +25,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         };
 
         $scope.usesFilterBtn = function() {
-          return activeView === 'Table' || activeView === 'Plot' || activeView === 'Parabola';
+          return activeView === 'AP Table' || activeView === 'Time Graph' || activeView === 'Channel Graph';
         };
 
         $scope.swipeRight = function (view) {

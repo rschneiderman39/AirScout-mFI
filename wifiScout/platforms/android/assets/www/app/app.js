@@ -39,23 +39,23 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: "/settings",
             templateUrl: 'views/settings.html'
         })
-        .state('Channel Table', {
+        .state('channelTable', {
             url: "/channelTable",
             templateUrl: 'views/channelTable.html'
         })
-        .state('AP Table', {
+        .state('apTable', {
             url: "/apTable",
             templateUrl: 'views/apTable.html'
         })
-        .state('Time Graph', {
+        .state('timeGraph', {
             url: "/timeGraph",
             templateUrl: 'views/timeGraph.html'
         })
-        .state('Signal Strength', {
+        .state('signalStrength', {
             url: "/signalStrength",
             templateUrl: 'views/signalStrength.html'
         })
-        .state('Channel Graph', {
+        .state('channelGraph', {
             url: "/channelGraph",
             templateUrl: 'views/channelGraph.html'
         })
