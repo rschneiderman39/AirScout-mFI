@@ -12,43 +12,43 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
         $scope.maxLevel = undefined;
         $scope.isSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
-            return ap.BSSID === _selectedBSSID;
+            return ap.BSSID === selectedBSSID;
           }
         };
         $scope.setSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
-            _selectedBSSID = ap.BSSID;
+            selectedBSSID = ap.BSSID;
             $scope.selectedSSID = ap.SSID;
           }
         };
 
-        var _selectedBSSID = "",
-            _gauge = undefined,
-            _UPDATE_INTERVAL = 500;
+        var selectedBSSID = "",
+            gauge = undefined,
+            UPDATE_INTERVAL = 500;
 
-        var _forceUpdate = function () {
+        var forceUpdate = function () {
           $scope.allAPData = APService.getNamedAPData();
-          var selectedAP = APSelectorService.select($scope.allAPData, _selectedBSSID);
+          var selectedAP = APSelectorService.select($scope.allAPData, selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
             $scope.minLevel = APService.getMinLevel(selectedAP.BSSID);
             $scope.maxLevel = APService.getMaxLevel(selectedAP.BSSID);
-            _gauge.set(levelTransformService.gaugeTransform($scope.level));
+            gauge.set(levelTransformService.gaugeTransform($scope.level));
           }
         };
 
-        var _update = function () {
-          _forceUpdate();
-          $timeout(_update, _UPDATE_INTERVAL)
+        var update = function () {
+          forceUpdate();
+          $timeout(update, UPDATE_INTERVAL)
         };
 
-        var _pushSettings = function() {
-          performanceSettingsService.setSelectedBSSID(_selectedBSSID);
+        var pushSettings = function() {
+          performanceSettingsService.setSelectedBSSID(selectedBSSID);
           performanceSettingsService.setSelectedSSID($scope.selectedSSID);
         };
 
-        var _pullSettings = function() {
-          _selectedBSSID = performanceSettingsService.getSelectedBSSID();
+        var pullSettings = function() {
+          selectedBSSID = performanceSettingsService.getSelectedBSSID();
           $scope.selectedSSID = performanceSettingsService.getSelectedSSID();
         };
 
@@ -73,17 +73,17 @@ app.controller('performanceCtrl', ['$scope', '$timeout', 'APService',
     			  generateGradient: true
     			};
           var target = document.getElementById('foo');
-    			_gauge = new Gauge(target).setOptions(opts);
-    			_gauge.maxValue = 700;
-    			_gauge.animationSpeed = 120;
-          _gauge.set(1);
+    			gauge = new Gauge(target).setOptions(opts);
+    			gauge.maxValue = 700;
+    			gauge.animationSpeed = 120;
+          gauge.set(1);
         })();
 
-        _pullSettings();
+        pullSettings();
 
-        $scope.$on('$destroy', _pushSettings);
+        $scope.$on('$destroy', pushSettings);
 
-        _update();
+        update();
 
       },
       function rejected() {

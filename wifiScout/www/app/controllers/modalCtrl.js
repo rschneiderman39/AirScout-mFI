@@ -10,27 +10,27 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
           buttonText: 'List by MAC',
         };
 
-        var _view = undefined;
+        var view = undefined;
 
         // Select all APs, and show any new AP that later becomes visible
-        var _showAll = function() {
-          filterSettingsService.setShowAll(_view, true);
-          filterSettingsService.setSelectedBSSIDs(_view, []);
+        var showAll = function() {
+          filterSettingsService.setShowAll(view, true);
+          filterSettingsService.setSelectedBSSIDs(view, []);
           $scope.$apply(function() {
             $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
           });
         }
 
         // Unselect all APs
-        var _hideAll = function() {
-          filterSettingsService.setShowAll(_view, false);
-          filterSettingsService.setSelectedBSSIDs(_view, []);
+        var hideAll = function() {
+          filterSettingsService.setShowAll(view, false);
+          filterSettingsService.setSelectedBSSIDs(view, []);
           $scope.$apply(function() { $scope.modal.selectedAPData = []; });
         }
 
         // Initialize the modal with the settings used previously
-        var _init = function() {
-          var settings = filterSettingsService.getInitSettings(_view);
+        var init = function() {
+          var settings = filterSettingsService.getSettings(view);
           $scope.$apply(function() {
             $scope.modal.allAPData = APService.getNamedAPData();
             if (settings.showAll) {
@@ -45,26 +45,26 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
         };
 
         // Update the settings service with our new selection
-        var _pushSelection = function() {
-          filterSettingsService.setShowAll(_view, false);
-          filterSettingsService.setSelectedBSSIDs(_view, $scope.modal.selectedAPData.map(
+        var pushSelection = function() {
+          filterSettingsService.setShowAll(view, false);
+          filterSettingsService.setSelectedBSSIDs(view, $scope.modal.selectedAPData.map(
             function(ap) { return ap.BSSID; }
           ));
         };
 
         // Set up button and checkbox event handlers
-        $('#filterModal').on('show.bs.modal', _init);
-        $('#modalList').on('click', _pushSelection);
-        $('#btnShow').on('click', _showAll);
-        $('#btnHide').on('click', _hideAll);
+        $('#filterModal').on('show.bs.modal', init);
+        $('#modalList').on('click', pushSelection);
+        $('#btnShow').on('click', showAll);
+        $('#btnHide').on('click', hideAll);
 
         /* Determine the view from the hidden viewTitle DOM element. */
-        var _setView = function() {
-          _view = $('#viewTitle').attr('ng-class');
+        var setView = function() {
+          view = $('#viewTitle').attr('ng-class');
         }
 
         // This is needed because of the late binding of the ng-class attribute
-        setTimeout(_setView, 0);
+        setTimeout(setView, 0);
       },
       function rejected() {
         console.log("modalCtrl is unavailable because Cordova is not loaded.")

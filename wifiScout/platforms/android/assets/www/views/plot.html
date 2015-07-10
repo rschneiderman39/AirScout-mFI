@@ -1,77 +1,52 @@
-﻿<!DOCTYPE HTML>
-<html>
-	<head>
-		<link href="css/plot.css" rel="stylesheet" />
-<<<<<<< HEAD
 
-		<script type="text/javascript">
-	    var deviceHeight = $(window).height();
+<head>
+  <link href="css/plot.css" rel="stylesheet" />
 
-	    deviceHeight = deviceHeight - 200;
+  <script type="text/javascript">
+    var canvasHeight = $(window).height() - 220,
+        canvasWidth = $(window).width() - 50;
 
-	    //var lineChartW = deviceHeight;
-	    var lineChartH = deviceHeight;
+   document.getElementById('plot').height = canvasHeight;
+   document.getElementById('plot').width = canvasWidth;
+  </script>
+</head>
 
-	    //console.log("Line chart width is: " + lineChartW);
+<body>
+  <div ng-controller="plotCtrl">
 
-	   	$('#line').css('max-height', lineChartH);
-	   	//$('#line').css('max-width', lineChartW);
+      <center><canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas></center>
 
-	    //$('#lineChart').append("<canvas id='line' class='chart chart-line' data='data' labels='labels' legend='true' series='series' click='onClick' height='100' width='200'></canvas>");
-  	</script>
-	</head>
+      <p class="axis-label">Level (dBm)</p>
 
-	<body>
-		<div ng-controller="plotCtrl">
-			<div class="container-fluid" id="plotContainer">
-				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" onclick="$('#legendModal').modal('show')"></canvas>
-=======
-		<script src="scripts/plot.js"></script>
-	</head>
+      <div class="legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'">
+        <div class="legend-square" ng-style="{'background-color':d.color}"></div>
+        <p class="legend-label"> {{d.SSID}} </p>
+      </div>
 
-	<body>
-		<div ng-swipe-right="swipeRight('Performance')" ng-swipe-left="swipeLeft('Table')">
-			<div ng-controller="plotCtrl">
-				<div class="container-fluid" id="lineChart">
-					<canvas id="line" class="chart chart-line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" chart="chart"></canvas>
-				</div>
->>>>>>> 11bc32c946a60c97bf9bba5bbe9f487b3389929b
-			</div>
+  </div>
 
-			<div class="modal" id="legendModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-condensed">
-									<thead>
-										<tr>
-											<th>Color</th>
-											<th>SSID</th>
-											<th>MAC Address</th>
-											<th>Level (dBm)</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr data-ng-repeat="d in datasets | orderBy:'label'">
-											<td>
-												<div style="width:20px;height:20px" ng-style="{'background-color':d.strokeColor}"></div>
-											</td>
-											<td>{{d.label}}</td>
-											<td>{{d.BSSID}}</td>
-											<td>{{d.data[d.data.length - 1]}}
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+  <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
+          </div>
+          <div class="modal-body">
+            Now here is context for the plot view!
+            <br>
+            <br>
+            Did it help?...
+            <br>
+            <br>
+            Yay!
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
 
-		</div>
-
-		<div filter-modal view="plot"></div>
-
-	</body>
-</html>
+    <div filter-modal view="plot"></div>
+  </body>

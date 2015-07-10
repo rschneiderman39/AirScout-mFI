@@ -1,63 +1,37 @@
-app.controller('plotCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
-	'plotDataService', 'cordovaService', function($scope, $timeout, APService,
-	APSelectorService, plotDataService, cordovaService) {
-		cordovaService.ready.then (
-			function resolved() {
+app.controller('plotCtrl', ['$scope', 'plotDataService', 'cordovaService',
+  function($scope, plotDataService, cordovaService) {
+    cordovaService.ready.then(
+      function resolved() {
+        $scope.legendData = undefined;
 
-				$scope.datasets = undefined;
+        var initLegend = function() {
+          $scope.$apply(function() {
+            $scope.legendData = plotDataService.getLegendData();
+          });
+        };
 
-  			var _ctx,
-						_plot,
-						_update = true;
+        var plot = plotDataService.getPlot();
+        plot.streamTo($('#plot')[0], 1000);
 
-				var _updatePlot = function(datasets) {
-					/* Ensure the plot doesn't try to re-render when we are in another view */
-					if (_update) {
-						plotDataService.requestDatasets().done(_updatePlot);
-						$scope.$apply(function() {
-								$scope.datasets = datasets;
-						});
-						var before = (new Date()).getTime(),
-						    data = {
-									labels: plotDataService.getLabels(),
-									datasets: datasets
-								};
-						/* re-render the plot */
-						_plot = new Chart(_ctx).Line(data, plotDataService.getOptions());
-						var renderTime = (new Date()).getTime() - before;
-						console.log(renderTime);
-						/* If the plot is rendering too slowly, decrease the
-						   granularity of the data */
-						if (renderTime >= plotDataService.getInterval()) {
-							plotDataService.increasePerformance();
-						} else if (renderTime < plotDataService.getInterval() * .2) {
-							plotDataService.increaseGranularity();
-						}
-					}
-				};
+        $scope.$on('$destroy', function() {
+          plot.stop();
+        });
 
-				/* INIT */
+        $('#legendModal').on('show.bs.modal', initLegend);
 
-				$scope.$on('$destroy', function() {
-					_update = false;
-				});
+        var updateLegend = function(data) {
+          $scope.$apply(function() {
+            $scope.legendData = data;
+          });
+          plotDataService.requestLegendData().done(updateLegend);
+        };
 
-				/* Initialize the plot */
-				var data = plotDataService.getInitDatasets();
-				_ctx = $("#line").get(0).getContext("2d");
-				_plot = new Chart(_ctx).Line(
-					{
-						labels: plotDataService.getLabels(),
-						datasets: data
-					},
-					plotDataService.getOptions()
-				);
-				/* Update the plot with the next dataset as soon as it's available */
-				plotDataService.requestDatasets().done(_updatePlot);
-			},
+        $scope.legendData = plotDataService.getLegendData();
+        console.log(JSON.stringify($scope.legendData));
+        plotDataService.requestLegendData().done(updateLegend);
+      },
       function rejected() {
-        console.log("plotCtrl is unavailable because Cordova is not loaded.");
+        console.log('plotCtrl is unavaiable because Cordova is not loaded.');
       }
-		)
-	}
-]);
+    );
+}]);

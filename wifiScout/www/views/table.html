@@ -4,6 +4,12 @@
 		<link href="css/table.css" rel="stylesheet" />
 		<link href="css/sortArrow.css" rel="stylesheet" />
 		<script src="scripts/table.js"></script>
+
+		<script type="text/javascript">
+			var deviceHeight = $(window).height();
+			deviceHeight = deviceHeight - 212;
+			$('.table-striped tbody').css('height', deviceHeight);
+		</script>
 	</head>
 
 	<body>
@@ -50,7 +56,8 @@
 			    </table>
 			  </div>
 			</div>
-		</div>	
+		</div>
 		<div filter-modal view="table"></div>
 	</body>
+
 </html>
