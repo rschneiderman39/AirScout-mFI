@@ -1,5 +1,5 @@
 /* Stores the settings for the performance view */
-app.factory('signalStrengthSettingsService', function() {
+app.factory('performanceSettingsService', function() {
   var service = {},
       settings = {
         selectedBSSID: "",

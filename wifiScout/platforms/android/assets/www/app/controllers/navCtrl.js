@@ -8,21 +8,21 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           $(newViewLink).addClass("active_view");
           document.getElementById('greenTitle').innerHTML = view;
 
-          var oldHighlightedImg = $('#' + _activeView + " Img")[0],
+          var oldHighlightedImg = $('#' + activeView + " Img")[0],
               newHighlightedImg = $('#' + view + " Img")[0];
 
           oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
           newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
 
-          _activeView = view;
+          activeView = view;
         };
 
         $scope.isActive = function(view) {
-          return _activeView === view;
+          return activeView === view;
         };
 
         $scope.usesFilterBtn = function() {
-          return _activeView === 'AP Table' || _activeView === 'Time Graph';
+          return activeView === 'Table' || activeView === 'Plot' || activeView === 'Parabola';
         };
 
         $scope.swipeRight = function (view) {
@@ -38,7 +38,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           $scope.setActive(view);
         }
 
-        var _activeView = "Settings";
+        var activeView = "Settings";
 
         $scope.setActive('Settings');
       },
@@ -46,4 +46,4 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         console.log("navCtrl is unavailable because Cordova is not loaded.");
       }
     )
-  }])
+  }]);

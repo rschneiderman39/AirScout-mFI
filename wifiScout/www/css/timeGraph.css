@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-#lineChart {
-	position: relative;
-	top: 10px;
-}
-
-<<<<<<< HEAD
-=======
->>>>>>> interface-changes
 #legendModal > .modal-dialog {
   width: 55%;
 	opacity: 0.5;
@@ -33,10 +24,3 @@
 .legend-label {
 	float: left;
 }
-=======
-#wrapper {
-	position: relative;
-	overflow: hidden;
-	z-index:-1;
-}
->>>>>>> 11bc32c946a60c97bf9bba5bbe9f487b3389929b

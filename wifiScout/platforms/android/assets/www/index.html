@@ -5,31 +5,32 @@
     <title class="text-center"></title>
 
     <!-- CSS Stylesheets -->
-    <link href="css/index.css" rel="stylesheet" />
     <link href="css/angular-chart.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
 
     <!-- Scripts -->
     <script src="scripts/lib/jquery-2.1.4.min.js"></script>
     <script src="scripts/lib/angular.min.js"></script>
-    
-    <script src="scripts/lib/angular-ui-router.min.js"></script>
+    <script src="scripts/lib/angular-route.min.js"></script>
     <script src="scripts/lib/angular-touch.min.js"></script>
+    <script src="scripts/lib/angular-ui-router.min.js"></script>
     <script src="scripts/lib/checklist-model.js"></script>
     <script src="scripts/lib/bootstrap.min.js"></script>
     <script src="scripts/lib/gauge.min.js"></script>
     <script src="scripts/lib/Chart.min.js"></script>
     <script src="scripts/lib/angular-chart.min.js"></script>
+    <script src="scripts/lib/smoothie.js"></script>
   </head>
-  
+
   <body id="slidingNav" ng-controller="navCtrl" class="view">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
         <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
       </div>
       <div class="col-xs-4" id="title">
-          <center><h1 id="greenTitle"></h1></center>
+          <center><h2 id="greenTitle"></h2></center>
       </div>
       <div class="col-xs-2">
       </div>
