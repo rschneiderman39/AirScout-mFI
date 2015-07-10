@@ -3,7 +3,17 @@
 	<head>
 		<link href="css/apTable.css" rel="stylesheet" />
 		<link href="css/sortArrow.css" rel="stylesheet" />
+<<<<<<< HEAD:wifiScout/www/views/apTable.html
 		<script src="scripts/apTable.js"></script>
+=======
+		<script src="scripts/table.js"></script>
+
+		<script type="text/javascript">
+			var deviceHeight = $(window).height();
+			deviceHeight = deviceHeight - 212;
+			$('.table-striped tbody').css('height', deviceHeight);
+		</script>
+>>>>>>> b3e2e152276c0c0bf666b6243254c71d7ab78ae9:wifiScout/www/views/table.html
 	</head>
 
 	<body>
@@ -50,7 +60,8 @@
 			    </table>
 			  </div>
 			</div>
-		</div>	
+		</div>
 		<div filter-modal view="table"></div>
 	</body>
+
 </html>
