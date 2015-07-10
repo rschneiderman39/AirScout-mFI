@@ -15,45 +15,45 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
 
         // true: show all APs, including new ones as they are discovered
         // false: only show selected APs
-        var _showAll = true,
+        var showAll = true,
             // Because AP data is constantly changing, we use MAC addresses
             // as a permanent ID for the APs we've selected
-            _selectedBSSIDs = [],
-            _update = true,
-            _UPDATE_INTERVAL = 500;
+            selectedBSSIDs = [],
+            update = true,
+            UPDATE_INTERVAL = 500;
 
         // Update the table whenever settings are changed
-        var _onSettingsChange = function(settings) {
-          _selectedBSSIDs = settings.selectedBSSIDs.slice();
-          _showAll = settings.showAll;
-          _forceUpdate();
-          filterSettingsService.requestSettings('table').done(_onSettingsChange);
+        var onSettingsChange = function(settings) {
+          selectedBSSIDs = settings.selectedBSSIDs.slice();
+          showAll = settings.showAll;
+          forceUpdate();
+          filterSettingsService.requestSettings('table').done(onSettingsChange);
         };
 
         // Save our sort settings to the settings service
-        var _pushSortSettings = function() {
+        var pushSortSettings = function() {
           filterSettingsService.setSortPredicate('table', $scope.sortPredicate);
           filterSettingsService.setSortReverse('table', $scope.sortReverse);
         };
 
         // Update the table now
-        var _forceUpdate = function() {
-          if (_showAll) {
+        var forceUpdate = function() {
+          if (showAll) {
             $scope.selectedAPData = APService.getNamedAPData();
           } else {
             // Show only the APs whose BSSIDs match those we've selected
             $scope.selectedAPData = APSelectorService.filter(
               APService.getNamedAPData(),
-              _selectedBSSIDs
+              selectedBSSIDs
             );
           }
         };
 
         // Update the table every quantum
-        var _update = function() {
-          if (_update) {
-            _forceUpdate();
-            $timeout(_update, _UPDATE_INTERVAL);
+        var update = function() {
+          if (update) {
+            forceUpdate();
+            $timeout(update, UPDATE_INTERVAL);
           }
         };
 
@@ -61,20 +61,20 @@ app.controller('tableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorServi
 
         // When we navigate away, remember our sort settings
         $scope.$on('$destroy', function() {
-          _update = false;
-          _pushSortSettings();
+          update = false;
+          pushSortSettings();
         });
 
         // Pull settings from filterSettingsService, and start waiting on settings changes
         var settings = filterSettingsService.getInitSettings('table');
         $scope.sortPredicate = settings.sortPredicate;
         $scope.sortReverse = settings.sortReverse;
-        _selectedBSSIDs = settings.selectedBSSIDs.slice();
-        _showAll = settings.showAll;
-        filterSettingsService.requestSettings('table').done(_onSettingsChange);
+        selectedBSSIDs = settings.selectedBSSIDs.slice();
+        showAll = settings.showAll;
+        filterSettingsService.requestSettings('table').done(onSettingsChange);
 
         // Start update loop
-        _update();
+        update();
       },
       function rejected() {
         console.log("tableCtrl is unavailable because Cordova is not loaded.");

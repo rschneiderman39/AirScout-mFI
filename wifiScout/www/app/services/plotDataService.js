@@ -1,20 +1,35 @@
 app.factory('plotDataService', ['APService', 'filterSettingsService',
   'APSelectorService', function(APService, filterSettingsService,
   APSelectorService) {
-    var service = {};
+    var service = {},
+        legendDataPromise = $.Deferred();
 
     service.getPlot = function() {
-      return _plot;
+      return plot;
     };
     service.getLegendData = function() {
+      return generateLegendData();
+    };
+    service.requestLegendData = function() {
+      return legendDataPromise;
+    };
+
+    var UPDATE_INTERVAL = 1000,
+        isSelected = {},
+        showAll = true,
+        datasets = {},
+        plot;
+
+    var generateLegendData = function() {
       var legendData = [];
-      for (var BSSID in _datasets) {
-        if (_datasets[BSSID].inPlot) {
+      for (var BSSID in datasets) {
+        if (datasets[BSSID].inPlot) {
           legendData.push(
             {
-              SSID: _datasets[BSSID].SSID,
+              SSID: datasets[BSSID].SSID,
               BSSID: BSSID,
-              color: _datasets[BSSID].color,
+              color: datasets[BSSID].color,
+              curLevel: datasets[BSSID].curLevel
             }
           );
         }
@@ -22,14 +37,13 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
       return legendData;
     };
 
-    var _UPDATE_INTERVAL = 1000,
-        _isSelected = {},
-        _showAll = true,
-        _datasets = {},
-        _plot;
+    var pushLegendData = function() {
+      var request = legendDataPromise;
+      legendDataPromise = $.Deferred();
+      request.resolve(generateLegendData());
+    };
 
-
-    var _getRandomColor = function() {
+    var getRandomColor = function() {
       var r = (Math.floor(Math.random() * 256)).toString(10),
           g = (Math.floor(Math.random() * 256)).toString(10),
           b = (Math.floor(Math.random() * 256)).toString(10);
@@ -37,58 +51,65 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
       return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
     };
 
-    var _addAP = function(APData) {
-      if (! _datasets[APData.BSSID]) {
-        _datasets[APData.BSSID] = {
+    var addAP = function(APData) {
+      if (! datasets[APData.BSSID]) {
+        datasets[APData.BSSID] = {
           SSID: APData.SSID,
-          color: _getRandomColor(),
+          color: getRandomColor(),
           line: new TimeSeries({ resetBounds: false }),
-          inPlot: false
+          inPlot: false,
+          curLevel: APData.level
         };
       }
     };
 
-    var _removeAP = function(BSSID) {
-      _unselectAP(BSSID);
-      delete _datasets[BSSID];
+    var removeAP = function(BSSID) {
+      unselectAP(BSSID);
+      delete datasets[BSSID];
     };
 
-    var _selectAP = function(BSSID) {
-      if (! _datasets[BSSID].inPlot) {
-        var options = { lineWidth: 2, strokeStyle: _datasets[BSSID].color };
-        _plot.addTimeSeries(_datasets[BSSID].line, options);
-        _datasets[BSSID].inPlot = true;
-      }
+    var selectAP = function(BSSID) {
+      var options = { lineWidth: 2, strokeStyle: datasets[BSSID].color };
+      plot.addTimeSeries(datasets[BSSID].line, options);
+      datasets[BSSID].inPlot = true;
     };
 
-    var _unselectAP = function(BSSID) {
-      if (_datasets[BSSID].inPlot) {
-        _plot.removeTimeSeries(_datasets[BSSID].line);
-        _datasets[BSSID].inPlot = false;
-      }
+    var unselectAP = function(BSSID) {
+      plot.removeTimeSeries(datasets[BSSID].line);
+      datasets[BSSID].inPlot = false;
     };
 
-    var _applyAPSelection = function() {
-      for (var BSSID in _datasets) {
-        if (_isSelected[BSSID] || _showAll) {
-          _selectAP(BSSID);
+    var applyAPSelection = function() {
+      var selectionChanged = false;
+      for (var BSSID in datasets) {
+        if (isSelected[BSSID] || showAll) {
+          if (! datasets[BSSID].inPlot) {
+            selectAP(BSSID);
+            selectionChanged = true;
+          }
         } else {
-          _unselectAP(BSSID);
+          if (datasets[BSSID].inPlot) {
+            unselectAP(BSSID);
+            selectionChanged = true;
+          }
         }
       }
-    };
-
-    var _onFilterSettingsChange = function(settings) {
-      _isSelected = {};
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        _isSelected[settings.selectedBSSIDs[i]] = true;
+      if (selectionChanged) {
+        pushLegendData();
       }
-      _showAll = settings.showAll;
-      _applyAPSelection();
-      filterSettingsService.requestSettings('plot').done(_onFilterSettingsChange);
     };
 
-    var _updateDatasets = function() {
+    var onFilterSettingsChange = function(settings) {
+      isSelected = {};
+      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
+        isSelected[settings.selectedBSSIDs[i]] = true;
+      }
+      showAll = settings.showAll;
+      applyAPSelection();
+      filterSettingsService.requestSettings('plot').done(onFilterSettingsChange);
+    };
+
+    var updateDatasets = function() {
       var curTime = new Date().getTime(),
           APData = APService.getNamedAPData(),
           APDataMap = {};
@@ -98,31 +119,36 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
       }
 
       // Update existing datasets
-      for (var BSSID in _datasets) {
+      for (var BSSID in datasets) {
         var AP = APDataMap[BSSID];
         if (AP) {
-          _datasets[BSSID].line.append(curTime, AP.level);
+          datasets[BSSID].line.append(curTime, AP.level);
+          datasets[BSSID].curLevel = AP.level;
         } else {
-          _datasets[BSSID].line.append(curTime, -100);
+          datasets[BSSID].line.append(curTime, -100);
+          datasets[BSSID].curLevel = -100;
         }
       }
 
       // Discover new datasets
       for (var i = 0; i < APData.length; ++i) {
         var AP = APData[i];
-        if (! _datasets[AP.BSSID]) {
-          _addAP(AP);
-          _datasets[AP.BSSID].line.append(curTime, AP.level);
+        if (! datasets[AP.BSSID]) {
+          addAP(AP);
+          datasets[AP.BSSID].line.append(curTime, AP.level);
+          foundNewAPs = true;
         }
       }
     };
 
-    var _update = function() {
-      _updateDatasets();
-      _applyAPSelection();
+    var update = function() {
+      updateDatasets();
+      applyAPSelection();
     };
 
-    _plot = new SmoothieChart(
+    /* INIT */
+
+    plot = new SmoothieChart(
       {
         minValue: -100,
         maxValue: -30,
@@ -156,12 +182,12 @@ app.factory('plotDataService', ['APService', 'filterSettingsService',
 
     var settings = filterSettingsService.getInitSettings('plot');
     for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-      _isSelected[settings.selectedBSSIDs[i]] = true;
+      isSelected[settings.selectedBSSIDs[i]] = true;
     }
-    _showAll = settings.showAll;
-    filterSettingsService.requestSettings('plot').done(_onFilterSettingsChange);
+    showAll = settings.showAll;
+    filterSettingsService.requestSettings('plot').done(onFilterSettingsChange);
 
-    setInterval(_update, 1000);
+    setInterval(update, UPDATE_INTERVAL);
 
     return service;
 }]);

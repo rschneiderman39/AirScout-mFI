@@ -3,8 +3,8 @@
 */
 app.factory('filterSettingsService', function() {
   var service = {},
-      _settings = {},
-      _views = ['table', 'plot', 'parabola']; // Views that will use this service
+      settings = {},
+      views = ['table', 'plot', 'parabola']; // Views that will use this service
 
   /* Get a deferred object which will be resolved to a view's settings whenever
      those settings are changed.
@@ -22,7 +22,7 @@ app.factory('filterSettingsService', function() {
                 }
   */
   service.requestSettings = function(view) {
-    return _settings[view].settings;
+    return settings[view].settingsPromise;
   };
   /* Get a view's settings. Intended only for view initialization.
      @param {String} The name of the view that's fetching the settings
@@ -36,58 +36,60 @@ app.factory('filterSettingsService', function() {
   */
   service.getInitSettings = function(view) {
     return {
-        selectedBSSIDs: _settings[view].selectedBSSIDs,
-        showAll: _settings[view].showAll,
-        sortPredicate: _settings[view].sortPredicate,
-        sortReverse: _settings[view].sortReverse
+        selectedBSSIDs: settings[view].selectedBSSIDs,
+        showAll: settings[view].showAll,
+        sortPredicate: settings[view].sortPredicate,
+        sortReverse: settings[view].sortReverse
     };
   };
   service.setSelectedBSSIDs = function(view, selected) {
     if (typeof selected === 'object') {
-      _settings[view].selectedBSSIDs = selected.slice();
-      _settings[view].pushSettings();
+      settings[view].selectedBSSIDs = selected.slice();
+      pushSettings(view);
     }
   };
   service.setShowAll = function(view, showAll) {
     if (typeof showAll === 'boolean') {
-      _settings[view].showAll = showAll;
-      _settings[view].pushSettings();
+      settings[view].showAll = showAll;
+      pushSettings(view);
     }
   };
   service.setSortPredicate = function(view, predicate) {
     if (typeof predicate === 'string') {
-      _settings[view].sortPredicate = predicate;
-      _settings[view].pushSettings();
+      settings[view].sortPredicate = predicate;
+      pushSettings(view);
     }
   };
   service.setSortReverse = function(view, reverse) {
     if (typeof reverse === 'boolean') {
-      _settings[view].sortReverse = reverse;
-      _settings[view].pushSettings();
+      settings[view].sortReverse = reverse;
+      pushSettings(view);
     }
+  };
+
+  var pushSettings = function(view) {
+    var viewSettings = settings[view],
+        request = viewSettings.settingsPromise;
+    viewSettings.settingsPromise = $.Deferred();
+    request.resolve(
+      {
+        selectedBSSIDs: viewSettings.selectedBSSIDs.slice(),
+        showAll: viewSettings.showAll,
+        sortPredicate: viewSettings.sortPredicate,
+        sortReverse: viewSettings.sortReverse
+      }
+    );
   };
 
   // Create an associative settings array for each view that will
   // use this service
-  for (var i = 0; i < _views.length; ++i) {
-    _settings[_views[i]] = {
+  for (var i = 0; i < views.length; ++i) {
+    settings[views[i]] = {
       selectedBSSIDs: [],
       showAll: true,
       sortPredicate: 'SSID',
       sortReverse: false,
-      settings: $.Deferred(),
-      pushSettings: function() {
-        var old_settings = this.settings;
-        this.settings = $.Deferred();
-        old_settings.resolve(
-          {
-            selectedBSSIDs: this.selectedBSSIDs.slice(),
-            showAll: this.showAll,
-            sortPredicate: this.sortPredicate,
-            sortReverse: this.sortReverse
-          }
-        );
-      }
+      settingsPromise: $.Deferred()
     };
   }
 

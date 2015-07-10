@@ -3,14 +3,12 @@
   <link href="css/plot.css" rel="stylesheet" />
 
   <script type="text/javascript">
-    var canvasHeight = $(window).height() - 200,
+    var canvasHeight = $(window).height() - 220,
         canvasWidth = $(window).width() - 50,
         labelMargin = Math.floor($(window).height() * 0.4).toString() + "px";
 
    document.getElementById('plot').height = canvasHeight;
    document.getElementById('plot').width = canvasWidth;
-
-  // $('#yLabel').attr('style','margin-top: ' + labelMargin + '; margin-right: 10px; float:left');
   </script>
 </head>
 
@@ -18,8 +16,15 @@
   <div ng-controller="plotCtrl">
 
       <center><canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas></center>
-      <p id="yLabel">Level (dBm)</p>
 
+      <p class="axis-label">Level (dBm)</p>
+
+      <div class="legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'">
+        <div class="legend-square" ng-style="{'background-color':d.color}"></div>
+        <p class="legend-label"> {{d.SSID}} </p>
+      </div>
+
+  <!-- Legend Modal -->
   <div class="modal" id="legendModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -31,6 +36,7 @@
                   <th>Color</th>
                   <th>SSID</th>
                   <th>MAC Address</th>
+                  <th>Level (dBm)</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,6 +46,7 @@
                   </td>
                   <td>{{d.SSID}}</td>
                   <td>{{d.BSSID}}</td>
+                  <td>{{d.curLevel}}</td>
                 </tr>
               </tbody>
             </table>
@@ -51,7 +58,7 @@
 
 </div>
 
-  <!-- Modal -->
+  <!-- Help Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
