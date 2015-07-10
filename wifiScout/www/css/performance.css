@@ -10,6 +10,7 @@
 }
 
 .listgroupitem {
+  z-index: 2;
   padding: 10px 15px;
   margin-bottom: -1px;
   background-color: #fafafa;
@@ -25,4 +26,10 @@
   margin-bottom: 0;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+#wrapper {
+  position: relative;
+  overflow: hidden;
+  z-index: -1;
 }

@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<link href="css/plot.css" rel="stylesheet" />
+<<<<<<< HEAD
 
 		<script type="text/javascript">
 	    var deviceHeight = $(window).height();
@@ -24,6 +25,17 @@
 		<div ng-controller="plotCtrl">
 			<div class="container-fluid" id="plotContainer">
 				<canvas id="line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" onclick="$('#legendModal').modal('show')"></canvas>
+=======
+		<script src="scripts/plot.js"></script>
+	</head>
+
+	<body>
+		<div ng-swipe-right="swipeRight('Performance')" ng-swipe-left="swipeLeft('Table')">
+			<div ng-controller="plotCtrl">
+				<div class="container-fluid" id="lineChart">
+					<canvas id="line" class="chart chart-line" data="levels" labels="labels" legend="true" series="SSIDs" colours="colors" options="options" chart="chart"></canvas>
+				</div>
+>>>>>>> 11bc32c946a60c97bf9bba5bbe9f487b3389929b
 			</div>
 
 			<div class="modal" id="legendModal" tabindex="-1" role="dialog">

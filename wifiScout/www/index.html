@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html ng-app="app">
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title class="text-center"></title>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title class="text-center"></title>
 
       <!-- CSS Stylesheets -->
       <link href="css/angular-chart.css" rel="stylesheet" />
@@ -10,25 +10,20 @@
       <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
       <link href="css/index.css" rel="stylesheet" />
 
-      <!-- Scripts -->
-      <script src="scripts/lib/jquery-2.1.4.min.js"></script>
-      <script src="scripts/lib/angular.min.js"></script>
-      <script src="scripts/lib/angular-route.min.js"></script>
-      <script src="scripts/lib/angular-touch.min.js"></script>
-      <script src="scripts/lib/checklist-model.js"></script>
-      <script src="scripts/lib/bootstrap.min.js"></script>
-      <script src="scripts/lib/gauge.min.js"></script>
-      <script src="scripts/lib/Chart.min.js"></script>
-      <script src="scripts/lib/angular-chart.min.js"></script>
+    <!-- Scripts -->
+    <script src="scripts/lib/jquery-2.1.4.min.js"></script>
+    <script src="scripts/lib/angular.min.js"></script>
 
-      <script type="text/javascript">
-        var deviceHeight = $(window).height();
-        deviceHeight = deviceHeight;
-        $('#bottom-bar').css('height', deviceHeight);
-      </script>
+    <script src="scripts/lib/angular-ui-router.min.js"></script>
+    <script src="scripts/lib/angular-touch.min.js"></script>
+    <script src="scripts/lib/checklist-model.js"></script>
+    <script src="scripts/lib/bootstrap.min.js"></script>
+    <script src="scripts/lib/gauge.min.js"></script>
+    <script src="scripts/lib/Chart.min.js"></script>
+    <script src="scripts/lib/angular-chart.min.js"></script>
   </head>
 
-  <body ng-controller="navCtrl">
+  <body id="slidingNav" ng-controller="navCtrl" class="view">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
         <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
@@ -43,58 +38,60 @@
       </div>
     </div>
 
-    <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
-      <ul class="nav nav-pills nav-justified">
-        <li role="presentation">
-          <a href="#/parabola" ng-click="setActive('Parabola')" id="Parabola">
-            <div class="container-fluid">
-              <img id="Parabola Img" src="images/parabola-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/performance" ng-click="setActive('Performance')" id="Performance">
-            <div class="container-fluid">
-              <img id="Performance Img" src="images/performance-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/plot" ng-click="setActive('Plot')" id="Plot">
-            <div class="container-fluid">
-              <img id="Plot Img" src="images/plot-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/table" ng-click="setActive('Table')" id="Table">
-            <div class="container-fluid">
-              <img id="Table Img" src="images/table-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/channels" ng-click="setActive('Channels')" id="Channels">
-            <div class="container-fluid">
-              <img id="Channels Img" src="images/channels-wide.png" />
-            </div>
-          </a>
-        </li>
-        <li role="presentation">
-          <a href="#/" ng-click="setActive('Settings')" id="Settings">
-            <div class="container-fluid">
-              <img id="Settings Img" src="images/settings-wide-selected.png" />
-            </div>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div id="currentView" ui-view></div>
 
-    <div class="container-fluid">
-      <ng-view></ng-view>
-    </div>
+    <center>
+      <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </center>
 
-    </div>
+    <header>
+      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
+        <ul class="nav nav-pills nav-justified">
+          <li role="presentation">
+            <a ui-sref="Parabola" ng-click="setActive('Parabola')" id="Parabola">
+              <div class="container-fluid">
+                 <img id="Parabola Img" src="images/parabola-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a ui-sref="Performance" ng-click="setActive('Performance')" id="Performance">
+              <div class="container-fluid">
+                <img id="Performance Img" src="images/performance-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a ui-sref="Plot" ng-click="setActive('Plot')" id="Plot">
+              <div class="container-fluid">
+                <img id="Plot Img" src="images/plot-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a ui-sref="Table" ng-click="setActive('Table')" id="Table">
+              <div class="container-fluid">
+                <img id="Table Img" src="images/table-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a ui-sref="Channels" ng-click="setActive('Channels')" id="Channels">
+              <div class="container-fluid">
+                <img id="Channels Img" src="images/channels-wide.png" />
+              </div>
+            </a>
+          </li>
+          <li role="presentation">
+            <a ui-sref="Settings" ng-click="setActive('Settings')" id="Settings">
+              <div class="container-fluid">
+                <img id="Settings Img" src="images/settings-wide-selected.png" />
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
@@ -117,6 +114,7 @@
     <script src="app/controllers/navCtrl.js"></script>
     <script src="app/controllers/performanceCtrl.js"></script>
     <script src="app/controllers/plotCtrl.js"></script>
+    <script src="app/controllers/settingsCtrl.js"></script>
 
     <script src="app/directives/filterModal.js"></script>
 

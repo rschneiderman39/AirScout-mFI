@@ -4,6 +4,7 @@
 
 .filterDiv {
   height: 50px;
+  position: relative;
 }
 
 .filterButton {
@@ -11,9 +12,6 @@
   top: 8px;
 }
 
-#helpContext {
-
-}
 
 #helpButton {
   position: relative;
@@ -33,17 +31,19 @@
 	margin-bottom: 8px;
 }
 
-#bottom-bar {
-	padding-top: 5px;
- 	padding-bottom: 5px;
+#bottomBar {
+  position: fixed;
+  bottom: -98px;
+  height: 97px;
+  width: 100%;
+	padding: 5px;
+  min-height: 0px;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
-  background-color: #fafafa;
+#bottomBar {
+  -webkit-transition: bottom 0.5s ease;
+  -moz-transition: bottom 0.5s ease;
+  transition: bottom 0.5s ease;
 }
 
 .active_view {
@@ -61,4 +61,8 @@
 
 .modal-backdrop.in {
   opacity: 0
+}
+
+#currentView {
+  position: relative;
 }
