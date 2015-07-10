@@ -46,4 +46,4 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         console.log("navCtrl is unavailable because Cordova is not loaded.");
       }
     )
-  }]);
+  }])

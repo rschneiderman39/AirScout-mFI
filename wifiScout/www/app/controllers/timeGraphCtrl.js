@@ -1,16 +1,16 @@
-app.controller('plotCtrl', ['$scope', 'plotDataService', 'cordovaService',
-  function($scope, plotDataService, cordovaService) {
+app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaService',
+  function($scope, timeGraphDataService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.legendData = undefined;
 
         var initLegend = function() {
           $scope.$apply(function() {
-            $scope.legendData = plotDataService.getLegendData();
+            $scope.legendData = timeGraphDataService.getLegendData();
           });
         };
 
-        var plot = plotDataService.getPlot();
+        var plot = timeGraphDataService.getPlot();
         plot.streamTo($('#plot')[0], 1000);
 
         $scope.$on('$destroy', function() {
@@ -23,15 +23,15 @@ app.controller('plotCtrl', ['$scope', 'plotDataService', 'cordovaService',
           $scope.$apply(function() {
             $scope.legendData = data;
           });
-          plotDataService.requestLegendData().done(updateLegend);
+          timeGraphDataService.requestLegendData().done(updateLegend);
         };
 
-        $scope.legendData = plotDataService.getLegendData();
+        $scope.legendData = timeGraphDataService.getLegendData();
         console.log(JSON.stringify($scope.legendData));
-        plotDataService.requestLegendData().done(updateLegend);
+        timeGraphDataService.requestLegendData().done(updateLegend);
       },
       function rejected() {
-        console.log('plotCtrl is unavaiable because Cordova is not loaded.');
+        console.log('timeGraphCtrl is unavaiable because Cordova is not loaded.');
       }
     );
 }]);

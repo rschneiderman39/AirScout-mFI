@@ -31,7 +31,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         timeGraphDataService.requestLegendData().done(updateLegend);
       },
       function rejected() {
-        console.log("timeGraphCtrl is unavailable because Cordova is not loaded.");
+        console.log('timeGraphCtrl is unavaiable because Cordova is not loaded.');
       }
     );
 }]);
