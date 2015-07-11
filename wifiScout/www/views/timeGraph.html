@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <div ng-controller="timeGraphCtrl">
+  <div ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
 
       <center><canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas></center>
 
@@ -48,5 +48,5 @@
       </div>
     </div>
 
-    <div filter-modal view="plot"></div>
+    <div filter-modal view="timeGraph"></div>
   </body>

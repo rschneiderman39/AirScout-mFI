@@ -46,7 +46,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
         };
 
         $scope.usesFilterBtn = function() {
-          return activeView === 'Table' || activeView === 'Plot' || activeView === 'Parabola';
+          return activeView === 'APTable' || activeView === 'timeGraph' || activeView === 'channelGraph';
         };
 
         $scope.swipeRight = function (view) {
