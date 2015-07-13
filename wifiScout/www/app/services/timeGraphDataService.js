@@ -69,7 +69,7 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
 
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 2, strokeStyle: datasets[BSSID].color, fillStyle: getFillColor(datasets[BSSID].color)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: getFillColor(datasets[BSSID].color)});
       highlightedBSSID = BSSID;
     };
 
