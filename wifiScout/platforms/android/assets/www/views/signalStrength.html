@@ -8,7 +8,7 @@
 	<body>
 		<div ng-click="showNav()" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
 		<br>
-			<div class="col-xs-4 apList">
+			<div class="col-xs-3 apList">
 				<h5><center>Select an AP to view its connection speed:</center></h5>
 				<ul class="list-group scrollable-list">
 					<span data-ng-repeat="ap in allAPData | orderBy:selector">
@@ -21,10 +21,9 @@
 				</ul>
 			</div>
 		<br>
-		<center><h4>{{selectedSSID !== "" ? selectedSSID : "---"}}</h4></center>
 		<div class="speedometer"></div>
-		<div class="col-xs-1"></div>
-		<div class="col-xs-2 one">
+		<br>
+		<div class="col-xs-3 one">
 			<center>Min Level</center>
 			<div class="panel panel-default">
 		  	<div class="panel-body">
@@ -32,7 +31,7 @@
 			  </div>
 			</div>
 		</div>
-		<div class="col-xs-2 three">
+		<div class="col-xs-3 three">
 			<center>Current</center>
 			<div class="panel panel-default">
 		  	<div class="panel-body">
@@ -40,7 +39,7 @@
 		  	</div>
 			</div>
 		</div>
-		<div class="col-xs-2 two">
+		<div class="col-xs-3 two">
 			<center>Max Level</center>
 			<div class="panel panel-default">
 		 		<div class="panel-body">

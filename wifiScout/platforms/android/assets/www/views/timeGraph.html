@@ -1,35 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link href="css/timeGraph.css" rel="stylesheet" />
+    <script src="scripts/timeGraph.js"></script>
+  </head>
 
-<head>
-  <link href="css/timeGraph.css" rel="stylesheet" />
-  <script src="scripts/timeGraph.js"></script>
-</head>
-
-<body>
-  <div ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
-
-    <div class="container-fluid" ng-click="showNav()">
-      <div class="row">
-        <div class="col-xs-3">
-          <div id="legend">
-            <ul class="list-group scrollable-list">
-              <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID); $event.stopPropagation()">
-                <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-                <p class="legend-label"> {{d.SSID}} </p>
-                <div ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
-              </li>
-            </ul>
+  <body>
+    <div ng-click="showNav()" ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" class="container-fluid" ng-controller="timeGraphCtrl">
+    <br>
+      <div class="col-xs-4">
+        <div id="legend">
+          <ul class="list-group scrollable-list">
+            <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID); $event.stopPropagation()">
+              <div class="legend-box" ng-style="{'background-color':d.color}"></div>
+              <p class="legend-label"> {{d.SSID}} </p>
+              <div ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
+            </li>
+          </ul>
         </div>
-        </div>
-        <div class="col-xs-9">
-          <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas>
-          <p class="axis-label">Level (dBm)</p>
-        </div>
+      </div>
+      <div class="col-xs-8">
+        <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas>
+        <p class="axis-label">Level (dBm)</p>
+      </div>
     </div>
-  </div>
 
-  </div>
-
-  <!-- Help Modal -->
+    <!-- Help Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -46,11 +42,11 @@
             <br>
             Yay!
           </div>
-          <div class="modal-footer">
-          </div>
+          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
 
     <div filter-modal view="timeGraph"></div>
   </body>
+</html
