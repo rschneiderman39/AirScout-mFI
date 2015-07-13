@@ -42,8 +42,8 @@
 
     <div id="currentView" ui-view></div>
 
-    <header>
-      <nav class="navbar navbar-default navbar-fixed-bottom" ng-show="navBar">
+    <header class="bottomBar" ng-show="navBar">
+      <nav class="navbar navbar-default navbar-fixed-bottom">
         <ul class="nav nav-pills nav-justified">
           <li role="presentation">
             <a ui-sref="channelGraph" ng-click="setActive('channelGraph')" id="channelGraph">
