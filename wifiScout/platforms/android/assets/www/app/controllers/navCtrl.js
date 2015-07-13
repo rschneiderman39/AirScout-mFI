@@ -2,9 +2,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.nav = {};
-
-        $scope.nav.setActive = function(view) {
+        $scope.setActive = function(view) {
           console.log('setting active');
           var titleText;
           switch (view) {
@@ -41,30 +39,30 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           activeView = view;
         };
 
-        $scope.nav.isActive = function(view) {
+        $scope.isActive = function(view) {
           return activeView === view;
         };
 
-        $scope.nav.usesFilterBtn = function() {
+        $scope.usesFilterBtn = function() {
           return activeView === 'APTable' || activeView === 'timeGraph' || activeView === 'channelGraph';
         };
 
-        $scope.nav.swipeRight = function (view) {
+        $scope.swipeRight = function (view) {
           console.log("swiping right");
           $state.go(view);
-          $scope.nav.setActive(view);
+          $scope.setActive(view);
         };
 
-        $scope.nav.swipeLeft = function (view) {
+        $scope.swipeLeft = function (view) {
           console.log("swiping left");
           $state.go(view);
-          $scope.nav.setActive(view);
+          $scope.setActive(view);
         };
 
         /* INIT */
 
         var activeView = "settings";
-        $scope.nav.setActive('settings');
+        $scope.setActive('settings');
       },
       function rejected() {
         console.log("navCtrl is unavailable because Cordova is not loaded.");
