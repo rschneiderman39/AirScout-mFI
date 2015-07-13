@@ -53,13 +53,17 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           console.log("swiping right");
           $state.go(view);
           $scope.setActive(view);
-        }
+        };
 
         $scope.swipeLeft = function (view) {
           console.log("swiping left");
           $state.go(view);
           $scope.setActive(view);
-        }
+        };
+
+        $scope.event = function() {
+          alert('Event');
+        };
 
         var activeView = "settings";
 

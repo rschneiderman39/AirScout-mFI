@@ -13,12 +13,24 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
     service.requestLegendData = function() {
       return legendDataPromise;
     };
+    service.toggleAPHighlight = function(BSSID) {
+      if (BSSID === highlightedBSSID) {
+        unhighlightAP(BSSID);
+      } else {
+        unhighlightAP(highlightedBSSID);
+        highlightAP(BSSID);
+      }
+    };
+    service.getHighlightedBSSID = function(BSSID) {
+      return highlightedBSSID;
+    }
 
     var UPDATE_INTERVAL = 1000,
         isSelected = {},
         showAll = true,
         datasets = {},
-        plot;
+        plot = undefined,
+        highlightedBSSID = undefined;
 
     var generateLegendData = function() {
       var legendData = [];
@@ -51,6 +63,22 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
       return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
     };
 
+    var getFillColor = function(color) {
+      return color.replace(',1)', ',0.5)');
+    };
+
+    var highlightAP = function(BSSID) {
+      unselectAP(BSSID);
+      selectAP(BSSID, { lineWidth: 2, strokeStyle: datasets[BSSID].color, fillStyle: getFillColor(datasets[BSSID].color)});
+      highlightedBSSID = BSSID;
+    };
+
+    var unhighlightAP = function(BSSID) {
+      unselectAP(BSSID);
+      selectAP(BSSID);
+      highlightedBSSID = "";
+    };
+
     var addAP = function(APData) {
       if (! datasets[APData.BSSID]) {
         datasets[APData.BSSID] = {
@@ -64,19 +92,30 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
     };
 
     var removeAP = function(BSSID) {
-      unselectAP(BSSID);
-      delete datasets[BSSID];
+      if (datasets[BSSID]) {
+        unselectAP(BSSID);
+        delete datasets[BSSID];
+      }
     };
 
-    var selectAP = function(BSSID) {
-      var options = { lineWidth: 2, strokeStyle: datasets[BSSID].color };
-      plot.addTimeSeries(datasets[BSSID].line, options);
-      datasets[BSSID].inPlot = true;
+    var selectAP = function(BSSID, options) {
+      if (datasets[BSSID]) {
+        if (! options) {
+          options = { lineWidth: 2, strokeStyle: datasets[BSSID].color };
+        }
+        plot.addTimeSeries(datasets[BSSID].line, options);
+        datasets[BSSID].inPlot = true;
+      }
     };
 
     var unselectAP = function(BSSID) {
-      plot.removeTimeSeries(datasets[BSSID].line);
-      datasets[BSSID].inPlot = false;
+      if (datasets[BSSID]) {
+        plot.removeTimeSeries(datasets[BSSID].line);
+        datasets[BSSID].inPlot = false;
+        if (BSSID === highlightedBSSID) {
+          highlightedBSSID = "";
+        }
+      }
     };
 
     var applyAPSelection = function() {

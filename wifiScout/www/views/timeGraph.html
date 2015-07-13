@@ -1,27 +1,31 @@
 
 <head>
   <link href="css/timeGraph.css" rel="stylesheet" />
-
-  <script type="text/javascript">
-    var canvasHeight = $(window).height() - 220,
-        canvasWidth = $(window).width() - 50;
-
-   document.getElementById('plot').height = canvasHeight;
-   document.getElementById('plot').width = canvasWidth;
-  </script>
+  <script src="scripts/timeGraph.js"></script>
 </head>
 
 <body>
   <div ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
 
-      <center><canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas></center>
-
-      <p class="axis-label">Level (dBm)</p>
-
-      <div class="legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'">
-        <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-        <p class="legend-label"> {{d.SSID}} </p>
-      </div>
+    <div class="container-fluid" ng-click="event()">
+      <div class="row">
+        <div class="col-xs-3">
+          <div id="legend">
+            <ul class="list-group scrollable-list">
+              <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID); $event.stopPropagation()">
+                <div class="legend-box" ng-style="{'background-color':d.color}"></div>
+                <p class="legend-label"> {{d.SSID}} </p>
+                <div ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
+              </li>
+            </ul>
+        </div>
+        </div>
+        <div class="col-xs-9">
+          <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas>
+          <p class="axis-label">Level (dBm)</p>
+        </div>
+    </div>
+  </div>
 
   </div>
 
