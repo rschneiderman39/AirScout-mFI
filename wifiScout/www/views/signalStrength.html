@@ -6,7 +6,7 @@
 	</head>
 
 	<body>
-		<div ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
+		<div ng-click="showNav()" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
 		<br>
 			<div class="col-xs-4 apList">
 				<h5><center>Select an AP to view its connection speed:</center></h5>
@@ -14,7 +14,7 @@
 					<span data-ng-repeat="ap in allAPData | orderBy:selector">
 						<li class="listgroupitem"
 				   		ng-class="{ active: isSelected(ap) }"
-				   		ng-click="setSelected(ap)">
+				   		ng-click="setSelected(ap); $event.stopPropagation()">
 				   		{{ap.SSID}}
 				    </li>
 					</span>

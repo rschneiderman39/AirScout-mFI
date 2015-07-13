@@ -6,8 +6,7 @@ var navBarShown = false;
 document.mobileDevice;
 document.navBarHeight;
 document.deviceHeight = $(window).height();
-document.navBarUpPadding = $('#bottom-bar').height() + $('#top-bar').height() + 150;
-document.navBarDownPadding = $('#top-bar').height() + 50;
+document.viewHeight = document.deviceHeight - 50;
 
 (function () {
     "use strict";
@@ -35,7 +34,9 @@ function windowCheck() {
     return mobileDevice;
 };
 
-(function () {
+$('#currentView').css('height', document.viewHeight);
+
+/*(function () {
   var shown = 0;
   var navBar = $('#bottomBar');
 
@@ -57,4 +58,4 @@ function windowCheck() {
       console.log("navbar is shown!");
     }
   });
-})();
+})();*/

@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<html>
 <head>
 
 	<!-- CSS Stylesheets -->
@@ -6,24 +7,23 @@
 </head>
 
 <body>
-  <div>
-    <div ng-swipe-right="swipeRight('channelTable')" class="container-fluid">
-		  <div class="row-fluid">
-			  <div class="col-xs-6">
-          <h4>Viewing Mode - Select a viewing mode blah blah blah something something something.... </h4>
-          <input type="radio" name="viewMode" value="simple">	Simple<br>
-			    <input type="radio" name="viewMode" value="complex">	Complex<br>
-        </div>
-			  <div class="col-xs-6">
-			   	<h4>Default View - Select which view loads when application is opened</h4>
-		    	<input type="radio" name="defaultView" value="parabola">	Parabola<br>
-		    	<input type="radio" name="defaultView" value="table">	Table<br>
-			    <input type="radio" name="defaultView" value="singleSpeed">	Single Speed<br>
-		    	<input type="radio" name="defaultView" value="timeGraph">	Time Graph<br>
-			   	<input type="radio" name="defaultView" value="channels">	Channels<br>
-			  </div>
-		  </div>
-    </div>
+  <br>
+  <div ng-click="showNav()" ng-swipe-right="swipeRight('channelTable')" class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-xs-6">
+        <h4>Viewing Mode - Select a viewing mode blah blah blah something something something.... </h4>
+          <input ng-click="$event.stopPropagation()" type="radio" name="viewMode" value="simple">	Simple<br>
+			    <input ng-click="$event.stopPropagation()" type="radio" name="viewMode" value="complex">	Complex<br>
+      </div>
+			<div class="col-xs-6">
+			  <h4>Default View - Select which view loads when application is opened</h4>
+		    	<input ng-click="$event.stopPropagation()" type="radio" name="defaultView" value="parabola">	Parabola<br>
+		    	<input ng-click="$event.stopPropagation()" type="radio" name="defaultView" value="table">	Table<br>
+			    <input ng-click="$event.stopPropagation()" type="radio" name="defaultView" value="singleSpeed">	Single Speed<br>
+		    	<input ng-click="$event.stopPropagation()" type="radio" name="defaultView" value="timeGraph">	Time Graph<br>
+			   	<input ng-click="$event.stopPropagation()" type="radio" name="defaultView" value="channels">	Channels<br>
+			</div>
+		</div>
   </div>
 
 	<!-- Modal -->
@@ -72,3 +72,4 @@
       </div>
     </div>
 </body>
+</html>

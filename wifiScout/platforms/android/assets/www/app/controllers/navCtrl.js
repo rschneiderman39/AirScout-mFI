@@ -1,7 +1,16 @@
-app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope, $state,
-  cordovaService) {
+app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService', 
+  function($scope, $state, $timeout, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
+
+        $scope.showNav = function() {
+          console.log("showing navigation bar!!!!!!");
+          $scope.navBar = true;
+          $timeout(function() {
+            $scope.navBar = false;
+          }, 3000)
+        }
+
         $scope.setActive = function(view) {
           var newViewLink = document.getElementById(view);
           $('a').removeClass("active_view");
