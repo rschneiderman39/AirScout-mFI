@@ -3,10 +3,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
     cordovaService.ready.then(
       function resolved() {
         $scope.setActive = function(view) {
-          var newViewLink = document.getElementById(view);
-          $('a').removeClass("active_view");
-          $(newViewLink).addClass("active_view");
-
+          console.log('setting active');
           var titleText;
           switch (view) {
             case "channelsGraph":
@@ -30,6 +27,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
             default:
               titleText = "";
           }
+
           document.getElementById('greenTitle').innerHTML = titleText;
 
           var oldHighlightedImg = $('#' + activeView + "-img")[0],
@@ -61,12 +59,9 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           $scope.setActive(view);
         };
 
-        $scope.event = function() {
-          alert('Event');
-        };
+        /* INIT */
 
         var activeView = "settings";
-
         $scope.setActive('settings');
       },
       function rejected() {

@@ -49,6 +49,10 @@
 	background-color: #eeeeee;
 }
 
+.nav>li>a:hover {
+	background-color: transparent;
+}
+
 #dropDownOpen {
   position:absolute;
   bottom:0;
@@ -56,10 +60,6 @@
   padding-bottom:2%;
   z-index: 100;
   display: none;
-}
-
-.modal-backdrop.in {
-  opacity: 0
 }
 
 #currentView {

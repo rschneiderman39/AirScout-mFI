@@ -2,11 +2,10 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.setActive = function(view) {
-          var newViewLink = document.getElementById(view);
-          $('a').removeClass("active_view");
-          $(newViewLink).addClass("active_view");
+        $scope.nav = {};
 
+        $scope.nav.setActive = function(view) {
+          console.log('setting active');
           var titleText;
           switch (view) {
             case "channelsGraph":
@@ -30,6 +29,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
             default:
               titleText = "";
           }
+
           document.getElementById('greenTitle').innerHTML = titleText;
 
           var oldHighlightedImg = $('#' + activeView + "-img")[0],
@@ -41,33 +41,30 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           activeView = view;
         };
 
-        $scope.isActive = function(view) {
+        $scope.nav.isActive = function(view) {
           return activeView === view;
         };
 
-        $scope.usesFilterBtn = function() {
+        $scope.nav.usesFilterBtn = function() {
           return activeView === 'APTable' || activeView === 'timeGraph' || activeView === 'channelGraph';
         };
 
-        $scope.swipeRight = function (view) {
+        $scope.nav.swipeRight = function (view) {
           console.log("swiping right");
           $state.go(view);
-          $scope.setActive(view);
+          $scope.nav.setActive(view);
         };
 
-        $scope.swipeLeft = function (view) {
+        $scope.nav.swipeLeft = function (view) {
           console.log("swiping left");
           $state.go(view);
-          $scope.setActive(view);
+          $scope.nav.setActive(view);
         };
 
-        $scope.event = function() {
-          alert('Event');
-        };
+        /* INIT */
 
         var activeView = "settings";
-
-        $scope.setActive('settings');
+        $scope.nav.setActive('settings');
       },
       function rejected() {
         console.log("navCtrl is unavailable because Cordova is not loaded.");

@@ -16,12 +16,30 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         };
         $scope.isSelected = function(BSSID) {
           return BSSID === timeGraphDataService.getHighlightedBSSID();
-        };
-        $scope.event = function() {
-          alert('Event');
-        };
+        }
 
         var selectedBSSID = "";
+
+        var updateDuplicateSSIDs = function() {
+          var found = {},
+              newDuplicates = {};
+          for (var i = 0; i < $scope.legendData.length; ++i) {
+            if (found[$scope.legendData[i].SSID]) {
+              newDuplicates[$scope.legendData[i].SSID] = true;
+            } else {
+              found[$scope.legendData[i].SSID] = true;
+            }
+          }
+          $scope.isDuplicateSSID = newDuplicates;
+        };
+
+        var updateLegend = function(data) {
+          $scope.$apply(function() {
+            $scope.legendData = data;
+            updateDuplicateSSIDs();
+          });
+          timeGraphDataService.requestLegendData().done(updateLegend);
+        };
 
         var plot = timeGraphDataService.getPlot();
         plot.streamTo($('#plot')[0], 1000);
@@ -29,27 +47,6 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         $scope.$on('$destroy', function() {
           plot.stop();
         });
-
-        var getDuplicateSSIDs = function() {
-          var found = {},
-              isDuplicateSSID = {};
-          for (var i = 0; i < $scope.legendData.length; ++i) {
-            if (found[$scope.legendData[i].SSID]) {
-              isDuplicateSSID[$scope.legendData[i].SSID] = true;
-            } else {
-              found[$scope.legendData[i].SSID] = true;
-            }
-          }
-          return isDuplicateSSID;
-        };
-
-        var updateLegend = function(data) {
-          $scope.$apply(function() {
-            $scope.legendData = data;
-            $scope.isDuplicateSSID = getDuplicateSSIDs();
-          });
-          timeGraphDataService.requestLegendData().done(updateLegend);
-        };
 
         $scope.legendData = timeGraphDataService.getLegendData();
         timeGraphDataService.requestLegendData().done(updateLegend);

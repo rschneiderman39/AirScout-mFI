@@ -7,21 +7,20 @@
 <body>
   <div ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
 
-    <div class="container-fluid" ng-click="event()">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-3">
-          <div id="legend">
+        <div class="col-xs-3" id="legend">
+            <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
             <ul class="list-group scrollable-list">
-              <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID); $event.stopPropagation()">
+              <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID)">
                 <div class="legend-box" ng-style="{'background-color':d.color}"></div>
                 <p class="legend-label"> {{d.SSID}} </p>
                 <div ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
               </li>
             </ul>
         </div>
-        </div>
         <div class="col-xs-9">
-          <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas>
+          <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px"></canvas>
           <p class="axis-label">Level (dBm)</p>
         </div>
     </div>

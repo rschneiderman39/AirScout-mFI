@@ -27,7 +27,7 @@
   <body id="slidingNav" ng-controller="navCtrl" class="view">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
-        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
+        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="nav.usesFilterBtn()">Filter...</button>
       </div>
       <div class="col-xs-4" id="title">
           <center><h2 id="greenTitle"></h2></center>
@@ -39,8 +39,7 @@
       </div>
     </div>
 
-    <div id="currentView" ui-view>
-    </div>
+    <div id="currentView" ui-view></div>
 
     <center>
       <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
@@ -50,42 +49,42 @@
       <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
         <ul class="nav nav-pills nav-justified">
           <li role="presentation">
-            <a ui-sref="channelGraph" ng-click="setActive('channelGraph')" id="channelGraph">
+            <a ui-sref="channelGraph" ng-click="nav.setActive('channelGraph')" id="channelGraph">
               <div class="container-fluid">
                  <img id="channelGraph-img" src="images/parabola-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="signalStrength" ng-click="setActive('signalStrength')" id="signalStrength">
+            <a ui-sref="signalStrength" ng-click="nav.setActive('signalStrength')" id="signalStrength">
               <div class="container-fluid">
                 <img id="signalStrength-img" src="images/performance-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="timeGraph" ng-click="setActive('timeGraph')" id="timeGraph">
+            <a ui-sref="timeGraph" ng-click="nav.setActive('timeGraph')" id="timeGraph">
               <div class="container-fluid">
                 <img id="timeGraph-img" src="images/plot-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="APTable" ng-click="setActive('APTable')" id="APTable">
+            <a ui-sref="APTable" ng-click="nav.setActive('APTable')" id="APTable">
               <div class="container-fluid">
                 <img id="APTable-img" src="images/table-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="channelTable" ng-click="setActive('channelTable')" id="channelTable">
+            <a ui-sref="channelTable" ng-click="nav.setActive('channelTable')" id="channelTable">
               <div class="container-fluid">
                 <img id="channelTable-img" src="images/channels-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="settings" ng-click="setActive('settings')" id="settings">
+            <a ui-sref="settings" ng-click="nav.setActive('settings')" id="settings">
               <div class="container-fluid">
                 <img id="settings-img" src="images/settings-wide-selected.png" />
               </div>
