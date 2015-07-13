@@ -20,6 +20,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
             selectedBSSID = ap.BSSID;
             $scope.selectedSSID = ap.SSID;
           }
+          $scope.minLevel = undefined;
+          $scope.maxLevel = undefined;
         };
 
         var selectedBSSID = "",
@@ -31,8 +33,16 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           var selectedAP = APSelectorService.select($scope.allAPData, selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
-            $scope.minLevel = APService.getMinLevel(selectedAP.BSSID);
-            $scope.maxLevel = APService.getMaxLevel(selectedAP.BSSID);
+            if (typeof $scope.minLevel === 'undefined') {
+              $scope.minLevel = $scope.level;
+            } else if ($scope.level < $scope.minLevel) {
+              $scope.minLevel = $scope.level;
+            }
+            if (typeof $scope.maxLevel === 'undefined') {
+              $scope.maxLevel = $scope.level;
+            } else if ($scope.level > $scope.maxLevel) {
+              $scope.maxLevel = $scope.level;
+            }
             gauge.set(levelTransformService.gaugeTransform($scope.level));
           }
         };

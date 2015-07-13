@@ -49,6 +49,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         });
 
         $scope.legendData = timeGraphDataService.getLegendData();
+        updateDuplicateSSIDs();
         timeGraphDataService.requestLegendData().done(updateLegend);
       },
       function rejected() {
