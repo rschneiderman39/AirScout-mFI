@@ -1,7 +1,17 @@
-app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope, $state,
-  cordovaService) {
+app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
+  function($scope, $state, $timeout, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
+        $scope.showNav = function() {
+          clearTimeout(navTimeout);
+          $scope.navBar = true;
+          navTimeout = setTimeout(function() {
+            $scope.$apply(function() {
+              $scope.navBar = false;
+            });
+          }, NAV_SHOW_INTERVAL);
+        };
+
         $scope.setActive = function(view) {
           console.log('setting active');
           var titleText;
@@ -27,9 +37,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
             default:
               titleText = "";
           }
-
           document.getElementById('greenTitle').innerHTML = titleText;
-
           var oldHighlightedImg = $('#' + activeView + "-img")[0],
               newHighlightedImg = $('#' + view + "-img")[0];
 
@@ -59,9 +67,10 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService', function($scope
           $scope.setActive(view);
         };
 
-        /* INIT */
+        var activeView = "settings",
+            navTimeout = null,
+            NAV_SHOW_INTERVAL = 3000;
 
-        var activeView = "settings";
         $scope.setActive('settings');
       },
       function rejected() {

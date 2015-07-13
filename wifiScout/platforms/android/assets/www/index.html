@@ -21,6 +21,7 @@
     <script src="scripts/lib/gauge.min.js"></script>
     <script src="scripts/lib/Chart.min.js"></script>
     <script src="scripts/lib/angular-chart.min.js"></script>
+    <script src="scripts/lib/angular-animate.min.js"></script>
     <script src="scripts/lib/smoothie.js"></script>
   </head>
 
@@ -41,50 +42,46 @@
 
     <div id="currentView" ui-view></div>
 
-    <center>
-      <span id="navTriangleDown" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-    </center>
-
     <header>
-      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
+      <nav class="navbar navbar-default navbar-fixed-bottom" ng-show="navBar">
         <ul class="nav nav-pills nav-justified">
           <li role="presentation">
-            <a ui-sref="channelGraph" ng-click="setActive('channelGraph')" id="channelGraph">
+            <a ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">
               <div class="container-fluid">
                  <img id="channelGraph-img" src="images/parabola-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="signalStrength" ng-click="setActive('signalStrength')" id="signalStrength">
+            <a ui-sref="signalStrength" ng-click="setActive('signalStrength');showNav()" id="signalStrength">
               <div class="container-fluid">
                 <img id="signalStrength-img" src="images/performance-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="timeGraph" ng-click="setActive('timeGraph')" id="timeGraph">
+            <a ui-sref="timeGraph" ng-click="setActive('timeGraph');showNav()" id="timeGraph">
               <div class="container-fluid">
                 <img id="timeGraph-img" src="images/plot-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="APTable" ng-click="setActive('APTable')" id="APTable">
+            <a ui-sref="APTable" ng-click="setActive('APTable');showNav()" id="APTable">
               <div class="container-fluid">
                 <img id="APTable-img" src="images/table-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="channelTable" ng-click="setActive('channelTable')" id="channelTable">
+            <a ui-sref="channelTable" ng-click="setActive('channelTable');showNav()" id="channelTable">
               <div class="container-fluid">
                 <img id="channelTable-img" src="images/channels-wide.png" />
               </div>
             </a>
           </li>
           <li role="presentation">
-            <a ui-sref="settings" ng-click="setActive('settings')" id="settings">
+            <a ui-sref="settings" ng-click="setActive('settings');showNav()" id="settings">
               <div class="container-fluid">
                 <img id="settings-img" src="images/settings-wide-selected.png" />
               </div>

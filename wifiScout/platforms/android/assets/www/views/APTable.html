@@ -22,29 +22,29 @@
 			      	<thead>
 			          <tr>
 			            <th class="col-xs-3 ssid">
-			            	<a href="" ng-click="order('SSID')">SSID</a>
+			            	<a href="" ng-click="order('SSID'); $event.stopPropagation()">SSID</a>
 										<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span>
 			            </th>
 			            <th class="col-xs-3">
-			            	<a class="mac" href="" ng-click="order('BSSID')">MAC Address</a>
+			            	<a class="mac" href="" ng-click="order('BSSID'); $event.stopPropagation()">MAC Address</a>
 										<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span>
 			            </th>
 			            <th class="col-xs-2">
-			            	<a class="frequency" href="" ng-click="order('frequency')">Frequency</a>
+			            	<a class="frequency" href="" ng-click="order('frequency'); $event.stopPropagation()">Frequency</a>
 										<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
 			            </th>
 			            <th class="col-xs-2">
-			            	<a class="level" href="" ng-click="order('level')">Level</a>
+			            	<a class="level" href="" ng-click="order('level'); $event.stopPropagation()">Level</a>
 										<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span>
 			            </th>
 			            <th class="col-xs-2">
-			            	<a class="capabilities" href="" ng-click="order('capabilities')">Capabilities</a>
+			            	<a class="capabilities" href="" ng-click="order('capabilities'); $event.stopPropagation()">Capabilities</a>
 										<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
 			            </th>
 			          </tr>
 			        </thead>
 			      </div>
-			    	<tbody>
+			    	<tbody  ng-click="showNav()">
 			    		<tr data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
 			      		<td class="col-xs-3">{{ap.SSID}}</td>
 			      		<td class="col-xs-3">{{ap.BSSID}}</td>
