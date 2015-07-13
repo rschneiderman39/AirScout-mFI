@@ -1,21 +1,19 @@
-app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService', 
+app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
   function($scope, $state, $timeout, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-
         $scope.showNav = function() {
-          console.log("showing navigation bar!!!!!!");
+          clearTimeout(navTimeout);
           $scope.navBar = true;
-          $timeout(function() {
-            $scope.navBar = false;
-          }, 3000)
-        }
+          navTimeout = setTimeout(function() {
+            $scope.$apply(function() {
+              $scope.navBar = false;
+            });
+          }, NAV_SHOW_INTERVAL);
+        };
 
         $scope.setActive = function(view) {
-          var newViewLink = document.getElementById(view);
-          $('a').removeClass("active_view");
-          $(newViewLink).addClass("active_view");
-
+          console.log('setting active');
           var titleText;
           switch (view) {
             case "channelsGraph":
@@ -40,7 +38,6 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
               titleText = "";
           }
           document.getElementById('greenTitle').innerHTML = titleText;
-
           var oldHighlightedImg = $('#' + activeView + "-img")[0],
               newHighlightedImg = $('#' + view + "-img")[0];
 
@@ -68,11 +65,9 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
           $scope.setActive(view);
         };
 
-        $scope.event = function() {
-          alert('Event');
-        };
-
-        var activeView = "settings";
+        var activeView = "settings",
+            navTimeout = null,
+            NAV_SHOW_INTERVAL = 3000;
 
         $scope.setActive('settings');
       },

@@ -47,6 +47,10 @@
 	background-color: #eeeeee;
 }
 
+.nav>li>a:hover {
+	background-color: transparent;
+}
+
 #dropDownOpen {
   position:absolute;
   bottom:0;

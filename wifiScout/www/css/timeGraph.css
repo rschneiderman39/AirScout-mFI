@@ -1,12 +1,6 @@
-#lineChart {
-	position: relative;
-	top: 10px;
-}
 
-#legendModal > .modal-dialog {
-  width: 55%;
-	opacity: 0.5;
-	margin: 70px auto;
+#legend {
+	margin-top: 10px
 }
 
 .axis-label {
@@ -40,13 +34,15 @@
 
 .scrollable-list {
   overflow-x: hidden;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 .listgroupitem.active {
   z-index: 2;
   color: #fafafa;
-  background-color: #62bf01;
-  border-color: #62bf01;
+  background-color: #c4c4c4;
+  border-color: #c4c4c4;
 }
 
 .listgroupitem {
