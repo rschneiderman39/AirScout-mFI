@@ -7,9 +7,9 @@
 
   <body>
     <div ng-click="showNav()" ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" class="container-fluid" ng-controller="timeGraphCtrl">
-    <br>
-      <div class="col-xs-4">
-        <div id="legend">
+      <br>
+      <div class="col-xs-3" id="legend">
+        <h5><center>Select an AP to view its connection speed:</center></h5>
           <ul class="list-group scrollable-list">
             <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID); $event.stopPropagation()">
               <div class="legend-box" ng-style="{'background-color':d.color}"></div>
@@ -18,11 +18,8 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div class="col-xs-8">
-        <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px" onclick="$('#legendModal').modal('show')"></canvas>
-        <p class="axis-label">Level (dBm)</p>
-      </div>
+      <center><canvas id="plot" onclick="$('#legendModal').modal('show')"></canvas></center>
+      <p class="axis-label">Level (dBm)</p>
     </div>
 
     <!-- Help Modal -->
