@@ -16,7 +16,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         };
         $scope.isSelected = function(BSSID) {
           return BSSID === timeGraphDataService.getHighlightedBSSID();
-        }
+        };
 
         var selectedBSSID = "";
 

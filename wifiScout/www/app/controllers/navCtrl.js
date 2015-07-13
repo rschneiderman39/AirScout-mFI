@@ -56,13 +56,11 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
         };
 
         $scope.swipeRight = function (view) {
-          console.log("swiping right");
           $state.go(view);
           $scope.setActive(view);
         };
 
         $scope.swipeLeft = function (view) {
-          console.log("swiping left");
           $state.go(view);
           $scope.setActive(view);
         };
