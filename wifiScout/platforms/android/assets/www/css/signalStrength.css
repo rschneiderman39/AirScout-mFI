@@ -32,8 +32,12 @@
   border-bottom-left-radius: 4px;
 }
 
+#chartdiv {
+  margin-bottom: 50px;
+}
+
 .one,
-.two, 
+.two,
 .three {
   top: -60px;
 }

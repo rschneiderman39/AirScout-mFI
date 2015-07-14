@@ -8,4 +8,4 @@ $('.scrollable-list	').css('height', viewHeight);
 document.getElementById('plot').height = plotH;
 document.getElementById('plot').width = plotW;
 
-$('#touchLayer').css('height', $(window).height());
+$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
