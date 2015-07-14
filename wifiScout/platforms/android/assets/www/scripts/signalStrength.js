@@ -1,5 +1,5 @@
 var speedometerW = document.deviceHeight;
-var speedometerH = .75 * speedometerW;
+var speedometerH = .68 * speedometerW;
 
 var viewHeight = document.deviceHeight - 150;
 

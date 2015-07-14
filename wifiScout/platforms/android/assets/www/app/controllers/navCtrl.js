@@ -65,7 +65,7 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
 
         var activeView = "settings",
             navTimeout = null,
-            NAV_SHOW_INTERVAL = 3000;
+            NAV_SHOW_INTERVAL = 2000;
 
         $scope.setActive('settings');
       },
