@@ -9,3 +9,4 @@ $('#chartdiv').css('width', speedometerW);
 //$('.speedometer').append("<center><canvas id='foo' height='" + speedometerH + "' width='" + speedometerW + "'></canvas></center>");
 
 $('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
+$('#selectView').css('height', document.deviceHeight - document.topBarHeight);
