@@ -38,8 +38,6 @@ app.factory('filterSettingsService', function() {
     return {
         selectedBSSIDs: settings[view].selectedBSSIDs,
         showAll: settings[view].showAll,
-        sortPredicate: settings[view].sortPredicate,
-        sortReverse: settings[view].sortReverse
     };
   };
   service.setSelectedBSSIDs = function(view, selected) {
@@ -51,18 +49,6 @@ app.factory('filterSettingsService', function() {
   service.setShowAll = function(view, showAll) {
     if (typeof showAll === 'boolean') {
       settings[view].showAll = showAll;
-      pushSettings(view);
-    }
-  };
-  service.setSortPredicate = function(view, predicate) {
-    if (typeof predicate === 'string') {
-      settings[view].sortPredicate = predicate;
-      pushSettings(view);
-    }
-  };
-  service.setSortReverse = function(view, reverse) {
-    if (typeof reverse === 'boolean') {
-      settings[view].sortReverse = reverse;
       pushSettings(view);
     }
   };
@@ -87,8 +73,6 @@ app.factory('filterSettingsService', function() {
     settings[views[i]] = {
       selectedBSSIDs: [],
       showAll: true,
-      sortPredicate: 'SSID',
-      sortReverse: false,
       settingsPromise: $.Deferred()
     };
   }

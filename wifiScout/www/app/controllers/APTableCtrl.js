@@ -1,6 +1,7 @@
-app.controller('APTableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorService',
-                             'filterSettingsService', 'cordovaService',
-  function($scope, $timeout, APService, APSelectorService, filterSettingsService, cordovaService) {
+app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
+  'filterSettingsService', 'tableSortSettingsService', 'cordovaService',
+  function($scope, $timeout, APService, filterSettingsService,
+    tableSortSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         // Settings for this session
@@ -22,59 +23,59 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService', 'APSelectorSer
             update = true,
             UPDATE_INTERVAL = 500;
 
-        // Update the table whenever settings are changed
-        var onSettingsChange = function(settings) {
-          selectedBSSIDs = settings.selectedBSSIDs.slice();
+        // Update the table whenever filter settings are changed
+        var updateSelection = function(settings) {
+          selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
           forceUpdate();
-          filterSettingsService.requestSettings('APTable').done(onSettingsChange);
+          filterSettingsService.requestSettings('APTable').done(updateSelection);
         };
 
         // Save our sort settings to the settings service
         var pushSortSettings = function() {
-          filterSettingsService.setSortPredicate('APTable', $scope.sortPredicate);
-          filterSettingsService.setSortReverse('APTable', $scope.sortReverse);
+          tableSortSettingsService.setSortPredicate($scope.sortPredicate);
+          tableSortSettingsService.setSortReverse($scope.sortReverse);
         };
 
         // Update the table now
         var forceUpdate = function() {
-          if (showAll) {
-            $scope.selectedAPData = APService.getNamedAPData();
-          } else {
-            // Show only the APs whose BSSIDs match those we've selected
-            $scope.selectedAPData = APSelectorService.filter(
-              APService.getNamedAPData(),
-              selectedBSSIDs
-            );
-          }
+          $scope.$apply(function() {
+            if (showAll) {
+              $scope.selectedAPData = APService.getNamedAPData();
+            } else {
+              // Show only the APs whose BSSIDs match those we've selected
+              $scope.selectedAPData = APService.getSelectedAPData(selectedBSSIDs);
+            }
+          });
         };
 
         // Update the table every quantum
         var update = function() {
           if (update) {
             forceUpdate();
-            $timeout(update, UPDATE_INTERVAL);
+            setTimeout(update, UPDATE_INTERVAL);
           }
+        };
+
+        var init = function() {
+          $scope.$on('$destroy', function() {
+            update = false;
+            pushSortSettings();
+          });
+
+          var settings = filterSettingsService.getSettings('APTable');
+          selectedBSSIDs = settings.selectedBSSIDs;
+          showAll = settings.showAll;
+          $scope.sortPredicate = tableSortSettingsService.getSortPredicate();
+          $scope.sortReverse = tableSortSettingsService.getSortReverse();
+          filterSettingsService.requestSettings('APTable').done(updateSelection);
+
+          setTimeout(update, UPDATE_INTERVAL);
         };
 
         /* INIT */
 
-        // When we navigate away, remember our sort settings
-        $scope.$on('$destroy', function() {
-          update = false;
-          pushSortSettings();
-        });
-
-        // Pull settings from filterSettingsService, and start waiting on settings changes
-        var settings = filterSettingsService.getSettings('APTable');
-        $scope.sortPredicate = settings.sortPredicate;
-        $scope.sortReverse = settings.sortReverse;
-        selectedBSSIDs = settings.selectedBSSIDs.slice();
-        showAll = settings.showAll;
-        filterSettingsService.requestSettings('APTable').done(onSettingsChange);
-
-        // Start update loop
-        update();
+        init();
       },
       function rejected() {
         console.log("APTableCtrl is unavailable because Cordova is not loaded.");

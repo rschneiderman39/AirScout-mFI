@@ -1,6 +1,6 @@
 app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
-                             'APSelectorService', 'cordovaService',
-  function($scope, APService, filterSettingsService, APSelectorService, cordovaService) {
+                             'cordovaService',
+  function($scope, APService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
         // Settings for this session
@@ -34,12 +34,9 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
           $scope.$apply(function() {
             $scope.modal.allAPData = APService.getNamedAPData();
             if (settings.showAll) {
-              $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
+              $scope.modal.selectedAPData = APService.getNamedAPData();
             } else {
-              $scope.modal.selectedAPData = APSelectorService.filter(
-                $scope.modal.allAPData,
-                settings.selectedBSSIDs
-              );
+              $scope.modal.selectedAPData = APService.getSelectedAPData(settings.selectedBSSIDs);
             }
           });
         };

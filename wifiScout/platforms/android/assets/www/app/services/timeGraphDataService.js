@@ -1,6 +1,5 @@
 app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
-  'APSelectorService', function(APService, filterSettingsService,
-  APSelectorService) {
+  function(APService, filterSettingsService) {
     var service = {},
         legendDataPromise = $.Deferred();
 

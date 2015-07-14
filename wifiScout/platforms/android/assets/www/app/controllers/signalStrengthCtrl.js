@@ -1,15 +1,14 @@
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
-  'APSelectorService', 'signalStrengthSettingsService', 'levelTransformService',
-  'cordovaService', function($scope, $timeout, APService, APSelectorService,
+  'signalStrengthSettingsService', 'levelTransformService',
+  'cordovaService', function($scope, $timeout, APService,
   signalStrengthSettingsService, levelTransformService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPData = [];
-        $scope.selector = 'SSID';
-        $scope.selectedSSID = undefined;
         $scope.level = undefined;
         $scope.minLevel = undefined;
         $scope.maxLevel = undefined;
+
         $scope.isSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
             return ap.BSSID === selectedBSSID;
@@ -18,27 +17,41 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
         $scope.setSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
             selectedBSSID = ap.BSSID;
-            $scope.selectedSSID = ap.SSID;
           }
+          $scope.level = undefined;
           $scope.minLevel = undefined;
           $scope.maxLevel = undefined;
+          updateLevels();
         };
 
         var selectedBSSID = "",
+            isDuplicateSSID = {},
             gauge = undefined,
             UPDATE_INTERVAL = 500;
 
-        var forceUpdate = function () {
-          $scope.allAPData = APService.getNamedAPData();
-          var selectedAP = APSelectorService.select($scope.allAPData, selectedBSSID);
+        var updateDuplicateSSIDs = function() {
+          var found = {},
+              newDuplicates = {};
+          for (var i = 0; i < $scope.allAPData.length; ++i) {
+            if (found[$scope.allAPData[i].SSID]) {
+              newDuplicates[$scope.allAPData[i].SSID] = true;
+            } else {
+              found[$scope.allAPData[i].SSID] = true;
+            }
+          }
+          $scope.isDuplicateSSID = newDuplicates;
+        };
+
+        var updateLevels = function() {
+          var selectedAP = APService.getSingleAPData(selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
-            if (typeof $scope.minLevel === 'undefined') {
+            if ($scope.minLevel === undefined) {
               $scope.minLevel = $scope.level;
             } else if ($scope.level < $scope.minLevel) {
               $scope.minLevel = $scope.level;
             }
-            if (typeof $scope.maxLevel === 'undefined') {
+            if ($scope.maxLevel === undefined) {
               $scope.maxLevel = $scope.level;
             } else if ($scope.level > $scope.maxLevel) {
               $scope.maxLevel = $scope.level;
@@ -47,22 +60,20 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           }
         };
 
-        var update = function () {
-          forceUpdate();
-          $timeout(update, UPDATE_INTERVAL)
+        var updateList = function() {
+          $scope.allAPData = APService.getNamedAPData();
         };
 
-        var pushSettings = function() {
-          signalStrengthSettingsService.setSelectedBSSID(selectedBSSID);
-          signalStrengthSettingsService.setSelectedSSID($scope.selectedSSID);
+        var update = function() {
+          $scope.$apply(function() {
+            updateList();
+            updateLevels();
+            updateDuplicateSSIDs();
+          });
+          setTimeout(update, UPDATE_INTERVAL)
         };
 
-        var pullSettings = function() {
-          selectedBSSID = signalStrengthSettingsService.getSelectedBSSID();
-          $scope.selectedSSID = signalStrengthSettingsService.getSelectedSSID();
-        };
-
-        (function initGauge() {
+        var initGauge = function() {
           var opts = {
     			  lines: 12,
     			  angle: 0.1,
@@ -87,14 +98,16 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
     			gauge.maxValue = 700;
     			gauge.animationSpeed = 120;
           gauge.set(1);
-        })();
+        };
 
-        pullSettings();
+        var init = function() {
+          initGauge();
+          setTimeout(update, UPDATE_INTERVAL);
+        }
 
-        $scope.$on('$destroy', pushSettings);
+        /* INIT */
 
-        update();
-
+        init();
       },
       function rejected() {
         console.log("signalStrengthCtrl is unavailable because Cordova is not loaded.");

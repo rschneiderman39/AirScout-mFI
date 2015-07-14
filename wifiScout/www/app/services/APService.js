@@ -33,59 +33,32 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
   service.getNamedAPData = function() {
     return allAPData.filter(function(ap) { return ap.SSID !== ""; });
   };
-  /* Get the minimum measured RSSI for a particular AP
-     @param {String} BSSID - The hardware address of the AP
-     @returns {Number} The minimum RSSI of the AP
-  */
-  service.getMinLevel = function(BSSID) {
-    var minLevel = minLevels[BSSID];
-    if (typeof minLevel !== 'undefined') {
-      return minLevel;
-    } else {
-      return -100;
-    }
-  };
-  /* Get the maximum measured RSSI for a particular AP
-     @param {String} BSSID - The hardware address of the AP
-     @returns {Number} The maximum RSSI of the AP
-  */
-  service.getMaxLevel = function(BSSID) {
-    var maxLevel = maxLevels[BSSID];
-    if (typeof maxLevel !== 'undefined') {
-      return maxLevel;
-    } else {
-      return -100;
-    }
-  };
 
-  /* Iterate through the current batch of AP data and update minimum levels */
-  var updateMinLevels = function() {
-    for (var i = 0; i < allAPData.length; ++i) {
-      var ap = allAPData[i];
-      var minLevel = minLevels[ap.BSSID];
-      if (typeof minLevel !== 'undefined') {
-        if (ap.level < minLevel) {
-          minLevels[ap.BSSID] = ap.level;
+  service.getSelectedAPData = function(BSSIDs) {
+    var selectedAPData = [],
+        isSelected = {};
+    for (var i = 0; i < BSSIDs.length; ++i) {
+      isSelected[BSSIDs[i]] = true;
+    }
+    if (BSSIDs.length > 0) {
+      for (var i = 0; i < allAPData.length; ++i) {
+        if (isSelected[allAPData[i].BSSID] === true) {
+          selectedAPData.push(allAPData[i]);
         }
-      } else {
-        minLevels[ap.BSSID] = ap.level;
       }
     }
+    return selectedAPData;
   };
 
-  /* Iterate through the current batch of AP data and update maximum levels */
-  var updateMaxLevels = function() {
-    for (var i = 0; i < allAPData.length; ++i) {
-      var ap = allAPData[i];
-      var maxLevel = maxLevels[ap.BSSID];
-      if (typeof maxLevel !== 'undefined') {
-        if (ap.level > maxLevel) {
-          maxLevels[ap.BSSID] = ap.level;
+  service.getSingleAPData = function(BSSID) {
+    if (BSSID !== "") {
+      for (var i = 0; i < allAPData.length; ++i) {
+        if (allAPData[i].BSSID === BSSID) {
+          return allAPData[i];
         }
-      } else {
-        maxLevels[ap.BSSID] = ap.level;
       }
     }
+    return null;
   };
 
   /* Get data from the device and update internal state accordingly */
@@ -93,8 +66,6 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
     rawDataService.getData()
     .done(function(data) {
       allAPData = data.available;
-      updateMinLevels();
-      updateMaxLevels();
     })
     .fail(function() {
       allAPData = [];
