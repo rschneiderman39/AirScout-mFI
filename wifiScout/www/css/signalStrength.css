@@ -1,3 +1,7 @@
+.list-title {
+  font-weight: bold;
+}
+
 .scrollable-list {
   overflow-x: hidden;
 }

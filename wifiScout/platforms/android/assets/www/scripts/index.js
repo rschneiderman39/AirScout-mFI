@@ -2,11 +2,9 @@
 // http://go.microsoft.com/fwlink/?LinkID=397704
 // To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints,
 // and then run "window.location.reload()" in the JavaScript Console.
-var navBarShown = false;
 document.mobileDevice;
-document.navBarHeight;
 document.deviceHeight = $(window).height();
-document.viewHeight = document.deviceHeight - 50;
+document.topBarHeight = $('#top-bar').css('height');
 
 (function () {
     "use strict";
@@ -34,28 +32,18 @@ function windowCheck() {
     return mobileDevice;
 };
 
-$('#currentView').css('height', document.viewHeight);
+$('#currentView').css('height', document.deviceHeight);
 
-/*(function () {
-  var shown = 0;
+(function () {
   var navBar = $('#bottomBar');
 
-  $('#currentView').css('height', document.deviceHeight-document.navBarUpPadding);
+  $('#currentView').css('height', document.deviceHeight-document.topBarHeight);
 
-  $('#navTriangleDown').click( function() {
+  $('#selectView').click( function() {
     console.log('clicked!');
-    shown++;
-    if( shown % 2 == 0 ) {
-      navBarShown = true;
+    navBar.css('bottom', '-15px');
+    setTimeout(function() {
       navBar.css('bottom', '-98px');
-      $('#currentView').css('height', document.deviceHeight-document.navBarDownPadding);
-      console.log("navbar is hidden!");
-    }
-    else {
-      navBarShown = false;
-      navBar.css('bottom', '-15px');
-      $('#currentView').css('height', document.deviceHeight-document.navBarUpPadding);
-      console.log("navbar is shown!");
-    }
+    }, 3000);
   });
-})();*/
+})();

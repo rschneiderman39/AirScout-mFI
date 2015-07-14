@@ -40,10 +40,12 @@
       </div>
     </div>
 
-    <div id="currentView" ui-view></div>
+    <div id="selectView">
+      <div id="currentView" ui-view></div>
+    </div>
 
     <header>
-      <nav class="navbar navbar-default navbar-fixed-bottom" ng-show="navBar">
+      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
         <ul class="nav nav-pills nav-justified">
           <li role="presentation">
             <a ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">

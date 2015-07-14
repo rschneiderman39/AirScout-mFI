@@ -2,7 +2,7 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
   function($scope, $state, $timeout, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.showNav = function() {
+        /*$scope.showNav = function() {
           clearTimeout(navTimeout);
           $scope.navBar = true;
           navTimeout = setTimeout(function() {
@@ -10,14 +10,13 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
               $scope.navBar = false;
             });
           }, NAV_SHOW_INTERVAL);
-        };
+        };*/
 
         $scope.setActive = function(view) {
-          console.log('setting active');
           var titleText;
           switch (view) {
-            case "channelsGraph":
-              titleText = "Channels Graph";
+            case "channelGraph":
+              titleText = "Channel Graph";
               break;
             case "signalStrength":
               titleText = "Signal Strength";

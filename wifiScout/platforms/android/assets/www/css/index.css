@@ -30,11 +30,12 @@
 	margin-bottom: 8px
 }
 
-/*#bottomBar {
+#bottomBar {
   position: fixed;
-  height: 80px;
+  bottom: -98px;
+  height: 97px;
   width: 100%;
-	padding: 5px;
+  padding: 5px;
   min-height: 0px;
 }
 
@@ -42,7 +43,7 @@
   -webkit-transition: bottom 0.5s ease;
   -moz-transition: bottom 0.5s ease;
   transition: bottom 0.5s ease;
-}*/
+}
 
 .active_view {
 	background-color: #eeeeee;

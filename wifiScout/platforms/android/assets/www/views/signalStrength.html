@@ -6,10 +6,10 @@
 	</head>
 
 	<body>
-		<div ng-click="showNav()" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
+		<div ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
 			<br>
 			<div class="col-xs-3 apList">
-				<h5><center>Select an AP to view its connection speed:</center></h5>
+				<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
 				<ul class="list-group scrollable-list">
 					<span data-ng-repeat="ap in allAPData | orderBy:'SSID'">
 						<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
