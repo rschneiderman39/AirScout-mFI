@@ -4,6 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 document.mobileDevice;
 document.deviceHeight = $(window).height();
+document.deviceWidth = $(window).width();
 document.topBarHeight = $('#top-bar').height();
 
 (function () {

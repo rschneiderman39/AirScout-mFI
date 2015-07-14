@@ -1,11 +1,10 @@
-var plotH = $(window).height() - 120;
-var plotW = Math.floor($(window).width() * 0.72);
+var plotHeight = $(window).height() - 120,
+    plotWidth = Math.floor($(window).width() * 0.72),
+    legendHeight = document.deviceHeight - 150;
 
-var viewHeight = document.deviceHeight - 150;
+$('.scrollable-list	').css('height', legendHeight);
 
-$('.scrollable-list	').css('height', viewHeight);
-
-document.getElementById('plot').height = plotH;
-document.getElementById('plot').width = plotW;
+document.getElementById('plot').height = plotHeight;
+document.getElementById('plot').width = plotWidth;
 
 $('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
