@@ -32,7 +32,7 @@ function windowCheck() {
     return mobileDevice;
 };
 
-$('#currentView').css('height', document.deviceHeight);
+$('#currentView').css('height', document.deviceHeight-document.topBarHeight);
 
 (function () {
   var navBar = $('#bottomBar');
