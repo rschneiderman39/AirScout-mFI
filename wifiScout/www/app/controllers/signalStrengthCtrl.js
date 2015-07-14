@@ -8,6 +8,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
         $scope.level = undefined;
         $scope.minLevel = undefined;
         $scope.maxLevel = undefined;
+        var gauge;
 
         $scope.isSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
@@ -42,6 +43,69 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           $scope.isDuplicateSSID = newDuplicates;
         };
 
+        var updateList = function() {
+          $scope.allAPData = APService.getNamedAPData();
+        };
+
+        var update = function() {
+          $scope.$apply(function() {
+            updateList();
+            updateLevels();
+            updateDuplicateSSIDs();
+          });
+          setTimeout(update, UPDATE_INTERVAL)
+        };
+
+        // Color scale -  Green = 4-5 bars
+        //                Yellow = 2-3 bars
+        //                Red = 1-2 bars
+        var initGauge = function() {
+          gauge = AmCharts.makeChart( "chartdiv", {
+          "type": "gauge",
+          "theme": "none",
+          "startDuration": 0.5,
+          "axes": [ {
+          "axisThickness": 1,
+            "axisAlpha": 0.2,
+            "tickAlpha": 0.2  ,
+            "valueInterval": -10,
+            "bands": [ {
+              "color": "#84b761",
+              "endValue": -77,
+              "startValue": 0
+            }, {
+              "color": "#fdd400",
+              "endValue": -86,
+              "startValue": -77
+            }, {
+               "color": "#fdd400",
+               "endValue": -92,
+               "startValue": -86
+            }, {
+               "color": "#cc4748",
+               "endValue": -101,
+               "startValue": -92
+            }, {
+               "color": "#cc4748",
+               "endValue": -120,
+               "startValue": -101
+            } ],
+               //"bottomText": "0 dBm",
+               //"bottomTextYOffset": -20,
+               //"bottomTextFontSize": 20,
+               "endValue": -120
+            }, ],
+                "arrows": [{
+
+                }],
+                "export": {
+                  "enabled": true
+                }
+            });
+
+          setInterval(1, 10000);
+        };
+
         var updateLevels = function() {
           var selectedAP = APService.getSingleAPData(selectedBSSID);
           if (selectedAP !== null) {
@@ -56,95 +120,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
             } else if ($scope.level > $scope.maxLevel) {
               $scope.maxLevel = $scope.level;
             }
-            gauge.set(levelTransformService.gaugeTransform($scope.level));
-          }
-        };
-
-        var updateList = function() {
-          $scope.allAPData = APService.getNamedAPData();
-        };
-
-        var update = function() {
-          $scope.$apply(function() {
-            updateList();
-            updateLevels();
-            updateDuplicateSSIDs();
-          });
-          setTimeout(update, UPDATE_INTERVAL)
-        };
-
-        var initGauge = function() {
-          /*var opts = {
-    			  lines: 12,
-    			  angle: 0.1,
-    			  lineWidth: 0.3,
-    			  pointer: {
-    			    length: 0.75,
-    			    strokeWidth: 0.035,
-    			    color: '#000000'
-    			  },
-    			  limitMax: 'false',
-    			  percentColors: [[0.0, "#FF0000" ], [0.1, "#FF0000"],
-                            [0.20, "#FF3300" ],  [0.30, "#ff6600"],
-                            [0.40, "#FF9900"], [0.50, "#FFcc00"],
-                            [0.60, "#ffff00"], [0.70, "#ccff00"],
-                            [0.80, "#99ff00"], [0.90, "#66FF00"],
-                            [1.0, "#00FF00"]],
-    			  strokeColor: '#E0E0E0',
-    			  generateGradient: true
-    			};
-          var target = document.getElementById('foo');
-    			gauge = new Gauge(target).setOptions(opts);
-    			gauge.maxValue = 700;
-    			gauge.animationSpeed = 120;
-          gauge.set(1);*/
-
-          var gaugeChart = AmCharts.makeChart( "chartdiv", {
-          "type": "gauge",
-          "theme": "none",
-          "axes": [ {
-          "axisThickness": 1,
-            "axisAlpha": 0.2,
-            "tickAlpha": 0.2,
-            "valueInterval": -10,
-            "bands": [ {
-              "color": "#84b761",
-              "endValue": -80,
-              "startValue": 0
-            }, {
-              "color": "#fdd400",
-              "endValue": -100,
-              "startValue": -80
-            }, {
-               "color": "#cc4748",
-               "endValue": -110,
-               //"innerRadius": "95%",
-               "startValue": -100
-            } ],
-               "bottomText": "0 dBm",
-               "bottomTextYOffset": -20,
-               "endValue": -130
-            } ],
-                "arrows": [ {} ],
-                "export": {
-                  "enabled": true
-                }
-            });
-
-          setInterval( randomValue, 2000 );
-          // set random value
-          function randomValue() {
-            var value = Math.round( Math.random() * 200 );
-            if ( gaugeChart ) {
-              if ( gaugeChart.arrows ) {
-                if ( gaugeChart.arrows[ 0 ] ) {
-                  if ( gaugeChart.arrows[ 0 ].setValue ) {
-                    gaugeChart.arrows[ 0 ].setValue( value );
-                    gaugeChart.axes[ 0 ].setBottomText( value + " dBm" );
-                  }
-                }
-              }
-            }
+            gauge.arrows[ 0 ].setValue( $scope.level );
           }
         };
 
