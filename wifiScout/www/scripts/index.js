@@ -32,13 +32,14 @@ function windowCheck() {
     return mobileDevice;
 };
 
-$('#currentView').css('height', document.deviceHeight);
+$('#currentView').css('height', document.deviceHeight-document.topBarHeight);
 
 (function () {
   var navBar = $('#bottomBar');
 
   $('#currentView').css('height', document.deviceHeight-document.topBarHeight);
 
+/*
   $('#selectView').click( function() {
     console.log('clicked!');
     navBar.css('bottom', '-15px');
@@ -46,4 +47,5 @@ $('#currentView').css('height', document.deviceHeight);
       navBar.css('bottom', '-98px');
     }, 3000);
   });
+  */
 })();

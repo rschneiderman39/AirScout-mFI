@@ -7,49 +7,47 @@
 	</head>
 
 	<body>
-		<div ng-swipe-right="swipeRight('timeGraph')" ng-swipe-left="swipeLeft('channelTable')" ng-controller="APTableCtrl">
-			<div class="container-fluid">
-			  <div class="row">
-					<!-- table -->
-			    <table class="table table-striped">
-			      <div class="container-fluid">
-			      	<thead>
-			          <tr>
-			            <th class="col-xs-3 ssid">
-			            	<a href="" ng-click="order('SSID'); $event.stopPropagation()">SSID</a>
-										<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span>
-			            </th>
-			            <th class="col-xs-3">
-			            	<a class="mac" href="" ng-click="order('BSSID'); $event.stopPropagation()">MAC Address</a>
-										<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span>
-			            </th>
-			            <th class="col-xs-2">
-			            	<a class="frequency" href="" ng-click="order('frequency'); $event.stopPropagation()">Channel</a>
-										<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
-			            </th>
-			            <th class="col-xs-2">
-			            	<a class="level" href="" ng-click="order('level'); $event.stopPropagation()">Level (dBm)</a>
-										<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span>
-			            </th>
-			            <th class="col-xs-2">
-			            	<a class="capabilities" href="" ng-click="order('capabilities'); $event.stopPropagation()">Capabilities</a>
-										<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
-			            </th>
-			          </tr>
-			        </thead>
-			      </div>
-			    	<tbody>
-			    		<tr data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
-			      		<td class="col-xs-3">{{ap.SSID}}</td>
-			      		<td class="col-xs-3">{{ap.BSSID}}</td>
-			      		<td class="col-xs-2">{{ap.channel}}</td>
-			      		<td class="col-xs-2">{{ap.level}}</td>
-			      		<td class="col-xs-2">{{ap.capabilities}}</td>
-			      	</tr>
-			    	</tbody>
-			    </table>
-			  </div>
-			</div>
+		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation()" ng-swipe-right="swipeRight('timeGraph')" ng-swipe-left="swipeLeft('channelTable')" ng-controller="APTableCtrl">
+		  <div class="row">
+				<!-- table -->
+		    <table class="table table-striped">
+		      <div class="container-fluid">
+		      	<thead>
+		          <tr>
+		            <th class="col-xs-3 ssid">
+		            	<a href="" ng-click="order('SSID'); $event.stopPropagation()">SSID</a>
+									<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span>
+		            </th>
+		            <th class="col-xs-3">
+		            	<a class="mac" href="" ng-click="order('BSSID'); $event.stopPropagation()">MAC Address</a>
+									<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span>
+		            </th>
+		            <th class="col-xs-2">
+		            	<a class="frequency" href="" ng-click="order('frequency'); $event.stopPropagation()">Channel</a>
+									<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
+		            </th>
+		            <th class="col-xs-2">
+		            	<a class="level" href="" ng-click="order('level'); $event.stopPropagation()">Level (dBm)</a>
+									<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span>
+		            </th>
+		            <th class="col-xs-2">
+		            	<a class="capabilities" href="" ng-click="order('capabilities'); $event.stopPropagation()">Capabilities</a>
+									<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
+		            </th>
+		          </tr>
+		        </thead>
+		      </div>
+		    	<tbody>
+		    		<tr data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
+		      		<td class="col-xs-3">{{ap.SSID}}</td>
+		      		<td class="col-xs-3">{{ap.BSSID}}</td>
+		      		<td class="col-xs-2">{{ap.channel}}</td>
+		      		<td class="col-xs-2">{{ap.level}}</td>
+		      		<td class="col-xs-2">{{ap.capabilities}}</td>
+		      	</tr>
+		    	</tbody>
+		    </table>
+		  </div>
 		</div>
 		<div filter-modal view="APTable"></div>
 	</body>

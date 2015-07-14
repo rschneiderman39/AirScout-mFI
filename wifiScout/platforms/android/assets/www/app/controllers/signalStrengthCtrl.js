@@ -74,7 +74,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
         };
 
         var initGauge = function() {
-          var opts = {
+          /*var opts = {
     			  lines: 12,
     			  angle: 0.1,
     			  lineWidth: 0.3,
@@ -97,7 +97,55 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
     			gauge = new Gauge(target).setOptions(opts);
     			gauge.maxValue = 700;
     			gauge.animationSpeed = 120;
-          gauge.set(1);
+          gauge.set(1);*/
+
+          var gaugeChart = AmCharts.makeChart( "chartdiv", {
+          "type": "gauge",
+          "theme": "none",
+          "axes": [ {
+          "axisThickness": 1,
+            "axisAlpha": 0.2,
+            "tickAlpha": 0.2,
+            "valueInterval": -10,
+            "bands": [ {
+              "color": "#84b761",
+              "endValue": -80,
+              "startValue": 0
+            }, {
+              "color": "#fdd400",
+              "endValue": -100,
+              "startValue": -80
+            }, {
+               "color": "#cc4748",
+               "endValue": -110,
+               //"innerRadius": "95%",
+               "startValue": -100
+            } ],
+               "bottomText": "0 dBm",
+               "bottomTextYOffset": -20,
+               "endValue": -130
+            } ],
+                "arrows": [ {} ],
+                "export": {
+                  "enabled": true
+                }
+            });
+
+          setInterval( randomValue, 2000 );
+          // set random value
+          function randomValue() {
+            var value = Math.round( Math.random() * 200 );
+            if ( gaugeChart ) {
+              if ( gaugeChart.arrows ) {
+                if ( gaugeChart.arrows[ 0 ] ) {
+                  if ( gaugeChart.arrows[ 0 ].setValue ) {
+                    gaugeChart.arrows[ 0 ].setValue( value );
+                    gaugeChart.axes[ 0 ].setBottomText( value + " dBm" );
+                  }
+                }
+              }
+            }
+          }
         };
 
         var init = function() {

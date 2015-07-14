@@ -2,11 +2,11 @@
 <head>
 	<!-- CSS Stylesheets -->
 	<link href="css/settings.css" rel="stylesheet" />
+	<script src="scripts/settings.js"></script>
 </head>
 
 <body>
-  <div>
-    <div ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')" class="container-fluid">
+    <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
 		  <div class="row-fluid">
 			  <div class="col-xs-6">
           <h4>Viewing Mode - Select a viewing mode blah blah blah something something something.... </h4>
@@ -23,7 +23,6 @@
 			  </div>
 		  </div>
     </div>
-  </div>
 
 	<!-- Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

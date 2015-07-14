@@ -2,15 +2,14 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
   function($scope, $state, $timeout, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        /*$scope.showNav = function() {
+        $scope.showNav = function() {
           clearTimeout(navTimeout);
-          $scope.navBar = true;
+          var navBar = $('#bottomBar');
+          navBar.css('bottom', '-15px');
           navTimeout = setTimeout(function() {
-            $scope.$apply(function() {
-              $scope.navBar = false;
-            });
+            navBar.css('bottom', '-98px');
           }, NAV_SHOW_INTERVAL);
-        };*/
+        };
 
         $scope.setActive = function(view) {
           var titleText;
@@ -66,7 +65,7 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
 
         var activeView = "settings",
             navTimeout = null,
-            NAV_SHOW_INTERVAL = 3000;
+            NAV_SHOW_INTERVAL = 2000;
 
         $scope.setActive('settings');
       },

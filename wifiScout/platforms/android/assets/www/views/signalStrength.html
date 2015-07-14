@@ -6,7 +6,7 @@
 	</head>
 
 	<body>
-		<div ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" class="container-fluid fluidHeight" ng-controller="signalStrengthCtrl">
+		<div id="touchLayer" class="container-fluid fluidHeight" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" ng-controller="signalStrengthCtrl">
 			<br>
 			<div class="col-xs-3 apList">
 				<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
@@ -19,8 +19,8 @@
 					</span>
 				</ul>
 			</div>
+			<center><div id="chartdiv"></div></center>
 			<br>
-			<div class="speedometer"></div>
 			<br>
 			<div class="col-xs-3 one">
 				<center>Min Level</center>
