@@ -1,6 +1,7 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-app.factory('APService', ['rawDataService', function(rawDataService) {
+app.factory('APService', ['rawDataService', 'channelService',
+  function(rawDataService, channelService) {
   var service = {},
       allAPData = [],
       minLevels = {},
@@ -61,11 +62,18 @@ app.factory('APService', ['rawDataService', function(rawDataService) {
     return null;
   };
 
+  var appendChannelData = function(data) {
+    for (var i = 0; i < data.length; ++i) {
+      data[i].channel = channelService.freqToChannel(data[i].frequency);
+    }
+    return data;
+  };
+
   /* Get data from the device and update internal state accordingly */
   var update = function() {
     rawDataService.getData()
     .done(function(data) {
-      allAPData = data.available;
+      allAPData = appendChannelData(data.available);
     })
     .fail(function() {
       allAPData = [];
