@@ -6,6 +6,7 @@
 
     <!-- CSS Stylesheets -->
     <link href="css/angular-chart.css" rel="stylesheet" />
+    <link href="css/introjs.min.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="css/index.css" rel="stylesheet" />
@@ -25,6 +26,7 @@
     <script src="scripts/lib/gauge.min.js"></script>
     <script src="scripts/lib/serial.js"></script>
     <script src="scripts/lib/smoothie.js"></script>
+    <script src="scripts/lib/intro.min.js"></script>
   </head>
 
   <body id="slidingNav" ng-controller="navCtrl" class="view">
@@ -38,7 +40,7 @@
       <div class="col-xs-2">
       </div>
       <div class="col-xs-2" id="helpContext">
-        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" data-toggle="modal" data-target="#helpModal">
+        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" href="javascript:void(0);" onclick="startIntro()">
       </div>
     </div>
 
@@ -94,6 +96,33 @@
         </ul>
       </nav>
     </header>
+
+    <script type="text/javascript">
+      function startIntro(){
+        var intro = introJs();
+          intro.setOptions({
+            showStepNumbers: false,
+            steps: [
+              { 
+                intro: "Hello world!"
+              },
+              {
+                element: document.querySelector('#step1'),
+                intro: "This is a tooltip."
+              },
+              {
+                element: document.querySelector('#step2'),
+                intro: "This is the plain view"
+              }, 
+              {
+                element: document.querySelector('#step3'),
+                intro: "This is the fun and interesting view!"
+              }
+            ]
+          });
+          intro.start();
+      }
+    </script>
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
