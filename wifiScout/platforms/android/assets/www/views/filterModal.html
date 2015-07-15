@@ -28,14 +28,6 @@
               </div>
               <div class="col-xs-8">
                 <ul class="list-group scrollable-list">
-                  <!-- 
-                  <li class="list-group-item selected">
-                    <div class="row">
-                      <div class="col-xs-6" id="SSID"> HAITHERE </div>
-                      <div class="col-xs-2" id="BSSID"> II:OO:UU:EE::DD </div>
-                    </div>
-                  </li> 
-                  -->
                   <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'">
                     <div class="row">
                       <div class="col-xs-6" id="SSID"> {{ap['SSID']}} </div>

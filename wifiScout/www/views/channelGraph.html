@@ -6,17 +6,10 @@
   </head>
 
   <body>
-    <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('settings')" ng-swipe-left="swipeLeft('signalStrength')">
-      <h1><br>
-        THIS
-        <br>
-        IS
-        <br>
-        THE
-        <br>
-        PARABOLA
-        <br>
-        VIEW</h1>
+    <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('settings')" ng-swipe-left="swipeLeft('signalStrength')" ng-controller="channelGraphCtrl">
+
+      <div id="parabolas" style="width:600px;height:300px"></div>
+
     </div>
 
     <!-- Modal -->

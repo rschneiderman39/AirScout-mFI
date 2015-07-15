@@ -25,6 +25,8 @@
     <script src="scripts/lib/serial.js"></script>
     <script src="scripts/lib/smoothie.js"></script>
     <script src="scripts/lib/intro.min.js"></script>
+    <script src="scripts/lib/jquery.flot.min.js"></script>
+    <script src="scripts/lib/curvedLines.js"></script>
   </head>
 
   <body id="slidingNav" ng-controller="navCtrl" class="view">
@@ -101,7 +103,7 @@
           intro.setOptions({
             showStepNumbers: false,
             steps: [
-              { 
+              {
                 intro: "Hello world!"
               },
               {
@@ -111,7 +113,7 @@
               {
                 element: document.querySelector('#step2'),
                 intro: "This is the plain view"
-              }, 
+              },
               {
                 element: document.querySelector('#step3'),
                 intro: "This is the fun and interesting view!"
@@ -138,6 +140,7 @@
     <script src="app/services/timeGraphDataService.js"></script>
     <script src="app/services/tableSortSettingsService.js"></script>
     <script src="app/services/channelService.js"></script>
+    <script src="app/services/channelGraphDataService.js"></script>
 
     <script src="app/controllers/APTableCtrl.js"></script>
     <script src="app/controllers/modalCtrl.js"></script>
@@ -145,6 +148,7 @@
     <script src="app/controllers/signalStrengthCtrl.js"></script>
     <script src="app/controllers/timeGraphCtrl.js"></script>
     <script src="app/controllers/settingsCtrl.js"></script>
+    <script src="app/controllers/channelGraphCtrl.js"></script>
 
     <script src="app/directives/filterModal.js"></script>
 

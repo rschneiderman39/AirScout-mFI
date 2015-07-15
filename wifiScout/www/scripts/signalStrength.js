@@ -1,4 +1,4 @@
-var gaugeWidth = document.deviceWidth * 0.5,
+var gaugeWidth = document.deviceWidth * 0.55,
     gaugeHeight = .65 * gaugeWidth,
     listHeight = document.deviceHeight - 150;
 
