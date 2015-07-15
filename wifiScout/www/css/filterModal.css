@@ -1,14 +1,4 @@
-.modal {
-	/*top: 60px;*/
-}
-
-.modal .modal-body {
-    /*max-height: 400px;
-    overflow-y: auto;*/
-}
-
 #modalList {
-	/*max-height: 340px;*/
   overflow-y: auto;
 }
 
@@ -32,4 +22,27 @@
 .table-condensed tbody td, .table-condensed thead > tr> th {
   float: left;
   border-bottom-width: 0;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+    width: 12px;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 10px;
+    border: 2px solid #fff;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;  
+    background-color: #fff; 
 }

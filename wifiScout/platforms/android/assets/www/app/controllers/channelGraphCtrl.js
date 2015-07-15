@@ -25,14 +25,17 @@ app.controller('channelGraphCtrl', ['channelGraphDataService', 'APService', 'cor
         var plot = $("#parabolas").plot(data, options).data("plot");
 
         var update = function() {
-          data = [];
-          for (var i = 1; i < 6; ++i) {
-            data.push(
-              {
-                label: i.toString(),
-                data: [[i-1, -100], [i, Math.random()*70 - 100], [i+1, -100]]
-              }
-            );
+          var APData = APService.getNamedAPData(),
+              newPlotData = [];
+          for (var i = 0; i < APData.length; ++i) {
+            if (APData[i].channel <= 14) {
+              newPlotData.push(
+                {
+                  label: APData[i].SSID,
+                  data: [[APData[i].channel-1, -100], [APData[i].channel+1, -100]]
+                }
+              )
+            }
           }
           plot.setData(data);
           plot.setupGrid();
