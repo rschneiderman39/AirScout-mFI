@@ -2,47 +2,64 @@
   overflow-y: auto;
 }
 
-.table-condensed th {
-   text-align: left;   
+.modal-body {
+  position: relative;
+  top: -15px;
+  height: 400px;
 }
 
-.table-condensed thead {
-  width: 100%;
+.modal-header {
+  position: relative;
+  height: 80px;
+  top: -15px;
 }
 
-.table-condensed tbody {
+#SSID {
+  text-align: center;
+
+}
+
+#BSSID {
+  text-align: center;
+  left: 20px;
+}
+
+.scrollable-list {
+  overflow-x: hidden;
   overflow-y: auto;
-  width: 100%;
+  max-height: 330px;
 }
 
-.table-condensed thead, .table-condensed tbody, .table-condensed tr, .table-condensed td, .table-condensed th {
-  display: block;
+.list-group-item.selected {
+  z-index: 2;
+  color: #fafafa;
+  background-color: #62bf01;
+  border-color: #62bf01;
 }
 
-.table-condensed tbody td, .table-condensed thead > tr> th {
-  float: left;
-  border-bottom-width: 0;
+.listgroupitem.active {
+  z-index: 2;
+  color: #fafafa;
+  background-color: #62bf01;
+  border-color: #62bf01;
 }
 
-::-webkit-scrollbar {
-    -webkit-appearance: none;
+.listgroupitem {
+  position: relative;
+  z-index: 2;
+  
+  margin-bottom: -1px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
 }
 
-::-webkit-scrollbar:vertical {
-    width: 12px;
+.listgroupitem:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
-::-webkit-scrollbar:horizontal {
-    height: 12px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .25);
-    border-radius: 10px;
-    border: 2px solid #fff;
-}
-
-::-webkit-scrollbar-track {
-    border-radius: 10px;  
-    background-color: #fff; 
+.listgroupitem:last-child {
+  margin-bottom: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
 }

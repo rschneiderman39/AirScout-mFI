@@ -6,34 +6,37 @@
   </head>
 
   <body>
-
     <span id="viewTitle" type="hidden" ng-class="{{view}}"></span>
-
     <div class="modal fade" id="filterModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5>Choose which access points to display:</h5>
-            <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
-            <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
+            <h3>Filtering Options</h3>
           </div>
           <div class="modal-body">
-            <table class="table table-condensed">
-              <thead>
-                <tr class="col-xs-12 tableHeader">
-                  <th class="col-xs-6">SSID</th>
-                  <th class="col-xs-6">MAC Address</th>
-                </tr>
-              </thead> 
-              <tbody id="modalList">
-                <tr class="col-xs-12" data-ng-repeat="ap in modal.allAPData | orderBy:'SSID'">
-                  <td class="col-xs-6">
-                    <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap">{{ap['SSID']}}
-                  </td>
-                  <td class="col-xs-6">{{ap['BSSID']}}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="row">
+              <div class="col-xs-4">
+                <h5>Search by MAC address or SSID:</h5>
+                <input type="text" id="query" ng-model="query"/>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
+                <button id="btnShow" class="btn btn-default btn-sm" type="button">Deselect All</button>
+              </div>
+              <div class="col-xs-8">
+                <ul class="list-group scrollable-list">
+                  <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'">
+                    <div class="row">
+                      <div class="col-xs-6" id="SSID"> {{ap['SSID']}} </div>
+                      <div class="col-xs-2" id="BSSID"> {{ap['BSSID']}} </div>
+                    </div>
+                  </li> 
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
