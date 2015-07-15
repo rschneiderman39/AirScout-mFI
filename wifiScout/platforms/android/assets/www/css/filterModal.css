@@ -1,3 +1,35 @@
-#filterModal > .modal-dialog {
-  width: 40%;
+.modal {
+	top: 60px;
+}
+
+.modal .modal-body {
+    max-height: 400px;
+    /*overflow-y: auto;*/
+}
+
+#modalList {
+	max-height: 340px;
+  overflow-y: auto;
+}
+
+.table-condensed th {
+   text-align: left;   
+}
+
+.table-condensed thead {
+  width: 100%;
+}
+
+.table-condensed tbody {
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-condensed thead, .table-condensed tbody, .table-condensed tr, .table-condensed td, .table-condensed th {
+  display: block;
+}
+
+.table-condensed tbody td, .table-condensed thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
 }
