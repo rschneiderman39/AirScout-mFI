@@ -17,24 +17,22 @@
             <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
           </div>
           <div class="modal-body">
-            <div class="table-responsive">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th>SSID</th>
-                    <th>MAC Address</th>
-                  </tr>
-                </thead>
-                <tbody id="modalList">
-                  <tr data-ng-repeat="ap in modal.allAPData | orderBy:'SSID'">
-                    <td>
-                      <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap"> {{ap['SSID']}}</input>
-                    </td>
-                    <td>{{ap['BSSID']}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table table-condensed">
+              <thead>
+                <tr class="col-xs-12">
+                  <th class="col-xs-6">SSID</th>
+                  <th class="col-xs-6">MAC Address</th>
+                </tr>
+              </thead> 
+              <tbody id="modalList">
+                <tr class="col-xs-12" data-ng-repeat="ap in modal.allAPData | orderBy:'SSID'">
+                  <td class="col-xs-6">
+                    <input type="checkbox" checklist-model="modal.selectedAPData" checklist-value="ap">{{ap['SSID']}}
+                  </td>
+                  <td class="col-xs-6">{{ap['BSSID']}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
