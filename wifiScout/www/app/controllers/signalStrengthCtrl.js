@@ -22,7 +22,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           $scope.level = undefined;
           $scope.minLevel = undefined;
           $scope.maxLevel = undefined;
-          updateLevels();
         };
 
         var selectedBSSID = "",
@@ -64,37 +63,35 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           "type": "gauge",
           "theme": "none",
           "startDuration": 0.5,
+          "startEffect": "easeOutSine",
           "axes": [ {
           "axisThickness": 1,
             "axisAlpha": 0.2,
             "tickAlpha": 0.2  ,
-            "valueInterval": -10,
+            "valueInterval": 10,
             "bands": [ {
-              "color": "#84b761",
-              "endValue": -77,
-              "startValue": 0
+               "color": "#d3d3d3",
+               "endValue": -95,
+               "startValue": -100
             }, {
-              "color": "#fdd400",
-              "endValue": -86,
-              "startValue": -77
+               "color": "#cc4748",
+               "endValue": -85,
+               "startValue": -95
             }, {
                "color": "#fdd400",
-               "endValue": -92,
-               "startValue": -86
+               "endValue": -60,
+               "startValue": -85
             }, {
-               "color": "#cc4748",
-               "endValue": -101,
-               "startValue": -92
-            }, {
-               "color": "#cc4748",
-               "endValue": -120,
-               "startValue": -101
+               "color": "#84b761",
+               "endValue": -30,
+               "startValue": -60
             } ],
                //"bottomText": "0 dBm",
                //"bottomTextYOffset": -20,
                //"bottomTextFontSize": 20,
-               "endValue": -120
-            }, ],
+               "startValue": -100,
+               "endValue": -30
+            } ],
                 "arrows": [{
 
                 }],
