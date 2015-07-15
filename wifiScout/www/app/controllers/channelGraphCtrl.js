@@ -1,5 +1,5 @@
-app.controller('channelGraphCtrl', ['channelGraphDataService', 'cordovaService',
-  function(channelGraphDataService, cordovaService) {
+app.controller('channelGraphCtrl', ['channelGraphDataService', 'APService', 'cordovaService',
+  function(channelGraphDataService, APService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         var data = [
@@ -23,6 +23,27 @@ app.controller('channelGraphCtrl', ['channelGraphDataService', 'cordovaService',
         };
 
         var plot = $("#parabolas").plot(data, options).data("plot");
+
+        var update = function() {
+          var APData = APService.getNamedAPData(),
+              newPlotData = [];
+          for (var i = 0; i < APData.length; ++i) {
+            if (APData[i].channel <= 14) {
+              newPlotData.push(
+                {
+                  label: APData[i].SSID,
+                  data: [[APData[i].channel-1, -100], [APData[i].channel+1, -100]]
+                }
+              )
+            }
+          }
+          plot.setData(data);
+          plot.setupGrid();
+          plot.draw();
+          setTimeout(update, 2000);
+        }
+
+        update();
       },
       function rejected() {
         console.log('channelGraphCtrl is unavailable because Cordova is not loaded.');

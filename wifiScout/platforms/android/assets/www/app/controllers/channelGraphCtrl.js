@@ -1,5 +1,5 @@
-app.controller('channelGraphCtrl', ['channelGraphDataService', 'cordovaService',
-  function(channelGraphDataService, cordovaService) {
+app.controller('channelGraphCtrl', ['channelGraphDataService', 'APService', 'cordovaService',
+  function(channelGraphDataService, APService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         var data = [
@@ -17,13 +17,30 @@ app.controller('channelGraphCtrl', ['channelGraphDataService', 'cordovaService',
             curvedLines: {
               apply: true,
               active: true,
-              monotonicFit: false,
-              tension: 1
+              monotonicFit: true
             }
           }
         };
 
         var plot = $("#parabolas").plot(data, options).data("plot");
+
+        var update = function() {
+          data = [];
+          for (var i = 1; i < 6; ++i) {
+            data.push(
+              {
+                label: i.toString(),
+                data: [[i-1, -100], [i, Math.random()*70 - 100], [i+1, -100]]
+              }
+            );
+          }
+          plot.setData(data);
+          plot.setupGrid();
+          plot.draw();
+          setTimeout(update, 2000);
+        }
+
+        update();
       },
       function rejected() {
         console.log('channelGraphCtrl is unavailable because Cordova is not loaded.');

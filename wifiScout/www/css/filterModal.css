@@ -1,14 +1,14 @@
 .modal {
-	top: 60px;
+	/*top: 60px;*/
 }
 
 .modal .modal-body {
-    max-height: 400px;
-    /*overflow-y: auto;*/
+    /*max-height: 400px;
+    overflow-y: auto;*/
 }
 
 #modalList {
-	max-height: 340px;
+	/*max-height: 340px;*/
   overflow-y: auto;
 }
 
