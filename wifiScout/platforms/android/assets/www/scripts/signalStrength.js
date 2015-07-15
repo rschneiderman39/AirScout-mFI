@@ -1,5 +1,5 @@
-var gaugeWidth = document.deviceWidth * 0.55,
-    gaugeHeight = .65 * gaugeWidth,
+var gaugeWidth = document.deviceWidth * 0.56,
+    gaugeHeight = .66 * gaugeWidth,
     listHeight = document.deviceHeight - 150;
 
 $('.scrollable-list	').css('height', listHeight);

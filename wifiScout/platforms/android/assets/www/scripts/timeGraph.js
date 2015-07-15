@@ -1,6 +1,6 @@
 var plotHeight = $(window).height() - 120,
     plotWidth = Math.floor($(window).width() * 0.72),
-    legendHeight = document.deviceHeight - 150;
+    legendHeight = document.deviceHeight - 130;
 
 $('.scrollable-list	').css('height', legendHeight);
 

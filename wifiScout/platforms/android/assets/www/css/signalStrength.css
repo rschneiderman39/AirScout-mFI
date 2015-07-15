@@ -33,12 +33,11 @@
 }
 
 #chartdiv {
-  margin-bottom: 30px;
   margin-top: 10px;
 }
 
 .one,
 .two,
 .three {
-  top: -60px;
+  top: -10px;
 }
