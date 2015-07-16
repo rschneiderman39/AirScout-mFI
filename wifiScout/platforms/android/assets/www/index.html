@@ -32,7 +32,7 @@
   <body id="slidingNav" ng-controller="navCtrl" class="view">
     <div id="top-bar" class="container-fluid">
       <div class="col-xs-4 filterDiv">
-        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
+        <button id="step4" type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
       </div>
       <div class="col-xs-4" id="title">
           <center><h2 id="greenTitle"></h2></center>
@@ -40,7 +40,7 @@
       <div class="col-xs-2">
       </div>
       <div class="col-xs-2" id="helpContext">
-        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" href="javascript:void(0);" onclick="startIntro()">
+        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" href="javascript:void(0);" ng-click="startIntro()">
       </div>
     </div>
 
@@ -98,7 +98,7 @@
     </header>
 
     <script type="text/javascript">
-      function startIntro(){
+      /*function startIntro(){
         var intro = introJs();
           intro.setOptions({
             showStepNumbers: false,
@@ -121,7 +121,7 @@
             ]
           });
           intro.start();
-      }
+      }*/
     </script>
 
     <!-- Cordova, Angular Services and Controllers -->

@@ -1,71 +1,52 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<!-- CSS Stylesheets -->
-		<link href="css/settings.css" rel="stylesheet">
-		<script src="scripts/settings.js"></script>
-	</head>
+  <head>
+    <!-- CSS Stylesheets -->
+    <link href="css/settings.css" rel="stylesheet">
+    <script src="scripts/settings.js"></script>
+  </head>
 
-	<body>
-		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
-		<br>
-			<div class="panel-group" id="accordion">
-    		<div class="panel panel-default" id="panel1">
-        	<div class="panel-heading">
-            <h4 class="panel-title">
-        			<a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
-          			View Mode
-        			</a>
-      			</h4>
-        	</div>
-        	<div id="collapseOne" class="panel-collapse collapse in">
-            <div class="panel-body">Anim</div>
-        	</div>
-    		</div>
-    	<div class="panel panel-default" id="panel2">
-        <div class="panel-heading">
-        	<h4 class="panel-title">
-        		<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
-          		Default View
-        		</a>
-      		</h4>
+  <body>
+    <br>
+    <div class="panel-group" id="accordion" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
+      <div class="panel panel-default" id="panel1">
+        <div class="panel-heading" id="step1">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
+              View Mode
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+          <div class="panel-body">Blah blah blah</div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="panel2">
+        <div class="panel-heading" id="step2">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
+              Default View
+            </a>
+          </h4>
         </div>
         <div id="collapseTwo" class="panel-collapse collapse">
-            <div class="panel-body">Anim.</div>
+          <div class="panel-body">Blah blah blah blah blah blah blah</div>
         </div>
-    	</div>
-    	<div class="panel panel-default" id="panel3">
-        <div class="panel-heading">
-        	<h4 class="panel-title">
-        		<a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
-          		Misc.
-        		</a>
-      		</h4>
+      </div>
+      <div class="panel panel-default" id="panel3">
+        <div class="panel-heading" id="step3">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed" >
+              Misc.
+            </a>
+          </h4>
         </div>
         <div id="collapseThree" class="panel-collapse collapse">
-            <div class="panel-body">Anim</div>
+          <div class="panel-body">Blah blah blah, blah blah blah.</div>
         </div>
-    	</div>
-		</div>
-	</div>
-		<!--
-	  <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
-			<div class="row-fluid">
-				<div class="col-xs-6" id="step2">
-	        <h4 id="step1">Viewing Mode - Select a viewing mode blah blah blah something something something.... </h4>
-	        <input type="radio" name="viewMode" value="simple">	Simple<br>
-				  <input type="radio" name="viewMode" value="complex">	Complex<br>
-	      </div>
-				<div class="col-xs-6">
-				  <h4 id="step3">Default View - Select which view loads when application is opened</h4>
-			   	<input type="radio" name="defaultView" value="parabola">	Parabola<br>
-			    <input type="radio" name="defaultView" value="table">	Table<br>
-				  <input type="radio" name="defaultView" value="singleSpeed">	Single Speed<br>
-			  	<input type="radio" name="defaultView" value="timeGraph">	Time Graph<br>
-			   	<input type="radio" name="defaultView" value="channels">	Channels<br>
-			  </div>
-		  </div> 
-		</div>
-		-->
+      </div>
+    </div>
+    <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
+    </div>
 	</body>
 </html>

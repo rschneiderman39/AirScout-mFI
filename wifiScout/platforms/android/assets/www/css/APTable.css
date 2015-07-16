@@ -1,3 +1,9 @@
+#step1,
+#step2,
+#step3 {
+  position: relative;
+}
+
 .table-striped thead {
   width: 97%;
 }
