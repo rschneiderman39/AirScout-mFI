@@ -2,20 +2,14 @@
 <html>
 	<head>
 		<script src="scripts/channelTable.js"></script>
+		<link href="css/channelTable.css" rel="stylesheet" />
 	</head>
 
 	<body>
-		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('APTable')" ng-swipe-left="swipeLeft('settings')">
-		    <h1 id="step1"><br>
-		    THIS
-		    <br>
-		    IS
-		    <br>
-		    THE
-		    <br>
-		    CHANNELS
-		    <br>
-		    VIEW</h1>
+		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right_x="swipeRight('APTable')" ng-swipe-left_x="swipeLeft('settings')" ng-controller="channelTableCtrl">
+
+				<div id="plot"></div>
+
 		</div>
 	</body>
 </html>

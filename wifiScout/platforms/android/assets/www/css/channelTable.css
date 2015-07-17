@@ -1,0 +1,9 @@
+.navigator .viewport {
+  stroke: grey;
+  fill: black;
+  fill-opacity: 0.2;
+}
+
+.brush > .resize {
+  display: none;
+}

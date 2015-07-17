@@ -1,7 +1,6 @@
 app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
-  function(APService, filterSettingsService) {
-    var service = {},
-        legendDataPromise = $.Deferred();
+  'utilService', function(APService, filterSettingsService, utilService) {
+    var service = {};
 
     service.getPlot = function() {
       return plot;
@@ -29,7 +28,8 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
         showAll = true,
         datasets = {},
         plot = undefined,
-        highlightedBSSID = undefined;
+        highlightedBSSID = undefined,
+        legendDataPromise = $.Deferred();
 
     var generateLegendData = function() {
       var legendData = [];
@@ -40,7 +40,6 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
               SSID: datasets[BSSID].SSID,
               BSSID: BSSID,
               color: datasets[BSSID].color,
-              curLevel: datasets[BSSID].curLevel
             }
           );
         }
@@ -54,21 +53,9 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
       request.resolve(generateLegendData());
     };
 
-    var getRandomColor = function() {
-      var r = (Math.floor(Math.random() * 256)).toString(10),
-          g = (Math.floor(Math.random() * 256)).toString(10),
-          b = (Math.floor(Math.random() * 256)).toString(10);
-
-      return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
-    };
-
-    var getFillColor = function(color) {
-      return color.replace(',1)', ',0.5)');
-    };
-
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: getFillColor(datasets[BSSID].color)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utilService.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 
@@ -78,14 +65,13 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
       highlightedBSSID = "";
     };
 
-    var addAP = function(APData) {
-      if (! datasets[APData.BSSID]) {
-        datasets[APData.BSSID] = {
-          SSID: APData.SSID,
-          color: getRandomColor(),
+    var addAP = function(AP) {
+      if (! datasets[AP.BSSID]) {
+        datasets[AP.BSSID] = {
+          SSID: AP.SSID,
+          color: AP.color,
           line: new TimeSeries({ resetBounds: false }),
           inPlot: false,
-          curLevel: APData.level
         };
       }
     };
@@ -164,10 +150,8 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
         var AP = APDataMap[BSSID];
         if (AP) {
           datasets[BSSID].line.append(curTime, AP.level);
-          datasets[BSSID].curLevel = AP.level;
         } else {
           datasets[BSSID].line.append(curTime, -100);
-          datasets[BSSID].curLevel = -100;
         }
       }
 

@@ -1,46 +1,68 @@
-app.controller('channelGraphCtrl', ['channelGraphDataService', 'APService', 'cordovaService',
-  function(channelGraphDataService, APService, cordovaService) {
+app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService', 'APService', 'cordovaService',
+  function($scope, channelGraphDataService, APService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        var data = [
-                     { label: "Foo",
-                       data: [ [0, -100], [1, -50], [2, -100] ]
-                     },
-                     { label: "Foo",
-                       data: [ [8, -100], [9, -80], [10, -100] ]
-                     }
-                    ];
+        $scope.panLeft = function(px) {
+          $('.parabolaLabel').remove();
+          plot.pan({ left: px * -1 });
+        };
+        $scope.panRight = function(px) {
+          $('.parabolaLabel').remove();
+          plot.pan({ left: px });
+        };
+
+        var data = [[0,-100]];
 
         var options =
         {
+          legend: {
+            show: false
+          },
           series: {
             curvedLines: {
               apply: true,
               active: true,
               monotonicFit: true
             }
-          }
+          },
+          xaxis: {
+            min: 0,
+            max: 14,
+            tickSize: 1,
+    				zoomRange: [1, 1],
+    				panRange: [-100, 100]
+    			},
+    			yaxis: {
+            min: -100,
+            max: -30,
+    				zoomRange: [1, 1],
+    				panRange: [-100, -30]
+    			},
+    			zoom: {
+    				interactive: false
+    			},
+    			pan: {
+    				interactive: true
+    			},
+          touch: {
+      	    pan: 'x',
+      	    scale: "",
+      	    autoWidth: false,
+      	    autoHeight: false
+      	  }
         };
 
-        var plot = $("#parabolas").plot(data, options).data("plot");
+        var plot = $("#parabolas").plot(data, options).data("plot"),
+            UPDATE_INTERVAL = 1000;
+
+
 
         var update = function() {
-          var APData = APService.getNamedAPData(),
-              newPlotData = [];
-          for (var i = 0; i < APData.length; ++i) {
-            if (APData[i].channel <= 14) {
-              newPlotData.push(
-                {
-                  label: APData[i].SSID,
-                  data: [[APData[i].channel-1, -100], [APData[i].channel+1, -100]]
-                }
-              )
-            }
-          }
-          plot.setData(data);
-          plot.setupGrid();
+          // Remove previous labels
+          $('.parabolaLabel').remove();
+          plot.setData(channelGraphDataService.generateDatasets());
           plot.draw();
-          setTimeout(update, 2000);
+          setTimeout(update, UPDATE_INTERVAL);
         }
 
         update();

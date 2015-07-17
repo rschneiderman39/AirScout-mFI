@@ -1,7 +1,6 @@
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
-  'signalStrengthSettingsService', 'levelTransformService',
-  'cordovaService', function($scope, $timeout, APService,
-  signalStrengthSettingsService, levelTransformService, cordovaService) {
+  'signalStrengthSettingsService', 'cordovaService', function($scope, $timeout,
+  APService, signalStrengthSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPData = [];
@@ -99,8 +98,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
                   "enabled": true
                 }
             });
-
-          setInterval(1, 10000);
         };
 
         var updateLevels = function() {
