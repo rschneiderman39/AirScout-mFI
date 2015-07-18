@@ -1,9 +1,25 @@
 .navigator .viewport {
-  stroke: grey;
-  fill: black;
-  fill-opacity: 0.2;
+  visibility: hidden;
 }
 
-.brush > .resize {
-  display: none;
+.resize {
+  visibility: hidden;
+}
+
+#navRect {
+  opacity: 0.2;
+}
+
+#navRect.active {
+  fill: orange;
+  stroke: white;
+}
+
+#staticRect {
+  opacity: 0.2;
+}
+
+#staticRect.active {
+  fill: orange;
+  stroke: white;
 }
