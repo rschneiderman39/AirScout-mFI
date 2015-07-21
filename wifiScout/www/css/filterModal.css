@@ -27,7 +27,6 @@
 .scrollable-list {
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 330px;
 }
 
 .list-group-item.selected {

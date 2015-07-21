@@ -5,12 +5,14 @@
 }
 
 .table-striped thead {
-  width: 97%;
+  position: fixed;
+  right: 0px;
 }
 
 .table-striped tbody {
+  position: fixed !important;
   overflow-y: auto;
-  width: 100%;
+  right: 0px;
 }
 
 .table-striped thead, .table-striped tbody, .table-striped tr, .table-striped td, .table-striped th {
@@ -22,18 +24,6 @@
   border-bottom-width: 0;
 }
 
-.mac {
-    padding-left: 6px
-}
-
-.frequency {
-    padding-left: 13px
-}
-
-.level {
-    padding-left: 20px
-}
-
-.capabilities {
-    padding-left: 23px
+.noWrap {
+    white-space:nowrap;
 }

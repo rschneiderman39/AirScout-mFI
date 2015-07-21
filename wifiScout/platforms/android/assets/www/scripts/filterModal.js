@@ -9,3 +9,6 @@ var listPadding = 2 * headerHeight;
 
 $('.modal-body').css('max-height', modalHeight);
 $('#modalList').css('max-height', modalHeight+listPadding);
+
+//NEED TO FIX THIS
+$('.filterTable').css('height', '330px')

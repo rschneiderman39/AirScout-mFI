@@ -5,7 +5,7 @@
 	</head>
 
 	<body>
-		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('APTable')" ng-swipe-left="swipeLeft('settings')">
+		<div ng-controller="channelTableCtrl" id="touchLayer" ng-click="showNav(); $event.stopPropagation();" class="container-fluid anim-slide-right anim-slide-left"  data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
 		    <h1 id="step1"><br>
 		    THIS
 		    <br>

@@ -1,5 +1,17 @@
-#legend {
-	margin-top: 10px
+#touchLayer {
+  position: fixed;
+  vertical-align: middle;
+}
+
+#timeGraph {
+  position: relative;
+  transform: translateX(10%);
+  transform: translateY(5%);
+}
+
+.nopadding {
+   padding: 10px !important;
+   margin: 0 !important;
 }
 
 .axis-label {
@@ -15,26 +27,32 @@
 
 .legend-box {
 	display: inline-block;
-	width: 18px;
-	height: 18px;
-	margin-left: 0px;
-	margin-right: 10px;
+	width: 13px;
+	height: 13px;
+	margin-right: 5px;
 }
 
 .legend-label {
 	display: inline-block;
-	margin-bottom: 0px
+	margin-bottom: 0px;
+  font-size: 15px;
+  font-size: 1.25vw;
+}
+
+.macAddress {
+  font-size: 15px;
+  font-size: 1.25vw;
 }
 
 .legend-title {
-	margin-top: 10px;
+  font-size: 15px;
+  font-size: 1.5vw;
+	position: relative;
 	font-weight: bold;
 }
 
 .scrollable-list {
-  overflow-x: hidden;
-	margin-left: 10px;
-	margin-top: 10px;
+  overflow-x: scroll;
 }
 
 .listgroupitem.active {

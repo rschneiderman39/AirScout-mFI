@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <div class="panel-group" id="accordion" ng-swipe-right="swipeRight('channelTable')" ng-swipe-left="swipeLeft('channelGraph')">
+   <div ng-controller="settingsCtrl" class="panel-group anim-slide-right anim-slide-left" id="accordion" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
       <div class="panel panel-default" id="panel1">
         <div class="panel-heading" id="step1">
           <h4 class="panel-title">

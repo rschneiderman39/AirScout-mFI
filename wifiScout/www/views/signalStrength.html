@@ -6,12 +6,11 @@
 	</head>
 
 	<body>
-		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" ng-controller="signalStrengthCtrl">
-			<div class="row-fluid">
-				<div class="col-xs-3">
-				<br>
+		<div id="touchLayer" ng-click="showNav(); $event.stopPropagation();" ng-controller="signalStrengthCtrl" class="container-fluid anim-slide-right"  data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
+			<div class="row">
+				<div class="col-xs-3 selectableList">
 					<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
-					<ul class="list-group scrollable-list">
+					<ul class="list-group scrollable-list list">
 						<span data-ng-repeat="ap in allAPData | orderBy:'SSID'">
 							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
 					   		<div>{{ap.SSID}}</div>
@@ -20,34 +19,31 @@
 						</span>
 					</ul>
 				</div>
-				<div class="col-xs-9">
-					<div class="container-fluid">
-						<center><div id="chartdiv"></div></center>
-						<br>
-						<div class="row-fluid">
-							<div class="col-xs-4 one">
-								<center>Min Level</center>
-								<div class="panel panel-default">
-						  		<div class="panel-body">
-							    	<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
-							  	</div>
-								</div>
+				<div class="col-xs-8 testing">
+					<div id="chartdiv"></div>
+					<div class="row-fluid">
+						<div class="col-xs-4 one">
+							<center>Min Level</center>
+							<div class="panel nopadding">
+					  		<div class="panel-body nopadding">
+						    	<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
+						  	</div>
 							</div>
-							<div class="col-xs-4 three">
-								<center>Current</center>
-								<div class="panel panel-default">
-						  		<div class="panel-body">
-							    	<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
-						  		</div>
-								</div>
+						</div>
+						<div class="col-xs-4 three">
+							<center>Current</center>
+							<div class="panel panel-default nopadding">
+					  		<div class="panel-body nopadding">
+						    	<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
+					  		</div>
 							</div>
-							<div class="col-xs-4 two">
-								<center>Max Level</center>
-								<div class="panel panel-default">
-						 			<div class="panel-body">
-							   		<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
-							  	</div>
-								</div>
+						</div>
+						<div class="col-xs-4 two">
+							<center>Max Level</center>
+							<div class="panel panel-default nopadding">
+					 			<div class="panel-body nopadding">
+						   		<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
+						  	</div>
 							</div>
 						</div>
 					</div>

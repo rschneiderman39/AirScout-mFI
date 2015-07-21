@@ -24,13 +24,13 @@
                 <p></p>
                 <p></p>
                 <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
-                <button id="btnShow" class="btn btn-default btn-sm" type="button">Deselect All</button>
+                <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
               </div>
-              <div class="col-xs-8">
-                <ul class="list-group scrollable-list">
+              <div class="col-xs-8" id="modalList">
+                <ul class="list-group scrollable-list filterTable">
                   <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'">
                     <div class="row">
-                      <div class="col-xs-6" id="SSID"> {{ap['SSID']}} </div>
+                      <div class="col-xs-6" id="SSID"> <input type="checkbox" style="opacity:0;" checklist-model="modal.selectedAPData" checklist-value="ap"> {{ap['SSID']}} </div>
                       <div class="col-xs-2" id="BSSID"> {{ap['BSSID']}} </div>
                     </div>
                   </li> 

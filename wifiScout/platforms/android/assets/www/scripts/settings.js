@@ -1,7 +1,8 @@
-$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
+var topBarHeight = $('#top-bar').height();
+var optionsHeight = $('#accordion').height();
 
-/*var panelWidth = (9/10) * document.deviceWidth;
-var panelPadding = (1/20) * document.deviceWidth;
+$('.panel-group').css('top', topBarHeight);
+$('.panel-group').css('width', document.deviceWidth);
+$('.panel-group').css('max-height', document.deviceHeight-topBarHeight);
 
-$('.panel-group').css('width', panelWidth);
-$('.panel-group').css('right', -(panelPadding));*/
+$('#touchLayer').css('height', document.deviceHeight);

@@ -5,9 +5,9 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
         $scope.showNav = function() {
           clearTimeout(navTimeout);
           var navBar = $('#bottomBar');
-          navBar.css('bottom', '-15px');
+          navBar.css('bottom', '0px');
           navTimeout = setTimeout(function() {
-            navBar.css('bottom', '-98px');
+            navBar.css('bottom', document.bottomBarBottom);
           }, NAV_SHOW_INTERVAL);
         };
 
