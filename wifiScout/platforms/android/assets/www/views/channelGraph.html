@@ -1,42 +1,37 @@
-﻿<!DOCTYPE HTML>
-<html>
-  <head>
-    <link href="css/channelGraph.css" rel="stylesheet" />
-    <script src="scripts/channelGraph.js"></script>
-  </head>
+<head>
+  <link href="css/channelGraph.css" rel="stylesheet" />
+  <script src="scripts/channelGraph.js"></script>
+</head>
 
-  <body>
-    <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right_x="swipeRight('settings')" ng-swipe-left_x="swipeLeft('signalStrength')" ng-controller="channelGraphCtrl">
+<body>
+  <div ng-controller="channelGraphCtrl">
+    <div id="plot"></div>
+    <div id="nav"></div>
+  </div>
 
-      <div id="parabolas" style="width:800px;height:300px"></div>
-      <button type="button" ng-click="panLeft(20)">Pan Left</button>
-      <button type="button" ng-click="panRight(20)">Pan Right</button>
 
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
-          </div>
-          <div class="modal-body">
-            Now here is context for the parabola view!
-            <br>
-            <br>
-            Did it help?...
-            <br>
-            <br>
-            Yay!
-          </div>
-          <div class="modal-footer">
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
+        </div>
+        <div class="modal-body">
+          Now here is context for the parabola view!
+          <br>
+          <br>
+          Did it help?...
+          <br>
+          <br>
+          Yay!
+        </div>
+        <div class="modal-footer">
         </div>
       </div>
     </div>
+  </div>
 
-    <div filter-modal view="channelGraph"></div>
-  <body>
-</html>
+  <div filter-modal view="channelGraph"></div>
+</body>

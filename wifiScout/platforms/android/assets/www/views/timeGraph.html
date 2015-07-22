@@ -1,14 +1,12 @@
-<!DOCTYPE HTML>
-<html>
 <head>
   <link href="css/timeGraph.css" rel="stylesheet" />
   <script src="scripts/timeGraph.js"></script>
 </head>
 
 <body>
-  <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
-
+  <div  ng-controller="timeGraphCtrl">
     <div class="row-fluid">
+
       <div class="col-xs-3" id="legend">
           <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
           <ul class="list-group scrollable-list">
@@ -23,9 +21,10 @@
         <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px"></canvas>
         <p class="axis-label">Level (dBm)</p>
       </div>
-    </div>
 
+    </div>
   </div>
+
 
     <!-- Help Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -50,5 +49,4 @@
     </div>
 
     <div filter-modal view="timeGraph"></div>
-  </body>
-</html
+</body>

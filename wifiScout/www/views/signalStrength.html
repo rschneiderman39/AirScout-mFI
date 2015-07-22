@@ -1,62 +1,57 @@
-<!DOCTYPE HTML>
-<html ng-app="app">
-	<head>
-		<link href="css/signalStrength.css" rel="stylesheet" />
-		<script src="scripts/signalStrength.js"></script>
-	</head>
+<head>
+	<link href="css/signalStrength.css" rel="stylesheet" />
+	<script src="scripts/signalStrength.js"></script>
+</head>
 
-	<body>
-		<div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('channelGraph')" ng-swipe-left="swipeLeft('timeGraph')" ng-controller="signalStrengthCtrl">
+<body>
+	<div ng-controller="signalStrengthCtrl">
+		<div class="row-fluid">
 
-			<div class="row-fluid">
+			<div class="col-xs-3">
+				<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
+				<ul class="list-group scrollable-list">
+					<span data-ng-repeat="ap in allAPData | orderBy:'SSID'">
+						<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
+				   		<div>{{ap.SSID}}</div>
+							<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>
+				    </li>
+					</span>
+				</ul>
+			</div>
 
-				<div class="col-xs-3">
-					<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
-					<ul class="list-group scrollable-list">
-						<span data-ng-repeat="ap in allAPData | orderBy:'SSID'">
-							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
-					   		<div>{{ap.SSID}}</div>
-								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>
-					    </li>
-						</span>
-					</ul>
-				</div>
+			<div class="col-xs-9">
+				<div class="container-fluid">
+				<center><div id="chartdiv"></div></center>
 
-				<div class="col-xs-9">
-					<div class="container-fluid">
-					<center><div id="chartdiv"></div></center>
-
-					<div class="row-fluid">
-						<div class="col-xs-4 one">
-							<center>Min Level</center>
-							<div class="panel panel-default">
-					  		<div class="panel-body">
-						    	<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
-						  	</div>
-							</div>
+				<div class="row-fluid">
+					<div class="col-xs-4 one">
+						<center>Min Level</center>
+						<div class="panel panel-default">
+				  		<div class="panel-body">
+					    	<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
+					  	</div>
 						</div>
-						<div class="col-xs-4 three">
-							<center>Current</center>
-							<div class="panel panel-default">
-					  		<div class="panel-body">
-						    	<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
-					  		</div>
-							</div>
+					</div>
+					<div class="col-xs-4 three">
+						<center>Current</center>
+						<div class="panel panel-default">
+				  		<div class="panel-body">
+					    	<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
+				  		</div>
 						</div>
-						<div class="col-xs-4 two">
-							<center>Max Level</center>
-							<div class="panel panel-default">
-					 			<div class="panel-body">
-						   		<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
-						  	</div>
-							</div>
+					</div>
+					<div class="col-xs-4 two">
+						<center>Max Level</center>
+						<div class="panel panel-default">
+				 			<div class="panel-body">
+					   		<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
+					  	</div>
 						</div>
 					</div>
 				</div>
-				</div>
-
+			</div>
 			</div>
 
 		</div>
-	</body>
-</html>
+	</div>
+</body>

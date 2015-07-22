@@ -1,53 +1,73 @@
-app.factory('channelGraphDataService', ['APService', 'utilService',
-  function(APService, utilService) {
-  var service = {};
+app.factory('channelGraphDataService', ['APService', 'filterSettingsService',
+  'utilService', function(APService, filterSettingsService, utilService) {
+    var service = {};
 
-  service.generateDatasets = function() {
-    var APData = APService.getNamedAPData(),
-        datasets = [];
+    service.generateData = function() {
+      var APData = APService.getNamedAPData(),
+          data = [];
 
-    for (var i = 0; i < APData.length; ++i) {
-      var AP = APData[i];
-
-      if (showAll || isSelected[AP.BSSID]) {
-        var lineColor = lineColors[AP.BSSID];
-        if (lineColor === undefined) {
-          lineColor = utilService.getRandomColor();
-          lineColors[AP.BSSID] = lineColor;
-        };
-
-        datasets.push(
-          {
-            label: AP.SSID,
-            color: lineColor,
-            data: generateParabola(AP.channel, AP.level),
-            showLabels: true,
-            labels: ["", "", "", AP.SSID, "", "", ""],
-            labelPlacement: "above",
-            labelClass: "parabolaLabel",
-            labelColor: lineColor
-          }
-        );
+      for (var i = 0; i < APData.length; ++i) {
+        if (showAll || isSelected[APData[i].BSSID]) {
+          data.push(APData[i]);
+        }
       }
+
+      return data;
+    };
+
+    service.getBand = function() {
+      return band;
+    };
+
+    service.getXDomain = function(band) {
+      return xDomain[band];
+    };
+
+    service.getYDomain = function() {
+      return yDomain;
+    };
+
+    service.getWindowExtent5Ghz = function() {
+      return windowExtent5Ghz;
+    };
+
+    service.setBand = function(newBand) {
+      if (newBand === '2_4Ghz' || newBand === '5Ghz') {
+        band = newBand;
+      }
+    };
+
+    service.setWindowExtent5Ghz = function(extent) {
+      if (extent instanceof Array && extent.length === 2) {
+        windowExtent5Ghz = extent.slice();
+      }
+    };
+
+    var isSelected = {},
+        showAll = true,
+        band = '2_4Ghz',
+        xDomain = {
+          '2_4Ghz': [-1, 15],
+          '5Ghz': [34, 167]
+        },
+        yDomain = [-100, -30],
+        windowExtent5Ghz = [34, 66];
+
+    var onFilterSettingsChange = function(settings) {
+      isSelected = {};
+      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
+        isSelected[settings.selectedBSSIDs[i]] = true;
+      }
+      showAll = settings.showAll;
+      filterSettingsService.requestSettings('channelGraph').done(onFilterSettingsChange);
+    };
+
+    var settings = filterSettingsService.getSettings('channelGraph');
+    for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
+      isSelected[settings.selectedBSSIDs[i]] = true;
     }
-    return datasets;
-  };
+    showAll = settings.showAll;
+    filterSettingsService.requestSettings('channelGraph').done(onFilterSettingsChange);
 
-  var lineColors = {};
-      isSelected = {},
-      showAll = true;
-
-  var generateParabola = function(channel, level) {
-    return [
-      [channel - 2, -100],
-      [channel - 1, -100 + (level + 100) * 0.8],
-      [channel - .5, -100 + (level + 100) * 0.95],
-      [channel, level],
-      [channel + .5, -100 + (level + 100) * 0.95],
-      [channel + 1, -100 + (level + 100) * 0.8],
-      [channel + 2, -100]
-    ];
-  };
-
-  return service;
-}]);
+    return service;
+  }]);

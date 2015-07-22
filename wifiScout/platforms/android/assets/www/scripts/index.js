@@ -7,6 +7,13 @@ document.deviceHeight = $(window).height();
 document.deviceWidth = $(window).width();
 document.topBarHeight = $('#top-bar').height();
 
+function destroy(obj) {
+  for (var key in obj) {
+    if (isNaN(parseInt(key))) destroy(obj[key]);
+  }
+  delete obj;
+};
+
 (function () {
     "use strict";
 

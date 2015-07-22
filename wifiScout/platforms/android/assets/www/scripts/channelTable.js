@@ -1,1 +1,1 @@
-$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
+$('#touchLayer').css('height', document.topBarHeight);
