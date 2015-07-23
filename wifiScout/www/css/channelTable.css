@@ -3,23 +3,26 @@
 }
 
 .resize {
-  visibility: hidden;
+  display: none;
 }
 
-#navRect {
-  opacity: 0.2;
+#navToggleRight {
+  fill-opacity: 0.3;
+  stroke-width: 2;
 }
 
-#navRect.active {
-  fill: orange;
-  stroke: white;
+#navToggleRight.active {
+  fill: #62bf01;
+  stroke: #62bf01;
 }
 
-#staticRect {
-  opacity: 0.2;
+#navToggleLeft {
+  fill-opacity: 0.3;
+  stroke-width: 3;
+
 }
 
-#staticRect.active {
-  fill: orange;
-  stroke: white;
+#navToggleLeft.active {
+  fill: #62bf01;
+  stroke: #62bf01;
 }

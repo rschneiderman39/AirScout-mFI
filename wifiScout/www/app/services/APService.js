@@ -6,7 +6,7 @@ app.factory('APService', ['rawDataService', 'utilService',
       allAPData = [],
       minLevels = {},
       maxLevels = {},
-      UPDATE_INTERVAL = 500;
+      UPDATE_INTERVAL = 1000;
 
   /* Get the data for every known AP
      @returns {Array} An array of AP data objects of the form:

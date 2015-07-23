@@ -1,13 +1,11 @@
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
-  'signalStrengthSettingsService', 'cordovaService', function($scope, $timeout,
-  APService, signalStrengthSettingsService, cordovaService) {
+  'cordovaService', function($scope, $timeout, APService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPData = [];
         $scope.level = undefined;
         $scope.minLevel = undefined;
         $scope.maxLevel = undefined;
-        var gauge;
 
         $scope.isSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
@@ -26,7 +24,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
         var selectedBSSID = "",
             isDuplicateSSID = {},
             gauge = undefined,
-            UPDATE_INTERVAL = 500;
+            UPDATE_INTERVAL = 1000;
 
         var updateDuplicateSSIDs = function() {
           var found = {},
@@ -51,7 +49,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
             updateLevels();
             updateDuplicateSSIDs();
           });
-          setTimeout(update, UPDATE_INTERVAL)
         };
 
         // Color scale -  Green = 4-5 bars
@@ -61,7 +58,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           gauge = AmCharts.makeChart( "chartdiv", {
           "type": "gauge",
           "theme": "none",
-          "startDuration": 0.5,
+          "startDuration": 1,
           "startEffect": "easeOutSine",
           "axes": [ {
           "axisThickness": 1,
@@ -120,8 +117,13 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
 
         var init = function() {
           initGauge();
-          setTimeout(update, UPDATE_INTERVAL);
-        }
+
+          var updateLoop = setInterval(update, UPDATE_INTERVAL);
+
+          $scope.$on('$destroy', function() {
+            clearInterval(updateLoop);
+          });
+        };
 
         /* INIT */
 
