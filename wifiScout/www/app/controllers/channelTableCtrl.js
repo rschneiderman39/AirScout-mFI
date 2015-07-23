@@ -1,3 +1,4 @@
+
 app.controller('channelTableCtrl', ['$scope', '$location', 'cordovaService', function($scope, $location,
   cordovaService) {
     cordovaService.ready.then(
