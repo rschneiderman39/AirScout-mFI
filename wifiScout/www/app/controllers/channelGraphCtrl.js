@@ -43,7 +43,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
 
         var init = function() {
           dim.width = document.deviceWidth * 0.95;
-          dim.height = (document.deviceHeight - document.topBarHeight) * 0.9;
+          dim.height = (document.deviceHeight - document.topBarHeight) * 0.95;
 
           dim.plot.totalWidth = dim.width;
           dim.nav.totalWidth = dim.width;

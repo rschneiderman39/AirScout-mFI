@@ -30,10 +30,10 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Select all APs, and show any new AP that later becomes visible
         var showAll = function() {
-
           filterSettingsService.setShowAll(view, true);
           //filterSettingsService.setSelectedBSSIDs(view, []);
           $scope.$apply(function() {
+            $scope.modal.allAPData.each()
             $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
           });
         }

@@ -15,11 +15,12 @@
 #top-bar {
   position: fixed;
   background-color: #62bf01;
+  height: 11vh;
 }
 
 #greenTitle {
   font-size: 30px;
-  font-size: 4.5vw;
+  font-size: 3.5vw;
 }
 
 #bottomBar {

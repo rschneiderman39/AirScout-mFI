@@ -40,12 +40,12 @@ function windowCheck() {
 //$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
 
 // Scale the top and bottom bar sizes to device-specific size
-document.topBarHeight = (1/8) * document.deviceHeight;
+document.topBarHeight = $('#top-bar').height();
 
 document.bottomBarHeight = 1.25 * document.topBarHeight;
 document.bottomBarBottom = -( document.bottomBarHeight - 1);
 
-$('#top-bar').css('height', document.topBarHeight);
+//$('#top-bar').css('height', document.topBarHeight);
 $('#bottomBar').css('height', document.bottomBarHeight);
 $('#bottomBar').css('bottom',  document.bottomBarBottom);
 

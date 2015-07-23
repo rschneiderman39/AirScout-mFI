@@ -1,11 +1,3 @@
-.navigator .viewport {
-  visibility: hidden;
-}
-
-.resize {
-  display: none;
-}
-
 #navToggleRight {
   fill-opacity: 0.3;
   stroke-width: 2;
@@ -19,10 +11,18 @@
 #navToggleLeft {
   fill-opacity: 0.3;
   stroke-width: 3;
-
 }
 
 #navToggleLeft.active {
   fill: #62bf01;
   stroke: #62bf01;
 }
+
+.navigator .viewport {
+  visibility: hidden;
+}
+
+.resize {
+  display: none;
+}
+
