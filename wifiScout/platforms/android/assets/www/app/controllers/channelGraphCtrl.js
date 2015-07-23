@@ -16,15 +16,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             isChannel = utilService.isChannel,
             setAlpha = utilService.setAlpha;
 
-        var elem = {
-          plot: {
-            axis: {}
-          },
-          nav: {
-            left: {},
-            right: {}
-          }
-        };
+        var elem = {}, scales = {};
 
         var dim = {
                     topPercent: .8,
@@ -38,8 +30,6 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
                     },
                     nav: {
                       leftPercent: 0.2,
-                      left: {},
-                      right: {},
                       margin: {
                         top: 1,
                         bottom: 18,
@@ -48,14 +38,6 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
                       }
                     }
                   };
-
-        var scales = {
-                      plot: {},
-                      nav: {
-                        left: {},
-                        right: {}
-                      }
-                     };
 
         var viewportSize;
 
@@ -98,6 +80,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
           dim.plot.width = dim.plot.totalWidth - dim.plot.margin.left - dim.plot.margin.right;
           dim.plot.height = dim.plot.totalHeight - dim.plot.margin.top - dim.plot.margin.bottom;
 
+          elem.plot = {};
+
           elem.plot.container = d3.select('#plot').classed('chart', true).append('svg')
             .attr('width', dim.plot.totalWidth)
             .attr('height', dim.plot.totalHeight)
@@ -113,6 +97,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
               .attr({ width: dim.plot.width, height: dim.plot.height });
 
           /* Plot Axes */
+          scales.plot = {};
+
           scales.plot.x = d3.scale.linear()
             .domain(X_DOMAIN_2_4)
             .range([0, dim.plot.width]);
@@ -120,6 +106,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
           scales.plot.y = d3.scale.linear()
             .domain(Y_DOMAIN)
             .range([dim.plot.height, 0]);
+
+          elem.plot.axis = {};
 
           elem.plot.axis.x = d3.svg.axis()
             .scale(scales.plot.x)
@@ -148,9 +136,13 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
           dim.nav.width = dim.nav.totalWidth - dim.nav.margin.left - dim.nav.margin.right;
           dim.nav.height = dim.nav.totalHeight - dim.nav.margin.top - dim.nav.margin.bottom;
 
+          scales.nav = {};
+
           scales.nav.y = d3.scale.linear()
             .domain(Y_DOMAIN)
             .range([dim.nav.height, 0]);
+
+          elem.nav = {};
 
           elem.nav.container = d3.select('#nav').append('svg')
             .attr('width', dim.nav.totalWidth)
@@ -159,11 +151,17 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
               .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
 
           /* Left Nav Container */
+          dim.nav.left = {};
+
           dim.nav.left.width = dim.nav.width * dim.nav.leftPercent;
+
+          scales.nav.left = {};
 
           scales.nav.left.x = d3.scale.linear()
             .domain(X_DOMAIN_2_4)
             .range([0, dim.nav.left.width]);
+
+          elem.nav.left = {};
 
           elem.nav.left.clip = elem.nav.container.append('g')
             .attr('clip-path', 'url(#nav-clip-left)')
@@ -184,11 +182,17 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             .attr('height', dim.nav.height)
 
           /* Right Nav Containers */
+          dim.nav.right = {};
+
           dim.nav.right.width = dim.nav.width * (1 - dim.nav.leftPercent);
+
+          scales.nav.right = {};
 
           scales.nav.right.x = d3.scale.linear()
             .domain(X_DOMAIN_5)
             .range([0, dim.nav.right.width]);
+
+          elem.nav.right = {};
 
           elem.nav.right.container = elem.nav.container.append('g')
             .classed('navigator', true)
