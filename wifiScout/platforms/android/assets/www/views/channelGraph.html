@@ -6,7 +6,11 @@
   </head>
 
   <body>
+<<<<<<< HEAD
     <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right_x="swipeRight('settings')" ng-swipe-left_x="swipeLeft('signalStrength')" ng-controller="channelGraphCtrl">
+=======
+    <div id="touchLayer" ng-click="showNav(); $event.stopPropagation();" ng-controller="channelGraphCtrl" class="container-fluid anim-slide-right"  data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
+>>>>>>> b5ec917f4f833ca10ce1b0c2c2b0e269bb3147d5
 
       <div id="parabolas" style="width:800px;height:300px"></div>
       <button type="button" ng-click="panLeft(20)">Pan Left</button>

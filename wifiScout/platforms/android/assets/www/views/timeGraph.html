@@ -1,54 +1,31 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-  <link href="css/timeGraph.css" rel="stylesheet" />
-  <script src="scripts/timeGraph.js"></script>
-</head>
+  <head>
+    <link href="css/timeGraph.css" rel="stylesheet" />
+    <script src="scripts/timeGraph.js"></script>
+  </head>
 
-<body>
-  <div id="touchLayer" class="container-fluid" ng-click="showNav(); $event.stopPropagation();" ng-swipe-right="swipeRight('signalStrength')" ng-swipe-left="swipeLeft('APTable')" ng-controller="timeGraphCtrl">
-
-    <div class="row-fluid">
-      <div class="col-xs-3" id="legend">
+  <body>
+    <div id="touchLayer" ng-click="showNav(); $event.stopPropagation();" ng-controller="timeGraphCtrl" class="container-fluid anim-slide-right"  data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
+      <div class="row-fluid">
+        <div class="col-xs-3 nopadding" id="legend">
           <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
-          <ul class="list-group scrollable-list">
-            <li class="listgroupitem legend-item" data-ng-repeat="d in legendData | orderBy:'SSID'" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
-              <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-              <p class="legend-label"> {{d.SSID}} </p>
-              <div ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
-            </li>
+          <ul class="list-group scrollable-list legendList" id="list">
+            <span data-ng-repeat="d in legendData | orderBy:'SSID'">
+              <li class="listgroupitem legend-item"  ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
+                <div class="legend-box" ng-style="{'background-color':d.color}"></div>
+                <div class="legend-label">{{d.SSID}}</div>
+                <div class="macAddress" ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
+              </li>
+            </span>
           </ul>
-      </div>
-      <div class="col-xs-9">
-        <canvas id="plot" style="border: 1px solid #c0c0c0; margin-top: 30px"></canvas>
-        <p class="axis-label">Level (dBm)</p>
-      </div>
-    </div>
-
-  </div>
-
-    <!-- Help Modal -->
-    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Help and Context</h4>
-          </div>
-          <div class="modal-body">
-            Now here is context for the plot view!
-            <br>
-            <br>
-            Did it help?...
-            <br>
-            <br>
-            Yay!
-          </div>
-          <div class="modal-footer"></div>
+        </div>
+        <div class="col-xs-8 nopadding" id="timeGraph">
+          <canvas id="plot" style="border: 1px solid #c0c0c0;"></canvas>
+          <p class="axis-label">Level (dBm)</p>
         </div>
       </div>
     </div>
-
     <div filter-modal view="timeGraph"></div>
   </body>
 </html

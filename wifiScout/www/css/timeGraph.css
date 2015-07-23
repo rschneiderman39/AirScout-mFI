@@ -1,6 +1,11 @@
+#timeGraph {
+  position: relative;
+  transform: translateY(5%);
+}
 
-#legend {
-	margin-top: 10px
+.nopadding {
+   padding: 10px !important;
+   margin: 0 !important;
 }
 
 .axis-label {
@@ -16,33 +21,39 @@
 
 .legend-box {
 	display: inline-block;
-	width: 18px;
-	height: 18px;
-	margin-left: 0px;
-	margin-right: 10px;
+	width: 13px;
+	height: 13px;
+	margin-right: 5px;
 }
 
 .legend-label {
 	display: inline-block;
-	margin-bottom: 0px
+	margin-bottom: 0px;
+  font-size: 15px;
+  font-size: 1.5vw;
+}
+
+.macAddress {
+  font-size: 15px;
+  font-size: 1.5vw;
 }
 
 .legend-title {
-	margin-top: 10px;
+  font-size: 15px;
+  font-size: 1.75vw;
+	position: relative;
 	font-weight: bold;
 }
 
-.scrollable-list {
-  overflow-x: hidden;
-	margin-left: 10px;
-	margin-top: 10px;
+.legendList {
+  overflow-x: scroll;
 }
 
 .listgroupitem.active {
   z-index: 2;
   color: #fafafa;
-  background-color: #c4c4c4;
-  border-color: #c4c4c4;
+  background-color: #62bf01;
+  border-color: #62bf01;
 }
 
 .listgroupitem {

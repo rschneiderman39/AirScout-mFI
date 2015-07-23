@@ -1,4 +1,35 @@
+#touchLayer {
+  position: fixed;
+}
+
+#chartdiv {
+  position: relative;
+ 
+}
+
+.testing { 
+  font-size: 15px;
+  font-size: 1.5vw;
+}
+
+.nopadding {
+   padding: 3px !important;
+   margin: 0 !important;*/
+}
+
+.dataDiv {
+  font-size: 15px;
+  font-size: 1.5vw;
+}
+
+.selectableList {
+  position: relative;
+  transform: translateY(5%);
+}
+
 .list-title {
+  font-size: 15px;
+  font-size: 1.75vw;
   font-weight: bold;
 }
 
@@ -14,6 +45,8 @@
 }
 
 .listgroupitem {
+  font-size: 15px;
+  font-size: 1.5vw;
   z-index: 2;
   padding: 10px 15px;
   margin-bottom: -1px;
@@ -32,13 +65,9 @@
   border-bottom-left-radius: 4px;
 }
 
-#chartdiv {
-  margin-bottom: 30px;
-  margin-top: 10px;
-}
-
 .one,
 .two,
 .three {
-  top: -60px;
+  top: -10px;
+  position: relative;
 }

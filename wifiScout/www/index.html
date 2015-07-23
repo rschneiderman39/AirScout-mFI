@@ -7,6 +7,7 @@
     <!-- CSS Stylesheets -->
     <link href="css/angular-chart.css" rel="stylesheet" />
     <link href="css/introjs.min.css" rel="stylesheet" />
+    <link href="css/anim-in-out.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="css/index.css" rel="stylesheet" />
@@ -14,10 +15,11 @@
     <!-- Scripts -->
     <script src="scripts/lib/jquery-2.1.4.min.js"></script>
     <script src="scripts/lib/angular.min.js"></script>
-    <script src="scripts/lib/angular-route.min.js"></script>
-    <script src="scripts/lib/angular-touch.min.js"></script>
+    <script src="scripts/lib/angular-animate.js"></script>
     <script src="scripts/lib/angular-ui-router.min.js"></script>
     <script src="scripts/lib/angular-animate.min.js"></script>
+    <script src="scripts/lib/anim-in-out.js"></script>
+    <script src="scripts/lib/angular-touch.min.js"></script>
     <script src="scripts/lib/checklist-model.js"></script>
     <script src="scripts/lib/bootstrap.min.js"></script>
     <script src="scripts/lib/amcharts.js"></script>
@@ -25,110 +27,60 @@
     <script src="scripts/lib/serial.js"></script>
     <script src="scripts/lib/smoothie.js"></script>
     <script src="scripts/lib/intro.min.js"></script>
-    <script src="scripts/lib/jquery.colorhelpers.js"></script>
-    <script src="scripts/lib/jquery.flot.min.js"></script>
-    <script src="scripts/lib/jquery.flot.navigate.min.js"></script>
-    <script src="scripts/lib/curvedLines.js"></script>
-    <script src="scripts/lib/jquery.flot.navigationControl.js"></script>
-    <script src="scripts/lib/jquery.flot.labels.js"></script>
-    <script src="scripts/lib/jquery.flot.touch.js"></script>
     <script src="scripts/lib/d3.js"></script>
   </head>
 
-  <body id="slidingNav" ng-controller="navCtrl" class="view">
-    <div id="top-bar" class="container-fluid">
-      <div class="col-xs-4 filterDiv">
-        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
+  <body ng-controller="navCtrl">
+    <div id="top-bar" class="col-xs-12">
+      <div class="col-xs-2 filterDiv">
+        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()" onclick="$event.stopPropagation();">Filter...</button>
       </div>
-      <div class="col-xs-4" id="title">
-          <center><h2 id="greenTitle"></h2></center>
+      <p class="col-xs-8 greenTitle" id="greenTitle"></p>
+      <div class="col-xs-1">
       </div>
-      <div class="col-xs-2">
-      </div>
-      <div class="col-xs-2" id="helpContext">
-        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" href="javascript:void(0);" onclick="startIntro()">
+      <div class="col-xs-1" id="helpContext">
+        <input type="image" src="images/chris-question-mark.png" alt="Submit" id="helpButton" href="javascript:void(0);" ng-click="startIntro()">
       </div>
     </div>
 
-    <div id="selectView">
-      <div id="currentView" ui-view></div>
-    </div>
+    <!-- <div class="col-xs-12 ui-view-container" id="selectView"> -->
+    <div ui-view id="currentView" class="anim-in-out" data-anim-sync="true"></div>
+    <!-- </div> -->
 
-    <header>
-      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
-        <ul class="nav nav-pills nav-justified">
-          <li role="presentation">
-            <a ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">
-              <div class="container-fluid">
-                 <img id="channelGraph-img" src="images/parabola-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li role="presentation">
-            <a ui-sref="signalStrength" ng-click="setActive('signalStrength');showNav()" id="signalStrength">
-              <div class="container-fluid">
-                <img id="signalStrength-img" src="images/performance-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li role="presentation">
-            <a ui-sref="timeGraph" ng-click="setActive('timeGraph');showNav()" id="timeGraph">
-              <div class="container-fluid">
-                <img id="timeGraph-img" src="images/plot-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li role="presentation">
-            <a ui-sref="APTable" ng-click="setActive('APTable');showNav()" id="APTable">
-              <div class="container-fluid">
-                <img id="APTable-img" src="images/table-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li role="presentation">
-            <a ui-sref="channelTable" ng-click="setActive('channelTable');showNav()" id="channelTable">
-              <div class="container-fluid">
-                <img id="channelTable-img" src="images/channels-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li role="presentation">
-            <a ui-sref="settings" ng-click="setActive('settings');showNav()" id="settings">
-              <div class="container-fluid">
-                <img id="settings-img" src="images/settings-wide-selected.png" />
-              </div>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <script type="text/javascript">
-      function startIntro(){
-        var intro = introJs();
-          intro.setOptions({
-            showStepNumbers: false,
-            steps: [
-              {
-                intro: "Hello world!"
-              },
-              {
-                element: document.querySelector('#step1'),
-                intro: "This is a tooltip."
-              },
-              {
-                element: document.querySelector('#step2'),
-                intro: "This is the plain view"
-              },
-              {
-                element: document.querySelector('#step3'),
-                intro: "This is the fun and interesting view!"
-              }
-            ]
-          });
-          intro.start();
-      }
-    </script>
+    <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
+      <div class="row">
+        <div class="col-xs-2">
+          <a href="#/channelGraph" ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">
+            Channel Graph
+          </a>
+        </div>
+        <div class="col-xs-2">
+          <a href="#/signalStrength" ui-sref="signalStrength" ng-click="setActive('signalStrength');showNav()" id="signalStrength">
+            Signal Strength
+          </a>
+        </div>
+        <div class="col-xs-2">
+          <a href="#/timeGraph" ui-sref="timeGraph" ng-click="setActive('timeGraph');showNav()" id="timeGraph">
+            Time Graph
+          </a>
+        </div>
+        <div class="col-xs-2">
+          <a href="#/APTable" ui-sref="APTable" ng-click="setActive('APTable');showNav()" id="APTable">
+            AP Table
+          </a>
+        </div>
+        <div class="col-xs-2">
+          <a href="#/channelTable" ui-sref="channelTable" ng-click="setActive('channelTable');showNav()" id="channelTable">
+            Channel Table
+          </a>
+        </div>
+        <div class="col-xs-2">
+          <a href="#/settings" ui-sref="settings" ng-click="setActive('settings');showNav()" id="settings">
+            Settings
+          </a>
+        </div>
+      </div>
+    </nav>
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>

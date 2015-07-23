@@ -1,11 +1,6 @@
-﻿// For an introduction to the Blank template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkID=397704
-// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints,
-// and then run "window.location.reload()" in the JavaScript Console.
-document.mobileDevice;
+﻿document.mobileDevice;
 document.deviceHeight = $(window).height();
 document.deviceWidth = $(window).width();
-document.topBarHeight = $('#top-bar').height();
 
 (function () {
     "use strict";
@@ -33,20 +28,27 @@ function windowCheck() {
     return mobileDevice;
 };
 
-$('#currentView').css('height', document.deviceHeight-document.topBarHeight);
+// Sets the height of the navigation bar interaction layer to be exactly that of
+//  the view area (AKA - the whole screen minus the top bar height)
+//$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
 
-(function () {
-  var navBar = $('#bottomBar');
+// Scale the top and bottom bar sizes to device-specific size
+var barScale = (1/8);
+var barHeight = barScale * document.deviceHeight;
 
-  $('#currentView').css('height', document.deviceHeight-document.topBarHeight);
+document.bottomBarHeight = 1.25 * barHeight;
+document.bottomBarBottom = -( ( 1.25 * barHeight ) - 1);
 
-/*
-  $('#selectView').click( function() {
-    console.log('clicked!');
-    navBar.css('bottom', '-15px');
-    setTimeout(function() {
-      navBar.css('bottom', '-98px');
-    }, 3000);
-  });
-  */
-})();
+$('#top-bar').css('height', barHeight);
+$('#bottomBar').css('height', document.bottomBarHeight);
+$('#bottomBar').css('bottom',  document.bottomBarBottom);
+
+
+$('#currentView').css('width', document.deviceWidth);
+$('#currentView').css('height', document.deviceHeight - barHeight);
+$('#currentView').css('top', barHeight);
+
+// Scale the size of the help button to the size of the nav bar
+var helpSize = (2/3) * barHeight;
+$('#helpButton').css('height', helpSize);
+$('#helpButton').css('width', helpSize);
