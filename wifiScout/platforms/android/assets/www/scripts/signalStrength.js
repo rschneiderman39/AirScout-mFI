@@ -1,15 +1,13 @@
-var topBarHeight = $('#top-bar').height();
-
 // Move view content down below top nav bar
-$('.selectableList').css('top', topBarHeight);
-$('.testing').css('top', topBarHeight);
+$('.selectableList').css('top', document.topBarHeight);
+$('.testing').css('top', document.topBarHeight);
 
 // Set width of scrollable table depending on device size
 $('.selectableList').css('min-width', ( (.28) * document.deviceWidth ));
 
 // Sets height of scrollable list depending on device size
 var listTitleHeight = $('.list').height();
-var listHeight = (document.deviceHeight-topBarHeight-listTitleHeight) * 0.85;
+var listHeight = (document.deviceHeight-document.topBarHeight-listTitleHeight) * 0.85;
 $('.list').css('height', listHeight);
 
 // Sets height and width of speedoemter depending on device size
@@ -49,6 +47,4 @@ else {
 
 // Sets height of nav bar interaction layer to be that of the entire view
 //	minus the top nav bar
-$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
-
 $('#currentView').css('height', document.deviceHeight - document.topBarHeight);

@@ -3,6 +3,10 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
   utilService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
+        $scope.alert = function(msg) {
+          alert(msg);
+        };
+
         var X_DOMAIN_2_4 = channelGraphDataService.getXDomain('2_4Ghz'),
             X_DOMAIN_5 = channelGraphDataService.getXDomain('5Ghz'),
             Y_DOMAIN = channelGraphDataService.getYDomain(),
@@ -132,7 +136,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
         };
 
         var buildNav = function() {
-          /* Nav Container */
+          /* Find nav dimensions and scales */
           dim.nav.width = dim.nav.totalWidth - dim.nav.margin.left - dim.nav.margin.right;
           dim.nav.height = dim.nav.totalHeight - dim.nav.margin.top - dim.nav.margin.bottom;
 
@@ -142,26 +146,26 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             .domain(Y_DOMAIN)
             .range([dim.nav.height, 0]);
 
-          elem.nav = {};
-
-          elem.nav.container = d3.select('#nav').append('svg')
-            .attr('width', dim.nav.totalWidth)
-            .attr('height', dim.nav.totalHeight)
-            .append('g')
-              .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
-
-          /* Left Nav Container */
+          /* Left Nav */
           dim.nav.left = {};
 
           dim.nav.left.width = dim.nav.width * dim.nav.leftPercent;
+          dim.nav.left.totalWidth = dim.nav.left.width - dim.nav.margin.left;
+
+          elem.nav = {};
+          elem.nav.left = {};
+
+          elem.nav.left.container = d3.select('#navLeft').append('svg')
+            .attr('width', dim.nav.left.totalWidth)
+            .attr('height', dim.nav.totalHeight)
+            .append('g')
+              .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
 
           scales.nav.left = {};
 
           scales.nav.left.x = d3.scale.linear()
             .domain(X_DOMAIN_2_4)
             .range([0, dim.nav.left.width]);
-
-          elem.nav.left = {};
 
           elem.nav.left.clip = elem.nav.container.append('g')
             .attr('clip-path', 'url(#nav-clip-left)')
@@ -407,13 +411,13 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             return;
           }
 
-          var parabs = clip.selectAll('ellipse')
+          var parabolas = clip.selectAll('ellipse')
             .data(data, function(d) {
               return d.BSSID;
             });
 
           /* Add new parabolas */
-          parabs.enter().append('ellipse')
+          parabolas.enter().append('ellipse')
             .attr('cx', function(d) {
               return xScale(d.channel);
             })
@@ -436,7 +440,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
                 });
 
           /* Update existing parabolas */
-          parabs
+          parabolas
             .transition()
             .duration(TRANSITION_INTERVAL)
               .attr('ry', function(d) {
@@ -444,7 +448,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
               });
 
           /* Remove parabolas that are no longer bound to data */
-          parabs.exit()
+          parabolas.exit()
             .transition()
             .duration(TRANSITION_INTERVAL)
               .attr('ry', 0)

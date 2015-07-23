@@ -3,85 +3,74 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
   function($scope, APService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
-        console.log("IN MODAL CTRL!");
-        // Settings for this session
-        $scope.modal = {
-          allAPData: [],             // Every AP we know about
-          selectedAPData: []         // The set of selected APs
+        $scope.allAPData = [];
+
+        $scope.toggleSelected = function(AP) {
+          isSelected[AP.BSSID] = isSelected[AP.BSSID] ? false : true;
+          pushSelection();
         };
 
-        var view = undefined;
-
-        $scope.select = function(ap) {
-          console.log("CLICKED ON A LIST ITEM!");
-          var arrPosition = $scope.modal.selectedAPData.indexOf(ap);
-          if( arrPosition === -1 ) {
-            $scope.modal.selectedAPData.push(ap);
-          }
-          else {
-            $scope.modal.selectedAPData.splice(arrPosition, 1);
-          }
+        $scope.isSelected = function(AP) {
+          return isSelected[AP.BSSID];
         };
 
-        $scope.isActive = function(ap) {
-          var arrPosition = $scope.modal.selectedAPData.indexOf(ap);
-          return arrPosition === -1;
-        }
+        var view = undefined,
+            isSelected = {};
 
         // Select all APs, and show any new AP that later becomes visible
-        var showAll = function() {
+        var selectAll = function() {
           filterSettingsService.setShowAll(view, true);
-          //filterSettingsService.setSelectedBSSIDs(view, []);
           $scope.$apply(function() {
-            $scope.modal.allAPData.each()
-            $scope.modal.selectedAPData = $scope.modal.allAPData.slice();
+            for (var i = 0; i < $scope.allAPData.length; ++i) {
+              isSelected[$scope.allAPData[i].BSSID] = true;
+            }
           });
-        }
+        };
 
-        // Unselect all APs
-        /*
-        var hideAll = function() {
+        var unselectAll = function() {
           filterSettingsService.setShowAll(view, false);
           filterSettingsService.setSelectedBSSIDs(view, []);
-          $scope.$apply(function() { $scope.modal.selectedAPData = []; });
-        } 
-        */
+          $scope.$apply(function() { isSelected = {}; });
+        };
 
         // Initialize the modal with the settings used previously
         var init = function() {
-          //var settings = filterSettingsService.getSettings(view);
+          console.log(view);
+          var settings = filterSettingsService.getSettings(view);
           $scope.$apply(function() {
-            $scope.modal.allAPData = APService.getNamedAPData();
-            /*
+            $scope.allAPData = APService.getNamedAPData();
             if (settings.showAll) {
-              $scope.modal.selectedAPData = APService.getNamedAPData();
+              for (var i = 0; i < $scope.allAPData.length; ++i) {
+                isSelected[$scope.allAPData[i].BSSID] = true;
+              }
             } else {
-              $scope.modal.selectedAPData = APService.getSelectedAPData(settings.selectedBSSIDs);
+              for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
+                isSelected[settings.selectedBSSIDs[i]] = true;
+              }
             }
-            */
           });
         };
 
-        // Update the settings service with our new selection
-        /*
         var pushSelection = function() {
+          var selection = [];
+          for (var BSSID in isSelected) {
+            if (isSelected[BSSID]) selection.push(BSSID);
+          }
           filterSettingsService.setShowAll(view, false);
-          filterSettingsService.setSelectedBSSIDs(view, $scope.modal.selectedAPData.map(
-            function(ap) { return ap.BSSID; }
-          ));
+          filterSettingsService.setSelectedBSSIDs(view, selection);
         };
-        */
 
         // Set up button and checkbox event handlers
         $('#filterModal').on('show.bs.modal', init);
-        //$('#modalList').on('click', pushSelection);
-        //$('#btnShow').on('click', showAll);
-        //$('#btnHide').on('click', hideAll); 
+        $('#btnShow').on('click', selectAll);
+        $('#btnHide').on('click', unselectAll);
 
         //Determine the view from the hidden viewTitle DOM element.
         var setView = function() {
+          console.log('setting view');
           view = $('#viewTitle').attr('ng-class');
-        }
+          console.log(view);
+        };
 
         // This is needed because of the late binding of the ng-class attribute
         setTimeout(setView, 0);

@@ -17,7 +17,3 @@ document.getElementById('plot').width = plotWidth;
 // Sets height of scrollable list depending on device size
 var legendHeight = (document.deviceHeight-topBarHeight-legendTitleHeight) * 0.85;
 $('.legendList').css('height', legendHeight);
-
-// Sets height of nav bar interaction layer to be that of the entire view
-//	minus the top nav bar
-$('#touchLayer').css('height', document.deviceHeight - topBarHeight);

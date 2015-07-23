@@ -9,5 +9,3 @@ $('.table-striped tbody').css('height', (document.deviceHeight - document.topBar
 
 $('.table-striped thead').css('width', document.deviceWidth);
 $('.table-striped tbody').css('width', document.deviceWidth);
-
-$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);

@@ -58,12 +58,12 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
           gauge = AmCharts.makeChart( "chartdiv", {
           "type": "gauge",
           "theme": "none",
-          "startDuration": 1,
+          "startDuration": 0.9,
           "startEffect": "easeOutSine",
           "axes": [ {
           "axisThickness": 1,
             "axisAlpha": 0.2,
-            "tickAlpha": 0.2  ,
+            "tickAlpha": 0.2,
             "valueInterval": 10,
             "bands": [ {
                "color": "#d3d3d3",

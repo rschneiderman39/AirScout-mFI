@@ -5,12 +5,11 @@
 
 
 <body>
-  <div id="touchLayer" ng-click="showNav(); $event.stopPropagation();" ng-controller="channelGraphCtrl" class="container-fluid anim-slide-right"  data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
+  <button type="button" ng-click="alert('foo')">Test</button>
+  <div id="plot"></div>
+  <div id="navLeft" ng-click="setBand('2_4Ghz')"></div><div id="navRight" ng-click="setBand('5Ghz')"></div>
+  <div id="nav" ng-click="alert('baz')"></div>
 
-    <div id="plot"></div>
-    <div id="nav"></div>
-
-  </div>
 
   <div filter-modal view="channelGraph"></div>
 </body>

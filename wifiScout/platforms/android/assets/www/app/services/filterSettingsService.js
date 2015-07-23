@@ -21,7 +21,7 @@ app.factory('filterSettingsService', function() {
                   sortReverse: <Boolean>
                 }
   */
-  
+
   service.requestSettings = function(view) {
     return settings[view].settingsPromise;
   };
@@ -36,20 +36,19 @@ app.factory('filterSettingsService', function() {
        }
   */
   service.getSettings = function(view) {
+    console.log(view);
     return {
         selectedBSSIDs: settings[view].selectedBSSIDs,
         showAll: settings[view].showAll,
     };
   };
 
-  /*
   service.setSelectedBSSIDs = function(view, selected) {
     if (typeof selected === 'object') {
       settings[view].selectedBSSIDs = selected.slice();
       pushSettings(view);
     }
   };
-  */
 
   service.setShowAll = function(view, showAll) {
     if (typeof showAll === 'boolean') {
