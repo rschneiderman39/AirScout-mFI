@@ -1,22 +1,31 @@
-#timeGraph {
+#legend {
   position: relative;
   transform: translateY(5%);
 }
 
-.nopadding {
-   padding: 10px !important;
-   margin: 0 !important;
+#list {
+  height: 68vh;
+  overflow-y: scroll;
+}
+
+#plot {
+  border: 1px;
+  background-color: #c0c0c0;
+}
+
+#timeGraph {
+  position: relative;
+  transform: translateY(3%);
+}
+
+#text {
+  font-size: 20px;
+  font-size: 1.5vw;
 }
 
 .axis-label {
 	float: left;
 	font-weight: bold;
-}
-
-.legend-item {
-	overflow: hidden;
-	white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .legend-box {
@@ -26,27 +35,11 @@
 	margin-right: 5px;
 }
 
-.legend-label {
-	display: inline-block;
-	margin-bottom: 0px;
-  font-size: 15px;
-  font-size: 1.5vw;
-}
-
-.macAddress {
-  font-size: 15px;
-  font-size: 1.5vw;
-}
-
 .legend-title {
-  font-size: 15px;
+  font-size: 20px;
   font-size: 1.75vw;
 	position: relative;
 	font-weight: bold;
-}
-
-.legendList {
-  overflow-x: scroll;
 }
 
 .listgroupitem.active {
