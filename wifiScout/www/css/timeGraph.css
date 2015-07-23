@@ -1,11 +1,5 @@
-#touchLayer {
-  position: fixed;
-  vertical-align: middle;
-}
-
 #timeGraph {
   position: relative;
-  transform: translateX(10%);
   transform: translateY(5%);
 }
 
@@ -36,30 +30,30 @@
 	display: inline-block;
 	margin-bottom: 0px;
   font-size: 15px;
-  font-size: 1.25vw;
+  font-size: 1.5vw;
 }
 
 .macAddress {
   font-size: 15px;
-  font-size: 1.25vw;
+  font-size: 1.5vw;
 }
 
 .legend-title {
   font-size: 15px;
-  font-size: 1.5vw;
+  font-size: 1.75vw;
 	position: relative;
 	font-weight: bold;
 }
 
-.scrollable-list {
+.legendList {
   overflow-x: scroll;
 }
 
 .listgroupitem.active {
   z-index: 2;
   color: #fafafa;
-  background-color: #c4c4c4;
-  border-color: #c4c4c4;
+  background-color: #62bf01;
+  border-color: #62bf01;
 }
 
 .listgroupitem {

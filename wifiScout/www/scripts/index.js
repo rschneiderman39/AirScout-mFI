@@ -28,9 +28,6 @@ function windowCheck() {
     return mobileDevice;
 };
 
-$('#currentView').css('width', document.deviceWidth);
-$('#selectView').css('width', document.deviceWidth);
-
 // Sets the height of the navigation bar interaction layer to be exactly that of
 //  the view area (AKA - the whole screen minus the top bar height)
 //$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
@@ -46,8 +43,12 @@ $('#top-bar').css('height', barHeight);
 $('#bottomBar').css('height', document.bottomBarHeight);
 $('#bottomBar').css('bottom',  document.bottomBarBottom);
 
+
+$('#currentView').css('width', document.deviceWidth);
+$('#currentView').css('height', document.deviceHeight - barHeight);
+$('#currentView').css('top', barHeight);
+
 // Scale the size of the help button to the size of the nav bar
 var helpSize = (2/3) * barHeight;
-
 $('#helpButton').css('height', helpSize);
 $('#helpButton').css('width', helpSize);

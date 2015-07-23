@@ -39,7 +39,7 @@ if( (document.deviceHeight - gaugeDivHeight ) > 100 ) {
 //	the main view
 else {
 	var listWidth = $('.selectableList').width();
-	var shiftLeft = ( document.deviceWidth - gaugeWidth - listWidth ) / 2;
+	var shiftLeft = ( document.deviceWidth - gaugeWidth - listWidth ) / 4;
 	$('#touchLayer').css('left', shiftLeft);
 	$('.one').css('left', shiftLeft);
 	$('.two').css('left', shiftLeft);

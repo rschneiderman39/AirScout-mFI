@@ -4,7 +4,7 @@
 app.factory('filterSettingsService', function() {
   var service = {},
       settings = {},
-      views = ['APTable', 'timeGraph', 'channelGraph']; // Views that will use this service
+      views = ['APTable', 'timeGraph', 'channelGraph', 'settings']; // Views that will use this service
 
   /* Get a deferred object which will be resolved to a view's settings whenever
      those settings are changed.

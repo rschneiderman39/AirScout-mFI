@@ -14,21 +14,16 @@
             <h3>Filtering Options</h3>
           </div>
           <div class="modal-body">
-            <div class="row">
-              <div class="col-xs-4">
+            <div class="row testing">
+              <div class="col-xs-4" id="sortingDiv">
                 <h5>Search by MAC address or SSID:</h5>
-                <input type="text" id="query" ng-model="query"/>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
+                <input type="text" class="col-xs-12" id="query" ng-model="query">
                 <button id="btnShow" class="btn btn-default btn-sm" type="button">Select All</button>
                 <button id="btnHide" class="btn btn-default btn-sm" type="button">Deselect All</button>
               </div>
               <div class="col-xs-8" id="modalList">
                 <ul class="list-group scrollable-list filterTable">
-                  <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'">
+                  <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'" ng-class="{'selected': clicked, '': !clicked}" ng-click="clicked=!clicked">
                     <div class="row">
                       <div class="col-xs-6" id="SSID"> <input type="checkbox" style="opacity:0;" checklist-model="modal.selectedAPData" checklist-value="ap"> {{ap['SSID']}} </div>
                       <div class="col-xs-2" id="BSSID"> {{ap['BSSID']}} </div>

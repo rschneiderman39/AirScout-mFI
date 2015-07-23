@@ -33,9 +33,9 @@
   <body ng-controller="navCtrl">
     <div id="top-bar" class="col-xs-12">
       <div class="col-xs-2 filterDiv">
-        <button id="step4" type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
+        <button type="button" class="btn btn-primary filterButton" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()" onclick="$event.stopPropagation();">Filter...</button>
       </div>
-      <p class="col-xs-8 centerMe" id="greenTitle"></p>
+      <p class="col-xs-8 greenTitle" id="greenTitle"></p>
       <div class="col-xs-1">
       </div>
       <div class="col-xs-1" id="helpContext">
@@ -43,93 +43,44 @@
       </div>
     </div>
 
-    <div class="col-xs-12 ui-view-container" id="selectView">
-      <div ui-view id="currentView" class="anim-in-out" data-anim-sync="true"></div>
-    </div>
-
+    <!-- <div class="col-xs-12 ui-view-container" id="selectView"> -->
+    <div ui-view id="currentView" class="anim-in-out" data-anim-sync="true"></div>
+    <!-- </div> -->
+ 
     <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
       <div class="row">
         <div class="col-xs-2">
-          <a href="#/channelGraph">
+          <a href="#/channelGraph" ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">
             Channel Graph
           </a>
         </div>
         <div class="col-xs-2">
-          <a href="#/signalStrength">
+          <a href="#/signalStrength" ui-sref="signalStrength" ng-click="setActive('signalStrength');showNav()" id="signalStrength">
             Signal Strength
           </a>
         </div>
         <div class="col-xs-2">
-          <a href="#/timeGraph">
+          <a href="#/timeGraph" ui-sref="timeGraph" ng-click="setActive('timeGraph');showNav()" id="timeGraph">
             Time Graph
           </a>
         </div>
         <div class="col-xs-2">
-          <a href="#/APTable">
+          <a href="#/APTable" ui-sref="APTable" ng-click="setActive('APTable');showNav()" id="APTable">
             AP Table
           </a>
         </div>
         <div class="col-xs-2">
-          <a href="#/channelTable">
+          <a href="#/channelTable" ui-sref="channelTable" ng-click="setActive('channelTable');showNav()" id="channelTable">
             Channel Table
           </a>
         </div>
         <div class="col-xs-2">
-          <a href="#/settings">
+          <a href="#/settings" ui-sref="settings" ng-click="setActive('settings');showNav()" id="settings">
             Settings
           </a>
         </div>
       </div>
     </nav>
-
-    <!-- <header>
-      <nav id="bottomBar" class="navbar navbar-default navbar-fixed-bottom">
-        <ul class="nav nav-pills nav-justified">
-          <li class="col-xs-1" role="presentation">
-            <a href="#/channelGraph" ui-sref="channelGraph" ng-click="setActive('channelGraph');showNav()" id="channelGraph">
-              <div class="container-fluid">
-                 <img id="channelGraph-img" src="images/parabola-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li class="col-xs-1" role="presentation">
-            <a href="#/signalStrength" ui-sref="signalStrength" ng-click="setActive('signalStrength');showNav()" id="signalStrength">
-              <div class="container-fluid">
-                <img id="signalStrength-img" src="images/performance-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li class="col-xs-1" role="presentation">
-            <a href="#/timeGraph" ui-sref="timeGraph" ng-click="setActive('timeGraph');showNav()" id="timeGraph">
-              <div class="container-fluid">
-                <img id="timeGraph-img" src="images/plot-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li class="col-xs-1" role="presentation">
-            <a href="#/APTable" ui-sref="APTable" ng-click="setActive('APTable');showNav()" id="APTable">
-              <div class="container-fluid">
-                <img id="APTable-img" src="images/table-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li class="col-xs-1" role="presentation">
-            <a href="#/channelTable" ui-sref="channelTable" ng-click="setActive('channelTable');showNav()" id="channelTable">
-              <div class="container-fluid">
-                <img id="channelTable-img" src="images/channels-wide.png" />
-              </div>
-            </a>
-          </li>
-          <li class="col-xs-1" role="presentation">
-            <a href="#/settings" ui-sref="settings" ng-click="setActive('settings');showNav()" id="settings">
-              <div class="container-fluid">
-                <img id="settings-img" src="images/settings-wide-selected.png" />
-              </div>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header> -->
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
@@ -156,7 +107,6 @@
     <script src="app/controllers/timeGraphCtrl.js"></script>
     <script src="app/controllers/settingsCtrl.js"></script>
     <script src="app/controllers/channelGraphCtrl.js"></script>
-    <script src="app/controllers/channelTableCtrl.js"></script>
 
     <script src="app/directives/filterModal.js"></script>
 

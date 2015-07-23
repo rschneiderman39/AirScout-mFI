@@ -36,11 +36,11 @@ app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
               titleText = "";
           }
           document.getElementById('greenTitle').innerHTML = titleText;
-          var oldHighlightedImg = $('#' + activeView + "-img")[0],
-              newHighlightedImg = $('#' + view + "-img")[0];
+          //var oldHighlightedImg = $('#' + activeView + "-img")[0],
+              //newHighlightedImg = $('#' + view + "-img")[0];
 
-          oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
-          newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
+          //oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
+          //newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
 
           activeView = view;
         };
