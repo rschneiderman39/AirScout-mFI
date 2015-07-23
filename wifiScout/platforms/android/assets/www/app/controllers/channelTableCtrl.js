@@ -2,7 +2,6 @@ app.controller('channelTableCtrl', ['$scope', '$location', 'cordovaService', fun
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        console.log("IN CHANNELTABLE CTRL!");
         $scope.$on('animIn', function() {
                 console.log('CHANNELTABLECTRL: animIn');
             });

@@ -5,7 +5,7 @@
     <script src="scripts/filterModal.js"></script>
   </head>
 
-  <body>
+  <body ng-controller="modalCtrl">
     <span id="viewTitle" type="hidden" ng-class="{{view}}"></span>
     <div class="modal fade" id="filterModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -23,7 +23,10 @@
               </div>
               <div class="col-xs-8" id="modalList">
                 <ul class="list-group scrollable-list filterTable">
+                  <!-- 
                   <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'" ng-class="{'selected': clicked, '': !clicked}" ng-click="clicked=!clicked">
+                  -->
+                  <li class="list-group-item" data-ng-repeat="ap in modal.allAPData | filter:query | orderBy:'SSID'" ng-click="select(ap)" ng-class="{'selected': isActive(ap)}">
                     <div class="row">
                       <div class="col-xs-6" id="SSID"> <input type="checkbox" style="opacity:0;" checklist-model="modal.selectedAPData" checklist-value="ap"> {{ap['SSID']}} </div>
                       <div class="col-xs-2" id="BSSID"> {{ap['BSSID']}} </div>

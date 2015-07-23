@@ -2,7 +2,6 @@ app.controller('settingsCtrl', ['$scope', '$location', 'cordovaService', functio
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        console.log("IN SETTINGS CTRL!");
         $scope.$on('animIn', function() {
                 console.log('settingsCtrl: animIn');
             });
