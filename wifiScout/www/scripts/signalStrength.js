@@ -35,7 +35,7 @@ if( (document.deviceHeight - gaugeDivHeight ) > 100 ) {
 	$('.three').css('left', shiftLeft);
 }
 
-// Shift the entire view (minus the top nav bar) left so it is centered within 
+// Shift the entire view (minus the top nav bar) left so it is centered within
 //	the main view
 else {
 	var listWidth = $('.selectableList').width();
@@ -46,6 +46,9 @@ else {
 	$('.three').css('left', shiftLeft);
 }
 
+
 // Sets height of nav bar interaction layer to be that of the entire view
 //	minus the top nav bar
 $('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
+
+$('#currentView').css('height', document.deviceHeight - document.topBarHeight);

@@ -1,12 +1,12 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-app.factory('APService', ['rawDataService', 'channelService',
-  function(rawDataService, channelService) {
+app.factory('APService', ['rawDataService', 'utilService',
+  function(rawDataService, utilService) {
   var service = {},
       allAPData = [],
       minLevels = {},
       maxLevels = {},
-      UPDATE_INTERVAL = 500;
+      UPDATE_INTERVAL = 1000;
 
   /* Get the data for every known AP
      @returns {Array} An array of AP data objects of the form:
@@ -62,18 +62,34 @@ app.factory('APService', ['rawDataService', 'channelService',
     return null;
   };
 
-  var appendChannelData = function(data) {
+
+
+  var lineColors = {};
+
+  var appendChannels = function(data) {
     for (var i = 0; i < data.length; ++i) {
-      data[i].channel = channelService.freqToChannel(data[i].frequency);
+      data[i].channel = utilService.freqToChannel(data[i].frequency);
     }
     return data;
   };
+
+  var appendColors = function(data) {
+    for (var i = 0; i < data.length; ++i) {
+      var lineColor = lineColors[data[i].BSSID];
+      if (lineColor === undefined) {
+        lineColor = utilService.getRandomColor();
+        lineColors[data[i].BSSID] = lineColor;
+      }
+      data[i].color = lineColor;
+    }
+    return data;
+  }
 
   /* Get data from the device and update internal state accordingly */
   var update = function() {
     rawDataService.getData()
     .done(function(data) {
-      allAPData = appendChannelData(data.available);
+      allAPData = appendColors(appendChannels(data.available));
     })
     .fail(function() {
       allAPData = [];

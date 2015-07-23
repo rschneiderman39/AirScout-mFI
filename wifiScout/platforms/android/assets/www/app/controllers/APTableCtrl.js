@@ -20,14 +20,13 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
             // Because AP data is constantly changing, we use MAC addresses
             // as a permanent ID for the APs we've selected
             selectedBSSIDs = [],
-            update = true,
             UPDATE_INTERVAL = 500;
 
         // Update the table whenever filter settings are changed
         var updateSelection = function(settings) {
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
-          forceUpdate();
+          update();
           filterSettingsService.requestSettings('APTable').done(updateSelection);
         };
 
@@ -38,7 +37,7 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
         };
 
         // Update the table now
-        var forceUpdate = function() {
+        var update = function() {
           $scope.$apply(function() {
             if (showAll) {
               $scope.selectedAPData = APService.getNamedAPData();
@@ -49,20 +48,7 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
           });
         };
 
-        // Update the table every quantum
-        var update = function() {
-          if (update) {
-            forceUpdate();
-            setTimeout(update, UPDATE_INTERVAL);
-          }
-        };
-
         var init = function() {
-          $scope.$on('$destroy', function() {
-            update = false;
-            pushSortSettings();
-          });
-
           var settings = filterSettingsService.getSettings('APTable');
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
@@ -70,7 +56,12 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
           $scope.sortReverse = tableSortSettingsService.getSortReverse();
           filterSettingsService.requestSettings('APTable').done(updateSelection);
 
-          setTimeout(update, UPDATE_INTERVAL);
+          var updateLoop = setInterval(update, UPDATE_INTERVAL);
+
+          $scope.$on('$destroy', function() {
+            clearInterval(updateLoop);
+            pushSortSettings();
+          });
         };
 
         /* INIT */

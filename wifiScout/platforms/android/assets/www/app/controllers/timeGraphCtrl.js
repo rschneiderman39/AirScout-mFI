@@ -41,16 +41,20 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
           timeGraphDataService.requestLegendData().done(updateLegend);
         };
 
-        var plot = timeGraphDataService.getPlot();
-        plot.streamTo($('#plot')[0], 1000);
+        var init = function() {
+          var plot = timeGraphDataService.getPlot();
+          plot.streamTo($('#plot')[0], 1000);
 
-        $scope.$on('$destroy', function() {
-          plot.stop();
-        });
+          $scope.$on('$destroy', function() {
+            plot.stop();
+          });
 
-        $scope.legendData = timeGraphDataService.getLegendData();
-        updateDuplicateSSIDs();
-        timeGraphDataService.requestLegendData().done(updateLegend);
+          $scope.legendData = timeGraphDataService.getLegendData();
+          updateDuplicateSSIDs();
+          timeGraphDataService.requestLegendData().done(updateLegend);
+        };
+
+        init();
       },
       function rejected() {
         console.log('timeGraphCtrl is unavaiable because Cordova is not loaded.');

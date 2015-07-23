@@ -2,6 +2,13 @@
 document.deviceHeight = $(window).height();
 document.deviceWidth = $(window).width();
 
+function destroy(obj) {
+  for (var key in obj) {
+    if (isNaN(parseInt(key))) destroy(obj[key]);
+  }
+  delete obj;
+};
+
 (function () {
     "use strict";
 
@@ -33,22 +40,22 @@ function windowCheck() {
 //$('#touchLayer').css('height', document.deviceHeight - document.topBarHeight);
 
 // Scale the top and bottom bar sizes to device-specific size
-var barScale = (1/8);
-var barHeight = barScale * document.deviceHeight;
+document.topBarHeight = (1/8) * document.deviceHeight;
 
-document.bottomBarHeight = 1.25 * barHeight;
-document.bottomBarBottom = -( ( 1.25 * barHeight ) - 1);
+document.bottomBarHeight = 1.25 * document.topBarHeight;
+document.bottomBarBottom = -( document.bottomBarHeight - 1);
 
-$('#top-bar').css('height', barHeight);
+$('#top-bar').css('height', document.topBarHeight);
 $('#bottomBar').css('height', document.bottomBarHeight);
 $('#bottomBar').css('bottom',  document.bottomBarBottom);
 
 
 $('#currentView').css('width', document.deviceWidth);
-$('#currentView').css('height', document.deviceHeight - barHeight);
-$('#currentView').css('top', barHeight);
+$('#currentView').css('height', document.deviceHeight - document.topBarHeight);
+$('#currentView').css('top', document.topBarHeight);
 
 // Scale the size of the help button to the size of the nav bar
-var helpSize = (2/3) * barHeight;
+var helpSize = (2/3) * document.topBarHeight;
+console.log(helpSize);
 $('#helpButton').css('height', helpSize);
 $('#helpButton').css('width', helpSize);
