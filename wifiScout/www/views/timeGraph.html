@@ -6,27 +6,30 @@
   </head>
 
   <body>
+    <div id="touchLayer" ng-click="showNav()" ng-controller="timeGraphCtrl">
 
-    <div class="row-fluid">
-      <div class="col-xs-3 nopadding" id="legend">
-        <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
-        <ul class="list-group scrollable-list legendList" id="list">
-          <span data-ng-repeat="d in legendData | orderBy:'SSID'">
-            <li class="listgroupitem legend-item"  ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
-              <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-              <div class="legend-label">{{d.SSID}}</div>
-              <div class="macAddress" ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
-            </li>
-          </span>
-        </ul>
+      <div class="row-fluid">
+        <div class="col-xs-3 nopadding" id="legend">
+          <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
+          <ul class="list-group scrollable-list legendList" id="list">
+            <span data-ng-repeat="d in legendData | orderBy:'SSID'">
+              <li class="listgroupitem legend-item"  ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
+                <div class="legend-box" ng-style="{'background-color':d.color}"></div>
+                <div class="legend-label">{{d.SSID}}</div>
+                <div class="macAddress" ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
+              </li>
+            </span>
+          </ul>
+        </div>
+        <div class="col-xs-8 nopadding" id="timeGraph">
+          <canvas id="plot" style="border: 1px solid #c0c0c0;"></canvas>
+          <p class="axis-label">Level (dBm)</p>
+        </div>
       </div>
-      <div class="col-xs-8 nopadding" id="timeGraph">
-        <canvas id="plot" style="border: 1px solid #c0c0c0;"></canvas>
-        <p class="axis-label">Level (dBm)</p>
-      </div>
-  </div>
 
+    </div>
 
+    <div filter-modal view="timeGraph"></div>
 
     <!-- Help Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -50,5 +53,5 @@
       </div>
     </div>
 
-    <div filter-modal view="timeGraph"></div>
+
 </body>

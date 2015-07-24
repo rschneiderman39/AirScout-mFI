@@ -26,6 +26,7 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
         var updateSelection = function(settings) {
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
+          update();
           filterSettingsService.requestSettings('APTable').done(updateSelection);
         };
 

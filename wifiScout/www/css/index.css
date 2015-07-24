@@ -7,6 +7,10 @@
   overflow: hidden;
 }
 
+#touchLayer {
+	height: 100%;
+}
+
 #helpContext {
   top: 50%;
   transform: translateY(-45%);
@@ -15,11 +19,12 @@
 #top-bar {
   position: fixed;
   background-color: #62bf01;
+  height: 11vh;
 }
 
 #greenTitle {
   font-size: 30px;
-  font-size: 4.5vw;
+  font-size: 3.5vw;
 }
 
 #bottomBar {

@@ -1,10 +1,6 @@
 var topBarHeight = $('#top-bar').height();
 var legendTitleHeight = $('.legend-title').height();
 
-// Move view content down below top nav bar
-//$('#legend').css('top', topBarHeight);
-//$('#timeGraph').css('top', topBarHeight);
-
 // Set width of scrollable table depending on device size
 $('#legend').css('min-width', ( (.28) * document.deviceWidth ));
 

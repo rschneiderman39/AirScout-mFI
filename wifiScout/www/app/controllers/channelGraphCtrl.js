@@ -3,10 +3,6 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
   utilService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.alert = function(msg) {
-          alert(msg);
-        };
-
         var X_DOMAIN_2_4 = channelGraphDataService.getXDomain('2_4Ghz'),
             X_DOMAIN_5 = channelGraphDataService.getXDomain('5Ghz'),
             Y_DOMAIN = channelGraphDataService.getYDomain(),
@@ -47,7 +43,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
 
         var init = function() {
           dim.width = document.deviceWidth * 0.95;
-          dim.height = (document.deviceHeight - document.topBarHeight) * 0.9;
+          dim.height = (document.deviceHeight - document.topBarHeight) * 0.95;
 
           dim.plot.totalWidth = dim.width;
           dim.nav.totalWidth = dim.width;
@@ -57,7 +53,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
 
           buildPlot();
           buildNav();
-          setBand(channelGraphDataService.getBand());
+          $scope.setBand(channelGraphDataService.getBand());
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL)
 
@@ -150,7 +146,13 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
           dim.nav.left = {};
 
           dim.nav.left.width = dim.nav.width * dim.nav.leftPercent;
-          dim.nav.left.totalWidth = dim.nav.left.width - dim.nav.margin.left;
+          dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
+
+          scales.nav.left = {};
+
+          scales.nav.left.x = d3.scale.linear()
+            .domain(X_DOMAIN_2_4)
+            .range([0, dim.nav.left.width]);
 
           elem.nav = {};
           elem.nav.left = {};
@@ -161,17 +163,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             .append('g')
               .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
 
-          scales.nav.left = {};
-
-          scales.nav.left.x = d3.scale.linear()
-            .domain(X_DOMAIN_2_4)
-            .range([0, dim.nav.left.width]);
-
-          elem.nav.left.clip = elem.nav.container.append('g')
+          elem.nav.left.clip = elem.nav.left.container.append('g')
             .attr('clip-path', 'url(#nav-clip-left)')
-            .on('click', function() {
-              if (band !== '2_4Ghz') setBand('2_4Ghz');
-            });
 
           elem.nav.left.clip.append('clipPath')
             .attr('id', 'nav-clip-left')
@@ -189,6 +182,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
           dim.nav.right = {};
 
           dim.nav.right.width = dim.nav.width * (1 - dim.nav.leftPercent);
+          dim.nav.right.totalWidth = dim.nav.right.width + dim.nav.margin.right;
 
           scales.nav.right = {};
 
@@ -198,9 +192,12 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
 
           elem.nav.right = {};
 
-          elem.nav.right.container = elem.nav.container.append('g')
-            .classed('navigator', true)
-            .attr('transform', 'translate(' + dim.nav.left.width + ', 0)');
+          elem.nav.right.container = d3.select('#navRight').append('svg')
+            .attr('width', dim.nav.right.totalWidth)
+            .attr('height', dim.nav.totalHeight)
+            .append('g')
+              .classed('navigator', true)
+              .attr('transform', 'translate(0, ' + dim.nav.margin.top + ')');
 
           elem.nav.right.clip = elem.nav.right.container.append('g')
             .attr('clip-path', 'url(#nav-clip-right)');
@@ -215,8 +212,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             .x(scales.nav.right.x)
             .extent(channelGraphDataService.getWindowExtent5Ghz())
             .on("brushstart", function() {
+              $scope.setBand('5Ghz');
               updateViewport();
-              if (band !== '5Ghz') setBand('5Ghz');
             })
             .on("brush", function() {
               updateViewport();
@@ -245,50 +242,47 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
             .attr('x', scales.nav.right.x(elem.nav.right.viewport.extent()[0]));
 
           /* Draw Nav Borders */
-          elem.nav.container.append('path')
-            .attr('d', 'M 0 0 H ' + dim.nav.width)
-            .attr('stroke', 'black');
+          elem.nav.left.container.append('rect')
+            .attr('width', dim.nav.left.width - 1)
+            .attr('height', dim.nav.height)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '1')
+            .attr('fill', 'transparent')
+            .attr('pointer-events', 'none');
 
-          elem.nav.container.append('path')
-            .attr('d', 'M 0 ' + dim.nav.height + ' H ' + dim.nav.width)
-            .attr('stroke', 'black');
-
-          elem.nav.container.append('path')
-            .attr('d', 'M 0 0 V ' + dim.nav.height)
-            .attr('stroke', 'black');
-
-          elem.nav.container.append('path')
-            .attr('d', 'M ' + dim.nav.left.width + ' 0 V ' + dim.nav.height)
-            .attr('stroke', 'black');
-
-          elem.nav.container.append('path')
-            .attr('d', 'M ' + dim.nav.width + ' 0 V ' + dim.nav.height)
-            .attr('stroke', 'black');
+          elem.nav.right.container.append('rect')
+            .attr('width', dim.nav.right.width - 1)
+            .attr('height', dim.nav.height)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '1')
+            .attr('fill', 'transparent')
+            .attr('pointer-events', 'none');
 
           /* Draw Nav Labels */
-          elem.nav.container.append('text')
+          elem.nav.left.container.append('text')
             .text('2.4 Ghz')
             .attr('y', dim.nav.height + dim.nav.margin.bottom);
 
-          elem.nav.container.append('text')
+          elem.nav.right.container.append('text')
             .text('5 Ghz')
-            .attr('x', dim.nav.left.width)
             .attr('y', dim.nav.height + dim.nav.margin.bottom);
         };
 
-        var setBand = function(newBand) {
-          if (newBand ===  '2_4Ghz') {
-            elem.nav.right.clip.select('#navToggleRight').classed('active', false);
-            elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
-          } else if (newBand === '5Ghz') {
-            elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
-            elem.nav.right.clip.select('#navToggleRight').classed('active', true);
-          }
-          band = newBand;
+        $scope.setBand = function(newBand) {
+          if (newBand !== band) {
+            if (newBand ===  '2_4Ghz') {
+              elem.nav.right.clip.select('#navToggleRight').classed('active', false);
+              elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
+            } else if (newBand === '5Ghz') {
+              elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
+              elem.nav.right.clip.select('#navToggleRight').classed('active', true);
+            }
+            band = newBand;
 
-          updatePlotAxisScale();
-          updatePlotElementScale();
-          updatePlotElementPosition();
+            updatePlotAxisScale();
+            updatePlotElementScale();
+            updatePlotElementPosition();
+          }
         };
 
         var pushSettings = function() {

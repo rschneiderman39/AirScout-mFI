@@ -5,11 +5,11 @@
 
 
 <body>
-  <button type="button" ng-click="alert('foo')">Test</button>
-  <div id="plot"></div>
-  <div id="navLeft" ng-click="setBand('2_4Ghz')"></div><div id="navRight" ng-click="setBand('5Ghz')"></div>
-  <div id="nav" ng-click="alert('baz')"></div>
-
+  <div id="touchLayer" ng-click="showNav()" ng-controller="channelGraphCtrl">
+    <div id="plot"></div>
+    <div id="navLeft" class="nav-pane" ng-click="setBand('2_4Ghz'); $event.stopPropagation();"></div>
+    <div id="navRight" class="nav-pane" ng-click="setBand('5Ghz'); $event.stopPropagation();"></div>
+  </div>
 
   <div filter-modal view="channelGraph"></div>
 </body>

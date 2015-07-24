@@ -1,13 +1,14 @@
-app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
+app.controller('modalCtrl', ['$scope', '$timeout', 'APService', 'filterSettingsService',
                              'cordovaService',
-  function($scope, APService, filterSettingsService, cordovaService) {
+  function($scope, $timeout, APService, filterSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
         $scope.allAPData = [];
 
         $scope.toggleSelected = function(AP) {
           isSelected[AP.BSSID] = isSelected[AP.BSSID] ? false : true;
-          pushSelection();
+          // Wait for digest to finish before possibly causing another digestss
+          $timeout(pushSelection);
         };
 
         $scope.isSelected = function(AP) {
@@ -35,7 +36,6 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Initialize the modal with the settings used previously
         var init = function() {
-          console.log(view);
           var settings = filterSettingsService.getSettings(view);
           $scope.$apply(function() {
             $scope.allAPData = APService.getNamedAPData();
@@ -67,9 +67,7 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         //Determine the view from the hidden viewTitle DOM element.
         var setView = function() {
-          console.log('setting view');
           view = $('#viewTitle').attr('ng-class');
-          console.log(view);
         };
 
         // This is needed because of the late binding of the ng-class attribute

@@ -36,7 +36,6 @@ app.factory('filterSettingsService', function() {
        }
   */
   service.getSettings = function(view) {
-    console.log(view);
     return {
         selectedBSSIDs: settings[view].selectedBSSIDs,
         showAll: settings[view].showAll,

@@ -34,10 +34,12 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         };
 
         var updateLegend = function(data) {
+          console.log('applying legend change');
           $scope.$apply(function() {
             $scope.legendData = data;
             updateDuplicateSSIDs();
           });
+          console.log('done');
           timeGraphDataService.requestLegendData().done(updateLegend);
         };
 
