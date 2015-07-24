@@ -1,7 +1,7 @@
 /* Stores the filter settings for all view that use a filter modal. Pushes
    new settings to listening services whenever they are changed.
 */
-app.factory('filterSettingsService', function() {
+app.factory('filterSettingsService', ['$timeout', function($timeout) {
   var service = {},
       settings = {},
       views = ['APTable', 'timeGraph', 'channelGraph', 'settings']; // Views that will use this service
@@ -57,17 +57,20 @@ app.factory('filterSettingsService', function() {
   };
 
   var pushSettings = function(view) {
-    var viewSettings = settings[view],
-        request = viewSettings.settingsPromise;
-    viewSettings.settingsPromise = $.Deferred();
-    request.resolve(
-      {
-        selectedBSSIDs: viewSettings.selectedBSSIDs.slice(),
-        showAll: viewSettings.showAll,
-        sortPredicate: viewSettings.sortPredicate,
-        sortReverse: viewSettings.sortReverse
-      }
-    );
+    // Wait for any digest cycle to finish before causing another one.
+    $timeout(function() {
+      var viewSettings = settings[view],
+          request = viewSettings.settingsPromise;
+      viewSettings.settingsPromise = $.Deferred();
+      request.resolve(
+        {
+          selectedBSSIDs: viewSettings.selectedBSSIDs.slice(),
+          showAll: viewSettings.showAll,
+          sortPredicate: viewSettings.sortPredicate,
+          sortReverse: viewSettings.sortReverse
+        }
+      );
+    });
   };
 
   // Create an associative settings array for each view that will
@@ -81,4 +84,4 @@ app.factory('filterSettingsService', function() {
   }
 
   return service;
-});
+}]);

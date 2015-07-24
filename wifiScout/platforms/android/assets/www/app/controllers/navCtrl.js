@@ -1,5 +1,5 @@
-app.controller('navCtrl', ['$scope', '$state', '$timeout', 'cordovaService',
-  function($scope, $state, $timeout, cordovaService) {
+app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
+  function($scope, $state, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.showNav = function() {

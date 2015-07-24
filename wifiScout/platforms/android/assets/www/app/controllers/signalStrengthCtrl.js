@@ -1,8 +1,9 @@
-app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
-  'cordovaService', function($scope, $timeout, APService, cordovaService) {
+app.controller('signalStrengthCtrl', ['$scope', 'APService', 'cordovaService',
+  function($scope, APService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.allAPData = [];
+        $scope.isDuplicateSSID = {};
         $scope.level = undefined;
         $scope.minLevel = undefined;
         $scope.maxLevel = undefined;
@@ -12,6 +13,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
             return ap.BSSID === selectedBSSID;
           }
         };
+
         $scope.setSelected = function(ap) {
           if (typeof ap.BSSID !== 'undefined') {
             selectedBSSID = ap.BSSID;
@@ -22,7 +24,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'APService',
         };
 
         var selectedBSSID = "",
-            isDuplicateSSID = {},
             gauge = undefined,
             UPDATE_INTERVAL = 1000;
 

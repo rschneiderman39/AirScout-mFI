@@ -1,6 +1,6 @@
-app.controller('APTableCtrl', ['$scope', '$timeout', 'APService',
+app.controller('APTableCtrl', ['$scope', 'APService',
   'filterSettingsService', 'tableSortSettingsService', 'cordovaService',
-  function($scope, $timeout, APService, filterSettingsService,
+  function($scope, APService, filterSettingsService,
     tableSortSettingsService, cordovaService) {
     cordovaService.ready.then(
       function resolved() {

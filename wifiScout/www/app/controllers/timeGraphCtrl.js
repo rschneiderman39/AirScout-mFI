@@ -4,6 +4,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
       function resolved() {
         $scope.legendData = undefined;
         $scope.isDuplicateSSID = {};
+
         $scope.toggleSelected = function(BSSID) {
           if (typeof BSSID === 'string') {
             if (BSSID === selectedBSSID) {
@@ -14,6 +15,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
             timeGraphDataService.toggleAPHighlight(BSSID);
           }
         };
+
         $scope.isSelected = function(BSSID) {
           return BSSID === timeGraphDataService.getHighlightedBSSID();
         };
@@ -34,12 +36,10 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
         };
 
         var updateLegend = function(data) {
-          console.log('applying legend change');
           $scope.$apply(function() {
             $scope.legendData = data;
             updateDuplicateSSIDs();
           });
-          console.log('done');
           timeGraphDataService.requestLegendData().done(updateLegend);
         };
 
