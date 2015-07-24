@@ -1,9 +1,9 @@
-app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
-  'cordovaService', function($scope, APService, filterSettingsService,
-  cordovaService) {
+app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
+  'utils', 'cordovaService', function($scope, accessPoints, filterSettings,
+  utils, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
-        $scope.allAPData = [];
+        $scope.APData = [];
 
         $scope.toggleSelected = function(AP) {
           isSelected[AP.BSSID] = isSelected[AP.BSSID] ? false : true;
@@ -16,29 +16,36 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
 
         // Select all APs, and show any new AP that later becomes visible
         $scope.selectAll = function() {
-          for (var i = 0; i < $scope.allAPData.length; ++i) {
-            isSelected[$scope.allAPData[i].BSSID] = true;
+          for (var i = 0; i < $scope.APData.length; ++i) {
+            isSelected[$scope.APData[i].BSSID] = true;
           }
-          filterSettingsService.setShowAll(view, true);
+          filterSettings.set('global', {
+            showAll: true,
+            selectedBSSIDs: []
+          });
         };
 
         $scope.unselectAll = function() {
-          filterSettingsService.setShowAll(view, false);
-          filterSettingsService.setSelectedBSSIDs(view, []);
+          filterSettings.set('global', {
+            showAll: false,
+            selectedBSSIDs: []
+          });
           isSelected = {};
         };
+
+        $scope.sortSSID = utils.hiddenSSIDSort;
 
         var view = undefined,
             isSelected = {};
 
         // Initialize the modal with the settings used previously
         var init = function() {
-          var settings = filterSettingsService.getSettings(view);
+          var settings = filterSettings.get('global');
           $scope.$apply(function() {
-            $scope.allAPData = APService.getNamedAPData();
+            $scope.APData = accessPoints.getAll();
             if (settings.showAll) {
-              for (var i = 0; i < $scope.allAPData.length; ++i) {
-                isSelected[$scope.allAPData[i].BSSID] = true;
+              for (var i = 0; i < $scope.APData.length; ++i) {
+                isSelected[$scope.APData[i].BSSID] = true;
               }
             } else {
               for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
@@ -53,8 +60,10 @@ app.controller('modalCtrl', ['$scope', 'APService', 'filterSettingsService',
           for (var BSSID in isSelected) {
             if (isSelected[BSSID]) selection.push(BSSID);
           }
-          filterSettingsService.setShowAll(view, false);
-          filterSettingsService.setSelectedBSSIDs(view, selection);
+          filterSettings.set('global', {
+            showAll: false,
+            selectedBSSIDs: selection
+          });
         };
 
         // Set up button and checkbox event handlers

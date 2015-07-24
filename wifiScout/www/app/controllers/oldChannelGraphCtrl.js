@@ -1,20 +1,20 @@
-app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
-  'utilService', 'cordovaService', function($scope, channelGraphDataService,
-  utilService, cordovaService) {
+app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
+  'utils', 'cordovaService', function($scope, channelGraphData,
+  utils, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        var X_DOMAIN_2_4 = channelGraphDataService.getXDomain('2_4Ghz'),
-            X_DOMAIN_5 = channelGraphDataService.getXDomain('5Ghz'),
-            Y_DOMAIN = channelGraphDataService.getYDomain(),
+        var X_DOMAIN_2_4 = channelGraphData.getXDomain('2_4Ghz'),
+            X_DOMAIN_5 = channelGraphData.getXDomain('5Ghz'),
+            Y_DOMAIN = channelGraphData.getYDomain(),
             FILL_ALPHA = 0.2,
             LABEL_PADDING = 10,
             UPDATE_INTERVAL = 2000,
             TRANSITION_INTERVAL = 1000,
             band = undefined;
 
-        var spanLen = utilService.spanLen,
-            isChannel = utilService.isChannel,
-            setAlpha = utilService.setAlpha;
+        var spanLen = utils.spanLen,
+            isChannel = utils.isChannel,
+            setAlpha = utils.setAlpha;
 
         var elem = {
           plot: undefined,
@@ -96,7 +96,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
 
           addPlot();
           addNav();
-          setBand(channelGraphDataService.getBand());
+          setBand(channelGraphData.getBand());
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL)
 
@@ -110,7 +110,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
         };
 
         var update = function() {
-          var data = channelGraphDataService.generateData();
+          var data = channelGraphData.generate();
 
           updateParabs('plot', data);
           updateParabs('navLeft', data);
@@ -255,7 +255,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
         var addViewportRight = function() {
           elem.viewportRight = d3.svg.brush()
             .x(scales.nav.right.x)
-            .extent(channelGraphDataService.getWindowExtent5Ghz())
+            .extent(channelGraphData.getWindowExtent5Ghz())
             .on("brushstart", function() {
               if (band !== '5Ghz') setBand('5Ghz');
               moveRightViewport();
@@ -352,8 +352,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphDataService',
         };
 
         var pushSettings = function() {
-          channelGraphDataService.setBand(band);
-          channelGraphDataService.setWindowExtent5Ghz(elem.viewportRight.extent());
+          channelGraphData.setBand(band);
+          channelGraphData.setWindowExtent5Ghz(elem.viewportRight.extent());
         };
 
         var movePlotElements = function() {

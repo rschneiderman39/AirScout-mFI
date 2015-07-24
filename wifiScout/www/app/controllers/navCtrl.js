@@ -4,7 +4,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
       function resolved() {
         $scope.showNav = function() {
           clearTimeout(navTimeout);
-          var navBar = $('#bottomBar');
+          var navBar = $('#bottom-bar');
           navBar.css('bottom', '0px');
           navTimeout = setTimeout(function() {
             navBar.css('bottom', document.bottomBarBottom);
@@ -35,12 +35,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
             default:
               titleText = "";
           }
-          document.getElementById('greenTitle').innerHTML = titleText;
-          //var oldHighlightedImg = $('#' + activeView + "-img")[0],
-              //newHighlightedImg = $('#' + view + "-img")[0];
-
-          //oldHighlightedImg.src = oldHighlightedImg.src.replace("-selected", "");
-          //newHighlightedImg.src = newHighlightedImg.src.replace(".png", "-selected.png");
+          document.getElementById('view-title').innerHTML = titleText;
 
           activeView = view;
         };

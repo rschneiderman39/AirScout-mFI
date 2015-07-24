@@ -1,8 +1,8 @@
-app.controller('signalStrengthCtrl', ['$scope', 'APService', 'cordovaService',
-  function($scope, APService, cordovaService) {
+app.controller('signalStrengthCtrl', ['$scope', 'accessPoints', 'utils',
+  'cordovaService', function($scope, accessPoints, utils, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.allAPData = [];
+        $scope.APData = [];
         $scope.isDuplicateSSID = {};
         $scope.level = undefined;
         $scope.minLevel = undefined;
@@ -23,6 +23,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'APService', 'cordovaService',
           $scope.maxLevel = undefined;
         };
 
+        $scope.sortSSID = utils.hiddenSSIDSort;
+
         var selectedBSSID = "",
             gauge = undefined,
             UPDATE_INTERVAL = 1000;
@@ -30,18 +32,18 @@ app.controller('signalStrengthCtrl', ['$scope', 'APService', 'cordovaService',
         var updateDuplicateSSIDs = function() {
           var found = {},
               newDuplicates = {};
-          for (var i = 0; i < $scope.allAPData.length; ++i) {
-            if (found[$scope.allAPData[i].SSID]) {
-              newDuplicates[$scope.allAPData[i].SSID] = true;
+          for (var i = 0; i < $scope.APData.length; ++i) {
+            if (found[$scope.APData[i].SSID]) {
+              newDuplicates[$scope.APData[i].SSID] = true;
             } else {
-              found[$scope.allAPData[i].SSID] = true;
+              found[$scope.APData[i].SSID] = true;
             }
           }
           $scope.isDuplicateSSID = newDuplicates;
         };
 
         var updateList = function() {
-          $scope.allAPData = APService.getNamedAPData();
+          $scope.APData = accessPoints.getAll();
         };
 
         var update = function() {
@@ -99,7 +101,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'APService', 'cordovaService',
         };
 
         var updateLevels = function() {
-          var selectedAP = APService.getSingleAPData(selectedBSSID);
+          var selectedAP = accessPoints.get(selectedBSSID);
           if (selectedAP !== null) {
             $scope.level = selectedAP.level;
             if ($scope.minLevel === undefined) {

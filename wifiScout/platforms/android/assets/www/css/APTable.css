@@ -6,13 +6,11 @@
 
 .table-striped thead {
   position: fixed;
-  right: 0px;
 }
 
 .table-striped tbody {
   position: fixed !important;
-  overflow-y: auto;
-  right: 0px;
+  overflow-y: scroll;
 }
 
 .table-striped thead, .table-striped tbody, .table-striped tr, .table-striped td, .table-striped th {

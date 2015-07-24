@@ -1,7 +1,7 @@
 /* Contains some utility functions for performing transformations on
    signal strength values.  For now, only needed for the gauge.
 */
-app.factory('utilService', function() {
+app.factory('utils', function() {
   var service = {},
       freqChannelMap = {},
       isChannel = {};
@@ -30,6 +30,21 @@ app.factory('utilService', function() {
     var attrs = color.split(',');
     attrs[3] = alpha.toString() + ')';
     return attrs.join(",");
+  };
+
+  service.destroy = function(obj) {
+    for (var key in obj) {
+      if (isNaN(parseInt(key))) destroy(obj[key]);
+    }
+    delete obj;
+  };
+
+  service.hiddenSSIDSort = function(AP) {
+    if (AP.SSID.charAt(0) === '<') {
+      return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
+    } else {
+      return AP.SSID;
+    }
   };
 
   var init = function() {

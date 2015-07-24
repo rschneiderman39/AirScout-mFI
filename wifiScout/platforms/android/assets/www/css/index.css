@@ -2,19 +2,16 @@
 	background: #eeeeee !important;
 }
 
-#currentView {
+#current-view {
   position: relative;
   overflow: hidden;
 }
 
-#touchLayer {
+#touch-layer {
 	height: 100%;
 }
 
-#helpContext {
-  top: 50%;
-  transform: translateY(-45%);
-}
+
 
 #top-bar {
   position: fixed;
@@ -22,29 +19,37 @@
   height: 11vh;
 }
 
-#greenTitle {
+#top-bar > div {
+	height: 100%;
+}
+
+#filter-button {
+	position: relative;
+  transform: translateY(-50%);
+	top: 50%;
+}
+
+#help-button {
+	position: relative;
+  transform: translateY(-50%);
+	top: 50%;
+}
+
+#view-title {
   font-size: 30px;
   font-size: 3.5vw;
-}
-
-#bottomBar {
-  position: fixed;
-  min-height: 0px;
-  -webkit-transition: bottom 0.5s ease;
-  -moz-transition: bottom 0.5s ease;
-  transition: bottom 0.5s ease;
-}
-
-.greenTitle {
-  text-align: center;
+	text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.filterButton {
-  position: relative;
-  transform: translateY(10%);
+#bottom-bar {
+  position: fixed;
+  min-height: 0px;
+  -webkit-transition: bottom 0.5s ease;
+  -moz-transition: bottom 0.5s ease;
+  transition: bottom 0.5s ease;
 }
 
 .active_view {
@@ -64,7 +69,7 @@
   display: none;
 }
 
-#currentView {
+#current-view {
   position: relative;
 }
 

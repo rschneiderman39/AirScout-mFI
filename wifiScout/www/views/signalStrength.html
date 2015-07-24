@@ -6,13 +6,13 @@
 	</head>
 
 	<body>
-		<div id="touchLayer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
+		<div id="touch-layer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
 
 			<div class="row-fluid">
 				<div id="selectableList" class="col-xs-3">
 					<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
 					<ul class="list-group scrollable-list list">
-						<span data-ng-repeat="ap in allAPData | orderBy:'SSID'">
+						<span data-ng-repeat="ap in APData | orderBy:sortSSID">
 							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
 						   	<div>{{ap.SSID}}</div>
 								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>

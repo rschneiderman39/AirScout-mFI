@@ -1,10 +1,10 @@
 /* Stores the filter settings for all view that use a filter modal. Pushes
    new settings to listening services whenever they are changed.
 */
-app.factory('filterSettingsService', ['$timeout', function($timeout) {
+app.factory('filterSettings', ['$timeout', 'globalSettings', function($timeout) {
   var service = {},
       settings = {},
-      views = ['APTable', 'timeGraph', 'channelGraph', 'settings']; // Views that will use this service
+      views = ['channelGraph', 'timeGraph', 'APTable', 'global'];
 
   /* Get a deferred object which will be resolved to a view's settings whenever
      those settings are changed.
@@ -22,7 +22,7 @@ app.factory('filterSettingsService', ['$timeout', function($timeout) {
                 }
   */
 
-  service.requestSettings = function(view) {
+  service.request = function(view) {
     return settings[view].settingsPromise;
   };
   /* Get a view's settings. Intended only for view initialization.
@@ -35,24 +35,21 @@ app.factory('filterSettingsService', ['$timeout', function($timeout) {
          sortReverse: <Boolean>
        }
   */
-  service.getSettings = function(view) {
+  service.get = function(view) {
     return {
         selectedBSSIDs: settings[view].selectedBSSIDs,
         showAll: settings[view].showAll,
     };
   };
 
-  service.setSelectedBSSIDs = function(view, selected) {
-    if (typeof selected === 'object') {
-      settings[view].selectedBSSIDs = selected.slice();
+  service.set = function(view, newSettings) {
+    if (newSettings.selectedBSSIDs instanceof Array &&
+        typeof newSettings.showAll === 'boolean') {
+      settings[view].selectedBSSIDs = newSettings.selectedBSSIDs.slice();
+      settings[view].showAll = newSettings.showAll;
       pushSettings(view);
-    }
-  };
-
-  service.setShowAll = function(view, showAll) {
-    if (typeof showAll === 'boolean') {
-      settings[view].showAll = showAll;
-      pushSettings(view);
+    } else {
+      console.log('false');
     }
   };
 

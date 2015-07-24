@@ -1,4 +1,2 @@
-var heightPadding = (.45);
-var modalHeight = document.deviceHeight * heightPadding;
-
+var modalHeight = document.deviceHeight * 0.6;
 $('.filterTable').css('height', modalHeight);

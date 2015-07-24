@@ -1,5 +1,5 @@
-app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaService',
-  function($scope, timeGraphDataService, cordovaService) {
+app.controller('timeGraphCtrl', ['$scope', 'timeGraphData', 'utils',
+  'cordovaService', function($scope, timeGraphData, utils, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.legendData = undefined;
@@ -12,13 +12,15 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
             } else {
               selectedBSSID = BSSID;
             }
-            timeGraphDataService.toggleAPHighlight(BSSID);
+            timeGraphData.toggleAPHighlight(BSSID);
           }
         };
 
         $scope.isSelected = function(BSSID) {
-          return BSSID === timeGraphDataService.getHighlightedBSSID();
+          return BSSID === timeGraphData.getHighlightedBSSID();
         };
+
+        $scope.sortSSID = utils.hiddenSSIDSort;
 
         var selectedBSSID = "";
 
@@ -40,20 +42,20 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphDataService', 'cordovaServi
             $scope.legendData = data;
             updateDuplicateSSIDs();
           });
-          timeGraphDataService.requestLegendData().done(updateLegend);
+          timeGraphData.requestLegendData().done(updateLegend);
         };
 
         var init = function() {
-          var plot = timeGraphDataService.getPlot();
+          var plot = timeGraphData.getPlot();
           plot.streamTo($('#plot')[0], 1000);
 
           $scope.$on('$destroy', function() {
             plot.stop();
           });
 
-          $scope.legendData = timeGraphDataService.getLegendData();
+          $scope.legendData = timeGraphData.getLegendData();
           updateDuplicateSSIDs();
-          timeGraphDataService.requestLegendData().done(updateLegend);
+          timeGraphData.requestLegendData().done(updateLegend);
         };
 
         init();

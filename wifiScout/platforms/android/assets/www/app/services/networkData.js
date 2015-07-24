@@ -1,6 +1,6 @@
 /* Gets AP data from the device.  To get current AP data, views should use
-   APService instead */
-app.factory('rawDataService', function() {
+   accessPoints instead */
+app.factory('networkData', function() {
   var service = {};
 
   /* Get the device's AP data.
@@ -29,7 +29,7 @@ app.factory('rawDataService', function() {
       }
       The "available" field represents all the APs the device can see.
   */
-  service.getData = function() {
+  service.get = function() {
     var defer = $.Deferred();
     /* Tell the device to scan for APs */
     window.plugins.WifiAdmin.scan();

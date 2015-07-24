@@ -1,5 +1,5 @@
-app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
-  'utilService', function(APService, filterSettingsService, utilService) {
+app.factory('timeGraphData', ['accessPoints', 'filterSettings',
+  'utils', function(accessPoints, filterSettings, utils) {
     var service = {};
 
     service.getPlot = function() {
@@ -55,7 +55,7 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
 
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utilService.setAlpha(datasets[BSSID].color, 0.4)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 
@@ -133,12 +133,12 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
 
       showAll = settings.showAll;
       applyAPSelection();
-      filterSettingsService.requestSettings('timeGraph').done(onFilterSettingsChange);
+      filterSettings.request('global').done(onFilterSettingsChange);
     };
 
     var updateDatasets = function() {
       var curTime = new Date().getTime(),
-          APData = APService.getNamedAPData(),
+          APData = accessPoints.getAll(),
           APDataMap = {};
 
       for (var i = 0; i < APData.length; ++i) {
@@ -205,12 +205,12 @@ app.factory('timeGraphDataService', ['APService', 'filterSettingsService',
       }
     );
 
-    var settings = filterSettingsService.getSettings('timeGraph');
+    var settings = filterSettings.get('global');
     for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
       isSelected[settings.selectedBSSIDs[i]] = true;
     }
     showAll = settings.showAll;
-    filterSettingsService.requestSettings('timeGraph').done(onFilterSettingsChange);
+    filterSettings.request('global').done(onFilterSettingsChange);
 
     setInterval(update, UPDATE_INTERVAL);
 
