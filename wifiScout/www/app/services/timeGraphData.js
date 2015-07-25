@@ -8,7 +8,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
     service.getLegendData = function() {
       return generateLegendData();
     };
-    service.requestLegendData = function() {
+    service.awaitLegendData = function() {
       return legendDataPromise;
     };
     service.toggleAPHighlight = function(BSSID) {
@@ -47,7 +47,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       return legendData;
     };
 
-    var pushLegendData = function() {
+    var sendLegendData = function() {
       var request = legendDataPromise;
       legendDataPromise = $.Deferred();
       request.resolve(generateLegendData());
@@ -121,7 +121,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       }
 
       if (selectionChanged) {
-        pushLegendData();
+        sendLegendData();
       }
     };
 
