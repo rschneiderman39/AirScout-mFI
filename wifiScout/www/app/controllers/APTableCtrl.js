@@ -38,7 +38,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
         };
 
         // Save our sort settings to the settings service
-        var pushSortSettings = function() {
+        var storeSortSettings = function() {
           tableSettings.sortPredicate($scope.sortPredicate);
           tableSettings.sortReverse($scope.sortReverse);
         };
@@ -74,7 +74,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
           $scope.$on('$destroy', function() {
             clearInterval(updateLoop);
-            pushSortSettings();
+            storeSortSettings();
           });
         };
 
