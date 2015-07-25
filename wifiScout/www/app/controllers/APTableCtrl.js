@@ -34,7 +34,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
           update();
-          filterSettings.request('global').done(updateSelection);
+          filterSettings.await('global').done(updateSelection);
         };
 
         // Save our sort settings to the settings service
@@ -68,7 +68,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           }
           $scope.sortReverse = tableSettings.sortReverse();
 
-          filterSettings.request('global').done(updateSelection);
+          filterSettings.await('global').done(updateSelection);
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL);
 
