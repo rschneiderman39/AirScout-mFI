@@ -1,57 +1,91 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <!-- CSS Stylesheets -->
     <link href="css/settings.css" rel="stylesheet">
     <script src="scripts/settings.js"></script>
   </head>
 
   <body>
-		<div ng-controller="settingsCtrl">
-
+		<div id="settingsCtrl" ng-controller="settingsCtrl">
       <div class="panel-group anim-slide-right anim-slide-left" id="accordion" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 300 + 'ms','-moz-transition-duration': 300 + 'ms','-ms-transition-duration': 300 + 'ms','-o-transition-duration': 300 + 'ms','transition-duration': 300 + 'ms'}">
 	      <div class="panel panel-default" id="panel1">
 	        <div class="panel-heading" id="step1">
 	          <h4 class="panel-title">
-	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
-	              View Mode
+	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
+	              Default View
 	            </a>
 	          </h4>
 	        </div>
-	        <div id="collapseOne" class="panel-collapse collapse in">
-	          <div class="panel-body">Blah blah blah</div>
+	        <div id="collapseOne" class="panel-collapse collapse">
+	          <div class="panel-body">
+	          	<div class="row">
+		          	<div ng-click="showNav()" class="col-xs-9">
+	          			The selected view will be the default view to appear each time the application is launched.
+	          		</div>
+	          		<div class="col-xs-3">
+			          	<div class="btn-group">
+		  							<button type="button" class="btn btn-default dropdown-toggle selectedDefaultView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    							Select a View: <span class="caret"></span>
+		  							</button>
+									  <ul class="dropdown-menu pull-right">
+									    <li><a ng-click="defaultView('channelGraph')">Channel Graph</a></li>
+									    <li><a ng-click="defaultView('signalStrength')">Signal Strength</a></li>
+									    <li><a ng-click="defaultView('timeGraph')"> Time Graph</a></li>
+									    <li><a ng-click="defaultView('APTable')"> AP Table</a></li>
+									    <li><a ng-click="defaultView('channelTable')"> Channel Table</a></li>
+									    <li><a ng-click="defaultView('settings')"> Settings</a></li>
+									  </ul>
+									</div>
+			          </div>
+			        </div>
+			      </div>
 	        </div>
 	      </div>
 	      <div class="panel panel-default" id="panel2">
 	        <div class="panel-heading" id="step2">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
-	              Default View
+	              Filtering
 	            </a>
 	          </h4>
 	        </div>
 	        <div id="collapseTwo" class="panel-collapse collapse">
-	          <div class="panel-body">Blah blah blah blah blah blah blah</div>
+	          <div class="panel-body">
+		          <div class="row">
+		          	<div ng-click="showNav()" class="col-xs-9">
+			          	Global filtering preserves filtered selections across any view in the application while local filtering
+			          	only shows or hides APs that have been selected in that view.
+			          </div>
+		          	<div class="col-xs-3">
+		          		<input type="checkbox" name="filteringOptions" checked>
+		          	</div>
+		          </div>
+		         </div>
 	        </div>
 	      </div>
 	      <div class="panel panel-default" id="panel3">
 	        <div class="panel-heading" id="step3">
 	          <h4 class="panel-title">
-	            <a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed" >
-	              Misc.
+	            <a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
+	              Hiden Access Points
 	            </a>
 	          </h4>
 	        </div>
 	        <div id="collapseThree" class="panel-collapse collapse">
-	          <div class="panel-body">Blah blah blah, blah blah blah.</div>
+	          <div class="panel-body">
+	          	<div class="row">
+		          	<div ng-click="showNav()" class="col-xs-9">
+	          			Choose whether you would like hidden access points to be shown or hidden in the application.
+	          		</div>
+	          		<div class="col-xs-3">
+		          		<input type="checkbox" name="hiddenAPOptions" checked>
+		          	</div>
+	          	</div>
+	          </div>
 	        </div>
 	      </div>
-        <button id="detect-hidden" type="button" ng-click="detectHidden()">Detect Hidden</button>
-        <button id="ignore-hidden" type="button" ng-click="ignoreHidden()">Ignore Hidden</button>
 	    </div>
-
 		</div>
-
-		<div id="touch-layer" ng-click="showNav()"></div>
+		<div id="touchLayer" ng-click="showNav()"></div>
 	</body>
 </html>

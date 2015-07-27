@@ -28,7 +28,7 @@ $('#bottom-bar').css('height', document.bottomBarHeight);
 $('#bottom-bar').css('bottom',  document.bottomBarBottom);
 
 
-$('#current-view').css('width', document.deviceWidth);
+$('#current-view').css('max-width', document.deviceWidth);
 $('#current-view').css('height', document.deviceHeight - document.topBarHeight);
 $('#current-view').css('top', document.topBarHeight);
 
