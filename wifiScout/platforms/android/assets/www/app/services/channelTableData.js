@@ -53,31 +53,13 @@ app.factory('channelTableData', ['accessPoints', 'filterSettings',
       return range;
     };
 
-    var isSelected = {},
-        showAll = true,
-        band = '2_4Ghz',
+    var band = '2_4Ghz',
         domain = {
           '2_4Ghz': [-1, 15],
           '5Ghz': [34, 167]
         },
         range = [0, 15],
         sliderExtent = [34, 66];
-
-    var updateFilterSettings = function(settings) {
-      isSelected = {};
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        isSelected[settings.selectedBSSIDs[i]] = true;
-      }
-      showAll = settings.showAll;
-      filterSettings.await('global').done(updateFilterSettings);
-    };
-
-    var settings = filterSettings.get('global');
-    for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-      isSelected[settings.selectedBSSIDs[i]] = true;
-    }
-    showAll = settings.showAll;
-    filterSettings.await('global').done(updateFilterSettings);
 
     return service;
   }]);

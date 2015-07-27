@@ -33,7 +33,6 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
         datasets = {},
         plot = undefined,
         highlightedBSSID = undefined,
-        filterSettingsTarget = 'timeGraph',
         legendDataPromise = $.Deferred();
 
     var generateLegendData = function() {
@@ -138,7 +137,9 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
 
       showAll = settings.showAll;
       applyAPSelection();
-      filterSettings.await(filterSettingsTarget).done(updateFilterSettings);
+
+      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph';
+      filterSettings.await(target).done(updateFilterSettings);
     };
 
     var updateDatasets = function() {
@@ -176,52 +177,52 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
       applyAPSelection();
     };
 
-    /* INIT */
-
-    plot = new SmoothieChart(
-      {
-        minValue: -100,
-        maxValue: -30,
-        millisPerPixel: 60,
-        interpolation: 'linear',
-        horizontalLines:
-        [
-          { value: -100, color: '#c0c0c0', lineWidth: 1 },
-          { value: -90, color: '#c0c0c0', lineWidth: 1 },
-          { value: -80, color: '#c0c0c0', lineWidth: 1 },
-          { value: -70, color: '#c0c0c0', lineWidth: 1 },
-          { value: -60, color: '#c0c0c0', lineWidth: 1 },
-          { value: -50, color: '#c0c0c0', lineWidth: 1 },
-          { value: -40, color: '#c0c0c0', lineWidth: 1 },
-          { value: -30, color: '#c0c0c0', lineWidth: 1 }
-        ],
-        grid:
+    var init = function() {
+      plot = new SmoothieChart(
         {
-          fillStyle: '#eeeeee',
-          strokeStyle: 'rgba(0,0,0,0)',
-          verticalSections: 7
-        },
-        labels:
-        {
-          fillStyle: '#000000',
-          precision: 0,
-          fontSize: 13
+          minValue: -100,
+          maxValue: -30,
+          millisPerPixel: 60,
+          interpolation: 'linear',
+          horizontalLines:
+          [
+            { value: -100, color: '#c0c0c0', lineWidth: 1 },
+            { value: -90, color: '#c0c0c0', lineWidth: 1 },
+            { value: -80, color: '#c0c0c0', lineWidth: 1 },
+            { value: -70, color: '#c0c0c0', lineWidth: 1 },
+            { value: -60, color: '#c0c0c0', lineWidth: 1 },
+            { value: -50, color: '#c0c0c0', lineWidth: 1 },
+            { value: -40, color: '#c0c0c0', lineWidth: 1 },
+            { value: -30, color: '#c0c0c0', lineWidth: 1 }
+          ],
+          grid:
+          {
+            fillStyle: '#eeeeee',
+            strokeStyle: 'rgba(0,0,0,0)',
+            verticalSections: 7
+          },
+          labels:
+          {
+            fillStyle: '#000000',
+            precision: 0,
+            fontSize: 13
+          }
         }
+      );
+
+      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph',
+          settings = filterSettings.get(target);
+
+      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
+        isSelected[settings.selectedBSSIDs[i]] = true;
       }
-    );
+      showAll = settings.showAll;
+      filterSettings.await(target).done(updateFilterSettings);
 
-    if (globalSettings.globalFilter()) {
-      filterSettingsTarget = 'global';
-    }
+      setInterval(update, UPDATE_INTERVAL);
+    };
 
-    var settings = filterSettings.get(filterSettingsTarget);
-    for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-      isSelected[settings.selectedBSSIDs[i]] = true;
-    }
-    showAll = settings.showAll;
-    filterSettings.await(filterSettingsTarget).done(updateFilterSettings);
-
-    setInterval(update, UPDATE_INTERVAL);
+    init();
 
     return service;
 }]);
