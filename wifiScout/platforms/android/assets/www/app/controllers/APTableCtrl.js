@@ -55,12 +55,12 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
         var prepView = function() {
           $('.table-striped thead').css('height', '40px');
-          var tHeadHeight = $('.table-striped thead').height();
+          var tableHeadHeight = $('.table-striped thead').height();
 
           $('.table-striped thead').css('top', document.topBarHeight);
-          $('.table-striped tbody').css('top', document.topBarHeight + tHeadHeight);
+          $('.table-striped tbody').css('top', document.topBarHeight + tableHeadHeight);
 
-          $('.table-striped tbody').css('height', (document.deviceHeight - document.topBarHeight - tHeadHeight - 10) );
+          $('.table-striped tbody').css('height', (document.deviceHeight - document.topBarHeight - tableHeadHeight - 10) );
         };
 
         var init = function() {
