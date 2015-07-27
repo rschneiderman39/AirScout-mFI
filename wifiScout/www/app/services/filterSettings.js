@@ -22,7 +22,7 @@ app.factory('filterSettings', ['$timeout', 'globalSettings', function($timeout) 
                 }
   */
 
-  service.request = function(view) {
+  service.await = function(view) {
     return settings[view].settingsPromise;
   };
   /* Get a view's settings. Intended only for view initialization.
