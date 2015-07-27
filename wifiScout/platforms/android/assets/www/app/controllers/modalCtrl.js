@@ -7,7 +7,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
 
         $scope.toggleSelected = function(AP) {
           isSelected[AP.BSSID] = isSelected[AP.BSSID] ? false : true;
-          pushSelection();
+          sendSelection();
         };
 
         $scope.isSelected = function(AP) {
@@ -55,7 +55,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
           });
         };
 
-        var pushSelection = function() {
+        var sendSelection = function() {
           var selection = [];
           for (var BSSID in isSelected) {
             if (isSelected[BSSID]) selection.push(BSSID);

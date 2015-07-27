@@ -59,7 +59,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
 
           $scope.$on('$destroy', function() {
             clearInterval(updateLoop);
-            pushSettings();
+            storeSettings();
           });
 
           update();
@@ -285,7 +285,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
           }
         };
 
-        var pushSettings = function() {
+        var storeSettings = function() {
           channelGraphData.band(band);
           channelGraphData.sliderExtent(elem.nav.right.viewport.extent());
         };
