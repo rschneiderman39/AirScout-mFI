@@ -28,11 +28,11 @@ $('#bottom-bar').css('height', document.bottomBarHeight);
 $('#bottom-bar').css('bottom',  document.bottomBarBottom);
 
 
-$('#current-view').css('width', document.deviceWidth);
+$('#current-view').css('max-width', document.deviceWidth);
 $('#current-view').css('height', document.deviceHeight - document.topBarHeight);
 $('#current-view').css('top', document.topBarHeight);
 
 // Scale the size of the help button to the size of the nav bar
-var helpSize = (2/3) * document.topBarHeight;
-$('#help-button').css('height', helpSize);
-$('#help-button').css('width', helpSize);
+//var helpSize = (2/3) * document.topBarHeight;
+//$('#help-button').css('height', helpSize);
+//$('#help-button').css('width', helpSize);

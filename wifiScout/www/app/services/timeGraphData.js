@@ -1,16 +1,19 @@
-app.factory('timeGraphData', ['accessPoints', 'filterSettings',
-  'utils', function(accessPoints, filterSettings, utils) {
+app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings',
+  'utils', function(accessPoints, filterSettings, globalSettings, utils) {
     var service = {};
 
     service.getPlot = function() {
       return plot;
     };
+
     service.getLegendData = function() {
       return generateLegendData();
     };
+
     service.awaitLegendData = function() {
       return legendDataPromise;
     };
+
     service.toggleAPHighlight = function(BSSID) {
       if (BSSID === highlightedBSSID) {
         unhighlightAP(BSSID);
@@ -19,9 +22,10 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
         highlightAP(BSSID);
       }
     };
+
     service.getHighlightedBSSID = function(BSSID) {
       return highlightedBSSID;
-    }
+    };
 
     var UPDATE_INTERVAL = 1000,
         isSelected = {},
@@ -29,6 +33,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
         datasets = {},
         plot = undefined,
         highlightedBSSID = undefined,
+        filterSettingsTarget = 'timeGraph',
         legendDataPromise = $.Deferred();
 
     var generateLegendData = function() {
@@ -133,7 +138,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
 
       showAll = settings.showAll;
       applyAPSelection();
-      filterSettings.await('global').done(updateFilterSettings);
+      filterSettings.await(filterSettingsTarget).done(updateFilterSettings);
     };
 
     var updateDatasets = function() {
@@ -205,12 +210,16 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       }
     );
 
-    var settings = filterSettings.get('global');
+    if (globalSettings.globalFilter()) {
+      filterSettingsTarget = 'global';
+    }
+
+    var settings = filterSettings.get(filterSettingsTarget);
     for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
       isSelected[settings.selectedBSSIDs[i]] = true;
     }
     showAll = settings.showAll;
-    filterSettings.await('global').done(updateFilterSettings);
+    filterSettings.await(filterSettingsTarget).done(updateFilterSettings);
 
     setInterval(update, UPDATE_INTERVAL);
 

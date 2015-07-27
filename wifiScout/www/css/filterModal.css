@@ -18,12 +18,6 @@
   margin-bottom: 15px;
 }
 
-.scrollable-list {
-  /* TOO SLOW
-  overflow-y: scroll;
-  */
-}
-
 .modal-dialog {
   margin-left: auto;
   margin-right: auto;

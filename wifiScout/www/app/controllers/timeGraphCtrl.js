@@ -45,7 +45,14 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData', 'utils',
           timeGraphData.awaitLegendData().done(updateLegend);
         };
 
+        var prepView = function() {
+          document.getElementById('plot').height = document.deviceHeight * 0.75;
+          document.getElementById('plot').width = document.deviceWidth * 0.69;
+        };
+
         var init = function() {
+          prepView();
+
           var plot = timeGraphData.getPlot();
           plot.streamTo($('#plot')[0], 1000);
 

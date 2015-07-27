@@ -9,8 +9,25 @@ app.factory('globalSettings', function() {
     }
   };
 
+  service.globalFilter = function(newVal) {
+    if (typeof newVal === 'undefined') {
+      return globalFilter;
+    } else if (typeof newVal === 'boolean') {
+      globalFilter = newVal;
+    }
+  };
+
+  service.defaultView = function(newVal) {
+    if (typeof newVal === 'undefined') {
+      return defaultView;
+    } else if (typeof newVal === 'string') {
+      defaultView = newVal;
+    }
+  };
+
   var detectHidden = false,
-      globalFilterSettings = true;
+      globalFilter = false,
+      defaultView = 'settings';
 
   return service;
 });

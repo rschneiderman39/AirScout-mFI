@@ -1,6 +1,6 @@
 app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
-  'filterSettings', 'tableSettings', 'cordovaService',
-  function($scope, accessPoints, utils, filterSettings,
+  'filterSettings', 'globalSettings', 'tableSettings', 'cordovaService',
+  function($scope, accessPoints, utils, filterSettings, globalSettings,
     tableSettings, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
@@ -21,20 +21,18 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
         $scope.sortSSID = utils.hiddenSSIDSort;
 
-        // true: show all APs, including new ones as they are discovered
-        // false: only show selected APs
         var showAll = true,
-            // Because AP data is constantly changing, we use MAC addresses
-            // as a permanent ID for the APs we've selected
             selectedBSSIDs = [],
-            UPDATE_INTERVAL = 500;
+            UPDATE_INTERVAL = 500,
+            filterSettingsTarget = 'APTable';
+
 
         // Update the table whenever filter settings are changed
         var updateSelection = function(settings) {
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
           update();
-          filterSettings.await('global').done(updateSelection);
+          filterSettings.await(filterSettingsTarget).done(updateSelection);
         };
 
         // Save our sort settings to the settings service
@@ -55,8 +53,25 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           });
         };
 
+        var prepView = function() {
+          $('.table-striped thead').css('height', '40px');
+          var tableHeadHeight = $('.table-striped thead').height();
+
+          $('.table-striped thead').css('top', document.topBarHeight);
+          $('.table-striped tbody').css('top', document.topBarHeight + tableHeadHeight);
+
+          $('.table-striped tbody').css('height', (document.deviceHeight - document.topBarHeight - tableHeadHeight - 10) );
+        };
+
         var init = function() {
-          var settings = filterSettings.get('global');
+          prepView();
+
+          /* Choose global or local filter */
+          if (globalSettings.globalFilter()) {
+            filterSettingsTarget = 'global';
+          }
+
+          var settings = filterSettings.get(filterSettingsTarget);
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
 
@@ -68,7 +83,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           }
           $scope.sortReverse = tableSettings.sortReverse();
 
-          filterSettings.await('global').done(updateSelection);
+          filterSettings.await(filterSettingsTarget).done(updateSelection);
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL);
 

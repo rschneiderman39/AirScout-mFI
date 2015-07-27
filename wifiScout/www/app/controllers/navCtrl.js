@@ -203,6 +203,7 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
               });
               break;
           }
+          
           intro.start();
         };
 

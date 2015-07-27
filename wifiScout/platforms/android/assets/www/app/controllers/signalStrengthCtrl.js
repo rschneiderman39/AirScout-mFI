@@ -41,7 +41,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints', 'utils',
           }
           $scope.isDuplicateSSID = newDuplicates;
         };
-        
+
         var updateLevels = function() {
           var selectedAP = accessPoints.get(selectedBSSID);
           if (selectedAP !== null) {
@@ -118,7 +118,12 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints', 'utils',
             });
         };
 
+        var prepView = function() {
+          $('#chartdiv').css('height', document.deviceHeight * 0.70);
+        };
+
         var init = function() {
+          prepView();
           initGauge();
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL);

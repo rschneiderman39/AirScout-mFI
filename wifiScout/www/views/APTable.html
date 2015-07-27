@@ -1,12 +1,10 @@
 <head>
 	<link href="css/APTable.css" rel="stylesheet" />
 	<link href="css/sortArrow.css" rel="stylesheet" />
-	<script src="scripts/APTable.js"></script>
 </head>
 
 <body>
-  <div id="touch-layer" ng-click="showNav()" ng-controller="APTableCtrl">
-
+	<div id="touch-layer" ng-click="showNav()" ng-controller="APTableCtrl" class="container-fluid">
 	  <div class="row">
 			<!-- table -->
 	    <table class="table table-striped">
@@ -14,39 +12,39 @@
 	        <tr>
 	          <th class="col-xs-3" id="step2">
 	          	<div class="row">
-	          		<div class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
-	            		<a>SSID<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span>
+	          		<div class="col-xs-3">
+	            		<a href="" ng-click="order('SSID'); $event.stopPropagation()">SSID<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span>
 	            		</a>
 								</div>
 							</div>
 	          </th>
 	          <th class="col-xs-3">
 	          	<div class="row">
-	          		<div class="col-xs-3 noWrap" ng-click="order('BSSID'); $event.stopPropagation()">
-	           			<a class="mac">MAC Address<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span>
+	          		<div class="col-xs-3 noWrap">
+	           			<a class="mac" href="" ng-click="order('BSSID'); $event.stopPropagation()">MAC Address<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span>
 	           			</a>
 	           		</div>
 							</div>
 	          </th>
 	          <th class="col-xs-2">
 	          	<div class="row">
-	          		<div class="col-xs-2" ng-click="order('frequency'); $event.stopPropagation()">
-            			<a class="frequency">Channel<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
+	          		<div class="col-xs-2">
+            			<a class="frequency" href="" ng-click="order('frequency'); $event.stopPropagation()">Channel<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
             			</a>
 								</div>
 							</div>
 	          </th>
 	          <th class="col-xs-2" id="step3">
 	          	<div class="row">
-	          		<div class="col-xs-2 noWrap" ng-click="order('level'); $event.stopPropagation()">
-	           			<a class="level">Level (dBm)<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+	          		<div class="col-xs-2 noWrap">
+	           			<a class="level" href="" ng-click="order('level'); $event.stopPropagation()">Level (dBm)<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
 	           		</div>
 	           	</div>
 	          </th>
 	          <th class="col-xs-2">
 	          	<div class="row">
-	          		<div class="col-xs-2" ng-click="order('capabilities'); $event.stopPropagation()">
-            			<a class="capabilities">Capabilities<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
+	          		<div class="col-xs-2">
+            			<a class="capabilities" href="" ng-click="order('capabilities'); $event.stopPropagation()">Capabilities<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
             			</a>
             		</div>
 							</div>
@@ -64,7 +62,7 @@
 	    	</tbody>
 	    </table>
 
-		</div>
+	  </div>
 	</div>
 
 	<div filter-modal view="APTable"></div>
