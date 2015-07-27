@@ -11,6 +11,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="css/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="css/please-wait.css" rel="stylesheet" />
     <link href="css/index.css" rel="stylesheet" />
 
     <!-- Scripts -->
@@ -30,6 +31,7 @@
     <script src="scripts/lib/intro.min.js"></script>
     <script src="scripts/lib/d3.js"></script>
     <script src="scripts/lib/bootstrap-switch.min.js"></script>
+    <script src="scripts/lib/please-wait.min.js"></script>
   </head>
 
   <body ng-controller="navCtrl">
@@ -83,6 +85,19 @@
         </div>
       </div>
     </nav>
+
+    <script type="text/javascript">
+      var loading_screen = pleaseWait({
+        logo: "",
+        backgroundColor: '#62BF01',
+        loadingHtml: "<div class='sk-spinner sk-spinner-wave'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>"
+      });
+
+      setTimeout(function() {
+        loading_screen.finish();
+     }, 2500);
+
+    </script>
 
     <!-- Cordova, Angular Services and Controllers -->
     <script src="cordova.js"></script>
