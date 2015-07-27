@@ -39,7 +39,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
                     }
                   };
 
-        var viewportSize;
+        var viewportExtentLength;
 
         var init = function() {
           dim.width = document.deviceWidth * 0.95;
@@ -226,7 +226,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
               updatePlotElementPosition();
             });
 
-          viewportSize = spanLen(elem.nav.right.viewport.extent());
+          viewportExtentLength = spanLen(elem.nav.right.viewport.extent());
 
           elem.nav.right.container.append("g")
             .attr("class", "viewport")
@@ -308,9 +308,19 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
           var viewport = elem.nav.right.viewport;
 
           /* Lock the extent of the viewport */
-          if (spanLen(viewport.extent()) !== viewportSize) {
-            var extentMin = viewport.extent()[0];
-            viewport.extent([extentMin, extentMin + viewportSize]);
+          var extentMin = viewport.extent()[0],
+              extentMax = viewport.extent()[1],
+              domainMin = scales.nav.right.x.domain()[0],
+              domainMax = scales.nav.right.x.domain()[1];
+
+          if (spanLen(viewport.extent()) !== viewportExtentLength) {
+            if (extentMin + viewportExtentLength > domainMax) {
+              viewport.extent([domainMax - viewportExtentLength, domainMax]);
+            } else if (extentMax - viewportExtentLength < domainMin) {
+              viewport.extent([domainMin, domainMin + viewportExtentLength]);
+            } else {
+              viewport.extent([extentMin, extentMin + viewportExtentLength]);
+            }
           }
 
           /* Move our custom right slider to match the viewport extent */
@@ -320,6 +330,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
 
         var updatePlotElementScale = function() {
           elem.plot.clip.selectAll('ellipse')
+            // Assume 20 Mhz width
             .attr('rx', function(d) {
               return (scales.plot.x(d.channel) - scales.plot.x(d.channel - 1)) * 2;
             });
@@ -416,6 +427,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
               return xScale(d.channel);
             })
             .attr('cy', yScale(-100))
+            // Assume 20 Mhz width
             .attr('rx', function(d) {
               return (xScale(d.channel) - xScale(d.channel - 1)) * 2;
             })
