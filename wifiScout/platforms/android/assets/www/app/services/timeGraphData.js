@@ -8,7 +8,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
     service.getLegendData = function() {
       return generateLegendData();
     };
-    service.requestLegendData = function() {
+    service.awaitLegendData = function() {
       return legendDataPromise;
     };
     service.toggleAPHighlight = function(BSSID) {
@@ -47,7 +47,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       return legendData;
     };
 
-    var pushLegendData = function() {
+    var sendLegendData = function() {
       var request = legendDataPromise;
       legendDataPromise = $.Deferred();
       request.resolve(generateLegendData());
@@ -121,11 +121,11 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       }
 
       if (selectionChanged) {
-        pushLegendData();
+        sendLegendData();
       }
     };
 
-    var onFilterSettingsChange = function(settings) {
+    var updateFilterSettings = function(settings) {
       isSelected = {};
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
@@ -133,7 +133,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
 
       showAll = settings.showAll;
       applyAPSelection();
-      filterSettings.request('global').done(onFilterSettingsChange);
+      filterSettings.await('global').done(updateFilterSettings);
     };
 
     var updateDatasets = function() {
@@ -210,7 +210,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings',
       isSelected[settings.selectedBSSIDs[i]] = true;
     }
     showAll = settings.showAll;
-    filterSettings.request('global').done(onFilterSettingsChange);
+    filterSettings.await('global').done(updateFilterSettings);
 
     setInterval(update, UPDATE_INTERVAL);
 

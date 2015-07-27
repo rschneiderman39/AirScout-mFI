@@ -41,6 +41,24 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints', 'utils',
           }
           $scope.isDuplicateSSID = newDuplicates;
         };
+        
+        var updateLevels = function() {
+          var selectedAP = accessPoints.get(selectedBSSID);
+          if (selectedAP !== null) {
+            $scope.level = selectedAP.level;
+            if ($scope.minLevel === undefined) {
+              $scope.minLevel = $scope.level;
+            } else if ($scope.level < $scope.minLevel) {
+              $scope.minLevel = $scope.level;
+            }
+            if ($scope.maxLevel === undefined) {
+              $scope.maxLevel = $scope.level;
+            } else if ($scope.level > $scope.maxLevel) {
+              $scope.maxLevel = $scope.level;
+            }
+            gauge.arrows[ 0 ].setValue( $scope.level );
+          }
+        };
 
         var updateList = function() {
           $scope.APData = accessPoints.getAll();
@@ -98,24 +116,6 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints', 'utils',
                   "enabled": true
                 }
             });
-        };
-
-        var updateLevels = function() {
-          var selectedAP = accessPoints.get(selectedBSSID);
-          if (selectedAP !== null) {
-            $scope.level = selectedAP.level;
-            if ($scope.minLevel === undefined) {
-              $scope.minLevel = $scope.level;
-            } else if ($scope.level < $scope.minLevel) {
-              $scope.minLevel = $scope.level;
-            }
-            if ($scope.maxLevel === undefined) {
-              $scope.maxLevel = $scope.level;
-            } else if ($scope.level > $scope.maxLevel) {
-              $scope.maxLevel = $scope.level;
-            }
-            gauge.arrows[ 0 ].setValue( $scope.level );
-          }
         };
 
         var init = function() {

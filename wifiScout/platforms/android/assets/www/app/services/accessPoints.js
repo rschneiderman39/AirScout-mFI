@@ -90,10 +90,8 @@ app.factory('accessPoints', ['networkData', 'utils', 'globalSettings',
     networkData.get()
     .done(function(data) {
       if (globalSettings.detectHidden()) {
-        console.log('true');
         APData = appendColors(appendChannels(markHidden(data.available)));
       } else {
-        console.log('false');
         APData = appendColors(appendChannels(removeHidden(data.available)));
       }
     })

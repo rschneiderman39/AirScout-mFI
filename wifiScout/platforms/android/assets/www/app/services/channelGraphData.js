@@ -49,13 +49,13 @@ app.factory('channelGraphData', ['accessPoints', 'filterSettings',
         range = [-100, -30],
         sliderExtent = [34, 66];
 
-    var onFilterSettingsChange = function(settings) {
+    var updateFilterSettings = function(settings) {
       isSelected = {};
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
       }
       showAll = settings.showAll;
-      filterSettings.request('global').done(onFilterSettingsChange);
+      filterSettings.await('global').done(updateFilterSettings);
     };
 
     var settings = filterSettings.get('global');
@@ -63,7 +63,7 @@ app.factory('channelGraphData', ['accessPoints', 'filterSettings',
       isSelected[settings.selectedBSSIDs[i]] = true;
     }
     showAll = settings.showAll;
-    filterSettings.request('global').done(onFilterSettingsChange);
+    filterSettings.await('global').done(updateFilterSettings);
 
     return service;
   }]);

@@ -42,7 +42,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData', 'utils',
             $scope.legendData = data;
             updateDuplicateSSIDs();
           });
-          timeGraphData.requestLegendData().done(updateLegend);
+          timeGraphData.awaitLegendData().done(updateLegend);
         };
 
         var init = function() {
@@ -55,7 +55,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData', 'utils',
 
           $scope.legendData = timeGraphData.getLegendData();
           updateDuplicateSSIDs();
-          timeGraphData.requestLegendData().done(updateLegend);
+          timeGraphData.awaitLegendData().done(updateLegend);
         };
 
         init();
