@@ -9,20 +9,20 @@
 	  	<thead>
 	    	<div class="container-fluid">
 	      	<tr class="row">
-	          <th class="col-xs-3" id="step2" ng-click="order('SSID'); $event.stopPropagation()">
+	          <th class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
 	            <a href="">SSID<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-3" ng-click="order('BSSID'); $event.stopPropagation()">
-	          	<a class="mac" href="">MAC Address<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span></a>
+	          	<a href="">MAC Address<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-2" ng-click="order('frequency'); $event.stopPropagation()">
-            	<a class="frequency" href="">Channel<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span></a>
+            	<a href="">Channel<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
-	          <th class="col-xs-2" id="step3" ng-click="order('level'); $event.stopPropagation()">
-	           	<a class="level" href="">Level (dBm)<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+	          <th class="col-xs-2" ng-click="order('level'); $event.stopPropagation()">
+	           	<a href="">Level (dBm)<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-2" ng-click="order('capabilities'); $event.stopPropagation()">
-            	<a class="capabilities" href="">Capabilities<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+            	<a href="">Capabilities<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	      	</tr>
 	      	</div>
