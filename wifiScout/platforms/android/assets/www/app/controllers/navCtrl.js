@@ -160,6 +160,7 @@ app.controller('navCtrl', ['$scope', '$state', 'nzTour', 'cordovaService',
             dark: false // Dark mode (Works great with `mask.visible = false`)
           },      
           steps: [{
+              target: "#timeGraph", 
               content: "This interactive graph displays the observed signal strength of"
                     + " each access point over time and is updated every half second.",
             },
@@ -221,8 +222,21 @@ app.controller('navCtrl', ['$scope', '$state', 'nzTour', 'cordovaService',
             animationDuration: 400, // Animation Duration for the box and mask
             dark: false // Dark mode (Works great with `mask.visible = false`)
           },      
-          steps: [{
-              content: "This is the channel graph view.",
+          steps: [{   
+              content: "The channel graph view displays a parabolic depection of the channel"
+              + " each access point lies on and its overlap onto neighboring channels.",
+            },
+            {
+              target: '#navLeft',
+              content: "This represents the 2.4Ghz frequency range. The 2.4Ghz frequency"
+                    + " has a greater range than a 5.0Ghz channel.",
+            },
+            {
+              target: "#navRight",
+              content: "This represents the 5.0Ghz frequency range. The 5.0Ghz range allows for"
+                    + " 23 nonoverlapping channels while the 2.4Ghz range can only support 3."
+                    + " Therefore, the 5.0Ghz frequency can support a larger number of devices"
+                    + " with less interference than the 2.4Ghz frequency.",
             }]
         };
 

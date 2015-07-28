@@ -2,6 +2,10 @@
   display: none;
 }
 
+#settingsCtrl {
+  height: 100%;
+}
+
 #touchLayer {
   height: 100%;
 }
