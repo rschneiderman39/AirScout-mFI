@@ -3,8 +3,8 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
   cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        $scope.setDefaultView = function(view) {
-          globalSettings.defaultView(view);
+        $scope.setStartingView = function(view) {
+          globalSettings.startingView(view);
         };
 
         $scope.$on('animIn', function() {
@@ -24,8 +24,8 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 
           $(".dropdown-menu li a").click(function(){
             var selText = $(this).text();
-            $(this).parents('.btn-group').find('.dropdown-toggle').html( selText +'  <span class="caret"></span>');
-            $(".selectedDefaultView").dropdown('toggle');
+            $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');
+            $(".selectedStartingView").dropdown('toggle');
           });
 
           $("[name='filteringOptions']").bootstrapSwitch({
@@ -48,6 +48,8 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 
           $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
           $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
+          $('.selectedStartingView').html(VIEW_TITLES[globalSettings.startingView()] + '  <span class="caret"></span>');
+
         };
 
         var init = function() {

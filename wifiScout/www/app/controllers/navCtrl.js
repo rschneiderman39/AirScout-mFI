@@ -1,5 +1,5 @@
-app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
-  function($scope, $state, cordovaService) {
+app.controller('navCtrl', ['$scope', '$state', 'globalSettings', 'cordovaService',
+  function($scope, $state, globalSettings, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
         $scope.showNav = function() {
@@ -11,51 +11,18 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
           }, NAV_SHOW_INTERVAL);
         };
 
-        $scope.setActive = function(view) {
-          var titleText;
-          switch (view) {
-            case "channelGraph":
-              titleText = "Channel Graph";
-              break;
-            case "signalStrength":
-              titleText = "Signal Strength";
-              break;
-            case "timeGraph":
-              titleText = "Time Graph";
-              break;
-            case "APTable":
-              titleText = "AP Table";
-              break;
-            case "channelTable":
-              titleText = "Channel Table";
-              break;
-            case "settings":
-              titleText = "Settings";
-              break;
-            default:
-              titleText = "";
+        $scope.setView = function(view) {
+          if (isView(view)) {
+            document.getElementById('view-title').innerHTML = VIEW_TITLES[view];
+            $state.go(view);
           }
-          document.getElementById('view-title').innerHTML = titleText;
-
-          activeView = view;
         };
 
-        $scope.isActive = function(view) {
-          return activeView === view;
-        };
-
-        $scope.usesFilterBtn = function() {
-          return activeView === 'APTable' || activeView === 'timeGraph' || activeView === 'channelGraph';
-        };
-
-        $scope.swipeRight = function (view) {
-          $state.go(view);
-          $scope.setActive(view);
-        };
-
-        $scope.swipeLeft = function (view) {
-          $state.go(view);
-          $scope.setActive(view);
+        $scope.usesFilterBtn = function(view) {
+          for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
+            if (view === FILTERABLE_VIEWS[i]) return true;
+          }
+          return false;
         };
 
         $scope.startIntro = function () {
@@ -203,15 +170,18 @@ app.controller('navCtrl', ['$scope', '$state', 'cordovaService',
               });
               break;
           }
-          
+
           intro.start();
         };
 
-        var activeView = "settings",
-            navTimeout = null,
+        var navTimeout = null,
             NAV_SHOW_INTERVAL = 2000;
 
-        $scope.setActive('settings');
+        var init = function() {
+          $scope.setView(globalSettings.startingView());
+        };
+
+        init();
       },
       function rejected() {
         console.log("navCtrl is unavailable because Cordova is not loaded.");

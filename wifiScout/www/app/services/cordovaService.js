@@ -11,13 +11,10 @@ angular.module('fsCordova', [])
     // but when on-device the event is received correctly
     var timoutPromise = $timeout(function() {
       if ($window.cordova){
+        console.log('cordova loaded');
         defer.resolve($window.cordova);
       } else {
-        if (REQUIRE_CORDOVA) {
-          defer.reject("Cordova failed to load");
-        } else {
-          defer.resolve({});
-        }
+        defer.reject("Cordova failed to load");
       }
     }, 1200);
 

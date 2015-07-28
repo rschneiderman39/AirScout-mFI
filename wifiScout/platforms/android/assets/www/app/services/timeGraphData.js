@@ -1,6 +1,9 @@
-app.factory('timeGraphData', ['accessPoints', 'globalSettings',
-  'utils', function(accessPoints, globalSettings, utils) {
-    var service = {};
+app.factory('timeGraphData', ['accessPoints', 'globalSettings', 'utils',
+'cordovaService', function(accessPoints, globalSettings, utils, cordovaService) {
+
+  var service = {};
+
+  cordovaService.ready.then(function() {
 
     service.getPlot = function() {
       return plot;
@@ -224,5 +227,8 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     init();
 
-    return service;
+  });
+
+  return service;
+
 }]);

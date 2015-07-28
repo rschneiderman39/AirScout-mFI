@@ -1,7 +1,9 @@
-app.factory('channelTableData', ['accessPoints', 'utils',
-  function(accessPoints, utils) {
-    var service = {};
+app.factory('channelTableData', ['accessPoints', 'utils', 'cordovaService',
+function(accessPoints, utils, cordovaService) {
 
+  var service = {};
+
+  cordovaService.ready.then(function() {
     service.generate = function() {
       var APData = accessPoints.getAll(),
           occupantCount = {},
@@ -61,5 +63,7 @@ app.factory('channelTableData', ['accessPoints', 'utils',
         range = [0, 15],
         sliderExtent = [34, 66];
 
-    return service;
-  }]);
+  });
+
+  return service;
+}]);

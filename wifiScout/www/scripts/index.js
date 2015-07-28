@@ -1,3 +1,22 @@
+var VIEW_TITLES = {
+  'channelGraph': 'Channel Graph',
+  'signalStrength': 'Signal Strength',
+  'timeGraph': 'Time Graph',
+  'APTable': 'AP Table',
+  'channelTable': 'Channel Table',
+  'settings': 'Settings'
+};
+
+var FILTERABLE_VIEWS = ['channelGraph', 'timeGraph', 'APTable'];
+
+var DEFAULT_DETECT_HIDDEN = false,
+    DEFAULT_GLOBAL_SELECTION = false,
+    DEFAULT_STARTING_VIEW = 'settings';
+
+var isView = function(view) {
+  return VIEW_TITLES[view] !== undefined;
+};
+
 var deepCopy = function(object) {
   return JSON.parse(JSON.stringify(object));
 };
@@ -11,12 +30,6 @@ var windowCheck = function() {
     return mobileDevice;
 };
 
-// Sets the height of the navigation bar interaction layer to be exactly that of
-//  the view area (AKA - the whole screen minus the top bar height)
-//$('#touch-layer').css('height', document.deviceHeight - document.topBarHeight);
-
-// Scale the top and bottom bar sizes to device-specific size
-
 document.deviceHeight = $(window).height();
 document.deviceWidth = $(window).width();
 
@@ -25,7 +38,6 @@ document.topBarHeight = $('#top-bar').height();
 document.bottomBarHeight = 1.25 * document.topBarHeight;
 document.bottomBarBottom = -( document.bottomBarHeight - 1);
 
-//$('#top-bar').css('height', document.topBarHeight);
 $('#bottom-bar').css('height', document.bottomBarHeight);
 $('#bottom-bar').css('bottom',  document.bottomBarBottom);
 

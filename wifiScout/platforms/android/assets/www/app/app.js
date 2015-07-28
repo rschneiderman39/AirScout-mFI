@@ -4,6 +4,7 @@ var REQUIRE_CORDOVA = true
 var app = angular.module('app', ['ui.router', 'fsCordova', 'ngTouch']);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
+
     $urlRouterProvider.otherwise('settings');
 
     $stateProvider
@@ -31,4 +32,5 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: "/channelGraph",
             templateUrl: 'views/channelGraph.html',
         })
+
 });
