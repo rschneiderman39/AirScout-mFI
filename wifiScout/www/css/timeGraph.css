@@ -1,6 +1,6 @@
 #legend {
   position: relative;
-  transform: translateY(5%);
+  transform: translateY(2%);
 }
 
 #list {
@@ -20,7 +20,7 @@
 
 #text {
   font-size: 20px;
-  font-size: 1.5vw;
+  font-size: 1.65vw;
 }
 
 .axis-label {
@@ -37,7 +37,7 @@
 
 .legend-title {
   font-size: 20px;
-  font-size: 1.75vw;
+  font-size: 1.85vw;
 	position: relative;
 	font-weight: bold;
 }

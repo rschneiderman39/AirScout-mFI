@@ -112,7 +112,10 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
       for (var BSSID in datasets) {
         if (isSelected[BSSID] || showAll) {
-          if (! datasets[BSSID].inPlot) {
+          if (! globalSettings.detectHidden() && datasets[BSSID].SSID === "<hidden>") {
+            unselectAP(BSSID);
+            selectionChanged = true;
+          } else if (! datasets[BSSID].inPlot) {
             selectAP(BSSID);
             selectionChanged = true;
           }
@@ -166,7 +169,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
         if (! datasets[AP.BSSID]) {
           addAP(AP);
           datasets[AP.BSSID].line.append(curTime, AP.level);
-          foundNewAPs = true;
         }
       }
     };

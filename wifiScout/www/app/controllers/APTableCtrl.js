@@ -23,7 +23,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
         var showAll = true,
             selectedBSSIDs = [],
-            UPDATE_INTERVAL = 500;
+            UPDATE_INTERVAL = 1000;
 
 
         // Update the table whenever filter settings are changed

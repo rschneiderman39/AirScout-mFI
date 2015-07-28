@@ -22,13 +22,10 @@
               </div>
               <div class="col-xs-8" id="modalList">
                 <ul class="list-group scrollable-list filterTable">
-                  <!--
-                  <li class="list-group-item" data-ng-repeat="ap in modal.APData | filter:query | orderBy:'SSID'" ng-class="{'selected': clicked, '': !clicked}" ng-click="clicked=!clicked">
-                  -->
                   <li class="list-group-item" data-ng-repeat="ap in APData | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
                     <div class="row">
-                      <div class="col-xs-6" id="SSID"> <input type="checkbox" style="opacity:0;"> {{ap['SSID']}} </div>
-                      <div class="col-xs-2" id="BSSID">({{ap['BSSID']}})</div>
+                      <div class="col-xs-5" id="SSID"> <input type="checkbox" style="opacity:0;"> {{ap['SSID']}} </div>
+                      <div class="col-xs-3" id="BSSID">({{ap['BSSID']}})</div>
                     </div>
                   </li>
                 </ul>

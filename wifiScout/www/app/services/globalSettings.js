@@ -4,7 +4,7 @@ app.factory('globalSettings', ['$timeout', function($timeout) {
   service.detectHidden = function(option) {
     if (typeof option === 'undefined') {
       return detectHidden;
-    } else if (typeof newVal === 'boolean') {
+    } else if (typeof option === 'boolean') {
       detectHidden = option;
     }
   };
