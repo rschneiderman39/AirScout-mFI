@@ -34,7 +34,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
           });
 
           $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-          	globalSettings.globalFilter(state);
+          	globalSettings.globalSelection(state);
           });
 
           $("[name='hiddenAPOptions']").bootstrapSwitch({
@@ -46,7 +46,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
           	globalSettings.detectHidden(state);
           });
 
-          $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalFilter());
+          $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
           $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
         };
 

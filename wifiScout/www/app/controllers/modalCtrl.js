@@ -1,6 +1,6 @@
-app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
+app.controller('modalCtrl', ['$scope', 'accessPoints',
   'globalSettings', 'utils', 'cordovaService', function($scope, accessPoints,
-    filterSettings, globalSettings, utils, cordovaService) {
+    globalSettings, utils, cordovaService) {
     cordovaService.ready.then(
       function resolved(){
         $scope.APData = [];
@@ -19,14 +19,14 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
           for (var i = 0; i < $scope.APData.length; ++i) {
             isSelected[$scope.APData[i].BSSID] = true;
           }
-          filterSettings.set(view, {
+          globalSettings.setSelection(view, {
             showAll: true,
             selectedBSSIDs: []
           });
         };
 
         $scope.unselectAll = function() {
-          filterSettings.set(view, {
+          globalSettings.setSelection(view, {
             showAll: false,
             selectedBSSIDs: []
           });
@@ -39,7 +39,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
             isSelected = {};
 
         var onShow = function() {
-          var settings = filterSettings.get(view);
+          var settings = globalSettings.getSelection(view);
           $scope.$apply(function() {
             $scope.APData = accessPoints.getAll();
             if (settings.showAll) {
@@ -59,7 +59,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
           for (var BSSID in isSelected) {
             if (isSelected[BSSID]) selection.push(BSSID);
           }
-          filterSettings.set(view, {
+          globalSettings.setSelection(view, {
             showAll: false,
             selectedBSSIDs: selection
           });
@@ -72,11 +72,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'filterSettings',
 
         //Determine the view from the hidden viewTitle DOM element.
         var detectView = function() {
-          if (globalSettings.globalFilter()) {
-            view = 'global';
-          } else {
-            view = $('#viewTitle').attr('ng-class');
-          }
+          view = $('#viewTitle').attr('ng-class');
         };
 
         var init = function() {

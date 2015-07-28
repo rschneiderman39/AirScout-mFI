@@ -1,5 +1,5 @@
-app.factory('channelTableData', ['accessPoints', 'filterSettings',
-  'utils', function(accessPoints, filterSettings, utils) {
+app.factory('channelTableData', ['accessPoints', 'utils',
+  function(accessPoints, utils) {
     var service = {};
 
     service.generate = function() {

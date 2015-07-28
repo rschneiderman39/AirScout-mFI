@@ -1,5 +1,5 @@
-app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings',
-  'utils', function(accessPoints, filterSettings, globalSettings, utils) {
+app.factory('timeGraphData', ['accessPoints', 'globalSettings',
+  'utils', function(accessPoints, globalSettings, utils) {
     var service = {};
 
     service.getPlot = function() {
@@ -112,7 +112,10 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
 
       for (var BSSID in datasets) {
         if (isSelected[BSSID] || showAll) {
-          if (! datasets[BSSID].inPlot) {
+          if (! globalSettings.detectHidden() && datasets[BSSID].SSID === "<hidden>") {
+            unselectAP(BSSID);
+            selectionChanged = true;
+          } else if (! datasets[BSSID].inPlot) {
             selectAP(BSSID);
             selectionChanged = true;
           }
@@ -129,7 +132,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
       }
     };
 
-    var updateFilterSettings = function(settings) {
+    var updateSelection = function(settings) {
       isSelected = {};
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
@@ -138,8 +141,7 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
       showAll = settings.showAll;
       applyAPSelection();
 
-      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph';
-      filterSettings.await(target).done(updateFilterSettings);
+      globalSettings.awaitNewSelection('timeGraph').done(updateSelection);
     };
 
     var updateDatasets = function() {
@@ -167,7 +169,6 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
         if (! datasets[AP.BSSID]) {
           addAP(AP);
           datasets[AP.BSSID].line.append(curTime, AP.level);
-          foundNewAPs = true;
         }
       }
     };
@@ -210,14 +211,13 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
         }
       );
 
-      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph',
-          settings = filterSettings.get(target);
+      var selection = globalSettings.getSelection('timeGraph');
 
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        isSelected[settings.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
+        isSelected[selection.selectedBSSIDs[i]] = true;
       }
-      showAll = settings.showAll;
-      filterSettings.await(target).done(updateFilterSettings);
+      showAll = selection.showAll;
+      globalSettings.awaitNewSelection('timeGraph').done(updateSelection);
 
       setInterval(update, UPDATE_INTERVAL);
     };

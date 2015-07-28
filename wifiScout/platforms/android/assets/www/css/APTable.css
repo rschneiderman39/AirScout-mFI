@@ -1,3 +1,4 @@
+/*
 #step1,
 #step2,
 #step3 {
@@ -24,4 +25,20 @@
 
 .noWrap {
   white-space:nowrap;
+}
+*/
+
+.table-striped tbody {
+  position: fixed !important;
+  overflow-y: scroll;
+}
+
+a:hover {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+a:focus {
+  color: #337ab7;
+  text-decoration: none;
 }
