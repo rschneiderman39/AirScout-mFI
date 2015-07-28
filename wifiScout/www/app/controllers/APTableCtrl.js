@@ -1,6 +1,6 @@
 app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
-  'filterSettings', 'globalSettings', 'tableSettings', 'cordovaService',
-  function($scope, accessPoints, utils, filterSettings, globalSettings,
+  'globalSettings', 'tableSettings', 'cordovaService',
+  function($scope, accessPoints, utils, globalSettings,
     tableSettings, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
@@ -23,8 +23,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
         var showAll = true,
             selectedBSSIDs = [],
-            UPDATE_INTERVAL = 500,
-            filterSettingsTarget = 'APTable';
+            UPDATE_INTERVAL = 500;
 
 
         // Update the table whenever filter settings are changed
@@ -32,7 +31,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           selectedBSSIDs = settings.selectedBSSIDs;
           showAll = settings.showAll;
           update();
-          filterSettings.await(filterSettingsTarget).done(updateSelection);
+          globalSettings.awaitNewSelection('APTable').done(updateSelection);
         };
 
         // Save our sort settings to the settings service
@@ -66,14 +65,9 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
         var init = function() {
           prepView();
 
-          /* Choose global or local filter */
-          if (globalSettings.globalFilter()) {
-            filterSettingsTarget = 'global';
-          }
-
-          var settings = filterSettings.get(filterSettingsTarget);
-          selectedBSSIDs = settings.selectedBSSIDs;
-          showAll = settings.showAll;
+          var selection = globalSettings.getSelection('APTable');
+          selectedBSSIDs = selection.selectedBSSIDs;
+          showAll = selection.showAll;
 
           var predicate = tableSettings.sortPredicate();
           if (predicate === 'SSID') {
@@ -83,7 +77,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           }
           $scope.sortReverse = tableSettings.sortReverse();
 
-          filterSettings.await(filterSettingsTarget).done(updateSelection);
+          globalSettings.awaitNewSelection('APTable').done(updateSelection);
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL);
 

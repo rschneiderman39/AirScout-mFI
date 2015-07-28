@@ -1,5 +1,5 @@
-app.factory('channelGraphData', ['accessPoints', 'filterSettings', 'globalSettings',
-  'utils', function(accessPoints, filterSettings, globalSettings, utils) {
+app.factory('channelGraphData', ['accessPoints', 'globalSettings',
+  'utils', function(accessPoints, globalSettings, utils) {
     var service = {};
 
     service.generate = function() {
@@ -39,6 +39,8 @@ app.factory('channelGraphData', ['accessPoints', 'filterSettings', 'globalSettin
       return range;
     };
 
+    service.reinit
+
     var isSelected = {},
         showAll = true,
         band = '2_4Ghz',
@@ -49,26 +51,24 @@ app.factory('channelGraphData', ['accessPoints', 'filterSettings', 'globalSettin
         range = [-100, -30],
         sliderExtent = [34, 66];
 
-    var updateFilterSettings = function(settings) {
+    var updateSelection = function(settings) {
       isSelected = {};
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
       }
       showAll = settings.showAll;
 
-      var target = globalSettings.globalFilter() ? 'global' : 'channelGraph';
-      filterSettings.await(target).done(updateFilterSettings);
+      globalSettings.awaitNewSelection('channelGraph').done(updateSelection);
     };
 
     var init = function() {
-      var target = globalSettings.globalFilter() ? 'global' : 'channelGraph';
+      var selection = globalSettings.getSelection('channelGraph');
 
-      var settings = filterSettings.get(target);
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        isSelected[settings.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
+        isSelected[selection.selectedBSSIDs[i]] = true;
       }
-      showAll = settings.showAll;
-      filterSettings.await(target).done(updateFilterSettings);
+      showAll = selection.showAll;
+      globalSettings.awaitNewSelection('channelGraph').done(updateSelection);
     };
 
     init();

@@ -4,7 +4,7 @@
 app.factory('filterSettings', ['$timeout', 'globalSettings', function($timeout) {
   var service = {},
       settings = {},
-      views = ['channelGraph', 'timeGraph', 'APTable', 'global'];
+      views = ['channelGraph', 'timeGraph', 'APTable'];
 
   /* Get a deferred object which will be resolved to a view's settings whenever
      those settings are changed.

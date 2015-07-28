@@ -4,8 +4,6 @@ app.factory('accessPoints', ['networkData', 'utils', 'globalSettings',
   function(networkData, utils, globalSettings) {
   var service = {},
       APData = [],
-      minLevels = {},
-      maxLevels = {},
       UPDATE_INTERVAL = 1000;
 
   /* Get the data for every known AP
