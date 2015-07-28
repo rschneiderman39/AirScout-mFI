@@ -184,7 +184,7 @@ app.controller('navCtrl', ['$scope', '$state', 'nzTour', 'cordovaService',
             previousText: 'Previous',
             nextText: 'Next',
             finishText: 'Finish',
-            animationDuration:500, // Animation Duration for the box and mask
+            animationDuration: 400, // Animation Duration for the box and mask
             dark: false // Dark mode (Works great with `mask.visible = false`)
           },      
           steps: [{
