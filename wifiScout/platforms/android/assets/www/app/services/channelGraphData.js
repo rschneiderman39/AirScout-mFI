@@ -61,9 +61,9 @@ app.factory('channelGraphData', ['accessPoints', 'filterSettings', 'globalSettin
     };
 
     var init = function() {
-      var target = globalSettings.globalFilter() ? 'global' : 'channelGraph';
+      var target = globalSettings.globalFilter() ? 'global' : 'channelGraph',
+          settings = filterSettings.get(target);
 
-      var settings = filterSettings.get(target);
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
       }

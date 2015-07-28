@@ -210,9 +210,9 @@ app.factory('timeGraphData', ['accessPoints', 'filterSettings', 'globalSettings'
         }
       );
 
-      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph';
+      var target = globalSettings.globalFilter() ? 'global' : 'timeGraph',
+          settings = filterSettings.get(target);
 
-      var settings = filterSettings.get(target);
       for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
         isSelected[settings.selectedBSSIDs[i]] = true;
       }

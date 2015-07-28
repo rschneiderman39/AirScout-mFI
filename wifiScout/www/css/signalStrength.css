@@ -7,7 +7,7 @@
   position: relative;
   top: -10px;
   font-size: 15px;
-  font-size: 1.5vw;
+  font-size: 1.65vw;
 }
 
 .padding {
@@ -17,7 +17,7 @@
 
 .list-title {
   font-size: 15px;
-  font-size: 1.75vw;
+  font-size: 1.85vw;
   font-weight: bold;
 }
 
@@ -35,7 +35,7 @@
 
 .listgroupitem {
   font-size: 15px;
-  font-size: 1.5vw;
+  font-size: 1.65vw;
   z-index: 2;
   padding: 10px 15px;
   margin-bottom: -1px;
