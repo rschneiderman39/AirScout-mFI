@@ -10,7 +10,7 @@
 	    <table class="table table-striped">
 	      <thead class="col-xs-12">
 	        <tr>
-	          <th class="col-xs-3" id="step2">
+	          <th class="col-xs-3">
 	          	<div class="row">
 	          		<div class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
 	            		<a href="">SSID<span class="sortArrow" ng-show="sortPredicate === 'SSID'" ng-class="{reverse:sortReverse}"></span>
@@ -26,7 +26,7 @@
 	           		</div>
 							</div>
 	          </th>
-	          <th class="col-xs-2">
+	          <th class="col-xs-2" id="step2">
 	          	<div class="row">
 	          		<div class="col-xs-2" ng-click="order('frequency'); $event.stopPropagation()">
             			<a class="frequency" href="">Channel<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span>
@@ -34,14 +34,14 @@
 								</div>
 							</div>
 	          </th>
-	          <th class="col-xs-2" id="step3">
+	          <th class="col-xs-2" id="step1">
 	          	<div class="row">
 	          		<div class="col-xs-2 noWrap" ng-click="order('level'); $event.stopPropagation()">
 	           			<a class="level" href="">Level (dBm)<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
 	           		</div>
 	           	</div>
 	          </th>
-	          <th class="col-xs-2">
+	          <th class="col-xs-2" id="step3">
 	          	<div class="row">
 	          		<div class="col-xs-2" ng-click="order('capabilities'); $event.stopPropagation()">
             			<a class="capabilities" href="">Capabilities<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span>
@@ -51,7 +51,7 @@
 	          </th>
 	      	</tr>
 	      </thead>
-	    	<tbody id="step2">
+	    	<tbody>
 	    		<tr class="col-xs-12" data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
 	      		<td class="col-xs-3">{{ap.SSID}}</td>
 	      		<td class="col-xs-3">{{ap.BSSID}}</td>

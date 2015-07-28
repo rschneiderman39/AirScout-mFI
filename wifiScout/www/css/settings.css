@@ -1,3 +1,7 @@
+#help-button {
+  display: none;
+}
+
 #touchLayer {
   height: 100%;
 }

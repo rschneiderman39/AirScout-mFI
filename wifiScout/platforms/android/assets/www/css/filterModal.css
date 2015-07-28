@@ -3,14 +3,18 @@
 }
 
 #SSID {
+  /*
   font-size: 15px;
   font-size: 1.85vw;
+  */
   text-align: center;
 }
 
 #BSSID {
+  /*
   font-size: 15px;
   font-size: 1.85vw;
+  */
   text-align: center;
 }
 
