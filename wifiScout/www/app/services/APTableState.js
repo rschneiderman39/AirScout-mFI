@@ -1,4 +1,4 @@
-app.factory('tableSettings', ['cordovaService', function(cordovaService) {
+app.factory('APTableState', ['cordovaService', function(cordovaService) {
 
   var service = {};
 
@@ -27,5 +27,5 @@ app.factory('tableSettings', ['cordovaService', function(cordovaService) {
   });
 
   return service;
-  
+
 }]);

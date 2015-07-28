@@ -1,11 +1,10 @@
-app.factory('channelGraphData', ['accessPoints', 'globalSettings', 'utils',
+app.factory('channelGraphState', ['accessPoints', 'globalSettings', 'utils',
 'cordovaService', function(accessPoints, globalSettings, utils, cordovaService) {
 
   var service = {};
 
   cordovaService.ready.then(function() {
-
-    service.generate = function() {
+    service.getData = function() {
       var APData = accessPoints.getAll(),
           data = [];
 
@@ -41,8 +40,6 @@ app.factory('channelGraphData', ['accessPoints', 'globalSettings', 'utils',
     service.getRange = function() {
       return range;
     };
-
-    service.reinit
 
     var isSelected = {},
         showAll = true,

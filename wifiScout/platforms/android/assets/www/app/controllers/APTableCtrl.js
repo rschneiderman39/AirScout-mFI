@@ -1,9 +1,8 @@
 app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
-  'globalSettings', 'tableSettings', 'cordovaService',
-  function($scope, accessPoints, utils, globalSettings,
-    tableSettings, cordovaService) {
-    cordovaService.ready.then(
-      function resolved() {
+'globalSettings', 'APTableState', 'cordovaService', function($scope,
+accessPoints, utils, globalSettings, APTableState, cordovaService) {
+
+    cordovaService.ready.then(function() {
         // Settings for this session
         $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
         $scope.sortPredicate = undefined;    // Sorting options
@@ -36,8 +35,8 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 
         // Save our sort settings to the settings service
         var storeSortSettings = function() {
-          tableSettings.sortPredicate($scope.sortPredicate);
-          tableSettings.sortReverse($scope.sortReverse);
+          APTableState.sortPredicate($scope.sortPredicate);
+          APTableState.sortReverse($scope.sortReverse);
         };
 
         // Update the table now
@@ -69,13 +68,13 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           selectedBSSIDs = selection.selectedBSSIDs;
           showAll = selection.showAll;
 
-          var predicate = tableSettings.sortPredicate();
+          var predicate = APTableState.sortPredicate();
           if (predicate === 'SSID') {
             $scope.sortPredicate = $scope.sortSSID;
           } else {
             $scope.sortPredicate = predicate;
           }
-          $scope.sortReverse = tableSettings.sortReverse();
+          $scope.sortReverse = APTableState.sortReverse();
 
           globalSettings.awaitNewSelection('APTable').done(updateSelection);
 
@@ -87,12 +86,7 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
           });
         };
 
-        /* INIT */
-
         init();
-      },
-      function rejected() {
-        console.log("APTableCtrl is unavailable because Cordova is not loaded.");
-      }
-    );
+      });
+
   }]);

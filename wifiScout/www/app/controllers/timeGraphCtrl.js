@@ -1,74 +1,71 @@
 app.controller('timeGraphCtrl', ['$scope', 'timeGraphData', 'utils',
-  'cordovaService', function($scope, timeGraphData, utils, cordovaService) {
-    cordovaService.ready.then(
-      function resolved() {
-        $scope.legendData = undefined;
-        $scope.isDuplicateSSID = {};
+'cordovaService', function($scope, timeGraphData, utils, cordovaService) {
 
-        $scope.toggleSelected = function(BSSID) {
-          if (typeof BSSID === 'string') {
-            if (BSSID === selectedBSSID) {
-              selectedBSSID = "";
-            } else {
-              selectedBSSID = BSSID;
-            }
-            timeGraphData.toggleAPHighlight(BSSID);
+  cordovaService.ready.then(function() {
+      $scope.legendData = undefined;
+      $scope.isDuplicateSSID = {};
+
+      $scope.toggleSelected = function(BSSID) {
+        if (typeof BSSID === 'string') {
+          if (BSSID === selectedBSSID) {
+            selectedBSSID = "";
+          } else {
+            selectedBSSID = BSSID;
           }
-        };
+          timeGraphData.toggleAPHighlight(BSSID);
+        }
+      };
 
-        $scope.isSelected = function(BSSID) {
-          return BSSID === timeGraphData.getHighlightedBSSID();
-        };
+      $scope.isSelected = function(BSSID) {
+        return BSSID === timeGraphData.getHighlightedBSSID();
+      };
 
-        $scope.sortSSID = utils.hiddenSSIDSort;
+      $scope.sortSSID = utils.hiddenSSIDSort;
 
-        var selectedBSSID = "";
+      var selectedBSSID = "";
 
-        var updateDuplicateSSIDs = function() {
-          var found = {},
-              newDuplicates = {};
-          for (var i = 0; i < $scope.legendData.length; ++i) {
-            if (found[$scope.legendData[i].SSID]) {
-              newDuplicates[$scope.legendData[i].SSID] = true;
-            } else {
-              found[$scope.legendData[i].SSID] = true;
-            }
+      var updateDuplicateSSIDs = function() {
+        var found = {},
+            newDuplicates = {};
+        for (var i = 0; i < $scope.legendData.length; ++i) {
+          if (found[$scope.legendData[i].SSID]) {
+            newDuplicates[$scope.legendData[i].SSID] = true;
+          } else {
+            found[$scope.legendData[i].SSID] = true;
           }
-          $scope.isDuplicateSSID = newDuplicates;
-        };
+        }
+        $scope.isDuplicateSSID = newDuplicates;
+      };
 
-        var updateLegend = function(data) {
-          $scope.$apply(function() {
-            $scope.legendData = data;
-            updateDuplicateSSIDs();
-          });
-          timeGraphData.awaitLegendData().done(updateLegend);
-        };
-
-        var prepView = function() {
-          document.getElementById('plot').height = document.deviceHeight * 0.75;
-          document.getElementById('plot').width = document.deviceWidth * 0.69;
-        };
-
-        var init = function() {
-          prepView();
-
-          var plot = timeGraphData.getPlot();
-          plot.streamTo($('#plot')[0], 1000);
-
-          $scope.$on('$destroy', function() {
-            plot.stop();
-          });
-
-          $scope.legendData = timeGraphData.getLegendData();
+      var updateLegend = function(data) {
+        $scope.$apply(function() {
+          $scope.legendData = data;
           updateDuplicateSSIDs();
-          timeGraphData.awaitLegendData().done(updateLegend);
-        };
+        });
+        timeGraphData.awaitLegendData().done(updateLegend);
+      };
 
-        init();
-      },
-      function rejected() {
-        console.log('timeGraphCtrl is unavaiable because Cordova is not loaded.');
-      }
-    );
+      var prepView = function() {
+        document.getElementById('plot').height = document.deviceHeight * 0.75;
+        document.getElementById('plot').width = document.deviceWidth * 0.69;
+      };
+
+      var init = function() {
+        prepView();
+
+        var plot = timeGraphData.getPlot();
+        plot.streamTo($('#plot')[0], 1000);
+
+        $scope.$on('$destroy', function() {
+          plot.stop();
+        });
+
+        $scope.legendData = timeGraphData.getLegendData();
+        updateDuplicateSSIDs();
+        timeGraphData.awaitLegendData().done(updateLegend);
+      };
+
+      init();
+    });
+
 }]);

@@ -6,51 +6,46 @@
 
 	<body>
 		<div id="touch-layer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
-
-			<div class="container-fluid">
-				<div class="row">
-					<div id="selectableList" class="col-xs-3">
-						<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
-						<ul class="list-group scrollable-list list">
-							<span data-ng-repeat="ap in APData | orderBy:sortSSID">
-								<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
-							   	<div>{{ap.SSID}}</div>
-									<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>
-							   </li>
-							</span>
-						</ul>
+			<div class="row-fluid">
+				<div id="selectableList" class="col-xs-3">
+					<center><h5 class="list-title">Select an AP to view its signal strength:</h5></center>
+					<ul class="list-group scrollable-list list">
+						<span data-ng-repeat="ap in APData | orderBy:sortSSID">
+							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
+						   	<div>{{ap.SSID}}</div>
+								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>
+						   </li>
+						</span>
+					</ul>
+				</div>
+				<div id="speedometer" class="col-xs-9">
+					<div id="chartdiv"></div>
+					<div id="panel" class="col-xs-4 minLevel">
+						<center>Min Level</center>
+						<div class="panel panel-default padding">
+							<div class="panel-body padding">
+								<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
+							</div>
+						</div>
 					</div>
-					<div id="speedometer" class="col-xs-9">
-						<div id="chartdiv"></div>
-						<div id="panel" class="col-xs-4">
-							<center>Min Level</center>
-							<div class="panel panel-default padding">
-								<div class="panel-body padding">
-									<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
-								</div>
+					<div id="panel" class="col-xs-4">
+						<center>Current</center>
+						<div class="panel panel-default padding">
+							<div class="panel-body padding">
+								<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
 							</div>
 						</div>
-						<div id="panel" class="col-xs-4">
-							<center>Current</center>
-							<div class="panel panel-default padding">
-							  <div class="panel-body padding">
-									<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
-								</div>
-							</div>
-						</div>
-						<div id="panel" class="col-xs-4">
-							<center>Max Level</center>
-							<div class="panel panel-default padding">
-							 	<div class="panel-body padding">
-									<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
-								</div>
+					</div>
+					<div id="panel" class="col-xs-4 maxLevel">
+						<center>Max Level</center>
+						<div class="panel panel-default padding">
+						 	<div class="panel-body padding">
+								<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</div>
-
 	</body>
 </html>

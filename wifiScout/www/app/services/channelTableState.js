@@ -1,33 +1,30 @@
-app.factory('channelTableData', ['accessPoints', 'utils', 'cordovaService',
+app.factory('channelTableState', ['accessPoints', 'utils', 'cordovaService',
 function(accessPoints, utils, cordovaService) {
 
   var service = {};
 
   cordovaService.ready.then(function() {
-    service.generate = function() {
+    service.getData = function() {
       var APData = accessPoints.getAll(),
-          occupantCount = {},
+          numOccupants = {},
           data = [];
 
       for (var i = 0; i < APData.length; ++i) {
         var AP = APData[i];
-        for (var c = AP.channel - 2; c <= AP.channel + 2; ++c) {
-          if (utils.isChannel(c)) {
-            if (occupantCount[c] === undefined) {
-              occupantCount[c] = 1;
-            } else {
-              occupantCount[c] = occupantCount[c] + 1;
-            }
-          }
+        if (numOccupants[AP.channel] === undefined) {
+          numOccupants[AP.channel] = 1;
+        } else {
+          numOccupants[AP.channel] += 1;
         }
       }
 
-      for (var ch in occupantCount) {
+      for (var ch in numOccupants) {
         data.push({
           channel: ch,
-          occupancy: occupantCount[ch]
+          occupancy: numOccupants[ch]
         });
       }
+
       return data;
     };
 

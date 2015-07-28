@@ -32,7 +32,6 @@ app.factory('networkData', ['cordovaService', function(cordovaService) {
         The "available" field represents all the APs the device can see.
     */
     service.get = function() {
-      console.log('tryna get some data up in here');
       var defer = $.Deferred();
       window.plugins.WifiAdmin.scan();
       window.plugins.WifiAdmin.getWifiInfo(

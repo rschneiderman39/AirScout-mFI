@@ -1,11 +1,19 @@
+#help-button {
+  display: none;
+}
+
+#settingsCtrl {
+  height: 100%;
+}
+
 #touchLayer {
   height: 100%;
 }
 
 .panel-group {
 	position: fixed;
-  overflow-y: auto;
-  overflow-x: hidden;
+
+
 }
 
 .panel-heading a:after {

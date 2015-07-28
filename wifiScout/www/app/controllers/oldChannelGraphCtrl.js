@@ -1,11 +1,11 @@
-app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
-  'utils', 'cordovaService', function($scope, channelGraphData,
+app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
+  'utils', 'cordovaService', function($scope, channelGraphState,
   utils, cordovaService) {
     cordovaService.ready.then(
       function resolved() {
-        var X_DOMAIN_2_4 = channelGraphData.getXDomain('2_4Ghz'),
-            X_DOMAIN_5 = channelGraphData.getXDomain('5Ghz'),
-            Y_DOMAIN = channelGraphData.getYDomain(),
+        var X_DOMAIN_2_4 = channelGraphState.getXDomain('2_4Ghz'),
+            X_DOMAIN_5 = channelGraphState.getXDomain('5Ghz'),
+            Y_DOMAIN = channelGraphState.getYDomain(),
             FILL_ALPHA = 0.2,
             LABEL_PADDING = 10,
             UPDATE_INTERVAL = 2000,
@@ -96,7 +96,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
 
           addPlot();
           addNav();
-          setBand(channelGraphData.getBand());
+          setBand(channelGraphState.getBand());
 
           var updateLoop = setInterval(update, UPDATE_INTERVAL)
 
@@ -110,7 +110,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
         };
 
         var update = function() {
-          var data = channelGraphData.generate();
+          var data = channelGraphState.getData();
 
           updateParabs('plot', data);
           updateParabs('navLeft', data);
@@ -255,7 +255,7 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
         var addViewportRight = function() {
           elem.viewportRight = d3.svg.brush()
             .x(scales.nav.right.x)
-            .extent(channelGraphData.getWindowExtent5Ghz())
+            .extent(channelGraphState.getWindowExtent5Ghz())
             .on("brushstart", function() {
               if (band !== '5Ghz') setBand('5Ghz');
               moveRightViewport();
@@ -352,8 +352,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphData',
         };
 
         var pushSettings = function() {
-          channelGraphData.setBand(band);
-          channelGraphData.setWindowExtent5Ghz(elem.viewportRight.extent());
+          channelGraphState.setBand(band);
+          channelGraphState.setWindowExtent5Ghz(elem.viewportRight.extent());
         };
 
         var movePlotElements = function() {

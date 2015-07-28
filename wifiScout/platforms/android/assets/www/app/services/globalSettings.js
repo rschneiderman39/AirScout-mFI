@@ -92,6 +92,7 @@ cordovaService) {
       detectHidden = window.localStorage.getItem('detectHidden') || DEFAULT_DETECT_HIDDEN;
       globalSelection = window.localStorage.getItem('globalSelection') || DEFAULT_GLOBAL_SELECTION;
       startingView = window.localStorage.getItem('startingView') || DEFAULT_STARTING_VIEW;
+
       for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
         selections[FILTERABLE_VIEWS[i]] = {
           selectedBSSIDs: [],

@@ -1,66 +1,61 @@
 app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
-  'cordovaService', function($scope, $location, globalSettings,
-  cordovaService) {
-    cordovaService.ready.then(
-      function resolved() {
-        $scope.setStartingView = function(view) {
-          globalSettings.startingView(view);
-        };
+'cordovaService', function($scope, $location, globalSettings, cordovaService) {
 
-        $scope.$on('animIn', function() {
-                console.log('settingsCtrl: animIn');
+  cordovaService.ready.then(function() {
+      $scope.setStartingView = function(view) {
+        globalSettings.startingView(view);
+      };
+
+      $scope.$on('animIn', function() {
+              console.log('settingsCtrl: animIn');
+      });
+
+      $scope.$on('animOut', function() {
+        console.log('settingsCtrl: animOut');
+      });
+
+      var prepView = function() {
+        var optionsHeight = $('#accordion').height();
+
+        $('.panel-group').css('top', document.topBarHeight);
+        $('.panel-group').css('width', document.deviceWidth);
+        $('.panel-group').css('max-height', document.deviceHeight - document.topBarHeight);
+
+        $(".dropdown-menu li a").click(function(){
+          var selText = $(this).text();
+          $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');
+          $(".selectedStartingView").dropdown('toggle');
         });
 
-        $scope.$on('animOut', function() {
-          console.log('settingsCtrl: animOut');
+        $("[name='filteringOptions']").bootstrapSwitch({
+        	onText: 'Global',
+        	offText: 'Local'
         });
 
-        var prepView = function() {
-          var optionsHeight = $('#accordion').height();
+        $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        	globalSettings.globalSelection(state);
+        });
 
-          $('.panel-group').css('top', document.topBarHeight);
-          $('.panel-group').css('width', document.deviceWidth);
-          $('.panel-group').css('max-height', document.deviceHeight - document.topBarHeight);
+        $("[name='hiddenAPOptions']").bootstrapSwitch({
+        	onText: 'Shown',
+        	offText: 'Hidden'
+        });
 
-          $(".dropdown-menu li a").click(function(){
-            var selText = $(this).text();
-            $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');
-            $(".selectedStartingView").dropdown('toggle');
-          });
+        $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        	globalSettings.detectHidden(state);
+        });
 
-          $("[name='filteringOptions']").bootstrapSwitch({
-          	onText: 'Global',
-          	offText: 'Local'
-          });
+        $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
+        $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
+        $('.selectedStartingView').html(VIEW_TITLES[globalSettings.startingView()] + '  <span class="caret"></span>');
 
-          $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-          	globalSettings.globalSelection(state);
-          });
+      };
 
-          $("[name='hiddenAPOptions']").bootstrapSwitch({
-          	onText: 'Shown',
-          	offText: 'Hidden'
-          });
+      var init = function() {
+        prepView();
+      };
 
-          $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-          	globalSettings.detectHidden(state);
-          });
+      init();
+    });
 
-          $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
-          $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
-          $('.selectedStartingView').html(VIEW_TITLES[globalSettings.startingView()] + '  <span class="caret"></span>');
-
-        };
-
-        var init = function() {
-          prepView();
-        };
-
-        init();
-      },
-      function rejected() {
-        console.log("settingsCtrl is unavailable because Cordova is not loaded.");
-      }
-    )
-  }
-]);
+}]);
