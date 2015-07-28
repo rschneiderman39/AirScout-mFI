@@ -12,8 +12,8 @@
 
 .panel-group {
 	position: fixed;
-  overflow-y: auto;
-  overflow-x: hidden;
+
+
 }
 
 .panel-heading a:after {
