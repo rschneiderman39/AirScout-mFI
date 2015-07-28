@@ -10,12 +10,13 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 id="title">Filtering Options</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Filtering Options</h4>
           </div>
           <div class="modal-body">
-            <div class="row testing">
+            <div class="row">
               <div class="col-xs-4" id="sortingDiv">
-                <h5>Search by MAC address or SSID:</h5>
+                <p>Search by MAC address or SSID:</p>
                 <input type="text" class="col-xs-12" id="query" ng-model="query">
                 <button id="btnShow" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">Select All</button>
                 <button id="btnHide" ng-click="unselectAll()" class="btn btn-default btn-sm" type="button">Deselect All</button>
@@ -24,8 +25,8 @@
                 <ul class="list-group scrollable-list filterTable">
                   <li class="list-group-item" data-ng-repeat="ap in APData | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
                     <div class="row">
-                      <div class="col-xs-5" id="SSID"> <input type="checkbox" style="opacity:0;"> {{ap['SSID']}} </div>
-                      <div class="col-xs-3" id="BSSID">({{ap['BSSID']}})</div>
+                      <div class="col-xs-6" id="SSID"> <input type="checkbox" style="opacity:0;">{{ap['SSID']}}</div>
+                      <div class="col-xs-6" id="BSSID">({{ap['BSSID']}})</div>
                     </div>
                   </li>
                 </ul>
