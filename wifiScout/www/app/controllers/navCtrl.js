@@ -233,7 +233,17 @@ function($scope, $state, globalSettings, nzTour, cordovaService) {
         var navTimeout = null,
             NAV_SHOW_INTERVAL = 2000;
 
+        var prepView = function() {
+          $('#bottom-bar').css('height', document.bottomBarHeight);
+          $('#bottom-bar').css('bottom',  document.bottomBarBottom);
+
+          $('#current-view').css('max-width', document.deviceWidth);
+          $('#current-view').css('height', document.deviceHeight - document.topBarHeight);
+          $('#current-view').css('top', document.topBarHeight);
+        };
+
         var init = function() {
+          prepView();
           $scope.setView(globalSettings.startingView());
         };
 

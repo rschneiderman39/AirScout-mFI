@@ -13,6 +13,10 @@ var DEFAULT_DETECT_HIDDEN = false,
     DEFAULT_GLOBAL_SELECTION = false,
     DEFAULT_STARTING_VIEW = 'settings';
 
+var DEFAULT_LANG = 'en-us';
+
+var strings = {};
+
 var isView = function(view) {
   return VIEW_TITLES[view] !== undefined;
 };
@@ -30,23 +34,23 @@ var windowCheck = function() {
     return mobileDevice;
 };
 
-document.deviceHeight = $(window).height();
-document.deviceWidth = $(window).width();
+(function() {
+  "use strict";
 
-document.topBarHeight = $('#top-bar').height();
+  var onDeviceReady = function() {
+    document.deviceHeight = $(window).height();
+    document.deviceWidth = $(window).width();
 
-document.bottomBarHeight = 1.25 * document.topBarHeight;
-document.bottomBarBottom = -( document.bottomBarHeight - 1);
+    document.topBarHeight = $('#top-bar').height();
 
-$('#bottom-bar').css('height', document.bottomBarHeight);
-$('#bottom-bar').css('bottom',  document.bottomBarBottom);
+    document.bottomBarHeight = 1.25 * document.topBarHeight;
+    document.bottomBarBottom = -( document.bottomBarHeight - 1);
 
+    var region = navigator.globalization.getPreferredLanguage();
 
-$('#current-view').css('max-width', document.deviceWidth);
-$('#current-view').css('height', document.deviceHeight - document.topBarHeight);
-$('#current-view').css('top', document.topBarHeight);
+    strings = window.lang[region] || window.lang[DEFAULT_LANG];
+  };
 
-// Scale the size of the help button to the size of the nav bar
-//var helpSize = (2/3) * document.topBarHeight;
-//$('#help-button').css('height', helpSize);
-//$('#help-button').css('width', helpSize);
+  document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+
+})();
