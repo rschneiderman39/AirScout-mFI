@@ -1,26 +1,3 @@
-/*
-.table-striped thead {
-  position: fixed;
-}
-
-.table-striped tbody {
-  position: fixed !important;
-  overflow-y: scroll;
-}
-
-.table-striped thead, .table-striped tbody, .table-striped tr, .table-striped td, .table-striped th {
-  display: block;
-}
-
-.table-striped tbody td, .table-striped thead > tr> th {
-  float: left;
-  border-bottom-width: 0;
-}
-
-.noWrap {
-  white-space:nowrap;
-} */
-
 .table-striped tbody {
   position: fixed !important;
   overflow-y: scroll;
