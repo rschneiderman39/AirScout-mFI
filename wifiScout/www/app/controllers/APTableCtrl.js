@@ -3,90 +3,89 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints', 'utils',
 accessPoints, utils, globalSettings, APTableState, cordovaService) {
 
     cordovaService.ready.then(function() {
-        // Settings for this session
-        $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
-        $scope.sortPredicate = undefined;    // Sorting options
-        $scope.sortReverse = undefined;       // ..
-        // Change the sort predicate, or reverse the sort direction
-        $scope.order = function(predicate) {
-          if (predicate === 'SSID') {
-            $scope.sortReverse = ($scope.sortPredicate === $scope.sortSSID) ? !$scope.sortReverse : false;
-            $scope.sortPredicate = $scope.sortSSID;
+      // Settings for this session
+      $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
+      $scope.sortPredicate = undefined;    // Sorting options
+      $scope.sortReverse = undefined;       // ..
+      // Change the sort predicate, or reverse the sort direction
+      $scope.order = function(predicate) {
+        if (predicate === 'SSID') {
+          $scope.sortReverse = ($scope.sortPredicate === $scope.sortSSID) ? !$scope.sortReverse : false;
+          $scope.sortPredicate = $scope.sortSSID;
+        } else {
+          $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
+          $scope.sortPredicate = predicate;
+        }
+      };
+
+      $scope.sortSSID = utils.hiddenSSIDSort;
+
+      var showAll = true,
+          selectedBSSIDs = [],
+          UPDATE_INTERVAL = 1000;
+
+
+      // Update the table whenever filter settings are changed
+      var updateSelection = function(settings) {
+        selectedBSSIDs = settings.selectedBSSIDs;
+        showAll = settings.showAll;
+        update();
+        globalSettings.awaitNewSelection('APTable').done(updateSelection);
+      };
+
+      // Save our sort settings to the settings service
+      var storeSortSettings = function() {
+        APTableState.sortPredicate($scope.sortPredicate);
+        APTableState.sortReverse($scope.sortReverse);
+      };
+
+      // Update the table now
+      var update = function() {
+        $scope.$apply(function() {
+          if (showAll) {
+            $scope.selectedAPData = accessPoints.getAll();
           } else {
-            $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
-            $scope.sortPredicate = predicate;
+            // Show only the APs whose BSSIDs match those we've selected
+            $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
           }
-        };
+        });
+      };
 
-        $scope.sortSSID = utils.hiddenSSIDSort;
+      var prepView = function() {
+        $('.table-striped thead').css('height', '40px');
+        var tableHeadHeight = $('.table-striped thead').height();
 
-        var showAll = true,
-            selectedBSSIDs = [],
-            UPDATE_INTERVAL = 1000;
+        $('.table-striped thead').css('top', document.topBarHeight);
+        $('.table-striped tbody').css('top', document.topBarHeight + tableHeadHeight);
 
+        $('.table-striped tbody').css('height', (document.deviceHeight - document.topBarHeight - tableHeadHeight - 10) );
+      };
 
-        // Update the table whenever filter settings are changed
-        var updateSelection = function(settings) {
-          selectedBSSIDs = settings.selectedBSSIDs;
-          showAll = settings.showAll;
-          update();
-          globalSettings.awaitNewSelection('APTable').done(updateSelection);
-        };
+      var init = function() {
+        prepView();
 
-        // Save our sort settings to the settings service
-        var storeSortSettings = function() {
-          APTableState.sortPredicate($scope.sortPredicate);
-          APTableState.sortReverse($scope.sortReverse);
-        };
+        var selection = globalSettings.getSelection('APTable');
+        selectedBSSIDs = selection.selectedBSSIDs;
+        showAll = selection.showAll;
 
-        // Update the table now
-        var update = function() {
-          $scope.$apply(function() {
-            if (showAll) {
-              $scope.selectedAPData = accessPoints.getAll();
-            } else {
-              // Show only the APs whose BSSIDs match those we've selected
-              $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
-            }
-          });
-        };
+        var predicate = APTableState.sortPredicate();
+        if (predicate === 'SSID') {
+          $scope.sortPredicate = $scope.sortSSID;
+        } else {
+          $scope.sortPredicate = predicate;
+        }
+        $scope.sortReverse = APTableState.sortReverse();
 
-        var prepView = function() {
-          $('.table-striped thead').css('height', '40px');
-          var tableHeadHeight = $('.table-striped thead').height();
+        globalSettings.awaitNewSelection('APTable').done(updateSelection);
 
-          $('.table-striped thead').css('top', document.topBarHeight);
-          $('.table-striped tbody').css('top', document.topBarHeight + tableHeadHeight);
+        var updateLoop = setInterval(update, UPDATE_INTERVAL);
 
-          $('.table-striped tbody').css('height', (document.deviceHeight - document.topBarHeight - tableHeadHeight - 10) );
-        };
+        $scope.$on('$destroy', function() {
+          clearInterval(updateLoop);
+          storeSortSettings();
+        });
+      };
 
-        var init = function() {
-          prepView();
-
-          var selection = globalSettings.getSelection('APTable');
-          selectedBSSIDs = selection.selectedBSSIDs;
-          showAll = selection.showAll;
-
-          var predicate = APTableState.sortPredicate();
-          if (predicate === 'SSID') {
-            $scope.sortPredicate = $scope.sortSSID;
-          } else {
-            $scope.sortPredicate = predicate;
-          }
-          $scope.sortReverse = APTableState.sortReverse();
-
-          globalSettings.awaitNewSelection('APTable').done(updateSelection);
-
-          var updateLoop = setInterval(update, UPDATE_INTERVAL);
-
-          $scope.$on('$destroy', function() {
-            clearInterval(updateLoop);
-            storeSortSettings();
-          });
-        };
-
-        init();
-      });
-
-  }]);
+      init();
+    });
+}]);

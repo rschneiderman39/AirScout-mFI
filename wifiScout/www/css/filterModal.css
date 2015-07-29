@@ -2,10 +2,7 @@
   overflow-y: auto;
 }
 
-#SSID {
-  text-align: center;
-}
-
+#SSID,
 #BSSID {
   text-align: center;
 }

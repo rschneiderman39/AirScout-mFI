@@ -1,8 +1,6 @@
 app.factory('channelTableState', ['accessPoints', 'utils', 'cordovaService',
 function(accessPoints, utils, cordovaService) {
-
   var service = {};
-
   cordovaService.ready.then(function() {
     service.getData = function() {
       var APData = accessPoints.getAll(),

@@ -1,7 +1,5 @@
 app.factory('APTableState', ['cordovaService', function(cordovaService) {
-
   var service = {};
-
   cordovaService.ready.then(function() {
       var settings = {
           sortPredicate: 'SSID',

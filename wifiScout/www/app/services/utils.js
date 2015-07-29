@@ -2,9 +2,7 @@
    signal strength values.  For now, only needed for the gauge.
 */
 app.factory('utils', ['cordovaService', function(cordovaService) {
-
   var service = {};
-
   cordovaService.ready.then(function() {
     var freqChannelMap = {},
         isChannel = {};
@@ -19,7 +17,7 @@ app.factory('utils', ['cordovaService', function(cordovaService) {
 
     service.isChannel = function(channel) {
       return isChannel[channel];
-    }
+    };
 
     service.getRandomColor = function() {
       var r = (Math.floor(Math.random() * 256)).toString(10),

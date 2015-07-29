@@ -1,8 +1,6 @@
 app.factory('timeGraphData', ['accessPoints', 'globalSettings', 'utils',
 'cordovaService', function(accessPoints, globalSettings, utils, cordovaService) {
-
   var service = {};
-
   cordovaService.ready.then(function() {
 
     service.getPlot = function() {

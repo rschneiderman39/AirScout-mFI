@@ -2,23 +2,11 @@
    should use this service whenever it wants to update its local data */
 app.factory('accessPoints', ['networkData', 'utils', 'globalSettings', 'cordovaService',
 function(networkData, utils, globalSettings, cordovaService) {
-
   var service = {};
-
   cordovaService.ready.then(function() {
     var APData = [],
         UPDATE_INTERVAL = 1000;
 
-    /* Get the data for every known AP
-       @returns {Array} An array of AP data objects of the form:
-                  {
-                    BSSID: <String>,
-                    SSID: <String>,
-                    frequency: <Number>
-                    level: <Number>
-                    capabilities: <String>
-                  }
-    */
     service.getAll = function() {
       return APData;
     };

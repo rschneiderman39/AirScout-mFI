@@ -33,20 +33,15 @@ var windowCheck = function() {
 document.deviceHeight = $(window).height();
 document.deviceWidth = $(window).width();
 
+//Scale the size of the bottom bar to be relative to the scaling for the top bar
 document.topBarHeight = $('#top-bar').height();
-
 document.bottomBarHeight = 1.25 * document.topBarHeight;
 document.bottomBarBottom = -( document.bottomBarHeight - 1);
-
 $('#bottom-bar').css('height', document.bottomBarHeight);
 $('#bottom-bar').css('bottom',  document.bottomBarBottom);
 
-
+//Set the size of the view window to be the entire device height minus the size of
+//  the top bar
 $('#current-view').css('max-width', document.deviceWidth);
 $('#current-view').css('height', document.deviceHeight - document.topBarHeight);
 $('#current-view').css('top', document.topBarHeight);
-
-// Scale the size of the help button to the size of the nav bar
-//var helpSize = (2/3) * document.topBarHeight;
-//$('#help-button').css('height', helpSize);
-//$('#help-button').css('width', helpSize);

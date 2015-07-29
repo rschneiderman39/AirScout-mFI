@@ -1,8 +1,6 @@
 angular.module('fsCordova', [])
 .service('cordovaService', function($document, $timeout, $window, $q) {
-
     var defer = $q.defer();
-
     this.ready = defer.promise;
 
     // Backup in the case that we did not received the event

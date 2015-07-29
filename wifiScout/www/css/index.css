@@ -2,7 +2,6 @@
 	background: #eeeeee !important;
 }
 
-
 body > #current-view {
   display: none;
 }
@@ -70,15 +69,6 @@ body.pg-loaded > #current-view {
 }
 
 /* PATHGATHER */
-/*
-.sk-spinner-wave.sk-spinner {
-    margin: 0 auto;
-    width: 50px;
-    height: 60px;
-    text-align: center;
-    font-size: 10px;
-}
-*/
 .sk-spinner {
   margin: 100px auto;
   width: 50px;
@@ -87,17 +77,6 @@ body.pg-loaded > #current-view {
   font-size: 10px;
 }
 
-/*
-.sk-spinner-wave div {
-    background-color: #FFF;
-    height: 100%;
-    width: 6px;
-    margin: 0 1px;
-    display: inline-block;
-    -webkit-animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
-    animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
-}
-*/
 .sk-spinner > div {
   background-color: #FFF;
   height: 100%;
@@ -109,45 +88,21 @@ body.pg-loaded > #current-view {
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
 
-/*
-.sk-spinner-wave .sk-rect2 {
-    -webkit-animation-delay: -1.1s;
-    animation-delay: -1.1s;
-}
-*/
 .sk-spinner .sk-rect2 {
   -webkit-animation-delay: -1.1s;
   animation-delay: -1.1s;
 }
 
-/*
-.sk-spinner-wave .sk-rect3 {
-    -webkit-animation-delay: -1s;
-    animation-delay: -1s;
-}
-*/
 .sk-spinner .sk-rect3 {
   -webkit-animation-delay: -1.0s;
   animation-delay: -1.0s;
 }
 
-/*
-.sk-spinner-wave .sk-rect4 {
-    -webkit-animation-delay: -0.9s;
-    animation-delay: -0.9s;
-}
-*/
 .sk-spinner .sk-rect4 {
   -webkit-animation-delay: -0.9s;
   animation-delay: -0.9s;
 }
 
-/*
-.sk-spinner-wave .sk-rect5 {
-    -webkit-animation-delay: -0.8s;
-    animation-delay: -0.8s;
-}
-*/
 .sk-spinner .sk-rect5 {
   -webkit-animation-delay: -0.8s;
   animation-delay: -0.8s;
