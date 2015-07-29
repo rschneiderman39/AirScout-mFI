@@ -5,9 +5,20 @@
   }
 
   window.lang['en-us'] = {
-    : {
-      title: 'asdfasdfasdf',
-
+    APTable : {
+      sortSSID: 'SSID',
+      sortBSSID: 'MAC Address',
+      sortFrequency: 'Channel',
+      sortLevel: 'Level (dBm)',
+      sortCapabilities: 'Capabilities',
+    },
+    channelTable : {},
+    channelGraph : {},
+    filterModal : {
+    	title: 'Filtering Options',
+    	searchBar: 'Search by MAC address or SSID:',
+    	selectAll: 'Select All',
+    	deselectAll: 'Deselect All'
     }
   }
 })();
