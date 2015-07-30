@@ -2,18 +2,13 @@
   display: none;
 }
 
-#settingsCtrl {
-  height: 100%;
-}
-
+#settingsCtrl,
 #touchLayer {
   height: 100%;
 }
 
 .panel-group {
 	position: fixed;
-
-
 }
 
 .panel-heading a:after {
@@ -29,8 +24,4 @@
 
 .bootstrap-switch-handle-on.bootstrap-switch-primary {
   background-color: #62bf01 !important;
-}
-
-.bootstrap-switch-handle-off.bootstrap-switch-default {
-  /* background-color: #62bf01 !important; */
 }

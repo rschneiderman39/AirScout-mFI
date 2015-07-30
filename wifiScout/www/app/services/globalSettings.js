@@ -113,31 +113,3 @@ setupService) {
 
   return service;
 }]);
-
-
-/* Get a deferred object which will be resolved to a view's settings whenever
-   those settings are changed.
-   @param {String} view The name of the view that's fetching the settings
-   @returns {Deferred} A deferred object that will be resolved whenever
-            the settings for a view are changed.  In order to continuously
-            listen for settings changes, a service can include requestSettings
-            as part of the success callback for the returned deferred object.
-            The deferred object will resolve to a settings object of the form:
-              {
-                selectedBSSIDs: <Array>,
-                showAll: <Boolean>,
-                sortPredicate: <String>,
-                sortReverse: <Boolean>
-              }
-*/
-
-/* Get a view's settings. Intended only for view initialization.
-   @param {String} The name of the view that's fetching the settings
-   @returns {Object} A settings object of the form:
-     {
-       selectedBSSIDs: <Array>,
-       showAll: <Boolean>,
-       sortPredicate: <String>,
-       sortReverse: <Boolean>
-     }
-*/

@@ -1,7 +1,9 @@
-<head>
-	<link href="css/APTable.css" rel="stylesheet" />
-	<link href="css/sortArrow.css" rel="stylesheet" />
-</head>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link href="css/APTable.css" rel="stylesheet" />
+		<link href="css/sortArrow.css" rel="stylesheet" />
+	</head>
 
 <body>
 	<div id="touch-layer" ng-click="showNav()" ng-controller="APTableCtrl">
@@ -30,15 +32,16 @@
 	    	<tbody>
 					<div class="container-fluid">
 						<tr class="row" data-ng-repeat="ap in selectedAPData | orderBy:sortPredicate:sortReverse">
-		      		<td class="col-xs-3">{{ap.SSID}}</td>
-		      		<td class="col-xs-3">{{ap.BSSID}}</td>
-		      		<td class="col-xs-2">{{ap.channel}}</td>
-		      		<td class="col-xs-2">{{ap.level}}</td>
-		      		<td class="col-xs-2">{{ap.capabilities}}</td>
-		      	</tr>
+			      	<td class="col-xs-3">{{ap.SSID}}</td>
+			      	<td class="col-xs-3">{{ap.BSSID}}</td>
+			      	<td class="col-xs-2">{{ap.channel}}</td>
+			      	<td class="col-xs-2">{{ap.level}}</td>
+			      	<td class="col-xs-2">{{ap.capabilities}}</td>
+			      </tr>
 					</div>
 				</tbody>
-	    </table>
-	  </div>
-	<div filter-modal view="APTable"></div>
-</body>
+		  </table>
+		</div>
+		<div filter-modal view="APTable"></div>
+	</body>
+</html>

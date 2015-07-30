@@ -9,16 +9,6 @@ function(networkData, channels, globalSettings, setupService) {
     var APData = [],
         UPDATE_INTERVAL = 1000;
 
-    /* Get the data for every known AP
-       @returns {Array} An array of AP data objects of the form:
-                  {
-                    BSSID: <String>,
-                    SSID: <String>,
-                    frequency: <Number>
-                    level: <Number>
-                    capabilities: <String>
-                  }
-    */
     service.getAll = function() {
       return APData;
     };

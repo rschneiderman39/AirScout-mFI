@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<link href="css/signalStrength.css" rel="stylesheet" />
-	</head>
+  <head>
+    <link href="css/signalStrength.css" rel="stylesheet" />
+  </head>
 
-	<body>
-		<div id="touch-layer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
-			<div class="row-fluid">
+  <body>
+    <div id="touch-layer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
+	  	<div class="row-fluid">
 				<div id="selectableList" class="col-xs-3">
 					<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
 					<ul class="list-group scrollable-list list">
@@ -16,7 +16,7 @@
 								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.BSSID}})</div>
 						   </li>
 						</span>
-					</ul>
+			  	</ul>
 				</div>
 				<div id="speedometer" class="col-xs-9">
 					<div id="chartdiv"></div>
