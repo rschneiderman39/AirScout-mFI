@@ -1,8 +1,8 @@
-angApp.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
+app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
 'setupService', function($scope, accessPoints, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = app.strings;
+    $scope.strings = globals.strings;
 
     $scope.APData = [];
     $scope.isDuplicateSSID = {};
@@ -25,7 +25,7 @@ angApp.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
       $scope.maxLevel = undefined;
     };
 
-    $scope.sortSSID = app.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.hiddenSSIDSort;
 
     var selectedBSSID = "",
         gauge = undefined,
@@ -121,7 +121,7 @@ angApp.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
     };
 
     var prepView = function() {
-      $('#chartdiv').css('height', app.format.window.height * 0.70);
+      $('#chartdiv').css('height', globals.format.window.height * 0.70);
     };
 
     var init = function() {

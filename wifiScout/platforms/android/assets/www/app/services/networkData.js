@@ -1,6 +1,6 @@
 /* Gets AP data from the device.  To get current AP data, views should use
    accessPoints instead */
-angApp.factory('networkData', ['setupService', function(setupService) {
+app.factory('networkData', ['setupService', function(setupService) {
 
   var service = {};
 

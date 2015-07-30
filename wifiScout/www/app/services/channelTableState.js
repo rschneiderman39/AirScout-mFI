@@ -1,4 +1,4 @@
-angApp.factory('channelTableState', ['accessPoints', 'setupService',
+app.factory('channelTableState', ['accessPoints', 'setupService',
 function(accessPoints, setupService) {
 
   var service = {};

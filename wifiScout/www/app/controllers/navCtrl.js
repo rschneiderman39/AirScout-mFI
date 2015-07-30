@@ -1,21 +1,21 @@
-angApp.controller('navCtrl', ['$scope', '$state', 'globalSettings', 'nzTour', 'setupService',
+app.controller('navCtrl', ['$scope', '$state', 'globalSettings', 'nzTour', 'setupService',
 function($scope, $state, globalSettings, nzTour, setupService) {
 
     setupService.ready.then(function() {
-      $scope.strings = app.strings;
+      $scope.strings = globals.strings;
 
       $scope.showNav = function() {
         clearTimeout(navTimeout);
         var navBar = $('#nav-bar');
         navBar.css('bottom', '0px');
         navTimeout = setTimeout(function() {
-          navBar.css('bottom', app.format.navBar.bottom);
+          navBar.css('bottom', globals.format.navBar.bottom);
         }, NAV_SHOW_INTERVAL);
       };
 
       $scope.setView = function(view) {
-        if (app.utils.isView(view)) {
-          document.getElementById('view-title').innerHTML = app.strings.viewTitles[view];
+        if (globals.utils.isView(view)) {
+          document.getElementById('view-title').innerHTML = globals.strings.viewTitles[view];
           $state.go(view);
         }
       };
@@ -29,12 +29,12 @@ function($scope, $state, globalSettings, nzTour, setupService) {
       };
 
       $scope.startTour = function() {
-        nzTour.start(app.tours[$state.current.name]);
+        nzTour.start(globals.tours[$state.current.name]);
       };
 
       var navTimeout = null,
           NAV_SHOW_INTERVAL = 2000,
-          filterableViews = app.defaults.filterableViews;
+          filterableViews = globals.defaults.filterableViews;
 
       var init = function() {
         $scope.setView(globalSettings.startingView());

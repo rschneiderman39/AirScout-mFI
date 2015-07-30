@@ -1,4 +1,4 @@
-angApp.factory('APTableState', ['setupService', function(setupService) {
+app.factory('APTableState', ['setupService', function(setupService) {
 
   var service = {};
 

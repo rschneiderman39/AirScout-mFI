@@ -1,4 +1,4 @@
-angApp.factory('timeGraphData', ['accessPoints', 'globalSettings',
+app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 'setupService', function(accessPoints, globalSettings, setupService) {
 
   var service = {};
@@ -62,7 +62,7 @@ angApp.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: app.utils.setAlpha(datasets[BSSID].color, 0.4)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: globals.utils.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 

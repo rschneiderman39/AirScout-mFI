@@ -1,4 +1,4 @@
-angApp.factory('channels', ['setupService', function(setupService) {
+app.factory('channels', ['setupService', function(setupService) {
 
   var service = {};
 

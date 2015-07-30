@@ -1,8 +1,8 @@
-angApp.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
+app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
 'setupService', function($scope, accessPoints, globalSettings, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = app.strings;
+    $scope.strings = globals.strings;
 
     $scope.APData = [];
 
@@ -34,7 +34,7 @@ angApp.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
       isSelected = {};
     };
 
-    $scope.sortSSID = app.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.hiddenSSIDSort;
 
     var view = undefined,
         isSelected = {};
@@ -67,7 +67,7 @@ angApp.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     var prepView = function() {
-      $('.filterTable').css('height', app.format.window.height * 0.6);
+      $('.filterTable').css('height', globals.format.window.height * 0.6);
       $('#filterModal').on('show.bs.modal', onShow);
     };
 

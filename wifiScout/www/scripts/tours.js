@@ -1,15 +1,15 @@
-if (typeof app === 'undefined') {
-  app = {};
+if (typeof globals === 'undefined') {
+  globals = {};
 }
 
-if (typeof app.setup === 'undefined') {
-  app.setup = {};
+if (typeof globals.setup === 'undefined') {
+  globals.setup = {};
 }
 
-app.setup.tours = function() {
-  app.tours = {};
+globals.setup.tours = function() {
+  globals.tours = {};
 
-  app.tours.channelTable = {
+  globals.tours.channelTable = {
     config: {
       mask: {
         visible: true, // Shows the element mask
@@ -27,20 +27,20 @@ app.setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
-        content: app.strings.channelTable.tour.intro
+        content: globals.strings.channelTable.tour.intro
       },
       {
         target: '#navLeft',
-        content: app.strings.channelTable.tour.band2_4
+        content: globals.strings.channelTable.tour.band2_4
       },
       {
         target: "#navRight",
-        content: app.strings.channelTable.tour.band5,
+        content: globals.strings.channelTable.tour.band5,
       }
     ]
   };
 
-  app.tours.APTable = {
+  globals.tours.APTable = {
     config: {
       mask: {
         visible: true,
@@ -59,24 +59,24 @@ app.setup.tours = function() {
     },
     steps: [{
         target: '#step1',
-        content: app.strings.APTable.tour.intro
+        content: globals.strings.APTable.tour.intro
       },
       {
         target: "#step2",
-        content: app.strings.APTable.tour.channel
+        content: globals.strings.APTable.tour.channel
       },
       {
         target: "#step3",
-        content: app.strings.APTable.tour.capabilities
+        content: globals.strings.APTable.tour.capabilities
       },
       {
         target: "#filter-button",
-        content: app.strings.APTable.tour.filter
+        content: globals.strings.APTable.tour.filter
       }
     ]
   };
 
-  app.tours.timeGraph = {
+  globals.tours.timeGraph = {
     config: {
       mask: {
         visible: true,
@@ -95,16 +95,16 @@ app.setup.tours = function() {
     },
     steps: [{
         target: "#timeGraph",
-        content: app.strings.timeGraph.tour.intro,
+        content: globals.strings.timeGraph.tour.intro,
       },
       {
         target: "#filter-button",
-        content: app.strings.timeGraph.tour.filter
+        content: globals.strings.timeGraph.tour.filter
       }
     ]
   };
 
-  app.tours.signalStrength = {
+  globals.tours.signalStrength = {
     config: {
       mask: {
         visible: true,
@@ -122,20 +122,20 @@ app.setup.tours = function() {
       dark: false
     },
     steps: [{
-        content: app.strings.signalStrength.tour.intro
+        content: globals.strings.signalStrength.tour.intro
       },
       {
         target: ".minLevel",
-        content: app.strings.signalStrength.tour.minLevel
+        content: globals.strings.signalStrength.tour.minLevel
       },
       {
         target: ".maxLevel",
-        content: app.strings.signalStrength.tour.maxLevel
+        content: globals.strings.signalStrength.tour.maxLevel
       }
     ]
   };
 
-  app.tours.channelGraph = {
+  globals.tours.channelGraph = {
     config: {
       mask: {
         visible: true,
@@ -153,15 +153,15 @@ app.setup.tours = function() {
       dark: false
     },
     steps: [{
-      content: app.strings.channelGraph.tour.intro
+      content: globals.strings.channelGraph.tour.intro
       },
       {
         target: '#navLeft',
-        content: app.strings.channelGraph.tour.band2_4
+        content: globals.strings.channelGraph.tour.band2_4
       },
       {
         target: "#navRight",
-        content: app.strings.channelGraph.tour.band5
+        content: globals.strings.channelGraph.tour.band5
       }
     ]
   };

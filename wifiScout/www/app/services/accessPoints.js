@@ -1,6 +1,6 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-angApp.factory('accessPoints', ['networkData', 'channels', 'globalSettings', 'setupService',
+app.factory('accessPoints', ['networkData', 'channels', 'globalSettings', 'setupService',
 function(networkData, channels, globalSettings, setupService) {
 
   var service = {};
@@ -78,7 +78,7 @@ function(networkData, channels, globalSettings, setupService) {
       for (var i = 0; i < data.length; ++i) {
         var lineColor = lineColors[data[i].BSSID];
         if (lineColor === undefined) {
-          lineColor = app.utils.getRandomColor();
+          lineColor = globals.utils.getRandomColor();
           lineColors[data[i].BSSID] = lineColor;
         }
         data[i].color = lineColor;

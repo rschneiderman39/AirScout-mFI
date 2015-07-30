@@ -1,9 +1,9 @@
-angApp.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
+app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
 'channels', 'setupService', function($scope, channelGraphState, channels,
 setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = app.strings;
+    $scope.strings = globals.strings;
 
     var X_DOMAIN_2_4 = channelGraphState.getDomain('2_4Ghz'),
         X_DOMAIN_5 = channelGraphState.getDomain('5Ghz'),
@@ -14,8 +14,8 @@ setupService) {
         TRANSITION_INTERVAL = 1800,
         band = undefined;
 
-    var spanLen = app.utils.spanLen,
-        setAlpha = app.utils.setAlpha,
+    var spanLen = globals.utils.spanLen,
+        setAlpha = globals.utils.setAlpha,
         isChannel = channels.isChannel;
 
     var elem = {}, scales = {};
@@ -44,8 +44,8 @@ setupService) {
     var viewportExtentLength;
 
     var init = function() {
-      dim.width = app.format.window.width * 0.95;
-      dim.height = (app.format.window.height - app.format.topBar.height) * 0.95;
+      dim.width = globals.format.window.width * 0.95;
+      dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.95;
 
       dim.plot.totalWidth = dim.width;
       dim.nav.totalWidth = dim.width;
@@ -264,11 +264,11 @@ setupService) {
 
       /* Draw Nav Labels */
       elem.nav.left.container.append('text')
-        .text(app.strings.channelGraph.label2_4)
+        .text(globals.strings.channelGraph.label2_4)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
 
       elem.nav.right.container.append('text')
-        .text(app.strings.channelGraph.label5)
+        .text(globals.strings.channelGraph.label5)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
     };
 

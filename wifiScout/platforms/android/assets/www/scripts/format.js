@@ -2,23 +2,23 @@ if (typeof app === 'undefined') {
   app = {};
 }
 
-app.format = {};
+globals.format = {};
 
-app.format.window = {
+globals.format.window = {
   width: $(window).width(),
   height: $(window).height()
 };
 
-app.format.topBar = {
+globals.format.topBar = {
   height: $('#top-bar').height()
 };
 
-app.format.navBar = {
+globals.format.navBar = {
   bottom: -( $('#nav-bar').height() - 1)
 };
 
-$('#nav-bar').css('bottom',  app.format.navBar.bottom);
+$('#nav-bar').css('bottom',  globals.format.navBar.bottom);
 
-$('#current-view').css('max-width', app.format.window.width);
-$('#current-view').css('height', app.format.window.height - app.format.topBar.height);
-$('#current-view').css('top', app.format.topBar.height);
+$('#current-view').css('max-width', globals.format.window.width);
+$('#current-view').css('height', globals.format.window.height - globals.format.topBar.height);
+$('#current-view').css('top', globals.format.topBar.height);

@@ -1,14 +1,14 @@
-if (typeof app === 'undefined') {
-  app = {};
+if (typeof globals === 'undefined') {
+  globals = {};
 }
 
-if (typeof app.setup === 'undefined') {
-  app.setup = {};
+if (typeof globals.setup === 'undefined') {
+  globals.setup = {};
 }
 
-app.setup.strings = function() {
+globals.setup.strings = function() {
   navigator.globalization.getPreferredLanguage(function(lang) {
-    app.strings = app.lang[lang.value] || app.lang[app.defaults.lang];
-    app.setup.tours();
+    globals.strings = globals.lang[lang.value] || globals.lang[globals.defaults.lang];
+    globals.setup.tours();
   });
 };

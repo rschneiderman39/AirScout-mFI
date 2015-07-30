@@ -85,8 +85,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
                      };
 
         var init = function() {
-          dim.width = app.format.window.width * 0.95;
-          dim.height = (app.format.window.height - app.format.topBar.height) * 0.9;
+          dim.width = globals.format.window.width * 0.95;
+          dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.9;
 
           dim.plot.totalWidth = dim.width;
           dim.nav.totalWidth = dim.width;

@@ -1,9 +1,9 @@
-angApp.controller('APTableCtrl', ['$scope', 'accessPoints',
+app.controller('APTableCtrl', ['$scope', 'accessPoints',
 'globalSettings', 'APTableState', 'setupService', function($scope,
 accessPoints, globalSettings, APTableState, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = app.strings;
+    $scope.strings = globals.strings;
     $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
     $scope.sortPredicate = undefined;    // Sorting options
     $scope.sortReverse = undefined;       // ..
@@ -18,7 +18,7 @@ accessPoints, globalSettings, APTableState, setupService) {
       }
     };
 
-    $scope.sortSSID = app.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.hiddenSSIDSort;
 
     var showAll = true,
         selectedBSSIDs = [],
@@ -55,10 +55,10 @@ accessPoints, globalSettings, APTableState, setupService) {
       $('.table-striped thead').css('height', '40px');
       var tableHeadHeight = $('.table-striped thead').height();
 
-      $('.table-striped thead').css('top', app.format.topBar.height);
-      $('.table-striped tbody').css('top', app.format.topBar.height + tableHeadHeight);
+      $('.table-striped thead').css('top', globals.format.topBar.height);
+      $('.table-striped tbody').css('top', globals.format.topBar.height + tableHeadHeight);
 
-      $('.table-striped tbody').css('height', (app.format.window.height - app.format.topBar.height - tableHeadHeight - 10) );
+      $('.table-striped tbody').css('height', (globals.format.window.height - globals.format.topBar.height - tableHeadHeight - 10) );
     };
 
     var init = function() {

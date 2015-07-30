@@ -1,6 +1,6 @@
-var angApp = angular.module('angApp', ['ui.router', 'setup', 'ngTouch', 'nzTour']);
+var app = angular.module('app', ['ui.router', 'setup', 'ngTouch', 'nzTour']);
 
-angApp.config(function ($stateProvider, $urlRouterProvider) {
+app.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('settings');
 

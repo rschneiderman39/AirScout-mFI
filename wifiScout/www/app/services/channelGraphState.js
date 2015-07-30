@@ -1,4 +1,4 @@
-angApp.factory('channelGraphState', ['accessPoints', 'globalSettings',
+app.factory('channelGraphState', ['accessPoints', 'globalSettings',
 'setupService', function(accessPoints, globalSettings, setupService) {
 
   var service = {};
