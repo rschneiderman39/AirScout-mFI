@@ -34,22 +34,22 @@ angApp.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       	offText: app.strings.settings.globalSelectionFalse
       });
 
-      $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      	globalSettings.globalSelection(state);
-      });
-
       $("[name='hiddenAPOptions']").bootstrapSwitch({
       	onText: app.strings.settings.detectHiddenTrue,
       	offText: app.strings.settings.detectHiddenFalse
       });
 
-      $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      	globalSettings.detectHidden(state);
-      });
-
       $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
       $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
       $('.selectedStartingView').html(app.strings.viewTitles[globalSettings.startingView()] + '  <span class="caret"></span>');
+
+      $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      	globalSettings.globalSelection(state);
+      });
+
+      $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      	globalSettings.detectHidden(state);
+      });
     };
 
     var init = function() {

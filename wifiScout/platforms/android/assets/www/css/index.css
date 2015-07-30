@@ -53,8 +53,9 @@ body.pg-loaded > #current-view {
   transform: translateY(-50%);
 }
 
-#bottom-bar {
+#nav-bar {
   position: fixed;
+	height: 13vh;
   min-height: 0px;
   -webkit-transition: bottom 0.5s ease;
   -moz-transition: bottom 0.5s ease;
@@ -104,7 +105,7 @@ body.pg-loaded > #current-view {
   width: 6px;
   margin: 0 1px;
   display: inline-block;
-  
+
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
@@ -154,15 +155,15 @@ body.pg-loaded > #current-view {
 }
 
 @-webkit-keyframes sk-stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
   20% { -webkit-transform: scaleY(1.0) }
 }
 
 @keyframes sk-stretchdelay {
-  0%, 40%, 100% { 
+  0%, 40%, 100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
-  }  20% { 
+  }  20% {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }

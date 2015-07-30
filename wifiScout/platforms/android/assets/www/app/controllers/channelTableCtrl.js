@@ -1,5 +1,5 @@
-angApp.controller('channelTableCtrl', ['$scope', 'channelTableState',
-'setupService', function($scope, channelTableState, setupService) {
+angApp.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
+'setupService', function($scope, channelTableState, channels, setupService) {
 
   setupService.ready.then(function() {
     $scope.strings = app.strings;

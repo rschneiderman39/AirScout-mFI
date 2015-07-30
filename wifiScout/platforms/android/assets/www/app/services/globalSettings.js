@@ -5,21 +5,21 @@ setupService) {
 
   setupService.ready.then(function() {
     service.detectHidden = function(option) {
-      if (typeof option === 'undefined') {
+      if (option === undefined) {
         return detectHidden;
       } else if (typeof option === 'boolean') {
         detectHidden = option;
-        window.localStorage.setItem('detectHidden', option);
+        window.localStorage.setItem('detectHidden', JSON.stringify(option));
       }
     };
 
     service.globalSelection = function(option) {
-      if (typeof option === 'undefined') {
+      if (option === undefined) {
         return globalSelection;
       } else if (typeof option === 'boolean') {
         if (option != globalSelection) {
           globalSelection = option;
-          window.localStorage.setItem('globalSelection', option);
+          window.localStorage.setItem('globalSelection', JSON.stringify(option));
           if (option) {
             for (var i = 0; i < filterableViews.length; ++i) {
               selections[filterableViews[i]] = app.utils.deepCopy(selections['global']);
@@ -89,8 +89,8 @@ setupService) {
     // Create an associative settings array for each view that will
     // use this service
     var init = function(){
-      detectHidden = window.localStorage.getItem('detectHidden') || app.defaults.detectHidden;
-      globalSelection = window.localStorage.getItem('globalSelection') || app.defaults.globalSelection;
+      detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || app.defaults.detectHidden;
+      globalSelection = JSON.parse(window.localStorage.getItem('globalSelection')) || app.defaults.globalSelection;
       startingView = window.localStorage.getItem('startingView') || app.defaults.startingView;
 
       for (var i = 0; i < filterableViews.length; ++i) {

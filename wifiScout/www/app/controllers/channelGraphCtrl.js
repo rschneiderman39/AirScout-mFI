@@ -11,7 +11,7 @@ setupService) {
         FILL_ALPHA = 0.2,
         LABEL_PADDING = 10,
         UPDATE_INTERVAL = 2000,
-        TRANSITION_INTERVAL = 1000,
+        TRANSITION_INTERVAL = 1800,
         band = undefined;
 
     var spanLen = app.utils.spanLen,

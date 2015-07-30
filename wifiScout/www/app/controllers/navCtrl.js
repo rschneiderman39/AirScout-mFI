@@ -6,7 +6,7 @@ function($scope, $state, globalSettings, nzTour, setupService) {
 
       $scope.showNav = function() {
         clearTimeout(navTimeout);
-        var navBar = $('#bottom-bar');
+        var navBar = $('#nav-bar');
         navBar.css('bottom', '0px');
         navTimeout = setTimeout(function() {
           navBar.css('bottom', app.format.navBar.bottom);

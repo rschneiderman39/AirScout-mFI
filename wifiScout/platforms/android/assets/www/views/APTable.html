@@ -15,8 +15,8 @@
 	          <th class="col-xs-3" ng-click="order('BSSID'); $event.stopPropagation()">
 	          	<a href="">{{strings.APTable.sortBSSID}}<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
-	          <th class="col-xs-2" id="step2" ng-click="order('frequency'); $event.stopPropagation()">
-            	<a href="">{{strings.APTable.sortFrequency}}<span class="sortArrow" ng-show="sortPredicate === 'frequency'" ng-class="{reverse:sortReverse}"></span></a>
+	          <th class="col-xs-2" id="step2" ng-click="order('channel'); $event.stopPropagation()">
+            	<a href="">{{strings.APTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-2" id="step1" ng-click="order('level'); $event.stopPropagation()">
 	           	<a href="">{{strings.APTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
