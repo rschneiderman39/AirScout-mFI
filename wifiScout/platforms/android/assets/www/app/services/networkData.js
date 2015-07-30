@@ -1,10 +1,10 @@
 /* Gets AP data from the device.  To get current AP data, views should use
    accessPoints instead */
-app.factory('networkData', ['cordovaService', function(cordovaService) {
+angApp.factory('networkData', ['setupService', function(setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
     /* Get the device's AP data.
        @returns {Object} An object of the form:
          {

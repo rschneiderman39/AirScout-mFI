@@ -1,9 +1,9 @@
-app.factory('channelTableState', ['accessPoints', 'utils', 'cordovaService',
-function(accessPoints, utils, cordovaService) {
+angApp.factory('channelTableState', ['accessPoints', 'setupService',
+function(accessPoints, setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
     service.getData = function() {
       var APData = accessPoints.getAll(),
           numOccupants = {},

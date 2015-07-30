@@ -1,9 +1,9 @@
-app.factory('channelGraphState', ['accessPoints', 'globalSettings', 'utils',
-'cordovaService', function(accessPoints, globalSettings, utils, cordovaService) {
+angApp.factory('channelGraphState', ['accessPoints', 'globalSettings',
+'setupService', function(accessPoints, globalSettings, setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
     service.getData = function() {
       var APData = accessPoints.getAll(),
           data = [];

@@ -2,7 +2,7 @@
 * which APs they want to display for a given view.
 * Usage: <div filter-modal view="table"></div>
 */
-app.directive('filterModal', function() {
+angApp.directive('filterModal', function() {
   return {
     templateUrl: 'views/filterModal.html',
     scope: {

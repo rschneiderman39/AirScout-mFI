@@ -11,7 +11,7 @@
 	        <div class="panel-heading" id="step1">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
-	              Default View
+	              {{strings.settings.startingViewHeader}}
 	            </a>
 	          </h4>
 	        </div>
@@ -19,20 +19,18 @@
 	          <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
-	          			The selected view will be the default view to appear each time the application is launched.
+	          			{{strings.settings.startingViewDescription}}
 	          		</div>
 	          		<div class="col-xs-3">
 			          	<div class="btn-group">
-		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    							Select a View: <span class="caret"></span>
-		  							</button>
+		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 									  <ul class="dropdown-menu pull-right">
-									    <li><a ng-click="setStartingView('channelGraph')">Channel Graph</a></li>
-									    <li><a ng-click="setStartingView('signalStrength')">Signal Strength</a></li>
-									    <li><a ng-click="setStartingView('timeGraph')"> Time Graph</a></li>
-									    <li><a ng-click="setStartingView('APTable')"> AP Table</a></li>
-									    <li><a ng-click="setStartingView('channelTable')"> Channel Table</a></li>
-									    <li><a ng-click="setStartingView('settings')"> Settings</a></li>
+									    <li><a ng-click="setStartingView('channelGraph')"> {{strings.viewTitles.channelGraph}}</a></li>
+									    <li><a ng-click="setStartingView('signalStrength')"> {{strings.viewTitles.signalStrength}}</a></li>
+									    <li><a ng-click="setStartingView('timeGraph')"> {{strings.viewTitles.timeGraph}}</a></li>
+									    <li><a ng-click="setStartingView('APTable')"> {{strings.viewTitles.APTable}}</a></li>
+									    <li><a ng-click="setStartingView('channelTable')"> {{strings.viewTitles.channelTable}}</a></li>
+									    <li><a ng-click="setStartingView('settings')"> {{strings.viewTitles.sett}}</a></li>
 									  </ul>
 									</div>
 			          </div>
@@ -44,7 +42,7 @@
 	        <div class="panel-heading" id="step2">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
-	              Filtering
+	              {{strings.settings.globalSelectionHeader}}
 	            </a>
 	          </h4>
 	        </div>
@@ -52,8 +50,7 @@
 	          <div class="panel-body">
 		          <div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
-			          	Global filtering preserves filtered selections across any view in the application while local filtering
-			          	only shows or hides APs that have been selected in that view.
+			          	{{strings.settings.globalSelectionDescription}}
 			          </div>
 		          	<div class="col-xs-3">
 		          		<input type="checkbox" name="filteringOptions">
@@ -66,7 +63,7 @@
 	        <div class="panel-heading" id="step3">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
-	              Hidden Access Points
+	              {{strings.settings.detectHiddenHeader}}
 	            </a>
 	          </h4>
 	        </div>
@@ -74,7 +71,7 @@
 	          <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
-	          			Choose whether you would like hidden access points to be shown or hidden in the application.
+	          			{{strings.settings.detectHiddenDescription}}
 	          		</div>
 	          		<div class="col-xs-3">
 		          		<input type="checkbox" name="hiddenAPOptions">

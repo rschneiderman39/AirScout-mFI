@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="app">
+<html ng-app="angApp">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
     <title class="text-center"></title>
@@ -17,10 +17,6 @@
     <!-- Scripts -->
     <script src="scripts/lib/jquery-2.1.4.min.js"></script>
     <script src="scripts/lib/angular.js"></script>
-    <!--
-    <script src="scripts/lib/angular-animate.js"></script>
-    <script src="scripts/lib/anim-in-out.js"></script>
-    -->
     <script src="scripts/lib/angular-ui-router.min.js"></script>
     <script src="scripts/lib/angular-touch.min.js"></script>
     <script src="scripts/lib/bootstrap.min.js"></script>
@@ -54,33 +50,33 @@
     <nav id="bottom-bar" class="navbar navbar-default navbar-fixed-bottom">
       <div class="row">
         <div class="col-xs-2">
-          <a href_x="#/channelGraph" ui-sref_x="channelGraph" ng-click="setView('channelGraph');showNav()" id="channelGraph">
-            Channel Graph
+          <a ng-click="setView('channelGraph');showNav()" id="channelGraph">
+            {{strings.viewTitles['channelGraph']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a href_x="#/signalStrength" ui-sref_x="signalStrength" ng-click="setView('signalStrength');showNav()" id="signalStrength">
-            Signal Strength
+          <a ng-click="setView('signalStrength');showNav()" id="signalStrength">
+            {{strings.viewTitles['signalStrength']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a href_x="#/timeGraph" ui-sref_x="timeGraph" ng-click="setView('timeGraph');showNav()" id="timeGraph">
-            Time Graph
+          <a ng-click="setView('timeGraph');showNav()" id="timeGraph">
+            {{strings.viewTitles['timeGraph']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a href_x="#/APTable" ui-sref_x="APTable" ng-click="setView('APTable');showNav()" id="APTable">
-            AP Table
+          <a ng-click="setView('APTable');showNav()" id="APTable">
+            {{strings.viewTitles['APTable']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a href_x="#/channelTable" ui-sref_x="channelTable" ng-click="setView('channelTable');showNav()" id="channelTable">
-            Channel Table
+          <a ng-click="setView('channelTable');showNav()" id="channelTable">
+            {{strings.viewTitles['channelTable']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a href_x="#/settings" ui-sref_x="settings" ng-click="setView('settings');showNav()" id="settings">
-            Settings
+          <a ng-click="setView('settings');showNav()" id="settings">
+            {{strings.viewTitles['settings']}}
           </a>
         </div>
       </div>
@@ -99,23 +95,26 @@
 
     </script>
 
-    <!-- Cordova, Angular Services and Controllers -->
+    <!-- Cordova -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
     <script src="scripts/platformOverrides.js"></script>
-    <script src="app/services/cordovaService.js"></script>
+    <script src="app/services/setupService.js"></script>
 
+    <!-- Angular App -->
     <script src="app/app.js"></script>
 
+    <!-- Anglar Services -->
     <script src="app/services/networkData.js"></script>
     <script src="app/services/accessPoints.js"></script>
     <script src="app/services/timeGraphData.js"></script>
     <script src="app/services/APTableState.js"></script>
     <script src="app/services/channelGraphState.js"></script>
     <script src="app/services/channelTableState.js"></script>
-    <script src="app/services/utils.js"></script>
+    <script src="app/services/channels.js"></script>
     <script src="app/services/globalSettings.js"></script>
 
+    <!-- Angular Controllers -->
     <script src="app/controllers/APTableCtrl.js"></script>
     <script src="app/controllers/modalCtrl.js"></script>
     <script src="app/controllers/navCtrl.js"></script>
@@ -125,8 +124,19 @@
     <script src="app/controllers/channelGraphCtrl.js"></script>
     <script src="app/controllers/channelTableCtrl.js"></script>
 
+    <!-- Angular Directives -->
     <script src="app/directives/filterModal.js"></script>
 
+    <!-- Globalization -->
+    <script src="lang/en-US.js"></script>
+    <script src="lang/es-ES.js"></script>
+
+    <!-- Globals and Setup -->
+    <script src="scripts/format.js"></script>
+    <script src="scripts/strings.js"></script>
+    <script src="scripts/tours.js"></script>
+    <script src="scripts/defaults.js"></script>
+    <script src="scripts/utils.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 </html>

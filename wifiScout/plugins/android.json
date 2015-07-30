@@ -9,6 +9,10 @@
                 "parents": {
                     "/*": [
                         {
+                            "xml": "<feature name=\"Globalization\"><param name=\"android-package\" value=\"org.apache.cordova.globalization.Globalization\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"WifiAdmin\"><param name=\"android-package\" value=\"com.rjfun.cordova.plugin.WifiAdmin\" /></feature>",
                             "count": 1
                         }
@@ -44,6 +48,9 @@
         }
     },
     "installed_plugins": {
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
+        },
         "cordova-plugin-wifi": {
             "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
         }

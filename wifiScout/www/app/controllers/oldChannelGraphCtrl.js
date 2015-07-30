@@ -1,7 +1,7 @@
 app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
-  'utils', 'cordovaService', function($scope, channelGraphState,
-  utils, cordovaService) {
-    cordovaService.ready.then(
+  'utils', 'setupService', function($scope, channelGraphState,
+  utils, setupService) {
+    setupService.ready.then(
       function resolved() {
         var X_DOMAIN_2_4 = channelGraphState.getXDomain('2_4Ghz'),
             X_DOMAIN_5 = channelGraphState.getXDomain('5Ghz'),
@@ -85,8 +85,8 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
                      };
 
         var init = function() {
-          dim.width = document.deviceWidth * 0.95;
-          dim.height = (document.deviceHeight - document.topBarHeight) * 0.9;
+          dim.width = app.format.window.width * 0.95;
+          dim.height = (app.format.window.height - app.format.topBar.height) * 0.9;
 
           dim.plot.totalWidth = dim.width;
           dim.nav.totalWidth = dim.width;

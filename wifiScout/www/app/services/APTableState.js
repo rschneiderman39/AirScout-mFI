@@ -1,8 +1,8 @@
-app.factory('APTableState', ['cordovaService', function(cordovaService) {
+angApp.factory('APTableState', ['setupService', function(setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
       var settings = {
           sortPredicate: 'SSID',
           sortReverse: false

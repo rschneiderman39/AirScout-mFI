@@ -1,11 +1,11 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-app.factory('accessPoints', ['networkData', 'utils', 'globalSettings', 'cordovaService',
-function(networkData, utils, globalSettings, cordovaService) {
+angApp.factory('accessPoints', ['networkData', 'channels', 'globalSettings', 'setupService',
+function(networkData, channels, globalSettings, setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
     var APData = [],
         UPDATE_INTERVAL = 1000;
 
@@ -69,7 +69,7 @@ function(networkData, utils, globalSettings, cordovaService) {
 
     var appendChannels = function(data) {
       for (var i = 0; i < data.length; ++i) {
-        data[i].channel = utils.freqToChannel(data[i].frequency);
+        data[i].channel = channels.freqToChannel(data[i].frequency);
       }
       return data;
     };
@@ -78,7 +78,7 @@ function(networkData, utils, globalSettings, cordovaService) {
       for (var i = 0; i < data.length; ++i) {
         var lineColor = lineColors[data[i].BSSID];
         if (lineColor === undefined) {
-          lineColor = utils.getRandomColor();
+          lineColor = app.utils.getRandomColor();
           lineColors[data[i].BSSID] = lineColor;
         }
         data[i].color = lineColor;

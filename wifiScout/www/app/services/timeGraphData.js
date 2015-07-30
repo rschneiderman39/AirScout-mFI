@@ -1,9 +1,9 @@
-app.factory('timeGraphData', ['accessPoints', 'globalSettings', 'utils',
-'cordovaService', function(accessPoints, globalSettings, utils, cordovaService) {
+angApp.factory('timeGraphData', ['accessPoints', 'globalSettings',
+'setupService', function(accessPoints, globalSettings, setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
+  setupService.ready.then(function() {
 
     service.getPlot = function() {
       return plot;
@@ -62,7 +62,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings', 'utils',
 
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: app.utils.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 

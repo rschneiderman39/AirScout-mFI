@@ -1,10 +1,9 @@
-app.factory('globalSettings', ['$timeout', 'cordovaService', function($timeout,
-cordovaService) {
+angApp.factory('globalSettings', ['$timeout', 'setupService', function($timeout,
+setupService) {
 
   var service = {};
 
-  cordovaService.ready.then(function() {
-
+  setupService.ready.then(function() {
     service.detectHidden = function(option) {
       if (typeof option === 'undefined') {
         return detectHidden;
@@ -22,12 +21,12 @@ cordovaService) {
           globalSelection = option;
           window.localStorage.setItem('globalSelection', option);
           if (option) {
-            for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
-              selections[FILTERABLE_VIEWS[i]] = deepCopy(selections['global']);
+            for (var i = 0; i < filterableViews.length; ++i) {
+              selections[filterableViews[i]] = app.utils.deepCopy(selections['global']);
             }
           }
-          for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
-            var curView = FILTERABLE_VIEWS[i];
+          for (var i = 0; i < filterableViews.length; ++i) {
+            var curView = filterableViews[i];
             sendSelection(curView, selections[curView]);
           }
         }
@@ -37,7 +36,7 @@ cordovaService) {
     service.startingView = function(view) {
       if (view === undefined) {
         return startingView;
-      } else if (isView(view)) {
+      } else if (app.utils.isView(view)) {
         startingView = view;
         window.localStorage.setItem('startingView', view);
       }
@@ -49,9 +48,9 @@ cordovaService) {
 
     service.getSelection = function(view) {
       if (globalSelection) {
-        return deepCopy(selections['global']);
+        return app.utils.deepCopy(selections['global']);
       } else {
-        return deepCopy(selections[view]);
+        return app.utils.deepCopy(selections[view]);
       }
     };
 
@@ -59,14 +58,14 @@ cordovaService) {
       if (newSelection.selectedBSSIDs instanceof Array &&
           typeof newSelection.showAll === 'boolean') {
         if (globalSelection) {
-          for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
-            var curView = FILTERABLE_VIEWS[i];
-            selections[curView] = deepCopy(newSelection);
+          for (var i = 0; i < filterableViews.length; ++i) {
+            var curView = filterableViews[i];
+            selections[curView] = app.utils.deepCopy(newSelection);
             sendSelection(curView, newSelection);
           }
-          selections['global'] = deepCopy(newSelection);
+          selections['global'] = app.utils.deepCopy(newSelection);
         } else {
-          selections[view] = deepCopy(newSelection);
+          selections[view] = app.utils.deepCopy(newSelection);
           sendSelection(view, newSelection);
         }
       }
@@ -76,29 +75,30 @@ cordovaService) {
         globalSelection = false,
         startingView = undefined,
         selections = {},
-        selectionPromises = {};
+        selectionPromises = {},
+        filterableViews = app.defaults.filterableViews;
 
     var sendSelection = function(view, selection) {
       $timeout(function() {
         var request = selectionPromises[view];
         selectionPromises[view] = $.Deferred();
-        request.resolve(deepCopy(selection));
+        request.resolve(app.utils.deepCopy(selection));
       });
     };
 
     // Create an associative settings array for each view that will
     // use this service
     var init = function(){
-      detectHidden = window.localStorage.getItem('detectHidden') || DEFAULT_DETECT_HIDDEN;
-      globalSelection = window.localStorage.getItem('globalSelection') || DEFAULT_GLOBAL_SELECTION;
-      startingView = window.localStorage.getItem('startingView') || DEFAULT_STARTING_VIEW;
+      detectHidden = window.localStorage.getItem('detectHidden') || app.defaults.detectHidden;
+      globalSelection = window.localStorage.getItem('globalSelection') || app.defaults.globalSelection;
+      startingView = window.localStorage.getItem('startingView') || app.defaults.startingView;
 
-      for (var i = 0; i < FILTERABLE_VIEWS.length; ++i) {
-        selections[FILTERABLE_VIEWS[i]] = {
+      for (var i = 0; i < filterableViews.length; ++i) {
+        selections[filterableViews[i]] = {
           selectedBSSIDs: [],
           showAll: true
         };
-        selectionPromises[FILTERABLE_VIEWS[i]] = $.Deferred();
+        selectionPromises[filterableViews[i]] = $.Deferred();
       }
 
       selections['global'] = {

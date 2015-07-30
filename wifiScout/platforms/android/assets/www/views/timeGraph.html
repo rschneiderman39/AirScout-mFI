@@ -10,7 +10,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-3" id="legend">
-            <center><h5 class="legend-title">Select an AP to highlight it:</h5></center>
+            <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
             <ul class="list-group scrollable-list" id="list">
               <span data-ng-repeat="d in legendData | orderBy:sortSSID">
                 <li class="listgroupitem" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
@@ -23,7 +23,7 @@
           </div>
           <div class="col-xs-9" id="timeGraph">
             <canvas id="plot"></canvas>
-            <p class="axis-label">Level (dBm)</p>
+            <p class="axis-label">{{strings.timeGraph.axisLabel}}</p>
           </div>
         </div>
       </div>

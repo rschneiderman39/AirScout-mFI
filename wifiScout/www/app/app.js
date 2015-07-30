@@ -1,9 +1,6 @@
-/* Globals */
-var REQUIRE_CORDOVA = true
+var angApp = angular.module('angApp', ['ui.router', 'setup', 'ngTouch', 'nzTour']);
 
-var app = angular.module('app', ['ui.router', 'fsCordova', 'ngTouch', 'nzTour']);
-
-app.config(function ($stateProvider, $urlRouterProvider) {
+angApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('settings');
 
