@@ -6,6 +6,7 @@
 
   <body>
     <div id="touch-layer" ng-click="showNav()" ng-controller="timeGraphCtrl">
+      <div class="anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 500 + 'ms','-moz-transition-duration': 500 + 'ms','-ms-transition-duration': 500 + 'ms','-o-transition-duration': 500 + 'ms','transition-duration': 500 + 'ms'}">
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-3" id="legend">
@@ -26,6 +27,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     <div filter-modal view="timeGraph"></div>
   </body>

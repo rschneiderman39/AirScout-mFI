@@ -86,10 +86,7 @@ accessPoints, globalSettings, APTableState, setupService) {
       $('.table-striped thead').css('height', '40px');
       var tableHeadHeight = $('.table-striped thead').height();
 
-      $('.table-striped thead').css('top', globals.format.topBar.height);
       $('.table-striped tbody').css('top', globals.format.topBar.height + tableHeadHeight);
-
-      $('.table-striped tbody').css('height', (globals.format.window.height - globals.format.topBar.height - tableHeadHeight - 10) );
     };
 
     var init = function() {

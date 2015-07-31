@@ -9,7 +9,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
     };
 
     $scope.$on('animIn', function() {
-            console.log('settingsCtrl: animIn');
+      console.log('settingsCtrl: animIn');
     });
 
     $scope.$on('animOut', function() {
@@ -17,12 +17,6 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
     });
 
     var prepView = function() {
-      var optionsHeight = $('#accordion').height();
-
-      $('.panel-group').css('top', globals.format.topBar.height);
-      $('.panel-group').css('width', globals.format.window.width);
-      $('.panel-group').css('max-height', globals.format.window.height - globals.format.topBar.height);
-
       $(".dropdown-menu li a").click(function(){
         var selText = $(this).text();
         $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');

@@ -6,10 +6,11 @@
 
 <body>
   <div id="touch-layer" ng-click="showNav()" ng-controller="channelGraphCtrl">
-    <div id="plot"></div>
-    <div id="navLeft" class="nav-pane" ng-click="setBand('2_4'); $event.stopPropagation();"></div>
-    <div id="navRight" class="nav-pane" ng-click="setBand('5'); $event.stopPropagation();"></div>
-  </div>
-
-  <div filter-modal view="channelGraph"></div>
+  	<div class="anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 1000 + 'ms','-moz-transition-duration': 1000 + 'ms','-ms-transition-duration': 1000 + 'ms','-o-transition-duration': 1000 + 'ms','transition-duration': 1000 + 'ms'}">
+	    <div id="plot"></div>
+	    <div id="navLeft" class="nav-pane" ng-click="setBand('2_4'); $event.stopPropagation();"></div>
+	    <div id="navRight" class="nav-pane" ng-click="setBand('5'); $event.stopPropagation();"></div>
+  		<div filter-modal view="channelGraph"></div>
+  	</div>
+ 	</div>
 </body>

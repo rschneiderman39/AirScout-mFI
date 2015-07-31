@@ -7,6 +7,7 @@
 
 <body>
 	<div id="touch-layer" ng-click="showNav()" ng-controller="APTableCtrl">
+		<div class="anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 1000 + 'ms','-moz-transition-duration': 1000 + 'ms','-ms-transition-duration': 1000 + 'ms','-o-transition-duration': 1000 + 'ms','transition-duration': 1000 + 'ms'}">
 		<table class="table table-striped">
 	  	<thead>
 	    	<div class="container-fluid">
@@ -41,6 +42,7 @@
 					</div>
 				</tbody>
 		  </table>
+		</div>
 		</div>
 		<div filter-modal view="APTable"></div>
 	</body>

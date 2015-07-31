@@ -78,7 +78,8 @@ setupService) {
         saveState();
       });
 
-      update();
+      // COMMENTED THIS OUT SO THAT SWIPE WILL WORK SMOOTHLY
+      //update();
     };
 
     /* Pull in new data and update element height */

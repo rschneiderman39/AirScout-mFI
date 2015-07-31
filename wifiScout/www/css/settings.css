@@ -7,14 +7,6 @@
   height: 100%;
 }
 
-.dropdown-menu {
-	z-index: 2;
-}
-
-.panel-group {
-	position: fixed;
-}
-
 .panel-heading a:after {
     font-family:'Glyphicons Halflings';
     content:"\e114";
