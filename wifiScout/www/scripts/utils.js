@@ -23,11 +23,11 @@ globals.utils.getRandomColor = function() {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
 };
 
-globals.utils.hiddenSSIDSort = function(AP) {
+globals.utils.customSSIDSort = function(AP) {
   if (AP.SSID.charAt(0) === '<') {
-    return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
+    return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" + AP.BSSID;
   } else {
-    return AP.SSID;
+    return AP.SSID + AP.BSSID;
   }
 };
 

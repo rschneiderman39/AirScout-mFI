@@ -3,11 +3,14 @@
 app.factory('accessPoints', ['networkData', 'channels', 'globalSettings', 'setupService',
 function(networkData, channels, globalSettings, setupService) {
 
+  var prefs = {
+    updateInterval: 1000
+  };
+
   var service = {};
 
   setupService.ready.then(function() {
-    var APData = [],
-        UPDATE_INTERVAL = 1000;
+    var APData = [];
 
     service.getAll = function() {
       return APData;
@@ -89,7 +92,7 @@ function(networkData, channels, globalSettings, setupService) {
       .fail(function() {
         APData = [];
       });
-      setTimeout(update, UPDATE_INTERVAL);
+      setTimeout(update, prefs.updateInterval);
     };
 
     update();

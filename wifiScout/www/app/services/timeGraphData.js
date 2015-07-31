@@ -1,6 +1,10 @@
 app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 'setupService', function(accessPoints, globalSettings, setupService) {
 
+  var prefs = {
+    updateInterval: 1000
+  };
+
   var service = {};
 
   setupService.ready.then(function() {
@@ -30,8 +34,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       return highlightedBSSID;
     };
 
-    var UPDATE_INTERVAL = 1000,
-        isSelected = {},
+    var isSelected = {},
         showAll = true,
         datasets = {},
         plot = undefined,
@@ -222,7 +225,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       showAll = selection.showAll;
       globalSettings.awaitNewSelection('timeGraph').done(updateSelection);
 
-      setInterval(update, UPDATE_INTERVAL);
+      setInterval(update, prefs.updateInterval);
     };
 
     init();

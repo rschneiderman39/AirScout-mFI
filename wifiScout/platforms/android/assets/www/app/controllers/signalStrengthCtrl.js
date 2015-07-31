@@ -1,6 +1,10 @@
 app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
 'setupService', function($scope, accessPoints, setupService) {
 
+  var prefs = {
+    updateInterval: 1000
+  };
+  
   setupService.ready.then(function() {
     $scope.strings = globals.strings;
 
@@ -25,11 +29,10 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
       $scope.maxLevel = undefined;
     };
 
-    $scope.sortSSID = globals.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.customSSIDSort;
 
     var selectedBSSID = "",
-        gauge = undefined,
-        UPDATE_INTERVAL = 1000;
+        gauge = undefined;
 
     var updateDuplicateSSIDs = function() {
       var found = {},
@@ -128,7 +131,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
       prepView();
       initGauge();
 
-      var updateLoop = setInterval(update, UPDATE_INTERVAL);
+      var updateLoop = setInterval(update, prefs.updateInterval);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);

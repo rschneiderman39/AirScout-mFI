@@ -10,7 +10,7 @@ function($scope, $state, globalSettings, nzTour, setupService) {
         navBar.css('bottom', '0px');
         navTimeout = setTimeout(function() {
           navBar.css('bottom', globals.format.navBar.bottom);
-        }, NAV_SHOW_INTERVAL);
+        }, prefs.navShowInterval);
       };
 
       $scope.setView = function(view) {
@@ -32,8 +32,11 @@ function($scope, $state, globalSettings, nzTour, setupService) {
         nzTour.start(globals.tours[$state.current.name]);
       };
 
+      var prefs = {
+        navShowInterval: 2000
+      };
+
       var navTimeout = null,
-          NAV_SHOW_INTERVAL = 2000,
           filterableViews = globals.defaults.filterableViews;
 
       var init = function() {

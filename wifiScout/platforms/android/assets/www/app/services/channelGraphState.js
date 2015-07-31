@@ -20,7 +20,7 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
     service.band = function(newBand) {
       if (newBand === undefined) {
         return band;
-      } else if (newBand === '2_4Ghz' || newBand === '5Ghz') {
+      } else if (newBand === '2_4' || newBand === '5') {
         band = newBand;
       }
     };
@@ -33,23 +33,10 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
       }
     };
 
-    service.getDomain = function(band) {
-      return domain[band];
-    };
-
-    service.getRange = function() {
-      return range;
-    };
-
     var isSelected = {},
         showAll = true,
-        band = '2_4Ghz',
-        domain = {
-          '2_4Ghz': [-1, 15],
-          '5Ghz': [34, 167]
-        },
-        range = [-100, -30],
-        sliderExtent = [34, 66];
+        band = undefined,
+        sliderExtent = undefined;
 
     var updateSelection = function(settings) {
       isSelected = {};

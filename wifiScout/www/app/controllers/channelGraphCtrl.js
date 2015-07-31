@@ -2,17 +2,22 @@ app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
 'channels', 'setupService', function($scope, channelGraphState, channels,
 setupService) {
 
+  var prefs = {
+    defaultBand: '2_4',
+    defaultSliderExtent: [34, 66],
+    fillAlpha: 0.2,
+    labelPadding: 10,
+    domain2_4: [-1, 15],
+    domain5: [34, 167],
+    range: [-100, -30],
+    updateInterval: 2000,
+    transitionInterval: 1800
+  };
+
   setupService.ready.then(function() {
     $scope.strings = globals.strings;
 
-    var X_DOMAIN_2_4 = channelGraphState.getDomain('2_4Ghz'),
-        X_DOMAIN_5 = channelGraphState.getDomain('5Ghz'),
-        Y_DOMAIN = channelGraphState.getRange(),
-        FILL_ALPHA = 0.2,
-        LABEL_PADDING = 10,
-        UPDATE_INTERVAL = 2000,
-        TRANSITION_INTERVAL = 1800,
-        band = undefined;
+    var band = undefined;
 
     var spanLen = globals.utils.spanLen,
         setAlpha = globals.utils.setAlpha,
@@ -55,9 +60,9 @@ setupService) {
 
       buildPlot();
       buildNav();
-      $scope.setBand(channelGraphState.band());
+      $scope.setBand(channelGraphState.band() || prefs.defaultBand);
 
-      var updateLoop = setInterval(update, UPDATE_INTERVAL)
+      var updateLoop = setInterval(update, prefs.updateInterval)
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
@@ -73,7 +78,6 @@ setupService) {
       updateParabolas('plot', data);
       updateParabolas('navLeft', data);
       updateParabolas('navRight', data);
-
       updateLabels(data);
     };
 
@@ -102,11 +106,11 @@ setupService) {
       scales.plot = {};
 
       scales.plot.x = d3.scale.linear()
-        .domain(X_DOMAIN_2_4)
+        .domain(prefs.domain2_4)
         .range([0, dim.plot.width]);
 
       scales.plot.y = d3.scale.linear()
-        .domain(Y_DOMAIN)
+        .domain(prefs.range)
         .range([dim.plot.height, 0]);
 
       elem.plot.axis = {};
@@ -141,7 +145,7 @@ setupService) {
       scales.nav = {};
 
       scales.nav.y = d3.scale.linear()
-        .domain(Y_DOMAIN)
+        .domain(prefs.range)
         .range([dim.nav.height, 0]);
 
       /* Left Nav */
@@ -153,7 +157,7 @@ setupService) {
       scales.nav.left = {};
 
       scales.nav.left.x = d3.scale.linear()
-        .domain(X_DOMAIN_2_4)
+        .domain(prefs.domain2_4)
         .range([0, dim.nav.left.width]);
 
       elem.nav = {};
@@ -189,7 +193,7 @@ setupService) {
       scales.nav.right = {};
 
       scales.nav.right.x = d3.scale.linear()
-        .domain(X_DOMAIN_5)
+        .domain(prefs.domain5)
         .range([0, dim.nav.right.width]);
 
       elem.nav.right = {};
@@ -212,22 +216,22 @@ setupService) {
       /* Right Nav Viewport */
       elem.nav.right.viewport = d3.svg.brush()
         .x(scales.nav.right.x)
-        .extent(channelGraphState.sliderExtent())
+        .extent(channelGraphState.sliderExtent() || prefs.defaultSliderExtent)
         .on("brushstart", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
         })
         .on("brush", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
-          updatePlotAxisPosition();
-          updatePlotElementPosition();
+          rescalePlotXAxis();
+          repositionPlotElements();
         })
         .on("brushend", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
-          updatePlotAxisPosition();
-          updatePlotElementPosition();
+          rescalePlotXAxis();
+          repositionPlotElements();
         });
 
       viewportExtentLength = spanLen(elem.nav.right.viewport.extent());
@@ -274,18 +278,18 @@ setupService) {
 
     $scope.setBand = function(newBand) {
       if (newBand !== band) {
-        if (newBand ===  '2_4Ghz') {
+        if (newBand ===  '2_4') {
           elem.nav.right.clip.select('#navToggleRight').classed('active', false);
           elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
-        } else if (newBand === '5Ghz') {
+        } else if (newBand === '5') {
           elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
           elem.nav.right.clip.select('#navToggleRight').classed('active', true);
         }
         band = newBand;
 
-        updatePlotAxisScale();
-        updatePlotElementScale();
-        updatePlotElementPosition();
+        resetPlotXAxis();
+        rescalePlotElements();
+        repositionPlotElements();
       }
     };
 
@@ -294,7 +298,7 @@ setupService) {
       channelGraphState.sliderExtent(elem.nav.right.viewport.extent());
     };
 
-    var updatePlotElementPosition = function() {
+    var repositionPlotElements = function() {
       /* Move parabolas */
       elem.plot.clip.selectAll('ellipse')
         .attr('cx', function(d) {
@@ -332,7 +336,7 @@ setupService) {
         .attr('x', scales.nav.right.x(viewport.extent()[0]));
     };
 
-    var updatePlotElementScale = function() {
+    var rescalePlotElements = function() {
       elem.plot.clip.selectAll('ellipse')
         // Assume 20 Mhz width
         .attr('rx', function(d) {
@@ -340,17 +344,17 @@ setupService) {
         });
     };
 
-    var updatePlotAxisScale = function() {
-      updatePlotAxisPosition();
+    var resetPlotXAxis = function() {
+      rescalePlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
       removeNonChannelTicks();
     };
 
-    var updatePlotAxisPosition = function() {
-      if (band === '2_4Ghz') {
-        scales.plot.x.domain(X_DOMAIN_2_4);
-      } else if (band === '5Ghz') {
+    var rescalePlotXAxis = function() {
+      if (band === '2_4') {
+        scales.plot.x.domain(prefs.domain2_4);
+      } else if (band === '5') {
         scales.plot.x.domain(elem.nav.right.viewport.extent());
       }
 
@@ -382,21 +386,21 @@ setupService) {
         })
         .attr('y', scales.plot.y(-100))
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('y', function(d) {
-            return scales.plot.y(d.level) - LABEL_PADDING;
+            return scales.plot.y(d.level) - prefs.labelPadding;
           });
 
       labels
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('y', function(d) {
-            return scales.plot.y(d.level) - LABEL_PADDING;
+            return scales.plot.y(d.level) - prefs.labelPadding;
           });
 
       labels.exit()
       .transition()
-      .duration(TRANSITION_INTERVAL)
+      .duration(prefs.transitionInterval)
         .attr('y', scales.plot.y(-100))
         .remove();
     };
@@ -440,11 +444,11 @@ setupService) {
           return d.color;
         })
         .attr('fill', function(d) {
-          return setAlpha(d.color, FILL_ALPHA);
+          return setAlpha(d.color, prefs.fillAlpha);
         })
         .attr('stroke-width', '2')
           .transition()
-          .duration(TRANSITION_INTERVAL)
+          .duration(prefs.transitionInterval)
             .attr('ry', function(d) {
               return yScale(-100) - yScale(d.level);
             });
@@ -452,7 +456,7 @@ setupService) {
       /* Update existing parabolas */
       parabolas
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('ry', function(d) {
             return yScale(-100) - yScale(d.level);
           });
@@ -460,7 +464,7 @@ setupService) {
       /* Remove parabolas that are no longer bound to data */
       parabolas.exit()
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('ry', 0)
           .remove();
     };

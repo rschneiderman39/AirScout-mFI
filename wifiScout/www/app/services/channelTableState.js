@@ -44,22 +44,8 @@ function(accessPoints, setupService) {
       }
     };
 
-    service.getDomain = function(band) {
-      return domain[band];
-    };
-
-    service.getRange = function() {
-      return range;
-    };
-
     var band = '2_4Ghz',
-        domain = {
-          '2_4Ghz': [-1, 15],
-          '5Ghz': [34, 167]
-        },
-        range = [0, 15],
         sliderExtent = [34, 66];
-
   });
 
   return service;

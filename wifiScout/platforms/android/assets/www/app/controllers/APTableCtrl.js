@@ -2,6 +2,10 @@ app.controller('APTableCtrl', ['$scope', 'accessPoints',
 'globalSettings', 'APTableState', 'setupService', function($scope,
 accessPoints, globalSettings, APTableState, setupService) {
 
+  var prefs = {
+    updateInterval: 1000
+  };
+
   setupService.ready.then(function() {
     $scope.strings = globals.strings;
     $scope.selectedAPData = [];         // The AP objects representing the APs we want to display
@@ -18,11 +22,10 @@ accessPoints, globalSettings, APTableState, setupService) {
       }
     };
 
-    $scope.sortSSID = globals.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.customSSIDSort;
 
     var showAll = true,
-        selectedBSSIDs = [],
-        UPDATE_INTERVAL = 1000;
+        selectedBSSIDs = [];
 
 
     // Update the table whenever filter settings are changed
@@ -78,7 +81,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
       globalSettings.awaitNewSelection('APTable').done(updateSelection);
 
-      var updateLoop = setInterval(update, UPDATE_INTERVAL);
+      var updateLoop = setInterval(update, prefs.updateInterval);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);

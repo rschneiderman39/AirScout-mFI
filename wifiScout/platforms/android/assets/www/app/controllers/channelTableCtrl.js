@@ -1,17 +1,27 @@
 app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 'setupService', function($scope, channelTableState, channels, setupService) {
 
+  var prefs = {
+    defaultBand: '2_4',
+    defaultSliderExtent: [34, 66],
+    fillAlpha: 0.2,
+    labelPadding: 10,
+    labelColor: 'black',
+    barStrokeWidth: 4,
+    barStrokeColor: 'MediumBlue',
+    barFillColor: 'LightBlue',
+    barWidth: 0.8,
+    domain2_4: [-1, 15],
+    domain5 : [34, 167],
+    range : [0, 15],
+    updateInterval: 2000,
+    transitionInterval: 1800
+  };
+
   setupService.ready.then(function() {
     $scope.strings = globals.strings;
 
-    var X_DOMAIN_2_4 = channelTableState.getDomain('2_4Ghz'),
-        X_DOMAIN_5 = channelTableState.getDomain('5Ghz'),
-        Y_DOMAIN = channelTableState.getRange(),
-        FILL_ALPHA = 0.2,
-        LABEL_PADDING = 10,
-        UPDATE_INTERVAL = 4000,
-        TRANSITION_INTERVAL = 3000,
-        band = undefined;
+    var band;
 
     var spanLen = globals.utils.spanLen,
         setAlpha = globals.utils.setAlpha,
@@ -54,9 +64,9 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
       buildPlot();
       buildNav();
-      $scope.setBand(channelTableState.band());
+      $scope.setBand(channelTableState.band() || prefs.defaultBand);
 
-      var updateLoop = setInterval(update, UPDATE_INTERVAL)
+      var updateLoop = setInterval(update, prefs.updateInterval)
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
@@ -69,9 +79,12 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     var update = function() {
       var data = channelTableState.getData();
 
+      rescaleVertically(data);
+
       updateBars('plot', data);
       updateBars('navLeft', data);
       updateBars('navRight', data);
+      updateLabels(data);
     };
 
     var buildPlot = function() {
@@ -99,11 +112,11 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       scales.plot = {};
 
       scales.plot.x = d3.scale.linear()
-        .domain(X_DOMAIN_2_4)
+        .domain(prefs.domain2_4)
         .range([0, dim.plot.width]);
 
       scales.plot.y = d3.scale.linear()
-        .domain(Y_DOMAIN)
+        .domain(prefs.range)
         .range([dim.plot.height, 0]);
 
       elem.plot.axis = {};
@@ -138,7 +151,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       scales.nav = {};
 
       scales.nav.y = d3.scale.linear()
-        .domain(Y_DOMAIN)
+        .domain(prefs.range)
         .range([dim.nav.height, 0]);
 
       /* Left Nav */
@@ -150,7 +163,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       scales.nav.left = {};
 
       scales.nav.left.x = d3.scale.linear()
-        .domain(X_DOMAIN_2_4)
+        .domain(prefs.domain2_4)
         .range([0, dim.nav.left.width]);
 
       elem.nav = {};
@@ -186,7 +199,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       scales.nav.right = {};
 
       scales.nav.right.x = d3.scale.linear()
-        .domain(X_DOMAIN_5)
+        .domain(prefs.domain5)
         .range([0, dim.nav.right.width]);
 
       elem.nav.right = {};
@@ -209,22 +222,22 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       /* Right Nav Viewport */
       elem.nav.right.viewport = d3.svg.brush()
         .x(scales.nav.right.x)
-        .extent(channelTableState.sliderExtent())
+        .extent(channelTableState.sliderExtent() || prefs.defaultSliderExtent)
         .on("brushstart", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
         })
         .on("brush", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
-          updatePlotAxisPosition();
-          updatePlotElementPosition();
+          rescalePlotXAxis();
+          repositionPlotElements();
         })
         .on("brushend", function() {
-          $scope.setBand('5Ghz');
+          $scope.setBand('5');
           updateViewport();
-          updatePlotAxisPosition();
-          updatePlotElementPosition();
+          rescalePlotXAxis();
+          repositionPlotElements();
         });
 
       viewportExtentLength = spanLen(elem.nav.right.viewport.extent());
@@ -271,23 +284,23 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
     $scope.setBand = function(newBand) {
       if (newBand !== band) {
-        if (newBand ===  '2_4Ghz') {
+        if (newBand ===  '2_4') {
           elem.nav.right.clip.select('#navToggleRight').classed('active', false);
           elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
-        } else if (newBand === '5Ghz') {
+        } else if (newBand === '5') {
           elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
           elem.nav.right.clip.select('#navToggleRight').classed('active', true);
         }
         band = newBand;
 
-        updatePlotAxisScale();
-        updatePlotElementScale();
-        updatePlotElementPosition();
+        resetPlotXAxis();
+        rescalePlotElements();
+        repositionPlotElements();
       }
     };
 
     var barWidth = function(scale) {
-      return (scale(1) - scale(0)) * .7;
+      return (scale(1) - scale(0)) * prefs.barWidth;
     };
 
     var storeSettings = function() {
@@ -295,11 +308,17 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       channelTableState.sliderExtent(elem.nav.right.viewport.extent());
     };
 
-    var updatePlotElementPosition = function() {
+    var repositionPlotElements = function() {
       /* Move parabolas */
       elem.plot.clip.selectAll('.bar')
         .attr('x', function(d) {
           return scales.plot.x(d.channel) - barWidth(scales.plot.x) / 2;
+        });
+
+      /* Move labels */
+      elem.plot.clip.selectAll('text')
+        .attr('x', function(d) {
+          return scales.plot.x(d.channel) - this.getBBox().width / 2;
         });
     };
 
@@ -327,7 +346,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .attr('x', scales.nav.right.x(viewport.extent()[0]));
     };
 
-    var updatePlotElementScale = function() {
+    var rescalePlotElements = function() {
       elem.plot.clip.selectAll('.bar')
         // Assume 20 Mhz width
         .attr('width', function(d) {
@@ -335,22 +354,73 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         });
     };
 
-    var updatePlotAxisScale = function() {
-      updatePlotAxisPosition();
+    var resetPlotXAxis = function() {
+      rescalePlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
       removeNonChannelTicks();
     };
 
-    var updatePlotAxisPosition = function() {
-      if (band === '2_4Ghz') {
-        scales.plot.x.domain(X_DOMAIN_2_4);
-      } else if (band === '5Ghz') {
+    var rescalePlotXAxis = function() {
+      if (band === '2_4') {
+        scales.plot.x.domain(prefs.domain2_4);
+      } else if (band === '5') {
         scales.plot.x.domain(elem.nav.right.viewport.extent());
       }
 
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
       removeNonChannelTicks();
+    };
+
+    var rescaleVertically = function(data) {
+      var maxOccupancy = d3.max(data, function(d) {
+        return d.occupancy;
+      });
+
+      var updateElements = false;
+
+      if (maxOccupancy >= scales.plot.y.domain()[1]) {
+        scales.plot.y.domain([0, maxOccupancy * 1.125]);
+        scales.nav.y.domain([0, maxOccupancy * 1.125]);
+        updateElements = true;
+      } else if (maxOccupancy < prefs.range[1] * 0.875) {
+        scales.plot.y.domain(prefs.range);
+        scales.nav.y.domain(prefs.range);
+        updateElements = true;
+      }
+
+      if (updateElements) {
+        elem.plot.container.select('.y.axis').call(elem.plot.axis.y);
+
+        elem.plot.clip.selectAll('.bar')
+          .attr('height', function(d) {
+            return scales.plot.y(0) - scales.plot.y(d.occupancy);
+          })
+          .attr('y', function(d) {
+            return scales.plot.y;
+          });
+
+        elem.plot.clip.selectAll('text')
+          .attr('y', function(d) {
+            return scales.plot.y(d.occupancy) - prefs.labelPadding
+          });
+
+        elem.nav.left.clip.selectAll('.bar')
+          .attr('height', function(d) {
+            return scales.nav.y(0) - scales.nav.y(d.occupancy);
+          })
+          .attr('y', function(d) {
+            return scales.nav.y;
+          });
+
+        elem.nav.right.clip.selectAll('.bar')
+          .attr('height', function(d) {
+            return scales.nav.y(0) - scales.nav.y(d.occupancy);
+          })
+          .attr('y', function(d) {
+            return scales.nav.y;
+          });
+      }
     };
 
     var removeNonChannelTicks = function() {
@@ -391,11 +461,11 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
           return xScale(d.channel) - barWidth(xScale) / 2;
         })
         .attr('y', yScale(0))
-        .attr('fill', '#A3D1FF')
-        .attr('stroke-width', 3)
-        .attr('stroke', 'blue')
+        .attr('fill', prefs.barFillColor)
+        .attr('stroke-width', prefs.barStrokeWidth)
+        .attr('stroke', prefs.barStrokeColor)
           .transition()
-          .duration(TRANSITION_INTERVAL)
+          .duration(prefs.transitionInterval)
             .attr('height', function(d) {
               return yScale(0) - yScale(d.occupancy);
             })
@@ -403,10 +473,9 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
               return yScale(d.occupancy);
             });
 
-
       bars
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('y', function(d) {
             return yScale(d.occupancy);
           })
@@ -416,9 +485,47 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
       bars.exit()
         .transition()
-        .duration(TRANSITION_INTERVAL)
+        .duration(prefs.transitionInterval)
           .attr('y', yScale(0))
           .remove();
+    };
+
+    var updateLabels = function(data) {
+      var labels = elem.plot.clip.selectAll('text')
+        .data(data, function(d) {
+          return d.channel;
+        });
+
+      labels.enter().append('text')
+        .text(function(d) {
+          return d.occupancy;
+        })
+        .attr('fill', prefs.labelColor)
+        .attr('x', function(d) {
+          return scales.plot.x(d.channel) - this.getBBox().width / 2;
+        })
+        .attr('y', scales.plot.y(0))
+        .transition()
+        .duration(prefs.transitionInterval)
+          .attr('y', function(d) {
+            return scales.plot.y(d.occupancy) - prefs.labelPadding;
+          });
+
+      labels
+        .transition()
+        .duration(prefs.transitionInterval)
+          .attr('y', function(d) {
+            return scales.plot.y(d.occupancy) - prefs.labelPadding;
+          })
+          .text(function(d) {
+            return d.occupancy;
+          });
+
+      labels.exit()
+      .transition()
+      .duration(prefs.transitionInterval)
+        .attr('y', scales.plot.y(-100))
+        .remove();
     };
 
     init();

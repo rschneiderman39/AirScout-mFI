@@ -34,7 +34,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
       isSelected = {};
     };
 
-    $scope.sortSSID = globals.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.customSSIDSort;
 
     var view = undefined,
         isSelected = {};

@@ -21,7 +21,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
       return BSSID === timeGraphData.getHighlightedBSSID();
     };
 
-    $scope.sortSSID = globals.utils.hiddenSSIDSort;
+    $scope.sortSSID = globals.utils.customSSIDSort;
 
     var selectedBSSID = "";
 
