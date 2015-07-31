@@ -30,8 +30,6 @@ setupService) {
   };
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
-
     /* Select the band to display.
      *
      * @param {string} newBand - Either '2_4' or '5'
@@ -318,11 +316,13 @@ setupService) {
 
     /* Move plot elements to match a new viewport extent */
     var repositionPlotElements = function() {
+      /* Move parabolas */
       elem.plot.clip.selectAll('ellipse')
         .attr('cx', function(d) {
           return scales.plot.x(d.channel);
         });
 
+      /* Move labels */
       elem.plot.clip.selectAll('text')
         .attr('x', function(d) {
           return scales.plot.x(d.channel) - this.getBBox().width / 2;
