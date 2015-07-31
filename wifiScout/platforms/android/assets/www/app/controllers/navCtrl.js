@@ -33,7 +33,7 @@ function($scope, $state, globalSettings, nzTour, setupService) {
       };
 
       var prefs = {
-        navShowInterval: 2000
+        navShowInterval: 3000
       };
 
       var navTimeout = null,
