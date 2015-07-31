@@ -1,62 +1,62 @@
+/* Controller for the channel graph view. */
 app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
 'channels', 'setupService', function($scope, channelGraphState, channels,
 setupService) {
 
   var prefs = {
-    defaultBand: '2_4',
-    defaultSliderExtent: [34, 66],
-    fillAlpha: 0.2,
-    labelPadding: 10,
-    domain2_4: [-1, 15],
-    domain5: [34, 167],
-    range: [-100, -30],
-    updateInterval: 2000,
-    transitionInterval: 1800
+    defaultBand: '2_4',            // Band shown on first view open ('2_4' or '5')
+    defaultSliderExtent: [34, 66], // 5Ghz nav slider extent on first view open
+    fillAlpha: 0.2,                // Opacity of parabola fill
+    labelPadding: 10,              // Pixels between parabola top and label bottom
+    domain2_4: [-1, 15],           // Range of channels for 2.4 Ghz band (padded so parabolas aren't cut off)
+    domain5: [34, 167],            // Range of channels for 5 Ghz band (padded so parabolas aren't cut off)
+    range: [-100, -30],            // Range of level values shown
+    navPercent: 0.2,               // The portion of the graphic to be occupied by the navigator pane 
+    navLeftPercent: 0.2,           // The portion of the navigator to be occupied by the 2.4 Ghz selector
+    plotMargins: {
+      top: 20,
+      bottom: 20,
+      left: 40,
+      right: 0
+    },                
+    navMargins: {
+      top: 1,
+      bottom: 18,
+      left: 40,
+      right: 0
+    },                 
+    transitionInterval: 1800,      // Parabola and label animation duration
+    updateInterval: 2000
   };
 
   setupService.ready.then(function() {
     $scope.strings = globals.strings;
 
+    /* Current band being displayed ('2_4' or '5'). */
     var band = undefined;
 
     var spanLen = globals.utils.spanLen,
         setAlpha = globals.utils.setAlpha,
         isChannel = channels.isChannel;
 
-    var elem = {}, scales = {};
-
-    var dim = {
-                topPercent: .8,
-                plot: {
-                  margin: {
-                    top: 20,
-                    bottom: 20,
-                    left: 40,
-                    right: 0,
-                  }
-                },
-                nav: {
-                  leftPercent: 0.2,
-                  margin: {
-                    top: 1,
-                    bottom: 18,
-                    left: 40,
-                    right: 0,
-                  }
-                }
-              };
-
+    /* Namespaces for plot elements, scales, and dimensions. */  
+    var elem = {}, scales = {}, dim = {};
+    
     var viewportExtentLength;
-
+  
     var init = function() {
+      dim.plot.margins = prefs.plotMargins;
+      dim.nav.margins = prefs.navMargins;
+      
+      /* Scale to device screen */
       dim.width = globals.format.window.width * 0.95;
       dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.95;
 
       dim.plot.totalWidth = dim.width;
       dim.nav.totalWidth = dim.width;
 
-      dim.plot.totalHeight = dim.height * dim.topPercent;
-      dim.nav.totalHeight = dim.height * (1 - dim.topPercent);
+      dim.plot.totalHeight = dim.height * (1 - prefs.navPercent);
+      dim.nav.totalHeight = dim.height * prefs.navPercent;
 
       buildPlot();
       buildNav();
@@ -64,9 +64,10 @@ setupService) {
 
       var updateLoop = setInterval(update, prefs.updateInterval)
 
+      /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        storeSettings();
+        saveState();
       });
 
       update();
@@ -151,7 +152,7 @@ setupService) {
       /* Left Nav */
       dim.nav.left = {};
 
-      dim.nav.left.width = dim.nav.width * dim.nav.leftPercent;
+      dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
       dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
 
       scales.nav.left = {};
@@ -187,7 +188,7 @@ setupService) {
       /* Right Nav Containers */
       dim.nav.right = {};
 
-      dim.nav.right.width = dim.nav.width * (1 - dim.nav.leftPercent);
+      dim.nav.right.width = dim.nav.width * (1 - prefs.navLeftPercent);
       dim.nav.right.totalWidth = dim.nav.right.width + dim.nav.margin.right;
 
       scales.nav.right = {};
@@ -293,7 +294,7 @@ setupService) {
       }
     };
 
-    var storeSettings = function() {
+    var saveState = function() {
       channelGraphState.band(band);
       channelGraphState.sliderExtent(elem.nav.right.viewport.extent());
     };
