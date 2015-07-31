@@ -2,11 +2,12 @@
 <html>
   <head>
     <link href="css/signalStrength.css" rel="stylesheet" />
+    <script src="scripts/signalStrength.js" />
   </head>
 
   <body>
-    <div id="touch-layer" ng-click="showNav()" ng-controller="signalStrengthCtrl">
-	  	<div class="row-fluid">
+ 		<div class="container-fluid" ng-click="showNav()" ng-controller="signalStrengthCtrl">
+ 			<div class="row">
 				<div id="selectableList" class="col-xs-3">
 					<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
 					<ul class="list-group scrollable-list list">
@@ -18,34 +19,9 @@
 						</span>
 			  	</ul>
 				</div>
-				<div id="speedometer" class="col-xs-9">
-					<div id="chartdiv"></div>
-					<div id="panel" class="col-xs-4 minLevel">
-						<center>{{strings.signalStrength.minLevel}}</center>
-						<div class="panel panel-default padding">
-							<div class="panel-body padding">
-								<center>{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</center>
-							</div>
-						</div>
-					</div>
-					<div id="panel" class="col-xs-4">
-						<center>{{strings.signalStrength.currentLevel}}</center>
-						<div class="panel panel-default padding">
-							<div class="panel-body padding">
-								<center>{{level !== undefined ? level + " dBm" : "---"}}</center>
-							</div>
-						</div>
-					</div>
-					<div id="panel" class="col-xs-4 maxLevel">
-						<center>{{strings.signalStrength.maxLevel}}</center>
-						<div class="panel panel-default padding">
-						 	<div class="panel-body padding">
-								<center>{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</center>
-							</div>
-						</div>
-					</div>
+				<div class="col-xs-8">
+					<div id="power-gauge"></div>
 				</div>
-			</div>
 		</div>
 	</body>
 </html>

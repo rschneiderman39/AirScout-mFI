@@ -35,7 +35,7 @@ globals.setup.tours = function() {
       },
       {
         target: "#navRight",
-        content: globals.strings.channelTable.tour.band5,
+        content: globals.strings.channelTable.tour.band5
       }
     ]
   };

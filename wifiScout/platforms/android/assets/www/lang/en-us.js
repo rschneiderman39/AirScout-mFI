@@ -122,8 +122,12 @@ globals.lang['en-US'] = {
       intro: "This interactive graph displays the observed signal strength of"
           + " each access point over time and is updated every half second.",
 
+<<<<<<< HEAD
       filter: "The filter button allows you to search for, select, or elimate certain"
           + " access points that are displayed on the graph.",
     }
   }
 };
+=======
+})();
+>>>>>>> 748f81ce695691af397909f5c001ac24a0b53cae
