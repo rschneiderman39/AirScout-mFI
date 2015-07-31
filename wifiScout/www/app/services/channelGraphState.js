@@ -25,25 +25,25 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
       }
     };
 
-    service.sliderExtent = function(newExtent) {
+    service.viewportExtent = function(newExtent) {
       if (newExtent === undefined) {
-        return sliderExtent
+        return viewportExtent
       } else if (newExtent instanceof Array && newExtent.length === 2) {
-        sliderExtent = newExtent;
+        viewportExtent = newExtent;
       }
     };
 
     var isSelected = {},
         showAll = true,
         band = undefined,
-        sliderExtent = undefined;
+        viewportExtent = undefined;
 
-    var updateSelection = function(settings) {
+    var updateSelection = function(selection) {
       isSelected = {};
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        isSelected[settings.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
+        isSelected[selection.selectedBSSIDs[i]] = true;
       }
-      showAll = settings.showAll;
+      showAll = selection.showAll;
 
       globalSettings.awaitNewSelection('channelGraph').done(updateSelection);
     };

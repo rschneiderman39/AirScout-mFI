@@ -2,20 +2,33 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 'setupService', function($scope, channelTableState, channels, setupService) {
 
   var prefs = {
-    defaultBand: '2_4',
-    defaultSliderExtent: [34, 66],
-    fillAlpha: 0.2,
-    labelPadding: 10,
-    labelColor: 'black',
+    defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
+    domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
+    domain5 : [34, 167],             // X-scale for 5 Ghz band
+    range : [0, 15],                 // Y-scale for occupancy
+    defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
+    labelPadding: 10,                // Pixels between bar top and label bottom
+    labelColor: 'black',             // Style...
     barStrokeWidth: 4,
     barStrokeColor: 'MediumBlue',
     barFillColor: 'LightBlue',
     barWidth: 0.8,
-    domain2_4: [-1, 15],
-    domain5 : [34, 167],
-    range : [0, 15],
-    updateInterval: 2000,
-    transitionInterval: 1800
+    navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
+    navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
+    plotMargins: {
+      top: 20,
+      bottom: 20,
+      left: 40,
+      right: 0
+    },
+    navMargins: {
+      top: 1,
+      bottom: 18,
+      left: 40,
+      right: 0
+    },
+    transitionInterval: 1800,        // Parabola and label animation time (ms)
+    updateInterval: 2000             // Time between data updates (ms)
   };
 
   setupService.ready.then(function() {
@@ -27,40 +40,11 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         setAlpha = globals.utils.setAlpha,
         isChannel = channels.isChannel;
 
-    var elem = {}, scales = {};
-
-    var dim = {
-                topPercent: .8,
-                plot: {
-                  margin: {
-                    top: 20,
-                    bottom: 20,
-                    left: 40,
-                    right: 0,
-                  }
-                },
-                nav: {
-                  leftPercent: 0.2,
-                  margin: {
-                    top: 1,
-                    bottom: 18,
-                    left: 40,
-                    right: 0,
-                  }
-                }
-              };
-
-    var viewportExtentLength;
+    var elem = {}, scales = {}, dim = {};
 
     var init = function() {
       dim.width = globals.format.window.width * 0.95;
       dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.95;
-
-      dim.plot.totalWidth = dim.width;
-      dim.nav.totalWidth = dim.width;
-
-      dim.plot.totalHeight = dim.height * dim.topPercent;
-      dim.nav.totalHeight = dim.height * (1 - dim.topPercent);
 
       buildPlot();
       buildNav();
@@ -70,7 +54,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        storeSettings();
+        saveState();
       });
 
       update();
@@ -88,18 +72,26 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     };
 
     var buildPlot = function() {
-      /* Plot Container */
-      dim.plot.width = dim.plot.totalWidth - dim.plot.margin.left - dim.plot.margin.right;
+      dim.plot = {};
+
+      /* Dimensions */
+      dim.plot.totalHeight = dim.height * (1 - prefs.navPercent);
+
+      dim.plot.margin = prefs.plotMargins;
+
+      dim.plot.width = dim.width - dim.plot.margin.left - dim.plot.margin.right;
       dim.plot.height = dim.plot.totalHeight - dim.plot.margin.top - dim.plot.margin.bottom;
 
       elem.plot = {};
 
+      /* Container */
       elem.plot.container = d3.select('#plot').classed('chart', true).append('svg')
-        .attr('width', dim.plot.totalWidth)
+        .attr('width', dim.width)
         .attr('height', dim.plot.totalHeight)
         .append('g')
           .attr('transform', 'translate(' + dim.plot.margin.left + ',' + dim.plot.margin.top + ')');
 
+      /* Clip-path */
       elem.plot.clip = elem.plot.container.append('g')
         .attr('clip-path', 'url(#plot-clip)')
 
@@ -108,24 +100,29 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .append('rect')
           .attr({ width: dim.plot.width, height: dim.plot.height });
 
-      /* Plot Axes */
       scales.plot = {};
+      elem.plot.axis = {};
 
+      /* X Axis */
       scales.plot.x = d3.scale.linear()
         .domain(prefs.domain2_4)
         .range([0, dim.plot.width]);
-
-      scales.plot.y = d3.scale.linear()
-        .domain(prefs.range)
-        .range([dim.plot.height, 0]);
-
-      elem.plot.axis = {};
 
       elem.plot.axis.x = d3.svg.axis()
         .scale(scales.plot.x)
         .orient('bottom')
         .ticks(spanLen(scales.plot.x))
         .tickSize(1);
+
+      elem.plot.container.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + dim.plot.height + ')')
+        .call(elem.plot.axis.x);
+
+      /* Y Axis */
+      scales.plot.y = d3.scale.linear()
+        .domain(prefs.range)
+        .range([dim.plot.height, 0]);
 
       elem.plot.axis.y = d3.svg.axis()
         .scale(scales.plot.y)
@@ -134,47 +131,46 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .tickSize(1);
 
       elem.plot.container.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + dim.plot.height + ')')
-        .call(elem.plot.axis.x);
-
-      elem.plot.container.append('g')
         .attr('class', 'y axis')
         .call(elem.plot.axis.y);
     };
 
     var buildNav = function() {
-      /* Find nav dimensions and scales */
-      dim.nav.width = dim.nav.totalWidth - dim.nav.margin.left - dim.nav.margin.right;
+      dim.nav = {};
+
+      /* Dimensions */
+      dim.nav.totalHeight = dim.height * prefs.navPercent;
+
+      dim.nav.margin = prefs.navMargins;
+
+      dim.nav.width = dim.width - dim.nav.margin.left - dim.nav.margin.right;
       dim.nav.height = dim.nav.totalHeight - dim.nav.margin.top - dim.nav.margin.bottom;
 
       scales.nav = {};
 
+      /* Y Scale */
       scales.nav.y = d3.scale.linear()
         .domain(prefs.range)
         .range([dim.nav.height, 0]);
 
-      /* Left Nav */
+      /* 2.4 Ghz Portion */
       dim.nav.left = {};
 
-      dim.nav.left.width = dim.nav.width * dim.nav.leftPercent;
+      /* Dimensions */
+      dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
       dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
-
-      scales.nav.left = {};
-
-      scales.nav.left.x = d3.scale.linear()
-        .domain(prefs.domain2_4)
-        .range([0, dim.nav.left.width]);
 
       elem.nav = {};
       elem.nav.left = {};
 
+      /* Container */
       elem.nav.left.container = d3.select('#navLeft').append('svg')
         .attr('width', dim.nav.left.totalWidth)
         .attr('height', dim.nav.totalHeight)
         .append('g')
           .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
 
+      /* Clip-path */
       elem.nav.left.clip = elem.nav.left.container.append('g')
         .attr('clip-path', 'url(#nav-clip-left)')
 
@@ -184,26 +180,29 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height);
 
-      /* Left Nav Slider */
+      scales.nav.left = {};
+
+      /* 2.4 Ghz selector */
       elem.nav.left.clip.append('rect')
         .attr('id', 'navToggleLeft')
         .attr('width', dim.nav.left.width)
         .attr('height', dim.nav.height)
 
-      /* Right Nav Containers */
+      /* X Scale */
+      scales.nav.left.x = d3.scale.linear()
+        .domain(prefs.domain2_4)
+        .range([0, dim.nav.left.width]);
+
+      /* 5 Ghz Portion */
       dim.nav.right = {};
 
-      dim.nav.right.width = dim.nav.width * (1 - dim.nav.leftPercent);
+      /* Dimensions */
+      dim.nav.right.width = dim.nav.width * (1 - prefs.navLeftPercent);
       dim.nav.right.totalWidth = dim.nav.right.width + dim.nav.margin.right;
-
-      scales.nav.right = {};
-
-      scales.nav.right.x = d3.scale.linear()
-        .domain(prefs.domain5)
-        .range([0, dim.nav.right.width]);
 
       elem.nav.right = {};
 
+      /* Container */
       elem.nav.right.container = d3.select('#navRight').append('svg')
         .attr('width', dim.nav.right.totalWidth)
         .attr('height', dim.nav.totalHeight)
@@ -219,10 +218,17 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .append('rect')
           .attr({ width: dim.nav.right.width, height: dim.nav.height });
 
-      /* Right Nav Viewport */
+      scales.nav.right = {};
+
+      scales.nav.right.x = d3.scale.linear()
+        .domain(prefs.domain5)
+        .range([0, dim.nav.right.width]);
+
+
+      /* Viewport */
       elem.nav.right.viewport = d3.svg.brush()
         .x(scales.nav.right.x)
-        .extent(channelTableState.sliderExtent() || prefs.defaultSliderExtent)
+        .extent(channelTableState.viewportExtent() || prefs.defaultViewportExtent)
         .on("brushstart", function() {
           $scope.setBand('5');
           updateViewport();
@@ -240,22 +246,20 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
           repositionPlotElements();
         });
 
-      viewportExtentLength = spanLen(elem.nav.right.viewport.extent());
-
       elem.nav.right.container.append("g")
         .attr("class", "viewport")
         .call(elem.nav.right.viewport)
           .selectAll("rect")
           .attr("height", dim.nav.height);
 
-      /* Right Nav Slider */
+      /* The slider the user actually sees */
       elem.nav.right.clip.append('rect')
         .attr('id', 'navToggleRight')
         .attr('width', elem.nav.right.container.select('.viewport > .extent').attr('width'))
         .attr('height', dim.nav.height)
         .attr('x', scales.nav.right.x(elem.nav.right.viewport.extent()[0]));
 
-      /* Draw Nav Borders */
+      /* Borders */
       elem.nav.left.container.append('rect')
         .attr('width', dim.nav.left.width - 1)
         .attr('height', dim.nav.height)
@@ -272,13 +276,13 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .attr('fill', 'transparent')
         .attr('pointer-events', 'none');
 
-      /* Draw Nav Labels */
+      /* Labels */
       elem.nav.left.container.append('text')
-        .text(globals.strings.channelTable.label2_4)
+        .text(globals.strings.channelGraph.label2_4)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
 
       elem.nav.right.container.append('text')
-        .text(globals.strings.channelTable.label5)
+        .text(globals.strings.channelGraph.label5)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
     };
 
@@ -303,7 +307,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       return (scale(1) - scale(0)) * prefs.barWidth;
     };
 
-    var storeSettings = function() {
+    var saveState = function() {
       channelTableState.band(band);
       channelTableState.sliderExtent(elem.nav.right.viewport.extent());
     };
@@ -331,13 +335,15 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
           domainMin = scales.nav.right.x.domain()[0],
           domainMax = scales.nav.right.x.domain()[1];
 
-      if (spanLen(viewport.extent()) !== viewportExtentLength) {
-        if (extentMin + viewportExtentLength > domainMax) {
-          viewport.extent([domainMax - viewportExtentLength, domainMax]);
-        } else if (extentMax - viewportExtentLength < domainMin) {
-          viewport.extent([domainMin, domainMin + viewportExtentLength]);
+      var correctLen = spanLen(prefs.defaultViewportExtent);
+
+      if (spanLen(viewport.extent()) !== correctLen) {
+        if (extentMin + correctLen > domainMax) {
+          viewport.extent([domainMax - correctLen, domainMax]);
+        } else if (extentMax - correctLen < domainMin) {
+          viewport.extent([domainMin, domainMin + correctLen]);
         } else {
-          viewport.extent([extentMin, extentMin + viewportExtentLength]);
+          viewport.extent([extentMin, extentMin + correctLen]);
         }
       }
 

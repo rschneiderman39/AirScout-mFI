@@ -36,16 +36,16 @@ function(accessPoints, setupService) {
       }
     };
 
-    service.sliderExtent = function(newExtent) {
+    service.viewportExtent = function(newExtent) {
       if (newExtent === undefined) {
-        return sliderExtent
+        return viewportExtent
       } else if (newExtent instanceof Array && newExtent.length === 2) {
-        sliderExtent = newExtent;
+        viewportExtent = newExtent;
       }
     };
 
     var band = '2_4Ghz',
-        sliderExtent = [34, 66];
+        viewportExtent = [34, 66];
   });
 
   return service;

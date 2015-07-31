@@ -5,10 +5,10 @@ app.factory('APTableState', ['setupService', function(setupService) {
 
   setupService.ready.then(function() {
       var sortPredicate = 'SSID',
-          sortReverse: false;
+          sortReverse = false;
 
       /* Get or set the table sort predicate.
-       * 
+       *
        * @param {string|function} [predicate]: If specified, the new predicate value.
        * @returns {string|function} The current predicate, but only if no arg specified.
        */
@@ -21,7 +21,7 @@ app.factory('APTableState', ['setupService', function(setupService) {
       };
 
       /* Get or set the table sort reverse flag.
-       * 
+       *
        * @param {string|function} [reverse]: If specified, the new reverse flag.
        * @returns {string|function} The current flag, but only if no arg specified.
        */
