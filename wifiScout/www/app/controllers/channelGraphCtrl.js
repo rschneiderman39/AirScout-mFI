@@ -15,14 +15,14 @@ setupService) {
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
     plotMargins: {
       top: 20,
-      bottom: 20,
-      left: 40,
+      bottom: 30,
+      left: 60,
       right: 0
     },
     navMargins: {
       top: 1,
       bottom: 18,
-      left: 40,
+      left: 60,
       right: 0
     },
     transitionInterval: 1800,      // Parabola and label animation time (ms)
@@ -140,6 +140,14 @@ setupService) {
         .attr('transform', 'translate(0,' + dim.plot.height + ')')
         .call(elem.plot.axis.x);
 
+      /* X Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelX)
+        .attr('x', function() {
+          return (dim.plot.width / 2) - (this.getBBox().width / 2);
+        })
+        .attr('y', dim.plot.height + dim.plot.margin.bottom - 1);
+
       /* Y Axis */
       scales.plot.y = d3.scale.linear()
         .domain(prefs.range)
@@ -154,6 +162,13 @@ setupService) {
       elem.plot.container.append('g')
         .attr('class', 'y axis')
         .call(elem.plot.axis.y);
+
+      /* Y Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelY)
+        .attr('transform', function() {
+          return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
+        });
     };
 
     /* Derive navigator dimensions and add elments to DOM */

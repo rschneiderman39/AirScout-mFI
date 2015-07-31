@@ -17,8 +17,8 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
     plotMargins: {
       top: 20,
-      bottom: 20,
-      left: 40,
+      bottom: 30,
+      left: 60,
       right: 0
     },
     navMargins: {
@@ -32,17 +32,39 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
   };
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    /* Select the band to display.
+     *
+     * @param {string} newBand - Either '2_4' or '5'
+     */
+    $scope.setBand = function(newBand) {
+      if (newBand !== band) {
+        if (newBand ===  '2_4') {
+          elem.nav.right.clip.select('#navToggleRight').classed('active', false);
+          elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
+        } else if (newBand === '5') {
+          elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
+          elem.nav.right.clip.select('#navToggleRight').classed('active', true);
+        }
+        band = newBand;
 
+        resetPlotXAxis();
+        rescalePlotElements();
+        repositionPlotElements();
+      }
+    };
+
+    /* Current band being displayed ('2_4' or '5'). */
     var band;
 
     var spanLen = globals.utils.spanLen,
         setAlpha = globals.utils.setAlpha,
         isChannel = channels.isChannel;
 
+    /* Namespaces for plot elements, scales, and dimensions. */
     var elem = {}, scales = {}, dim = {};
 
     var init = function() {
+      /* Scale to device screen */
       dim.width = globals.format.window.width * 0.95;
       dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.95;
 
@@ -52,6 +74,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
       var updateLoop = setInterval(update, prefs.updateInterval)
 
+      /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
         saveState();
@@ -60,10 +83,13 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       update();
     };
 
+    /* Pull in new data and update element height */
     var update = function() {
       var data = channelTableState.getData();
 
-      rescaleVertically(data);
+      rescaleVertically('plot');
+      rescaleVertically('navLeft');
+      rescaleVertically('navRight');
 
       updateBars('plot', data);
       updateBars('navLeft', data);
@@ -71,6 +97,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       updateLabels(data);
     };
 
+    /* Derive plot dimensions and add elements to DOM */
     var buildPlot = function() {
       dim.plot = {};
 
@@ -119,6 +146,14 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .attr('transform', 'translate(0,' + dim.plot.height + ')')
         .call(elem.plot.axis.x);
 
+      /* X Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelX)
+        .attr('x', function() {
+          return (dim.plot.width / 2) - (this.getBBox().width / 2);
+        })
+        .attr('y', dim.plot.height + dim.plot.margin.bottom - 1);
+
       /* Y Axis */
       scales.plot.y = d3.scale.linear()
         .domain(prefs.range)
@@ -133,8 +168,16 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       elem.plot.container.append('g')
         .attr('class', 'y axis')
         .call(elem.plot.axis.y);
+
+      /* Y Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelY)
+        .attr('transform', function() {
+          return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
+        });
     };
 
+    /* Derive navigator dimensions and add elments to DOM */
     var buildNav = function() {
       dim.nav = {};
 
@@ -231,18 +274,18 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .extent(channelTableState.viewportExtent() || prefs.defaultViewportExtent)
         .on("brushstart", function() {
           $scope.setBand('5');
-          updateViewport();
+          repositionViewport();
         })
         .on("brush", function() {
           $scope.setBand('5');
-          updateViewport();
-          rescalePlotXAxis();
+          repositionViewport();
+          repositionPlotXAxis();
           repositionPlotElements();
         })
         .on("brushend", function() {
           $scope.setBand('5');
-          updateViewport();
-          rescalePlotXAxis();
+          repositionViewport();
+          repositionPlotXAxis();
           repositionPlotElements();
         });
 
@@ -286,32 +329,22 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
     };
 
-    $scope.setBand = function(newBand) {
-      if (newBand !== band) {
-        if (newBand ===  '2_4') {
-          elem.nav.right.clip.select('#navToggleRight').classed('active', false);
-          elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
-        } else if (newBand === '5') {
-          elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
-          elem.nav.right.clip.select('#navToggleRight').classed('active', true);
-        }
-        band = newBand;
-
-        resetPlotXAxis();
-        rescalePlotElements();
-        repositionPlotElements();
-      }
-    };
-
+    /* Get the correct bar width, in pixels, for the desired scale
+     *
+     * @param {d3.scale} scale - The desired scale.
+     * @returns {number} - The correct bar width (px)
+     */
     var barWidth = function(scale) {
       return (scale(1) - scale(0)) * prefs.barWidth;
     };
 
+    /* Store selected band and viewport location */
     var saveState = function() {
       channelTableState.band(band);
-      channelTableState.sliderExtent(elem.nav.right.viewport.extent());
+      channelTableState.viewportExtent(elem.nav.right.viewport.extent());
     };
 
+    /* Move plot elements to match a new viewport extent */
     var repositionPlotElements = function() {
       /* Move parabolas */
       elem.plot.clip.selectAll('.bar')
@@ -326,10 +359,16 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         });
     };
 
-    var updateViewport = function() {
+    /* Move the visible slider to match a new viewport extent */
+    var repositionViewport = function() {
       var viewport = elem.nav.right.viewport;
 
-      /* Lock the extent of the viewport */
+      /* Since d3 doesn't provide a good way to prevent
+         brush resizing, we need to manually correct the
+         viewport extent in order for it to behave like a slider.
+         We also need to make it impossible for the slider
+         to leave frame.
+      */
       var extentMin = viewport.extent()[0],
           extentMax = viewport.extent()[1],
           domainMin = scales.nav.right.x.domain()[0],
@@ -339,19 +378,23 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
       if (spanLen(viewport.extent()) !== correctLen) {
         if (extentMin + correctLen > domainMax) {
+          /* Prevent slider from leaving frame to the right */
           viewport.extent([domainMax - correctLen, domainMax]);
         } else if (extentMax - correctLen < domainMin) {
+          /* Prevent slider from leaving frame to the left */
           viewport.extent([domainMin, domainMin + correctLen]);
         } else {
+          /* Otherwise, simply correct the size */
           viewport.extent([extentMin, extentMin + correctLen]);
         }
       }
 
-      /* Move our custom right slider to match the viewport extent */
+      /* Move visible slider to match new viewport extent */
       elem.nav.right.clip.select('#navToggleRight')
         .attr('x', scales.nav.right.x(viewport.extent()[0]));
     };
 
+    /* Correct parabola width to account for band change */
     var rescalePlotElements = function() {
       elem.plot.clip.selectAll('.bar')
         // Assume 20 Mhz width
@@ -360,14 +403,16 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         });
     };
 
+    /* Correct X axis to account for band change */
     var resetPlotXAxis = function() {
-      rescalePlotXAxis();
+      repositionPlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
       removeNonChannelTicks();
     };
 
-    var rescalePlotXAxis = function() {
+    /* "Translate" (really a rescale) x axis to account for a new viewport extent */
+    var repositionPlotXAxis = function() {
       if (band === '2_4') {
         scales.plot.x.domain(prefs.domain2_4);
       } else if (band === '5') {
@@ -378,75 +423,77 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       removeNonChannelTicks();
     };
 
-    var rescaleVertically = function(data) {
-      var maxOccupancy = d3.max(data, function(d) {
+    /* Rescale the Y axis to bring bars which have left frame back into view */
+    var rescaleVertically = function(section) {
+      var container, axis, clip, yScale;
+
+      if (section === 'plot') {
+        container = elem.plot.container;
+        axis = elem.plot.axis.y;
+        clip = elem.plot.clip;
+        yScale = scales.plot.y;
+      } else if (section === 'navLeft') {
+        clip = elem.nav.left.clip;
+        yScale = scales.nav.y;
+      } else if (section === 'navRight') {
+        clip = elem.nav.right.clip;
+        yScale = scales.nav.y;
+      }
+
+      var maxOccupancy = d3.max(clip.selectAll('.bar').data(), function(d) {
         return d.occupancy;
       });
 
       var updateElements = false;
 
-      if (maxOccupancy >= scales.plot.y.domain()[1]) {
-        scales.plot.y.domain([0, maxOccupancy * 1.125]);
-        scales.nav.y.domain([0, maxOccupancy * 1.125]);
+      if (maxOccupancy >= yScale.domain()[1]) {
+        yScale.domain([0, maxOccupancy * 1.125]);
         updateElements = true;
       } else if (maxOccupancy < prefs.range[1] * 0.875) {
-        scales.plot.y.domain(prefs.range);
-        scales.nav.y.domain(prefs.range);
+        yScale.domain(prefs.range);
         updateElements = true;
       }
 
       if (updateElements) {
-        elem.plot.container.select('.y.axis').call(elem.plot.axis.y);
+        if (container && axis) {
+          container.select('.y.axis').call(axis);
+        }
 
-        elem.plot.clip.selectAll('.bar')
+        clip.selectAll('.bar')
           .attr('height', function(d) {
-            return scales.plot.y(0) - scales.plot.y(d.occupancy);
+            return yScale(0) - yScale(d.occupancy);
           })
           .attr('y', function(d) {
-            return scales.plot.y;
+            return yScale(d.occupancy);
           });
 
-        elem.plot.clip.selectAll('text')
+        clip.selectAll('text')
           .attr('y', function(d) {
-            return scales.plot.y(d.occupancy) - prefs.labelPadding
-          });
-
-        elem.nav.left.clip.selectAll('.bar')
-          .attr('height', function(d) {
-            return scales.nav.y(0) - scales.nav.y(d.occupancy);
-          })
-          .attr('y', function(d) {
-            return scales.nav.y;
-          });
-
-        elem.nav.right.clip.selectAll('.bar')
-          .attr('height', function(d) {
-            return scales.nav.y(0) - scales.nav.y(d.occupancy);
-          })
-          .attr('y', function(d) {
-            return scales.nav.y;
+            return yScale(d.occupancy) - prefs.labelPadding
           });
       }
     };
 
+    /* Remove tick marks from X axis which don't correspond
+       to a valid channel */
     var removeNonChannelTicks = function() {
       elem.plot.container.selectAll('.x.axis > .tick')
         .filter(function (d) {return ! isChannel(d.toString());})
           .remove();
     };
 
-    var updateBars = function(view, data) {
+    var updateBars = function(section, data) {
       var xScale, yScale, clip;
 
-      if (view === 'plot') {
+      if (section === 'plot') {
         xScale = scales.plot.x;
         yScale = scales.plot.y;
         clip = elem.plot.clip;
-      } else if (view === 'navLeft') {
+      } else if (section === 'navLeft') {
         xScale = scales.nav.left.x;
         yScale = scales.nav.y;
         clip = elem.nav.left.clip;
-      } else if (view === 'navRight') {
+      } else if (section === 'navRight') {
         xScale = scales.nav.right.x;
         yScale = scales.nav.y;
         clip = elem.nav.right.clip;

@@ -31,7 +31,7 @@ function(accessPoints, setupService) {
     service.band = function(newBand) {
       if (newBand === undefined) {
         return band;
-      } else if (newBand === '2_4Ghz' || newBand === '5Ghz') {
+      } else if (newBand === '2_4' || newBand === '5') {
         band = newBand;
       }
     };
@@ -44,8 +44,8 @@ function(accessPoints, setupService) {
       }
     };
 
-    var band = '2_4Ghz',
-        viewportExtent = [34, 66];
+    var band = undefined,
+        viewportExtent = undefined;
   });
 
   return service;

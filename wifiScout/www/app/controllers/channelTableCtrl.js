@@ -17,8 +17,8 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
     plotMargins: {
       top: 20,
-      bottom: 20,
-      left: 40,
+      bottom: 30,
+      left: 60,
       right: 0
     },
     navMargins: {
@@ -87,7 +87,9 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     var update = function() {
       var data = channelTableState.getData();
 
-      rescaleVertically(data);
+      rescaleVertically('plot');
+      rescaleVertically('navLeft');
+      rescaleVertically('navRight');
 
       updateBars('plot', data);
       updateBars('navLeft', data);
@@ -144,6 +146,14 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
         .attr('transform', 'translate(0,' + dim.plot.height + ')')
         .call(elem.plot.axis.x);
 
+      /* X Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelX)
+        .attr('x', function() {
+          return (dim.plot.width / 2) - (this.getBBox().width / 2);
+        })
+        .attr('y', dim.plot.height + dim.plot.margin.bottom - 1);
+
       /* Y Axis */
       scales.plot.y = d3.scale.linear()
         .domain(prefs.range)
@@ -158,6 +168,13 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       elem.plot.container.append('g')
         .attr('class', 'y axis')
         .call(elem.plot.axis.y);
+
+      /* Y Label */
+      elem.plot.container.append('text')
+        .text(globals.strings.channelGraph.labelY)
+        .attr('transform', function() {
+          return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
+        });
     };
 
     /* Derive navigator dimensions and add elments to DOM */
@@ -324,7 +341,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     /* Store selected band and viewport location */
     var saveState = function() {
       channelTableState.band(band);
-      channelTableState.sliderExtent(elem.nav.right.viewport.extent());
+      channelTableState.viewportExtent(elem.nav.right.viewport.extent());
     };
 
     /* Move plot elements to match a new viewport extent */
@@ -406,53 +423,53 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       removeNonChannelTicks();
     };
 
-    var rescaleVertically = function(data) {
-      var maxOccupancy = d3.max(data, function(d) {
+    /* Rescale the Y axis to bring bars which have left frame back into view */
+    var rescaleVertically = function(section) {
+      var container, axis, clip, yScale;
+
+      if (section === 'plot') {
+        container = elem.plot.container;
+        axis = elem.plot.axis.y;
+        clip = elem.plot.clip;
+        yScale = scales.plot.y;
+      } else if (section === 'navLeft') {
+        clip = elem.nav.left.clip;
+        yScale = scales.nav.y;
+      } else if (section === 'navRight') {
+        clip = elem.nav.right.clip;
+        yScale = scales.nav.y;
+      }
+
+      var maxOccupancy = d3.max(clip.selectAll('.bar').data(), function(d) {
         return d.occupancy;
       });
 
       var updateElements = false;
 
-      if (maxOccupancy >= scales.plot.y.domain()[1]) {
-        scales.plot.y.domain([0, maxOccupancy * 1.125]);
-        scales.nav.y.domain([0, maxOccupancy * 1.125]);
+      if (maxOccupancy >= yScale.domain()[1]) {
+        yScale.domain([0, maxOccupancy * 1.125]);
         updateElements = true;
       } else if (maxOccupancy < prefs.range[1] * 0.875) {
-        scales.plot.y.domain(prefs.range);
-        scales.nav.y.domain(prefs.range);
+        yScale.domain(prefs.range);
         updateElements = true;
       }
 
       if (updateElements) {
-        elem.plot.container.select('.y.axis').call(elem.plot.axis.y);
+        if (container && axis) {
+          container.select('.y.axis').call(axis);
+        }
 
-        elem.plot.clip.selectAll('.bar')
+        clip.selectAll('.bar')
           .attr('height', function(d) {
-            return scales.plot.y(0) - scales.plot.y(d.occupancy);
+            return yScale(0) - yScale(d.occupancy);
           })
           .attr('y', function(d) {
-            return scales.plot.y;
+            return yScale(d.occupancy);
           });
 
-        elem.plot.clip.selectAll('text')
+        clip.selectAll('text')
           .attr('y', function(d) {
-            return scales.plot.y(d.occupancy) - prefs.labelPadding
-          });
-
-        elem.nav.left.clip.selectAll('.bar')
-          .attr('height', function(d) {
-            return scales.nav.y(0) - scales.nav.y(d.occupancy);
-          })
-          .attr('y', function(d) {
-            return scales.nav.y;
-          });
-
-        elem.nav.right.clip.selectAll('.bar')
-          .attr('height', function(d) {
-            return scales.nav.y(0) - scales.nav.y(d.occupancy);
-          })
-          .attr('y', function(d) {
-            return scales.nav.y;
+            return yScale(d.occupancy) - prefs.labelPadding
           });
       }
     };
@@ -465,18 +482,18 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
           .remove();
     };
 
-    var updateBars = function(view, data) {
+    var updateBars = function(section, data) {
       var xScale, yScale, clip;
 
-      if (view === 'plot') {
+      if (section === 'plot') {
         xScale = scales.plot.x;
         yScale = scales.plot.y;
         clip = elem.plot.clip;
-      } else if (view === 'navLeft') {
+      } else if (section === 'navLeft') {
         xScale = scales.nav.left.x;
         yScale = scales.nav.y;
         clip = elem.nav.left.clip;
-      } else if (view === 'navRight') {
+      } else if (section === 'navRight') {
         xScale = scales.nav.right.x;
         yScale = scales.nav.y;
         clip = elem.nav.right.clip;
