@@ -3,34 +3,22 @@ app.factory('channels', ['setupService', function(setupService) {
   var service = {};
 
   setupService.ready.then(function() {
-    var freqChannelMap = {},
-        isChannel = {};
+    var isAllowableChannel = {};
 
     service.freqToChannel = function(freq) {
-      return freqChannelMap[freq];
+      if (freq >= 2000 && freq <= 2484 ) {
+        return (freq - 2407) / 5;
+      } else if (freq >= 5035 && freq <= 5825) {
+        return (freq - 5000) / 5;
+      }
     };
 
-    service.isChannel = function(channel) {
-      return isChannel[channel];
+    service.isAllowableChannel = function(channel) {
+      return isAllowableChannel[channel];
     };
 
     var init = function() {
-      for (var i = 1; i <= 14; ++i) {
-        freqChannelMap[2407 + 5*i] = i;
-      }
-      for (var i = 36; i <= 64; i += 4) {
-        freqChannelMap[5000 + 5*i] = i;
-      }
-      for (var i = 100; i <= 140; i += 4) {
-        freqChannelMap[5000 + 5*i] = i;
-      }
-      for (var i = 149; i <= 165; i += 4) {
-        freqChannelMap[5000 + 5*i] = i;
-      }
-
-      for (var freq in freqChannelMap) {
-        isChannel[freqChannelMap[freq]] = true;
-      }
+      isAllowableChannel = globals.channels[globals.locale] || globals.defaults.channels;
     };
 
     init();

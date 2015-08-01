@@ -9,8 +9,8 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
     labelPadding: 10,                // Pixels between bar top and label bottom
     labelColor: 'black',             // Style...
-    barStrokeWidth: 4,
-    barStrokeColor: 'MediumBlue',
+    barStrokeWidth: 0,
+    barStrokeColor: 'none',
     barFillColor: 'LightBlue',
     barWidth: 0.8,
     navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
