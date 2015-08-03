@@ -5,7 +5,7 @@ angular.module('setup', [])
 
   this.ready = setup.promise;
 
-  angular.element($document)[0].addEventListener('setupdone', function() {
+  angular.element($document)[0].addEventListener(events.setupDone, function() {
     setup.resolve(null);
   });
 

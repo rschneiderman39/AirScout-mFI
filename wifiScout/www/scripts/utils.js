@@ -13,7 +13,7 @@ utils.destroy = function(obj) {
   delete obj;
 };
 
-service.freqToChannel = function(freq) {
+utils.freqToChannel = function(freq) {
   if (freq >= 2000 && freq <= 2484 ) {
     return (freq - 2407) / 5;
   } else if (freq >= 5035 && freq <= 5825) {

@@ -7,10 +7,12 @@ setupService) {
     defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
     domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
     domain5: [34, 167],              // X-scale for 5 Ghz band
-    range: [-100, -30],              // Y-scale for level
+    range: [constants.noSignal, constants.maxSignal],              // Y-scale for level
     defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
     fillAlpha: 0.2,                  // Opacity of parabola fill
     labelPadding: 10,                // Pixels between parabola top and label bottom
+    disallowedChannelOpacity: 0.35,
+    disallowedChannelColor: 'black',
     navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
     plotMargins: {
@@ -393,7 +395,7 @@ setupService) {
       repositionPlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
-      removeNonChannelTicks();
+      removeDisallowedChannels();
     };
 
     /* "Translate" x axis to account for a new viewport extent */
@@ -405,15 +407,24 @@ setupService) {
       }
 
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
-      removeNonChannelTicks();
+      removeDisallowedChannels();
     };
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    var removeNonChannelTicks = function() {
+    var removeDisallowedChannels = function() {
       elem.plot.container.selectAll('.x.axis > .tick')
-        .filter(function (d) {return ! isAllowableChannel(d.toString());})
+        .filter(function(d) {
+          return isAllowableChannel(d) === undefined;
+        })
           .remove();
+
+      elem.plot.container.selectAll('.x.axis > .tick')
+        .filter(function(d) {
+          return isAllowableChannel(d) === false;
+        })
+          .style('opacity', prefs.disallowedChannelOpacity)
+          .attr('fill', prefs.disallowedChannelColor);
     };
 
     /* Update labels to account for new data.
@@ -438,7 +449,7 @@ setupService) {
         .attr('x', function(d) {
           return scales.plot.x(d.channel) - this.getBBox().width / 2;
         })
-        .attr('y', scales.plot.y(-100))
+        .attr('y', scales.plot.y(constants.noSignal))
         .transition()
         .duration(prefs.transitionInterval)
           .attr('y', function(d) {
@@ -457,7 +468,7 @@ setupService) {
       labels.exit()
       .transition()
       .duration(prefs.transitionInterval)
-        .attr('y', scales.plot.y(-100))
+        .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
 
@@ -497,7 +508,7 @@ setupService) {
         .attr('cx', function(d) {
           return xScale(d.channel);
         })
-        .attr('cy', yScale(-100))
+        .attr('cy', yScale(constants.noSignal))
         // Assume 20 Mhz width
         .attr('rx', function(d) {
           return (xScale(d.channel) - xScale(d.channel - 1)) * 2;
@@ -513,7 +524,7 @@ setupService) {
           .transition()
           .duration(prefs.transitionInterval)
             .attr('ry', function(d) {
-              return yScale(-100) - yScale(d.level);
+              return yScale(constants.noSignal) - yScale(d.level);
             });
 
       /* Update existing parabolas */
@@ -521,7 +532,7 @@ setupService) {
         .transition()
         .duration(prefs.transitionInterval)
           .attr('ry', function(d) {
-            return yScale(-100) - yScale(d.level);
+            return yScale(constants.noSignal) - yScale(d.level);
           });
 
       /* Remove parabolas that are no longer bound to data */

@@ -11,9 +11,9 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
 
     $scope.APData = [];
     $scope.isDuplicateSSID = {};
-    $scope.level = -100;
-    $scope.minLevel = -100;
-    $scope.maxLevel = -100;
+    $scope.level = constants.noSignal;
+    $scope.minLevel = constants.noSignal;
+    $scope.maxLevel = constants.noSignal;
 
     $scope.isSelected = function(ap) {
       if (typeof ap.BSSID !== 'undefined') {
@@ -66,9 +66,9 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
         gauge.update('minValue', $scope.minLevel);
         gauge.update('maxValue', $scope.maxLevel);
       } else {
-        $scope.level = -100;
-        $scope.minLevel = -100;
-        $scope.maxLevel = -100;
+        $scope.level = constants.noSignal;
+        $scope.minLevel = constants.noSignal;
+        $scope.maxLevel = constants.noSignal;
       }
     };
 
@@ -271,7 +271,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
             .attr("d","M 0 0 L 10 0 L 5 10 z")
             .attr("fill", "#000")
             .attr('transform', function() {
-              var ratio = scale(-100);
+              var ratio = scale(constants.noSignal);
               var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
               return 'rotate(' +newAngle +') translate(0,' + (config.arrowInset - r) +')';
             });
@@ -283,14 +283,14 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
             .attr("d","M 0 0 L 10 0 L 5 10 z")
             .attr("fill", "#000")
             .attr('transform', function() {
-              var ratio = scale(-100);
+              var ratio = scale(constants.noSignal);
               var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
               return 'rotate(' +newAngle +') translate(0,' + (config.arrowInset - r) +')';
             });
 
-    		update('pointer', newValue === undefined ? -100 : newValue);
-        update('minValue', newValue === undefined ? -100 : newValue);
-        update('maxValue', newValue === undefined ? -100 : newValue);
+    		update('pointer', newValue === undefined ? constants.noSignal : newValue);
+        update('minValue', newValue === undefined ? constants.noSignal : newValue);
+        update('maxValue', newValue === undefined ? constants.noSignal : newValue);
     	}
     	gauge.render = render;
 
@@ -329,8 +329,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
     		clipWidth: 400,
     		clipHeight: 400,
     		ringWidth: 40,
-        minValue: -100,
-    		maxValue: -30,
+        minValue: constants.noSignal,
+    		maxValue: constants.maxSignal,
     		transitionMs: 900,
     	});
     	gauge.render();

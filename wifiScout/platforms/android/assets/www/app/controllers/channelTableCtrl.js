@@ -1,5 +1,5 @@
-app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
-'setupService', function($scope, channelTableState, channels, setupService) {
+app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelChecker',
+'setupService', function($scope, channelTableState, channelChecker, setupService) {
 
   var prefs = {
     defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
@@ -11,7 +11,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
     labelColor: 'black',             // Style...
     barStrokeWidth: 0,
     barStrokeColor: 'none',
-    barFillColor: 'LightBlue',
+    barFillColor: '#66CCFF',
     barWidth: 0.8,
     navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
@@ -58,7 +58,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
     var spanLen = utils.spanLen,
         setAlpha = utils.setAlpha,
-        isChannel = channels.isChannel;
+        isAllowableChannel = channelChecker.isAllowableChannel;
 
     /* Namespaces for plot elements, scales, and dimensions. */
     var elem = {}, scales = {}, dim = {};
@@ -408,7 +408,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       repositionPlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
-      removeNonChannelTicks();
+      removeDisallowedChannels();
     };
 
     /* "Translate" (really a rescale) x axis to account for a new viewport extent */
@@ -420,7 +420,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       }
 
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
-      removeNonChannelTicks();
+      removeDisallowedChannels();
     };
 
     /* Rescale the Y axis to bring bars which have left frame back into view */
@@ -476,9 +476,9 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    var removeNonChannelTicks = function() {
+    var removeDisallowedChannelsChannelTicks = function() {
       elem.plot.container.selectAll('.x.axis > .tick')
-        .filter(function (d) {return ! isChannel(d.toString());})
+        .filter(function (d) {return ! isAllowableChannel(d.toString());})
           .remove();
     };
 
@@ -577,7 +577,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channels',
       labels.exit()
       .transition()
       .duration(prefs.transitionInterval)
-        .attr('y', scales.plot.y(-100))
+        .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
 

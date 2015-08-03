@@ -165,7 +165,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
         if (AP) {
           datasets[BSSID].line.append(curTime, AP.level);
         } else {
-          datasets[BSSID].line.append(curTime, -100);
+          datasets[BSSID].line.append(curTime, constants.noSignal);
         }
       }
 
@@ -187,8 +187,8 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
     var init = function() {
       plot = new SmoothieChart(
         {
-          minValue: -100,
-          maxValue: -30,
+          minValue: constants.noSignal,
+          maxValue: constants.maxSignal,
           millisPerPixel: 60,
           interpolation: 'linear',
           horizontalLines:

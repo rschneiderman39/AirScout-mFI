@@ -1,7 +1,7 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-app.factory('accessPoints', ['networkData', 'channels', 'globalSettings', 'setupService',
-function(networkData, channels, globalSettings, setupService) {
+app.factory('accessPoints', ['networkData', 'globalSettings', 'setupService',
+function(networkData, globalSettings, setupService) {
 
   var prefs = {
     updateInterval: 1000
@@ -62,7 +62,7 @@ function(networkData, channels, globalSettings, setupService) {
 
     var appendChannels = function(data) {
       for (var i = 0; i < data.length; ++i) {
-        data[i].channel = channels.freqToChannel(data[i].frequency);
+        data[i].channel = utils.freqToChannel(data[i].frequency);
       }
       return data;
     };

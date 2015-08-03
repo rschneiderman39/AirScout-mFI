@@ -4,7 +4,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
   var prefs = {
     updateInterval: 1000
   };
-  
+
   setupService.ready.then(function() {
     $scope.strings = strings;
 

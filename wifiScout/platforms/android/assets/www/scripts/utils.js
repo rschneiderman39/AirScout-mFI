@@ -1,8 +1,6 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof utils === 'undefined') {
+  utils = {};
 }
-
-utils = {};
 
 utils.deepCopy = function(object) {
   return JSON.parse(JSON.stringify(object));
@@ -13,6 +11,14 @@ utils.destroy = function(obj) {
     if (isNaN(parseInt(key))) destroy(obj[key]);
   }
   delete obj;
+};
+
+utils.freqToChannel = function(freq) {
+  if (freq >= 2000 && freq <= 2484 ) {
+    return (freq - 2407) / 5;
+  } else if (freq >= 5035 && freq <= 5825) {
+    return (freq - 5000) / 5;
+  }
 };
 
 utils.getRandomColor = function() {

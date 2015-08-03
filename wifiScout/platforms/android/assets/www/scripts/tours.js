@@ -1,13 +1,11 @@
-if (typeof globals === 'undefined') {
-  globals = {};
-}
-
 if (typeof setup === 'undefined') {
   setup = {};
 }
 
 setup.tours = function() {
-  tours = {};
+  if (typeof tours === 'undefined') {
+    tours = {};
+  }
 
   tours.channelTable = {
     config: {

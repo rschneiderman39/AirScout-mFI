@@ -1,11 +1,10 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof defaults === 'undefined') {
+  defaults = {};
 }
-
-defaults = {};
 
 defaults.startingView = 'settings';
 defaults.globalSelection = false,
 defaults.detectHidden = false;
-defaults.lang = 'en-US';
+defaults.language = 'en';
+defaults.region = 'US';
 defaults.filterableViews = ['channelGraph', 'timeGraph', 'APTable'];

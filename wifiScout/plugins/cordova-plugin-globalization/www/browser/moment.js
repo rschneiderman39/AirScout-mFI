@@ -3367,7 +3367,7 @@
     function weekdaysCaseReplace(m, format) {
         var weekdays = {
             'nominative': 'нядзеля_панядзелак_аўторак_серада_чацвер_пятніца_субота'.split('_'),
-            'accusative': 'нядзелю_панядзелак_аўторак_сераду_чацвер_пятніцу_суботу'.split('_')
+            'accusative': 'нядзелю_панядзелак_аўторак_сераду_чацвер_пятніцу_субот��'.split('_')
         },
 
         nounCase = (/\[ ?[Вв] ?(?:мінулую|наступную)? ?\] ?dddd/).test(format) ?
@@ -4214,7 +4214,7 @@
     return moment.defineLocale('cv', {
         months : 'кăрлач_нарăс_пуш_ака_май_çĕртме_утă_çурла_авăн_юпа_чӳк_раштав'.split('_'),
         monthsShort : 'кăр_нар_пуш_ака_май_çĕр_утă_çур_ав_юпа_чӳк_раш'.split('_'),
-        weekdays : 'вырсарникун_тунтикун_ытларикун_юнкун_кĕçнерникун_эрнекун_шăматкун'.split('_'),
+        weekdays : 'вырса��никун_тунтикун_ытларикун_юнкун_кĕçнерникун_эрнекун_шăматкун'.split('_'),
         weekdaysShort : 'выр_тун_ытл_юн_кĕç_эрн_шăм'.split('_'),
         weekdaysMin : 'вр_тн_ыт_юн_кç_эр_шм'.split('_'),
         longDateFormat : {
@@ -6739,7 +6739,7 @@
         'mm': 'minūti_minūtes_minūte_minūtes',
         'hh': 'stundu_stundas_stunda_stundas',
         'dd': 'dienu_dienas_diena_dienas',
-        'MM': 'mēnesi_mēnešus_mēnesis_mēneši',
+        'MM': 'mēnesi_mēnešus_mēnesis_m��neši',
         'yy': 'gadu_gadus_gads_gadi'
     };
 
@@ -8642,7 +8642,7 @@
             sameDay : '[วันนี้ เวลา] LT',
             nextDay : '[พรุ่งนี้ เวลา] LT',
             nextWeek : 'dddd[หน้า เวลา] LT',
-            lastDay : '[เมื่อวานนี้ เวลา] LT',
+            lastDay : '[เมื่อวานนี้ ���วลา] LT',
             lastWeek : '[วัน]dddd[ที่แล้ว เวลา] LT',
             sameElse : 'L'
         },

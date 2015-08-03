@@ -27,7 +27,7 @@ and must not be misrepresented as being the original software.
 /********************************************************************
 	created:	2006-01-28
 	filename: 	tokenizer.cpp
-	author:		Jörg Wiedenmann
+	author:		Jï¿½rg Wiedenmann
 	
 	purpose:	A tokenizer function which provides a very
 				customizable way of breaking up strings.
