@@ -1,6 +1,8 @@
 .table-striped tbody {
   position: fixed !important;
   overflow-y: scroll;
+  margin-top: 0px !important;
+  height: 75vh;
 }
 
 a:hover {

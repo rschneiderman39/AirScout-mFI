@@ -80,7 +80,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
         saveState();
       });
 
-      update();
+      //update();
     };
 
     /* Pull in new data and update element height */
