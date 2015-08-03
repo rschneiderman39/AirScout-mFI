@@ -71,7 +71,7 @@ function(networkData, channels, globalSettings, setupService) {
       for (var i = 0; i < data.length; ++i) {
         var lineColor = lineColors[data[i].BSSID];
         if (lineColor === undefined) {
-          lineColor = globals.utils.getRandomColor();
+          lineColor = utils.getRandomColor();
           lineColors[data[i].BSSID] = lineColor;
         }
         data[i].color = lineColor;

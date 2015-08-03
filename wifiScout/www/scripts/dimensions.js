@@ -1,8 +1,6 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof dimensions === 'undefined') {
+  dimensions = {};
 }
-
-dimensions = {};
 
 dimensions.window = {
   width: $(window).width(),

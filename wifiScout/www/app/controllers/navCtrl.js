@@ -6,20 +6,20 @@ function($scope, $state, globalSettings, nzTour, setupService) {
   };
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
 
     $scope.showNav = function() {
       clearTimeout(navTimeout);
       var navBar = $('#nav-bar');
       navBar.css('bottom', '0px');
       navTimeout = setTimeout(function() {
-        navBar.css('bottom', globals.format.navBar.bottom);
+        navBar.css('bottom', dimensions.navBar.bottom);
       }, prefs.navShowInterval);
     };
 
     $scope.setView = function(view) {
-      if (globals.utils.isView(view)) {
-        document.getElementById('view-title').innerHTML = globals.strings.viewTitles[view];
+      if (utils.isView(view)) {
+        document.getElementById('view-title').innerHTML = strings.viewTitles[view];
         $state.go(view);
       }
     };
@@ -33,11 +33,11 @@ function($scope, $state, globalSettings, nzTour, setupService) {
     };
 
     $scope.startTour = function() {
-      nzTour.start(globals.tours[$state.current.name]);
+      nzTour.start(tours[$state.current.name]);
     };
 
     var navTimeout = null,
-        filterableViews = globals.defaults.filterableViews;
+        filterableViews = defaults.filterableViews;
 
     var init = function() {
       $scope.setView(globalSettings.startingView());

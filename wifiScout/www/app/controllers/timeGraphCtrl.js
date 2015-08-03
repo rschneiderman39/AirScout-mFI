@@ -2,7 +2,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
 'setupService', function($scope, timeGraphData, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
     $scope.legendData = undefined;
     $scope.isDuplicateSSID = {};
 
@@ -21,7 +21,7 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
       return BSSID === timeGraphData.getHighlightedBSSID();
     };
 
-    $scope.sortSSID = globals.utils.customSSIDSort;
+    $scope.sortSSID = utils.customSSIDSort;
 
     var selectedBSSID = "";
 
@@ -47,8 +47,8 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
     };
 
     var prepView = function() {
-      document.getElementById('plot').height = globals.format.window.height * 0.75;
-      document.getElementById('plot').width = globals.format.window.width * 0.69;
+      document.getElementById('plot').height = dimensions.window.height * 0.75;
+      document.getElementById('plot').width = dimensions.window.width * 0.69;
     };
 
     var init = function() {

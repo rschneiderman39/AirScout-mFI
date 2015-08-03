@@ -7,7 +7,7 @@ accessPoints, globalSettings, APTableState, setupService) {
   };
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
     $scope.selectedAPData = [];       // Array of AP data objects to be displayed
     $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
     $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
@@ -29,7 +29,7 @@ accessPoints, globalSettings, APTableState, setupService) {
     };
 
     /* Used in place of a string predicate to sort access points by SSID. @type {function} */
-    $scope.sortSSID = globals.utils.customSSIDSort;
+    $scope.sortSSID = utils.customSSIDSort;
 
     var showAll = true; /* True: display all access points regardless of selection.
                            False: display only selected access points. */
@@ -86,10 +86,10 @@ accessPoints, globalSettings, APTableState, setupService) {
       $('.table-striped thead').css('height', '40px');
       var tableHeadHeight = $('.table-striped thead').height();
 
-      $('.table-striped thead').css('top', globals.format.topBar.height);
-      $('.table-striped tbody').css('top', globals.format.topBar.height + tableHeadHeight);
+      $('.table-striped thead').css('top', dimensions.topBar.height);
+      $('.table-striped tbody').css('top', dimensions.topBar.height + tableHeadHeight);
 
-      $('.table-striped tbody').css('height', (globals.format.window.height - globals.format.topBar.height - tableHeadHeight - 10) );
+      $('.table-striped tbody').css('height', (dimensions.window.height - dimensions.topBar.height - tableHeadHeight - 10) );
     };
 
     var init = function() {

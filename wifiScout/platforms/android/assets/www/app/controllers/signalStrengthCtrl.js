@@ -7,7 +7,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
   };
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
 
     $scope.APData = [];
     $scope.isDuplicateSSID = {};
@@ -30,7 +30,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
       $scope.maxLevel = undefined;
     };
 
-    $scope.sortSSID = globals.utils.customSSIDSort;
+    $scope.sortSSID = utils.customSSIDSort;
 
     var selectedBSSID = "",
         gauge = undefined;
@@ -85,7 +85,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
     };
 
     var prepView = function() {
-      //$('#chartdiv').css('height', globals.format.window.height * 0.70);
+      //$('#chartdiv').css('height', dimensions.window.height * 0.70);
     };
 
     var init = function() {

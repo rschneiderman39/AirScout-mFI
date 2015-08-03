@@ -2,10 +2,10 @@ if (typeof globals === 'undefined') {
   globals = {};
 }
 
-globals.defaults = {};
+defaults = {};
 
-globals.defaults.startingView = 'settings';
-globals.defaults.globalSelection = false,
-globals.defaults.detectHidden = false;
-globals.defaults.lang = 'en-US';
-globals.defaults.filterableViews = ['channelGraph', 'timeGraph', 'APTable'];
+defaults.startingView = 'settings';
+defaults.globalSelection = false,
+defaults.detectHidden = false;
+defaults.lang = 'en-US';
+defaults.filterableViews = ['channelGraph', 'timeGraph', 'APTable'];

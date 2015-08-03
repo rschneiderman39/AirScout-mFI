@@ -1,4 +1,4 @@
 document.addEventListener('deviceready', function() {
-  globals.setup.strings();
+  setup.strings();
   document.dispatchEvent(new Event('setupdone'));
 });

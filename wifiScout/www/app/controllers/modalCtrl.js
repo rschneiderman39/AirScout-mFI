@@ -2,7 +2,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
 'setupService', function($scope, accessPoints, globalSettings, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
 
     $scope.APData = [];
 
@@ -34,7 +34,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
       isSelected = {};
     };
 
-    $scope.sortSSID = globals.utils.customSSIDSort;
+    $scope.sortSSID = utils.customSSIDSort;
 
     var view = undefined,
         isSelected = {};
@@ -67,7 +67,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     var prepView = function() {
-      $('.filterTable').css('height', globals.format.window.height * 0.6);
+      $('.filterTable').css('height', dimensions.window.height * 0.6);
       $('#filterModal').on('show.bs.modal', onShow);
     };
 

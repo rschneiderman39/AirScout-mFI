@@ -65,7 +65,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     var highlightAP = function(BSSID) {
       unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: globals.utils.setAlpha(datasets[BSSID].color, 0.4)});
+      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 

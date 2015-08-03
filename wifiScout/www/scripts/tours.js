@@ -1,15 +1,13 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof setup === 'undefined') {
+  setup = {};
 }
 
-if (typeof globals.setup === 'undefined') {
-  globals.setup = {};
-}
+setup.tours = function() {
+  if (typeof tours === 'undefined') {
+    tours = {};
+  }
 
-globals.setup.tours = function() {
-  globals.tours = {};
-
-  globals.tours.channelTable = {
+  tours.channelTable = {
     config: {
       mask: {
         visible: true, // Shows the element mask
@@ -27,20 +25,20 @@ globals.setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
-        content: globals.strings.channelTable.tour.intro
+        content: strings.channelTable.tour.intro
       },
       {
         target: '#navLeft',
-        content: globals.strings.channelTable.tour.band2_4
+        content: strings.channelTable.tour.band2_4
       },
       {
         target: "#navRight",
-        content: globals.strings.channelTable.tour.band5
+        content: strings.channelTable.tour.band5
       }
     ]
   };
 
-  globals.tours.APTable = {
+  tours.APTable = {
     config: {
       mask: {
         visible: true,
@@ -59,24 +57,24 @@ globals.setup.tours = function() {
     },
     steps: [{
         target: '#step1',
-        content: globals.strings.APTable.tour.intro
+        content: strings.APTable.tour.intro
       },
       {
         target: "#step2",
-        content: globals.strings.APTable.tour.channel
+        content: strings.APTable.tour.channel
       },
       {
         target: "#step3",
-        content: globals.strings.APTable.tour.capabilities
+        content: strings.APTable.tour.capabilities
       },
       {
         target: "#filter-button",
-        content: globals.strings.APTable.tour.filter
+        content: strings.APTable.tour.filter
       }
     ]
   };
 
-  globals.tours.timeGraph = {
+  tours.timeGraph = {
     config: {
       mask: {
         visible: true,
@@ -95,16 +93,16 @@ globals.setup.tours = function() {
     },
     steps: [{
         target: "#timeGraph",
-        content: globals.strings.timeGraph.tour.intro,
+        content: strings.timeGraph.tour.intro,
       },
       {
         target: "#filter-button",
-        content: globals.strings.timeGraph.tour.filter
+        content: strings.timeGraph.tour.filter
       }
     ]
   };
 
-  globals.tours.signalStrength = {
+  tours.signalStrength = {
     config: {
       mask: {
         visible: true,
@@ -122,20 +120,20 @@ globals.setup.tours = function() {
       dark: false
     },
     steps: [{
-        content: globals.strings.signalStrength.tour.intro
+        content: strings.signalStrength.tour.intro
       },
       {
         target: ".minLevel",
-        content: globals.strings.signalStrength.tour.minLevel
+        content: strings.signalStrength.tour.minLevel
       },
       {
         target: ".maxLevel",
-        content: globals.strings.signalStrength.tour.maxLevel
+        content: strings.signalStrength.tour.maxLevel
       }
     ]
   };
 
-  globals.tours.channelGraph = {
+  tours.channelGraph = {
     config: {
       mask: {
         visible: true,
@@ -153,15 +151,15 @@ globals.setup.tours = function() {
       dark: false
     },
     steps: [{
-      content: globals.strings.channelGraph.tour.intro
+      content: strings.channelGraph.tour.intro
       },
       {
         target: '#navLeft',
-        content: globals.strings.channelGraph.tour.band2_4
+        content: strings.channelGraph.tour.band2_4
       },
       {
         target: "#navRight",
-        content: globals.strings.channelGraph.tour.band5
+        content: strings.channelGraph.tour.band5
       }
     ]
   };

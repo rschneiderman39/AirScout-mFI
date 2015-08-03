@@ -22,7 +22,7 @@ setupService) {
           window.localStorage.setItem('globalSelection', JSON.stringify(option));
           if (option) {
             for (var i = 0; i < filterableViews.length; ++i) {
-              selections[filterableViews[i]] = globals.utils.deepCopy(selections['global']);
+              selections[filterableViews[i]] = utils.deepCopy(selections['global']);
             }
           }
           for (var i = 0; i < filterableViews.length; ++i) {
@@ -36,7 +36,7 @@ setupService) {
     service.startingView = function(view) {
       if (view === undefined) {
         return startingView;
-      } else if (globals.utils.isView(view)) {
+      } else if (utils.isView(view)) {
         startingView = view;
         window.localStorage.setItem('startingView', view);
       }
@@ -48,9 +48,9 @@ setupService) {
 
     service.getSelection = function(view) {
       if (globalSelection) {
-        return globals.utils.deepCopy(selections['global']);
+        return utils.deepCopy(selections['global']);
       } else {
-        return globals.utils.deepCopy(selections[view]);
+        return utils.deepCopy(selections[view]);
       }
     };
 
@@ -60,12 +60,12 @@ setupService) {
         if (globalSelection) {
           for (var i = 0; i < filterableViews.length; ++i) {
             var curView = filterableViews[i];
-            selections[curView] = globals.utils.deepCopy(newSelection);
+            selections[curView] = utils.deepCopy(newSelection);
             sendSelection(curView, newSelection);
           }
-          selections['global'] = globals.utils.deepCopy(newSelection);
+          selections['global'] = utils.deepCopy(newSelection);
         } else {
-          selections[view] = globals.utils.deepCopy(newSelection);
+          selections[view] = utils.deepCopy(newSelection);
           sendSelection(view, newSelection);
         }
       }
@@ -76,22 +76,22 @@ setupService) {
         startingView = undefined,
         selections = {},
         selectionPromises = {},
-        filterableViews = globals.defaults.filterableViews;
+        filterableViews = defaults.filterableViews;
 
     var sendSelection = function(view, selection) {
       $timeout(function() {
         var request = selectionPromises[view];
         selectionPromises[view] = $.Deferred();
-        request.resolve(globals.utils.deepCopy(selection));
+        request.resolve(utils.deepCopy(selection));
       });
     };
 
     // Create an associative settings array for each view that will
     // use this service
     var init = function(){
-      detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || globals.defaults.detectHidden;
-      globalSelection = JSON.parse(window.localStorage.getItem('globalSelection')) || globals.defaults.globalSelection;
-      startingView = window.localStorage.getItem('startingView') || globals.defaults.startingView;
+      detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || defaults.detectHidden;
+      globalSelection = JSON.parse(window.localStorage.getItem('globalSelection')) || defaults.globalSelection;
+      startingView = window.localStorage.getItem('startingView') || defaults.startingView;
 
       for (var i = 0; i < filterableViews.length; ++i) {
         selections[filterableViews[i]] = {

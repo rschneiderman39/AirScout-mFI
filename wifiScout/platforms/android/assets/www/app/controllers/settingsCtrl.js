@@ -2,7 +2,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 'setupService', function($scope, $location, globalSettings, setupService) {
 
   setupService.ready.then(function() {
-    $scope.strings = globals.strings;
+    $scope.strings = strings;
 
     $scope.setStartingView = function(view) {
       globalSettings.startingView(view);
@@ -19,9 +19,9 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
     var prepView = function() {
       var optionsHeight = $('#accordion').height();
 
-      $('.panel-group').css('top', globals.format.topBar.height);
-      $('.panel-group').css('width', globals.format.window.width);
-      $('.panel-group').css('max-height', globals.format.window.height - globals.format.topBar.height);
+      $('.panel-group').css('top', dimensions.topBar.height);
+      $('.panel-group').css('width', dimensions.window.width);
+      $('.panel-group').css('max-height', dimensions.window.height - dimensions.topBar.height);
 
       $(".dropdown-menu li a").click(function(){
         var selText = $(this).text();
@@ -30,18 +30,18 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       });
 
       $("[name='filteringOptions']").bootstrapSwitch({
-      	onText: globals.strings.settings.globalSelectionTrue,
-      	offText: globals.strings.settings.globalSelectionFalse
+      	onText: strings.settings.globalSelectionTrue,
+      	offText: strings.settings.globalSelectionFalse
       });
 
       $("[name='hiddenAPOptions']").bootstrapSwitch({
-      	onText: globals.strings.settings.detectHiddenTrue,
-      	offText: globals.strings.settings.detectHiddenFalse
+      	onText: strings.settings.detectHiddenTrue,
+      	offText: strings.settings.detectHiddenFalse
       });
 
       $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalSelection());
       $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
-      $('.selectedStartingView').html(globals.strings.viewTitles[globalSettings.startingView()] + '  <span class="caret"></span>');
+      $('.selectedStartingView').html(strings.viewTitles[globalSettings.startingView()] + '  <span class="caret"></span>');
 
       $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
       	globalSettings.globalSelection(state);

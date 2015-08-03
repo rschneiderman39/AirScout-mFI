@@ -1,20 +1,21 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof setup === 'undefined') {
+  setup = {};
 }
 
-if (typeof globals.setup === 'undefined') {
-  globals.setup = {};
-}
-
-globals.setup.strings = function() {
+setup.strings = function() {
   navigator.globalization.getPreferredLanguage(
-    function success(locale) {
-      globals.locale = locale.value;
-      globals.strings = globals.lang[locale.value] || globals.lang[globals.defaults.locale];
-      globals.setup.tours();
+    function success(lang) {
+      var langCode = lang.value.split('-')[0];
+      if (languages[langCode]) {
+        localization.language
+        strings = languages[langCode];
+      }
+      localization.language = locale.value;
+      strings = languages[locale.value] || languages[defaults.locale];
+      setup.tours();
     }, function failure() {
-      globals.locale = globals.defaults.locale;
-      globals.strings = globals.lang[globals.defaults.locale];
-      globals.setup.tours();
+      localization.language = defaults.locale;
+      strings = languages[defaults.locale];
+      setup.tours();
     });
 };

@@ -54,8 +54,8 @@ setupService) {
     /* Current band being displayed ('2_4' or '5'). */
     var band = undefined;
 
-    var spanLen = globals.utils.spanLen,
-        setAlpha = globals.utils.setAlpha,
+    var spanLen = utils.spanLen,
+        setAlpha = utils.setAlpha,
         isChannel = channels.isChannel;
 
     /* Namespaces for plot elements, scales, and dimensions. */
@@ -63,8 +63,8 @@ setupService) {
 
     var init = function() {
       /* Scale to device screen */
-      dim.width = globals.format.window.width * 0.95;
-      dim.height = (globals.format.window.height - globals.format.topBar.height) * 0.95;
+      dim.width = dimensions.window.width * 0.95;
+      dim.height = (dimensions.window.height - dimensions.topBar.height) * 0.95;
 
       buildPlot();
       buildNav();
@@ -142,7 +142,7 @@ setupService) {
 
       /* X Label */
       elem.plot.container.append('text')
-        .text(globals.strings.channelGraph.labelX)
+        .text(strings.channelGraph.labelX)
         .attr('x', function() {
           return (dim.plot.width / 2) - (this.getBBox().width / 2);
         })
@@ -165,7 +165,7 @@ setupService) {
 
       /* Y Label */
       elem.plot.container.append('text')
-        .text(globals.strings.channelGraph.labelY)
+        .text(strings.channelGraph.labelY)
         .attr('transform', function() {
           return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
         });
@@ -315,11 +315,11 @@ setupService) {
 
       /* Labels */
       elem.nav.left.container.append('text')
-        .text(globals.strings.channelGraph.label2_4)
+        .text(strings.channelGraph.label2_4)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
 
       elem.nav.right.container.append('text')
-        .text(globals.strings.channelGraph.label5)
+        .text(strings.channelGraph.label5)
         .attr('y', dim.nav.height + dim.nav.margin.bottom);
     };
 

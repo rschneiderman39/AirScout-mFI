@@ -1,12 +1,8 @@
-if (typeof globals === 'undefined') {
-  globals = {};
+if (typeof languages === 'undefined') {
+  languages = {};
 }
 
-if (globals.lang === undefined) {
-  globals.lang = {};
-}
-
-globals.lang['en-US'] = {
+languages['en'] = {
   viewTitles: {
     APTable: 'AP Table',
     channelGraph: 'Channel Graph',
