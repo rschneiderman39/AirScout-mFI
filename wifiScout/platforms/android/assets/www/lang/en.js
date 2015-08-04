@@ -18,14 +18,9 @@ languages['en'] = {
     sortLevel: 'Level (dBm)',
     sortCapabilities: 'Capabilities',
     tour: {
-      intro: "More commonly referred to as signal strength, the signal level of"
-          + " an access point is measured in dBm (decibel milliwatts). dBm is measured"
-          + " on a logarithmic scale which means that every increase of about 3dBm is"
-          + " equivalent to doubling the actual power of the signal in question. The"
-          + " signal strength is expressed as a negative number because wireless networks"
-          + " are not powerful enough to radiate enough energy to give out such a strong"
-          + " signal. A signal strength can theoretically become positive if the amount of"
-          + " emitted energy being collected at any point in time exceeds one milliwatt.",
+      intro: "More commonly referred to as signal strenght, the level of an access"
+      + " point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic"
+      + " scale - every increase of ~3dBm is equivalent to doubling the power of the signal.",
 
       channel: "*****NEEDS TO BE FILLED IN*****",
 
@@ -36,6 +31,11 @@ languages['en'] = {
           + " security protocols - TKIP and CCMP. WPA2-CCMP is considered to be the most secure"
           + " protocol available and should be chosed whenever it is available.",
 
+      level: "Signal strength is expressed as a negative number because wireless networks" 
+          + " are not powerful enough to radiate enough energy to give out a strong enough"
+          + " signal - theoretically a positive level could be recorded if the amount of"
+          + " energy emitted and received exceeds one milliwatt.",
+
       filter: "The filter button allows you to search for, select, or elimate certain"
           + " access points that are displayed on the table."
     }
@@ -44,7 +44,7 @@ languages['en'] = {
     label2_4: '2.4 Ghz',
     label5: '5 Ghz',
     labelX: 'Channel',
-    labelY: 'Occupancy',
+    labelY: 'AP Count',
     tour: {
       intro: "The channel table view displays the number of access points on"
           + " each channel in the 2.4Ghz and 5.0Ghz freqency ranges.",

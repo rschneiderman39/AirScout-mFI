@@ -33,14 +33,16 @@ body.pg-loaded > #current-view {
 
 #filter-button {
 	position: relative;
+  max-height: 8.5vh;
+  max-width: 8.5vh;
   transform: translateY(-50%);
 	top: 50%;
 }
 
 #help-button {
 	position: relative;
-  max-height: 7.5vh;
-  max-width: 7.5vh;
+  max-height: 8.5vh;
+  max-width: 12.5vh;
   transform: translateY(-50%);
 	top: 50%;
 }

@@ -11,7 +11,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
     labelColor: 'black',             // Style...
     barStrokeWidth: 0,
     barStrokeColor: 'none',
-    barFillColor: '#66CCFF',
+    barFillColor: '#62bf01',
     barWidth: 0.8,
     disallowedChannelOpacity: 0.35,
     disallowedChannelColor: 'black',
@@ -152,7 +152,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       /* X Label */
       elem.plot.container.append('text')
-        .text(strings.channelGraph.labelX)
+        .text(strings.channelTable.labelX)
         .attr('x', function() {
           return (dim.plot.width / 2) - (this.getBBox().width / 2);
         })
@@ -175,7 +175,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       /* Y Label */
       elem.plot.container.append('text')
-        .text(strings.channelGraph.labelY)
+        .text(strings.channelTable.labelY)
         .attr('transform', function() {
           return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
         });

@@ -33,43 +33,6 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         });
       };
 
-/*
-        $('#current-view').addClass('anim-out-setup anim-slide-'+direction);
-
-        $animate.setClass($('#current-view'), 'anim-out', 'anim-out-setup').finally(
-          function() {
-            $('#current-view').removeClass('anim-out anim-slide-'+direction);
-            $('#current-view').css('visibility', 'hidden');
-
-            $state.go(view).finally(function() {
-
-
-              $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
-              $('#current-view').css('visibility', 'normal');
-
-              $timeout(function() {
-                $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(
-                  function() {
-                    $('#view-title').html(strings.viewTitles[view]);
-                    $('#current-view').removeClass('anim-in anim-slide-'+direction);
-                    globalSettings.updatesPaused(false);
-                  }
-                );
-              });
-            });
-          }
-        );
-      };
-
-
-      $scope.swipeTo = function(view, direction) {
-        globalSettings.updatesPaused(true);
-
-        $state.go(view).finally(function() {
-          globalSettings.updatesPaused(false);
-        });
-      };
-*/
       $scope.setView = function(view) {
         if (utils.isView(view)) {
           $('#view-title').html(strings.viewTitles[view]);
@@ -84,6 +47,18 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         }
         return false;
       };
+
+      $scope.swipeRight = function (view) {
+        console.log("swiping right");
+        defaults.swiped = true;
+        $scope.setView(view);
+      }
+
+      $scope.swipeLeft = function (view) {
+        console.log("swiping left");
+        defaults.swiped = true;
+        $scope.setView(view);
+      }
 
       $scope.startTour = function() {
         nzTour.start(tours[$state.current.name]);
@@ -102,5 +77,4 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
       init();
     });
-
 }]);
