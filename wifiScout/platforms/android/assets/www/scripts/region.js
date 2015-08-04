@@ -7,8 +7,7 @@ if (typeof localization === 'undefined') {
 }
 
 setup.region = function() {
-  // SHOULD BE getLocalName !
-  navigator.globalization.getPreferredLanguage(
+  navigator.globalization.getLocaleName(
     function success(locale) {
       var regionCode = locale.value.split('-')[1];
       localization.region = channels[regionCode] ? regionCode : defaults.region;

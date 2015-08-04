@@ -3,35 +3,46 @@ app.controller('channelGraphCtrl', ['$scope', 'globalSettings', 'channelGraphSta
 'channelChecker', 'setupService', function($scope, globalSettings, channelGraphState, channelChecker,
 setupService) {
 
-  var prefs = {
-    defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
-    domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
-    domain5: [34, 167],              // X-scale for 5 Ghz band
-    range: [constants.noSignal, constants.maxSignal],              // Y-scale for level
-    defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
-    fillAlpha: 0.2,                  // Opacity of parabola fill
-    labelPadding: 10,                // Pixels between parabola top and label bottom
-    disallowedChannelOpacity: 0.35,
-    disallowedChannelColor: 'black',
-    navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
-    navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
-    plotMargins: {
-      top: 20,
-      bottom: 30,
-      left: 60,
-      right: 0
-    },
-    navMargins: {
-      top: 1,
-      bottom: 18,
-      left: 60,
-      right: 0
-    },
-    transitionInterval: 1800,      // Parabola and label animation time (ms)
-    updateInterval: 2000           // Time between data updates (ms)
-  };
-
   setupService.ready.then(function() {
+
+    var prefs = {
+      defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
+      domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
+      domain5: [34, 167],              // X-scale for 5 Ghz band
+      range: [constants.noSignal, constants.maxSignal],              // Y-scale for level
+      defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
+      fillAlpha: 0.2,                  // Opacity of parabola fill
+      labelPadding: 10,                // Pixels between parabola top and label bottom
+      disallowedChannelOpacity: 0.35,
+      disallowedChannelColor: 'black',
+      navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
+      navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
+      plotMargins: {
+        top: 20,
+        bottom: 30,
+        left: 60,
+        right: 0
+      },
+      navMargins: {
+        top: 1,
+        bottom: 18,
+        left: 60,
+        right: 0
+      },
+      transitionInterval: 1800,      // Parabola and label animation time (ms)
+      updateInterval: 2000           // Time between data updates (ms)
+    };
+
+    /* Current band being displayed ('2_4' or '5'). */
+    var band = undefined;
+
+    var spanLen = utils.spanLen,
+        setAlpha = utils.setAlpha,
+        isAllowableChannel = channelChecker.isAllowableChannel;
+
+    /* Namespaces for plot elements, scales, and dimensions. */
+    var elem = {}, scales = {}, dim = {};
+
     /* Select the band to display.
      *
      * @param {string} newBand - Either '2_4' or '5'
@@ -53,16 +64,6 @@ setupService) {
       }
     };
 
-    /* Current band being displayed ('2_4' or '5'). */
-    var band = undefined;
-
-    var spanLen = utils.spanLen,
-        setAlpha = utils.setAlpha,
-        isAllowableChannel = channelChecker.isAllowableChannel;
-
-    /* Namespaces for plot elements, scales, and dimensions. */
-    var elem = {}, scales = {}, dim = {};
-
     var init = function() {
       /* Scale to device screen */
       dim.width = dimensions.window.width * 0.95;
@@ -77,7 +78,12 @@ setupService) {
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
+
         saveState();
+
+        d3.select('#plot').selectAll('*').remove();
+        d3.select('#navLeft').selectAll('*').remove();
+        d3.select('#navRight').selectAll('*').remove();
       });
 
       // COMMENTED THIS OUT SO THAT SWIPE WILL WORK SMOOTHLY

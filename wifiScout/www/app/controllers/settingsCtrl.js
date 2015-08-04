@@ -2,19 +2,12 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 'setupService', function($scope, $location, globalSettings, setupService) {
 
   setupService.ready.then(function() {
+
     $scope.strings = strings;
 
     $scope.setStartingView = function(view) {
       globalSettings.startingView(view);
     };
-
-    $scope.$on('animIn', function() {
-      console.log('settingsCtrl: animIn');
-    });
-
-    $scope.$on('animOut', function() {
-      console.log('settingsCtrl: animOut');
-    });
 
     var prepView = function() {
       $('#touch-layer').css('height', dimensions.window.height - dimensions.topBar.height);

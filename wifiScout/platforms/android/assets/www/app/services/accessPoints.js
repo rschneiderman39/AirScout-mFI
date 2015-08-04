@@ -3,14 +3,16 @@
 app.factory('accessPoints', ['networkData', 'globalSettings', 'setupService',
 function(networkData, globalSettings, setupService) {
 
-  var prefs = {
-    updateInterval: 1000
-  };
-
   var service = {};
 
   setupService.ready.then(function() {
-    var APData = [];
+
+    var prefs = {
+      updateInterval: 1000
+    };
+
+    var APData = [],
+        lineColors = {};
 
     service.getAll = function() {
       return APData;
@@ -42,8 +44,6 @@ function(networkData, globalSettings, setupService) {
       }
       return null;
     };
-
-    var lineColors = {};
 
     var markHidden = function(data) {
       for (var i = 0; i < data.length; ++i) {

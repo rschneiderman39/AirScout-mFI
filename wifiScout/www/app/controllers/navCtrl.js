@@ -2,6 +2,14 @@ app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout', 'globalSe
 function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupService) {
 
     setupService.ready.then(function() {
+
+      var prefs = {
+        navShowInterval: 3000
+      };
+
+      var navTimeout = null,
+          filterableViews = defaults.filterableViews;
+
       $scope.strings = strings;
 
       $scope.showNav = function() {
@@ -63,13 +71,6 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       $scope.startTour = function() {
         nzTour.start(tours[$state.current.name]);
       };
-
-      var prefs = {
-        navShowInterval: 3000
-      };
-
-      var navTimeout = null,
-          filterableViews = defaults.filterableViews;
 
       var init = function() {
         $scope.setView(globalSettings.startingView());

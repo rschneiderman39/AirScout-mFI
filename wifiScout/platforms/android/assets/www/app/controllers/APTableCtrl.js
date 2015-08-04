@@ -2,11 +2,17 @@ app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
 'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
 accessPoints, globalSettings, APTableState, setupService) {
 
-  var prefs = {
-    updateInterval: 1000
-  };
-
   setupService.ready.then(function() {
+
+    var prefs = {
+      updateInterval: 2000
+    };
+
+    var showAll = true; /* True: display all access points regardless of selection.
+                           False: display only selected access points. */
+
+    var selectedBSSIDs = []; /* Current access point selection. @type {{Array.<string>}} */
+
     $scope.strings = strings;
     $scope.selectedAPData = [];       // Array of AP data objects to be displayed
     $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
@@ -30,12 +36,6 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Used in place of a string predicate to sort access points by SSID. @type {function} */
     $scope.sortSSID = utils.customSSIDSort;
-
-    var showAll = true; /* True: display all access points regardless of selection.
-                           False: display only selected access points. */
-
-    var selectedBSSIDs = []; /* Current access point selection. @type {{Array.<string>}} */
-
 
     /* Update the locally stored selection whenever the user changes the selection with the
        filter modal.
@@ -75,15 +75,15 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Pull in new data and update the table. */
     var update = function() {
-      if (! globalSettings.updatesPaused()) {
-        $timeout(function() {
+      $timeout(function() {
+        if (! globalSettings.updatesPaused()) {
           if (showAll) {
             $scope.selectedAPData = accessPoints.getAll();
           } else {
             $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
           }
-        });
-      }
+        }
+      });
     };
 
     /* Manually scale the view to the device where needed. */

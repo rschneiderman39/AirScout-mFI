@@ -4,6 +4,10 @@ function(accessPoints, setupService) {
   var service = {};
 
   setupService.ready.then(function() {
+
+    var band = undefined,
+        viewportExtent = undefined;
+
     service.getData = function() {
       var APData = accessPoints.getAll(),
           numOccupants = {},
@@ -42,10 +46,7 @@ function(accessPoints, setupService) {
       } else if (newExtent instanceof Array && newExtent.length === 2) {
         viewportExtent = newExtent;
       }
-    };
-
-    var band = undefined,
-        viewportExtent = undefined;
+    };  
   });
 
   return service;
