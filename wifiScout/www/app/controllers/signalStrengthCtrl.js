@@ -195,7 +195,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
       var colorScale = d3.scale.ordinal()
         .domain([0, 1, 2, 3, 4, 5, 6])
-        .range(["#ce2029", "#ce2029" ,"#fdd400", "#fdd400", "#33a532" ,"#33a532", "#33a532"]);
+        .range(["#cc4748", "#cc4748" ,"#fdd400", "#fdd400", "#84b761" ,"#84b761", "#84b761"]);
 
     		arcs.selectAll('path')
     				.data(tickData)

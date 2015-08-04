@@ -10,6 +10,11 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
+#nzTour-box, 
+#nzTour-content {
+  min-height: 50vh !important;
+}
+
 #current-view {
   position: relative;
 }

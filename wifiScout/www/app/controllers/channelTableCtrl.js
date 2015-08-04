@@ -13,7 +13,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       labelColor: 'black',             // Style...
       barStrokeWidth: 0,
       barStrokeColor: 'none',
-      barFillColor: '#66CCFF',
+      barFillColor: '#62BF01',
       barWidth: 0.8,
       disallowedChannelOpacity: 0.35,
       disallowedChannelColor: 'black',
