@@ -1,5 +1,5 @@
-app.controller('navCtrl', ['$scope', '$state', 'globalSettings', 'nzTour', 'setupService',
-function($scope, $state, globalSettings, nzTour, setupService) {
+app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout', 'globalSettings', 'nzTour', 'setupService',
+function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupService) {
 
     setupService.ready.then(function() {
       $scope.strings = strings;
@@ -13,9 +13,66 @@ function($scope, $state, globalSettings, nzTour, setupService) {
         }, prefs.navShowInterval);
       };
 
+      $scope.swipeTo = function(view, direction) {
+        globalSettings.updatesPaused(true);
+
+        $('#view-title').html("");
+        $('#current-view').css('visibility', 'hidden');
+
+        $state.go(view).finally(function() {
+          $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
+          $('#current-view').css('visibility', 'normal');
+
+          $timeout(function() {
+            $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
+                $('#view-title').html(strings.viewTitles[view]);
+                $('#current-view').removeClass('anim-in anim-slide-'+direction);
+                globalSettings.updatesPaused(false);
+              });
+          });
+        });
+      };
+
+/*
+        $('#current-view').addClass('anim-out-setup anim-slide-'+direction);
+
+        $animate.setClass($('#current-view'), 'anim-out', 'anim-out-setup').finally(
+          function() {
+            $('#current-view').removeClass('anim-out anim-slide-'+direction);
+            $('#current-view').css('visibility', 'hidden');
+
+            $state.go(view).finally(function() {
+
+
+              $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
+              $('#current-view').css('visibility', 'normal');
+
+              $timeout(function() {
+                $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(
+                  function() {
+                    $('#view-title').html(strings.viewTitles[view]);
+                    $('#current-view').removeClass('anim-in anim-slide-'+direction);
+                    globalSettings.updatesPaused(false);
+                  }
+                );
+              });
+            });
+          }
+        );
+      };
+
+
+      $scope.swipeTo = function(view, direction) {
+        globalSettings.updatesPaused(true);
+
+        $state.go(view).finally(function() {
+          globalSettings.updatesPaused(false);
+        });
+      };
+*/
       $scope.setView = function(view) {
         if (utils.isView(view)) {
-          document.getElementById('view-title').innerHTML = strings.viewTitles[view];
+          $('#view-title').html(strings.viewTitles[view]);
           $state.go(view);
         }
       };

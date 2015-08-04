@@ -1,5 +1,5 @@
-app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
-'setupService', function($scope, timeGraphData, setupService) {
+app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
+'setupService', function($scope, $timeout, timeGraphData, setupService) {
 
   setupService.ready.then(function() {
     $scope.strings = strings;
@@ -38,12 +38,12 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
       $scope.isDuplicateSSID = newDuplicates;
     };
 
-    var updateLegend = function(data) {
-      $scope.$apply(function() {
-        $scope.legendData = data;
+    var updateLegend = function() {
+      $timeout(function() {
+        $scope.legendData = timeGraphData.getLegendData();
+
         updateDuplicateSSIDs();
       });
-      timeGraphData.awaitLegendData().done(updateLegend);
     };
 
     var prepView = function() {
@@ -63,7 +63,8 @@ app.controller('timeGraphCtrl', ['$scope', 'timeGraphData',
 
       $scope.legendData = timeGraphData.getLegendData();
       updateDuplicateSSIDs();
-      timeGraphData.awaitLegendData().done(updateLegend);
+
+      document.addEventListener(events.newLegendData, updateLegend);
     };
 
     init();

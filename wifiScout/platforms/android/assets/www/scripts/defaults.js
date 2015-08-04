@@ -3,7 +3,7 @@ if (typeof defaults === 'undefined') {
 }
 
 defaults.startingView = 'settings';
-defaults.globalSelection = false,
+defaults.globalAccessPointSelection = false,
 defaults.detectHidden = false;
 defaults.language = 'en';
 defaults.region = 'US';

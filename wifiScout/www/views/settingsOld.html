@@ -5,7 +5,7 @@
   </head>
 
   <body>
-		<div ng-controller="settingsCtrl">
+		<div id="settings-container" ng-controller="settingsCtrl">
 
 	     <div class="panel panel-default" id="panel1">
 	        <div class="panel-heading" id="step1">
@@ -83,6 +83,6 @@
 
       </div>
 
-      <div class="container-fluid" id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
+      <div id="touch-layer" ng-click="showNav()"></div>
 	</body>
 </html>

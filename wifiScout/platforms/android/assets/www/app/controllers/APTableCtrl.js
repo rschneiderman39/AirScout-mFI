@@ -1,5 +1,5 @@
-app.controller('APTableCtrl', ['$scope', 'accessPoints',
-'globalSettings', 'APTableState', 'setupService', function($scope,
+app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
+'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
 accessPoints, globalSettings, APTableState, setupService) {
 
   var prefs = {
@@ -42,11 +42,14 @@ accessPoints, globalSettings, APTableState, setupService) {
 
        @param {{showAll: boolean, selectedBSSIDs: Array.<string>}} newSelection - The new selection.
     */
-    var updateSelection = function(settings) {
-      selectedBSSIDs = settings.selectedBSSIDs;
-      showAll = settings.showAll;
+    var updateSelection = function() {
+      var selection = globalSettings.getAccessPointSelection('APTable');
+
+      console.log('updating APTable selection to: ' + JSON.stringify(selection));
+      selectedBSSIDs = selection.selectedBSSIDs;
+      showAll = selection.showAll;
+
       update();
-      globalSettings.awaitNewSelection('APTable').done(updateSelection);
     };
 
     /* Store current sort ordering. */
@@ -57,7 +60,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Load the previously used selection and sort ordering. */
     var restoreState = function() {
-      var selection = globalSettings.getSelection('APTable');
+      var selection = globalSettings.getAccessPointSelection('APTable');
       selectedBSSIDs = selection.selectedBSSIDs;
       showAll = selection.showAll;
 
@@ -72,13 +75,15 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Pull in new data and update the table. */
     var update = function() {
-      $scope.$apply(function() {
-        if (showAll) {
-          $scope.selectedAPData = accessPoints.getAll();
-        } else {
-          $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
-        }
-      });
+      if (! globalSettings.updatesPaused()) {
+        $timeout(function() {
+          if (showAll) {
+            $scope.selectedAPData = accessPoints.getAll();
+          } else {
+            $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
+          }
+        });
+      }
     };
 
     /* Manually scale the view to the device where needed. */
@@ -86,7 +91,7 @@ accessPoints, globalSettings, APTableState, setupService) {
       $('.table-striped thead').css('height', '40px');
       var tableHeadHeight = $('.table-striped thead').height();
 
-      $('.table-striped tbody').css('top', globals.format.topBar.height + tableHeadHeight);
+      $('.table-striped tbody').css('top', dimensions.topBar.height + tableHeadHeight);
     };
 
     var init = function() {
@@ -94,9 +99,9 @@ accessPoints, globalSettings, APTableState, setupService) {
 
       restoreState();
 
-      globalSettings.awaitNewSelection('APTable').done(updateSelection);
-
       var updateLoop = setInterval(update, prefs.updateInterval);
+
+      document.addEventListener(events.newAccessPointSelection['APTable'], updateSelection);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);

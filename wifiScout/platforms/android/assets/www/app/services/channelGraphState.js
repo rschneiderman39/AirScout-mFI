@@ -38,24 +38,28 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
         band = undefined,
         viewportExtent = undefined;
 
-    var updateSelection = function(selection) {
+    var updateSelection = function() {
+      var selection = globalSettings.getAccessPointSelection('channelGraph');
+
       isSelected = {};
+
       for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
         isSelected[selection.selectedBSSIDs[i]] = true;
       }
-      showAll = selection.showAll;
 
-      globalSettings.awaitNewSelection('channelGraph').done(updateSelection);
+      showAll = selection.showAll;
     };
 
     var init = function() {
-      var selection = globalSettings.getSelection('channelGraph');
+      var selection = globalSettings.getAccessPointSelection('channelGraph');
 
       for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
         isSelected[selection.selectedBSSIDs[i]] = true;
       }
+
       showAll = selection.showAll;
-      globalSettings.awaitNewSelection('channelGraph').done(updateSelection);
+
+      document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
     };
 
     init();

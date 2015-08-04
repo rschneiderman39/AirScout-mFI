@@ -12,7 +12,9 @@ body.pg-loaded > #current-view {
 
 #current-view {
   position: relative;
+	/*
   overflow: hidden;
+	*/
 }
 
 #touch-layer {
@@ -123,6 +125,10 @@ body.pg-loaded > #current-view {
     -webkit-transform: scaleY(1.0);
   }
 }
+
+.ng-enter {}
+
+.ng-leave {}
 
 /* CAROUSEL SWIPE NAVIGATION */
 /*#dropDownOpen {

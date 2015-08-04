@@ -1,5 +1,5 @@
-app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelChecker',
-'setupService', function($scope, channelTableState, channelChecker, setupService) {
+app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableState', 'channelChecker',
+'setupService', function($scope, globalSettings, channelTableState, channelChecker, setupService) {
 
   var prefs = {
     defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
@@ -13,6 +13,8 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
     barStrokeColor: 'none',
     barFillColor: '#66CCFF',
     barWidth: 0.8,
+    disallowedChannelOpacity: 0.35,
+    disallowedChannelColor: 'black',
     navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
     navLeftPercent: 0.2,             // The portion of the navigator to be occupied by the 2.4 Ghz selector
     plotMargins: {
@@ -85,16 +87,18 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
 
     /* Pull in new data and update element height */
     var update = function() {
-      var data = channelTableState.getData();
+      if (! globalSettings.updatesPaused()) {
+        var data = channelTableState.getData();
 
-      rescaleVertically('plot');
-      rescaleVertically('navLeft');
-      rescaleVertically('navRight');
+        rescaleVertically('plot');
+        rescaleVertically('navLeft');
+        rescaleVertically('navRight');
 
-      updateBars('plot', data);
-      updateBars('navLeft', data);
-      updateBars('navRight', data);
-      updateLabels(data);
+        updateBars('plot', data);
+        updateBars('navLeft', data);
+        updateBars('navRight', data);
+        updateLabels(data);
+      }
     };
 
     /* Derive plot dimensions and add elements to DOM */
@@ -122,7 +126,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
       elem.plot.clip = elem.plot.container.append('g')
         .attr('clip-path', 'url(#plot-clip)')
 
-      elem.plot.clip.append('clipPath')
+      elem.plot.clip.append('svg:clipPath')
         .attr('id', 'plot-clip')
         .append('rect')
           .attr({ width: dim.plot.width, height: dim.plot.height });
@@ -215,9 +219,9 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
 
       /* Clip-path */
       elem.nav.left.clip = elem.nav.left.container.append('g')
-        .attr('clip-path', 'url(#nav-clip-left)')
+        .attr('clip-path', 'url(#nav-clip-left)');
 
-      elem.nav.left.clip.append('clipPath')
+      elem.nav.left.clip.append('svg:clipPath')
         .attr('id', 'nav-clip-left')
         .append('rect')
           .attr('width', dim.nav.left.width)
@@ -256,7 +260,7 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
       elem.nav.right.clip = elem.nav.right.container.append('g')
         .attr('clip-path', 'url(#nav-clip-right)');
 
-      elem.nav.right.clip.append('clipPath')
+      elem.nav.right.clip.append('svg:clipPath')
         .attr('id', 'nav-clip-right')
         .append('rect')
           .attr({ width: dim.nav.right.width, height: dim.nav.height });
@@ -289,10 +293,10 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
           repositionPlotElements();
         });
 
-      elem.nav.right.container.append("g")
+      elem.nav.right.container.append('g')
         .attr("class", "viewport")
         .call(elem.nav.right.viewport)
-          .selectAll("rect")
+          .selectAll('rect')
           .attr("height", dim.nav.height);
 
       /* The slider the user actually sees */
@@ -476,10 +480,19 @@ app.controller('channelTableCtrl', ['$scope', 'channelTableState', 'channelCheck
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    var removeDisallowedChannelsChannelTicks = function() {
+    var removeDisallowedChannels = function() {
       elem.plot.container.selectAll('.x.axis > .tick')
-        .filter(function (d) {return ! isAllowableChannel(d.toString());})
+        .filter(function(d) {
+          return isAllowableChannel(d) === undefined;
+        })
           .remove();
+
+      elem.plot.container.selectAll('.x.axis > .tick')
+        .filter(function(d) {
+          return isAllowableChannel(d) === false;
+        })
+          .style('opacity', prefs.disallowedChannelOpacity)
+          .attr('fill', prefs.disallowedChannelColor);
     };
 
     var updateBars = function(section, data) {

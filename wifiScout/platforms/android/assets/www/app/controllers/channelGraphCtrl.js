@@ -1,6 +1,6 @@
 /* Controller for the channel graph view. */
-app.controller('channelGraphCtrl', ['$scope', 'channelGraphState',
-'channelChecker', 'setupService', function($scope, channelGraphState, channelChecker,
+app.controller('channelGraphCtrl', ['$scope', 'globalSettings', 'channelGraphState',
+'channelChecker', 'setupService', function($scope, globalSettings, channelGraphState, channelChecker,
 setupService) {
 
   var prefs = {
@@ -86,12 +86,14 @@ setupService) {
 
     /* Pull in new data and update element height */
     var update = function() {
-      var data = channelGraphState.getData();
+      if (! globalSettings.updatesPaused()) {
+        var data = channelGraphState.getData();
 
-      updateParabolas('plot', data);
-      updateParabolas('navLeft', data);
-      updateParabolas('navRight', data);
-      updateLabels(data);
+        updateParabolas('plot', data);
+        updateParabolas('navLeft', data);
+        updateParabolas('navRight', data);
+        updateLabels(data);
+      }
     };
 
     /* Derive plot dimensions and add elements to DOM */
@@ -119,7 +121,7 @@ setupService) {
       elem.plot.clip = elem.plot.container.append('g')
         .attr('clip-path', 'url(#plot-clip)')
 
-      elem.plot.clip.append('clipPath')
+      elem.plot.clip.append('svg:clipPath')
         .attr('id', 'plot-clip')
         .append('rect')
           .attr({ width: dim.plot.width, height: dim.plot.height });
@@ -214,7 +216,7 @@ setupService) {
       elem.nav.left.clip = elem.nav.left.container.append('g')
         .attr('clip-path', 'url(#nav-clip-left)')
 
-      elem.nav.left.clip.append('clipPath')
+      elem.nav.left.clip.append('svg:clipPath')
         .attr('id', 'nav-clip-left')
         .append('rect')
           .attr('width', dim.nav.left.width)
@@ -253,7 +255,7 @@ setupService) {
       elem.nav.right.clip = elem.nav.right.container.append('g')
         .attr('clip-path', 'url(#nav-clip-right)');
 
-      elem.nav.right.clip.append('clipPath')
+      elem.nav.right.clip.append('svg:clipPath')
         .attr('id', 'nav-clip-right')
         .append('rect')
           .attr({ width: dim.nav.right.width, height: dim.nav.height });
@@ -286,10 +288,10 @@ setupService) {
           repositionPlotElements();
         });
 
-      elem.nav.right.container.append("g")
+      elem.nav.right.container.append('g')
         .attr("class", "viewport")
         .call(elem.nav.right.viewport)
-          .selectAll("rect")
+          .selectAll('rect')
           .attr("height", dim.nav.height);
 
       /* The slider the user actually sees */

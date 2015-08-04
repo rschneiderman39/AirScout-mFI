@@ -13,22 +13,16 @@ setupService) {
       }
     };
 
-    service.globalSelection = function(option) {
+    service.globalAccessPointSelection = function(option) {
       if (option === undefined) {
-        return globalSelection;
-      } else if (typeof option === 'boolean') {
-        if (option != globalSelection) {
-          globalSelection = option;
-          window.localStorage.setItem('globalSelection', JSON.stringify(option));
-          if (option) {
-            for (var i = 0; i < filterableViews.length; ++i) {
-              selections[filterableViews[i]] = utils.deepCopy(selections['global']);
-            }
-          }
-          for (var i = 0; i < filterableViews.length; ++i) {
-            var curView = filterableViews[i];
-            sendSelection(curView, selections[curView]);
-          }
+        return globalAccessPointSelection;
+      } else if (typeof option === 'boolean' && option != globalAccessPointSelection) {
+
+        globalAccessPointSelection = option;
+        window.localStorage.setItem('globalAccessPointSelection', JSON.stringify(option));
+
+        for (var i = 0; i < filterableViews.length; ++i) {
+          document.dispatchEvent(new Event(events.newAccessPointSelection[filterableViews[i]]));
         }
       }
     };
@@ -42,55 +36,51 @@ setupService) {
       }
     };
 
-    service.awaitNewSelection = function(view) {
-      return selectionPromises[view];
-    };
-
-    service.getSelection = function(view) {
-      if (globalSelection) {
+    service.getAccessPointSelection = function(view) {
+      if (globalAccessPointSelection) {
         return utils.deepCopy(selections['global']);
       } else {
         return utils.deepCopy(selections[view]);
       }
     };
 
-    service.setSelection = function(view, newSelection) {
+    service.setAccessPointSelection = function(view, newSelection) {
       if (newSelection.selectedBSSIDs instanceof Array &&
           typeof newSelection.showAll === 'boolean') {
-        if (globalSelection) {
-          for (var i = 0; i < filterableViews.length; ++i) {
-            var curView = filterableViews[i];
-            selections[curView] = utils.deepCopy(newSelection);
-            sendSelection(curView, newSelection);
-          }
+        if (globalAccessPointSelection) {
           selections['global'] = utils.deepCopy(newSelection);
+
+          for (var i = 0; i < filterableViews.length; ++i) {
+            document.dispatchEvent(new Event(events.newAccessPointSelection[filterableViews[i]]));
+          }
         } else {
           selections[view] = utils.deepCopy(newSelection);
-          sendSelection(view, newSelection);
+
+          document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
         }
       }
     };
 
-    var detectHidden = false,
-        globalSelection = false,
-        startingView = undefined,
-        selections = {},
-        selectionPromises = {},
-        filterableViews = defaults.filterableViews;
-
-    var sendSelection = function(view, selection) {
-      $timeout(function() {
-        var request = selectionPromises[view];
-        selectionPromises[view] = $.Deferred();
-        request.resolve(utils.deepCopy(selection));
-      });
+    service.updatesPaused = function(option) {
+      if (option === undefined) {
+        return updatesPaused;
+      } else if (typeof option === 'boolean') {
+        updatesPaused = option;
+      }
     };
+
+    var detectHidden = false,
+        globalAccessPointSelection = false,
+        startingView = undefined,
+        updatesPaused = false,
+        selections = {},
+        filterableViews = defaults.filterableViews;
 
     // Create an associative settings array for each view that will
     // use this service
     var init = function(){
       detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || defaults.detectHidden;
-      globalSelection = JSON.parse(window.localStorage.getItem('globalSelection')) || defaults.globalSelection;
+      globalAccessPointSelection = JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) || defaults.globalAccessPointSelection;
       startingView = window.localStorage.getItem('startingView') || defaults.startingView;
 
       for (var i = 0; i < filterableViews.length; ++i) {
@@ -98,7 +88,6 @@ setupService) {
           selectedBSSIDs: [],
           showAll: true
         };
-        selectionPromises[filterableViews[i]] = $.Deferred();
       }
 
       selections['global'] = {

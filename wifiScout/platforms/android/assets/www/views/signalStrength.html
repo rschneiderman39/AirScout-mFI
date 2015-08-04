@@ -5,9 +5,9 @@
   </head>
 
   <body>
- 		<div class="container-fluid" ng-click="showNav()" ng-controller="signalStrengthCtrl">
- 			<div class="anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 1000 + 'ms','-moz-transition-duration': 1000 + 'ms','-ms-transition-duration': 1000 + 'ms','-o-transition-duration': 1000 + 'ms','transition-duration': 1000 + 'ms'}">
+ 		<div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('timeGraph', 'left')" ng-swipe-right="swipeTo('channelGraph', 'right')" ng-controller="signalStrengthCtrl">
 
+      <div class="container-fluid">
         <div class="row">
 					<div id="selectableList" class="col-xs-3">
 						<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
@@ -24,8 +24,8 @@
 						<div id="power-gauge"></div>
 					</div>
 				</div>
+      </div>
 
-			</div>
 		</div>
 	</body>
 </html>

@@ -5,8 +5,8 @@
   </head>
 
   <body>
-		<div id="settingsCtrl" ng-controller="settingsCtrl">
-      <div class="panel-group anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 500 + 'ms','-moz-transition-duration': 500 + 'ms','-ms-transition-duration': 500 + 'ms','-o-transition-duration': 500 + 'ms','transition-duration': 500 + 'ms'}">
+		<div ng-controller="settingsCtrl">
+
 	     <div class="panel panel-default" id="panel1">
 	        <div class="panel-heading" id="step1">
 	          <h4 class="panel-title">
@@ -37,12 +37,12 @@
 			        </div>
 			      </div>
 	        </div>
-	      </div> 
+	      </div>
 	      <div class="panel panel-default" id="panel2">
 	        <div class="panel-heading" id="step2">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
-	              {{strings.settings.globalSelectionHeader}}
+	              {{strings.settings.globalAccessPointSelectionHeader}}
 	            </a>
 	          </h4>
 	        </div>
@@ -50,7 +50,7 @@
 	          <div class="panel-body">
 		          <div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
-			          	{{strings.settings.globalSelectionDescription}}
+			          	{{strings.settings.globalAccessPointSelectionDescription}}
 			          </div>
 		          	<div class="col-xs-3">
 		          		<input type="checkbox" name="filteringOptions">
@@ -58,7 +58,7 @@
 		          </div>
 		         </div>
 	        </div>
-	      </div> 
+	      </div>
 	      <div class="panel panel-default" id="panel3">
 	        <div class="panel-heading" id="step3">
 	          <h4 class="panel-title">
@@ -80,8 +80,9 @@
 	          </div>
 	        </div>
 	      </div>
-	    </div>
-	    <div id="touchLayer" ng-click="showNav()"></div>
-		</div>
+
+      </div>
+
+      <div class="container-fluid" id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
 	</body>
 </html>

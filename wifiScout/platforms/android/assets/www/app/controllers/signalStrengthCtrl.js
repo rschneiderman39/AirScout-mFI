@@ -1,5 +1,5 @@
-app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
-'setupService', function($scope, accessPoints, setupService) {
+app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints',
+'setupService', function($scope, globalSettings, accessPoints, setupService) {
 
   var prefs = {
     updateInterval: 1000,
@@ -77,11 +77,13 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
     };
 
     var update = function() {
-      $scope.$apply(function() {
-        updateList();
-        updateLevels();
-        updateDuplicateSSIDs();
-      });
+      if (! globalSettings.updatesPaused()) {
+        $scope.$apply(function() {
+          updateList();
+          updateLevels();
+          updateDuplicateSSIDs();
+        });
+      }
     };
 
     var prepView = function() {

@@ -20,18 +20,20 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
       for (var i = 0; i < $scope.APData.length; ++i) {
         isSelected[$scope.APData[i].BSSID] = true;
       }
-      globalSettings.setSelection(view, {
+
+      globalSettings.setAccessPointSelection(view, {
         showAll: true,
         selectedBSSIDs: []
       });
     };
 
     $scope.unselectAll = function() {
-      globalSettings.setSelection(view, {
+      isSelected = {};
+
+      globalSettings.setAccessPointSelection(view, {
         showAll: false,
         selectedBSSIDs: []
       });
-      isSelected = {};
     };
 
     $scope.sortSSID = utils.customSSIDSort;
@@ -40,7 +42,7 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
         isSelected = {};
 
     var onShow = function() {
-      var settings = globalSettings.getSelection(view);
+      var settings = globalSettings.getAccessPointSelection(view);
       $scope.$apply(function() {
         $scope.APData = accessPoints.getAll();
         if (settings.showAll) {
@@ -57,10 +59,14 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
     var sendSelection = function() {
       var selection = [];
+
       for (var BSSID in isSelected) {
-        if (isSelected[BSSID]) selection.push(BSSID);
+        if (isSelected[BSSID]) {
+          selection.push(BSSID);
+        }
       }
-      globalSettings.setSelection(view, {
+
+      globalSettings.setAccessPointSelection(view, {
         showAll: false,
         selectedBSSIDs: selection
       });

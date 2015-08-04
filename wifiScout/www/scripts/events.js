@@ -4,9 +4,9 @@ if (typeof events === 'undefined') {
 
 events.setupDone = "setupdone";
 
-events.newSelection = {};
-events.newSelection.APTable = 'newselectionaptable';
-events.newSelection.channelGraph = 'newselectionchannelgraph';
-events.newSelection.timeGraph = 'newselectiontimegraph';
+events.newAccessPointSelection = {};
+events.newAccessPointSelection.APTable = 'newselectionaptable';
+events.newAccessPointSelection.channelGraph = 'newselectionchannelgraph';
+events.newAccessPointSelection.timeGraph = 'newselectiontimegraph';
 
 events.newLegendData = 'newlegenddata';

@@ -81,21 +81,28 @@ function(networkData, globalSettings, setupService) {
 
     /* Get data from the device and update internal state accordingly */
     var update = function() {
-      networkData.get()
-      .done(function(data) {
-        if (globalSettings.detectHidden()) {
-          APData = appendColors(appendChannels(markHidden(data.available)));
-        } else {
-          APData = appendColors(appendChannels(removeHidden(data.available)));
-        }
-      })
-      .fail(function() {
-        APData = [];
-      });
-      setTimeout(update, prefs.updateInterval);
+      if (! globalSettings.updatesPaused()) {
+        networkData.get()
+        .done(function(data) {
+          if (globalSettings.detectHidden()) {
+            APData = appendColors(appendChannels(markHidden(data.available)));
+          } else {
+            APData = appendColors(appendChannels(removeHidden(data.available)));
+          }
+        })
+        .fail(function() {
+          APData = [];
+        });
+      }
     };
 
-    update();
+    var init = function() {
+      update();
+
+      setInterval(update, prefs.updateInterval);
+    };
+
+    init();
 
   });
 

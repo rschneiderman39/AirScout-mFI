@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ui.router', 'setup', 'ngTouch', 'nzTour', 'anim-in-out']);
+var app = angular.module('app', ['ngAnimate', 'ui.router', 'setup', 'ngTouch', 'nzTour'/*, 'anim-in-out'*/]);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('settings');

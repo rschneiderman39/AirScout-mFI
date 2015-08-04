@@ -5,12 +5,12 @@
 	</head>
 
 	<body>
-		<div id="touch-layer" ng-click="showNav()" ng-controller="channelTableCtrl">
-			<div class="anim-slide-right" data-anim-sync="true" ng-style="{'-webkit-transition-duration': 500 + 'ms','-moz-transition-duration': 500 + 'ms','-ms-transition-duration': 500 + 'ms','-o-transition-duration': 500 + 'ms','transition-duration': 500 + 'ms'}">
+		<div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('settings', 'left')" ng-swipe-right="swipeTo('APTable', 'right')" ng-controller="channelTableCtrl">
+
 				<div id="plot"></div>
-		    <div id="navLeft" class="nav-pane" ng-click="setBand('2_4'); $event.stopPropagation();"></div>
-		    <div id="navRight" class="nav-pane" ng-click="setBand('5'); $event.stopPropagation();"></div>
-		  </div>
+		    <div id="navLeft" class="nav-pane" ng-click="setBand('2_4'); $event.stopPropagation();" ng-swipe-right="$event.stopPropagation()" ng-swipe-left="$event.stopPropagation()"></div>
+		    <div id="navRight" class="nav-pane" ng-click="setBand('5'); $event.stopPropagation();" ng-swipe-right="$event.stopPropagation()" ng-swipe-left="$event.stopPropagation()"></div>
+
 		</div>
 	</body>
 </html>

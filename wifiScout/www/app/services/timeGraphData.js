@@ -17,10 +17,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       return generateLegendData();
     };
 
-    service.awaitLegendData = function() {
-      return legendDataPromise;
-    };
-
     service.toggleAPHighlight = function(BSSID) {
       if (BSSID === highlightedBSSID) {
         unhighlightAP(BSSID);
@@ -38,8 +34,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
         showAll = true,
         datasets = {},
         plot = undefined,
-        highlightedBSSID = undefined,
-        legendDataPromise = $.Deferred();
+        highlightedBSSID = undefined;
 
     var generateLegendData = function() {
       var legendData = [];
@@ -55,12 +50,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
         }
       }
       return legendData;
-    };
-
-    var sendLegendData = function() {
-      var request = legendDataPromise;
-      legendDataPromise = $.Deferred();
-      request.resolve(generateLegendData());
     };
 
     var highlightAP = function(BSSID) {
@@ -134,20 +123,22 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       }
 
       if (selectionChanged) {
-        sendLegendData();
+        document.dispatchEvent(new Event(events.newLegendData));
       }
     };
 
-    var updateSelection = function(settings) {
+    var updateSelection = function() {
+      var selection = globalSettings.getAccessPointSelection('timeGraph');
+
       isSelected = {};
-      for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-        isSelected[settings.selectedBSSIDs[i]] = true;
+
+      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
+        isSelected[selection.selectedBSSIDs[i]] = true;
       }
 
-      showAll = settings.showAll;
-      applyAPSelection();
+      showAll = selection.showAll;
 
-      globalSettings.awaitNewSelection('timeGraph').done(updateSelection);
+      applyAPSelection();
     };
 
     var updateDatasets = function() {
@@ -180,8 +171,10 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
     };
 
     var update = function() {
-      updateDatasets();
-      applyAPSelection();
+      if (! globalSettings.updatesPaused()) {
+        updateDatasets();
+        applyAPSelection();
+      }
     };
 
     var init = function() {
@@ -217,13 +210,15 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
         }
       );
 
-      var selection = globalSettings.getSelection('timeGraph');
+      var selection = globalSettings.getAccessPointSelection('timeGraph');
 
       for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
         isSelected[selection.selectedBSSIDs[i]] = true;
       }
+
       showAll = selection.showAll;
-      globalSettings.awaitNewSelection('timeGraph').done(updateSelection);
+
+      document.addEventListener(events.newAccessPointSelection['timeGraph'], updateSelection);
 
       setInterval(update, prefs.updateInterval);
     };
