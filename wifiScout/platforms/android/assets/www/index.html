@@ -29,8 +29,8 @@
 
   <body ng-controller="navCtrl">
     <div id="top-bar" class="col-xs-12">
-      <div class="col-xs-2" id="step4">
-        <button id="filter-button" class="btn btn-primary" type="button" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">Filter...</button>
+      <div class="col-xs-2">
+        <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filterModal" ng-show="usesFilterBtn()">
       </div>
       <div class="col-xs-8">
         <p id="view-title"></p>
@@ -38,7 +38,7 @@
       <div class="col-xs-1">
       </div>
       <div class="col-xs-1" >
-        <input id="help-button" type="image" src="images/chris-question-mark.png" alt="Submit" href="javascript:void(0);" ng-click="startTour()">
+        <input id="help-button" type="image" src="images/questionMark.png" alt="Submit" href="javascript:void(0);" ng-click="startTour()">
       </div>
     </div>
 

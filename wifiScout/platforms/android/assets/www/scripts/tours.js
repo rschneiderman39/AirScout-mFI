@@ -68,6 +68,10 @@ setup.tours = function() {
         content: strings.APTable.tour.capabilities
       },
       {
+        target: "#step4",
+        content: strings.APTable.tour.level
+      },
+      {
         target: "#filter-button",
         content: strings.APTable.tour.filter
       }

@@ -56,6 +56,18 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         return false;
       };
 
+      $scope.swipeRight = function (view) {
+        console.log("swiping right");
+        defaults.swiped = true;
+        $scope.setView(view);
+      }
+
+      $scope.swipeLeft = function (view) {
+        console.log("swiping left");
+        defaults.swiped = true;
+        $scope.setView(view);
+      }
+
       $scope.startTour = function() {
         nzTour.start(tours[$state.current.name]);
       };
@@ -66,5 +78,4 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
       init();
     });
-
 }]);

@@ -7,7 +7,6 @@
 
 <body>
 	<div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelTable', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="APTableCtrl">
-
 		<table class="table table-striped">
 	  	<thead>
 	    	<div class="container-fluid">
@@ -36,15 +35,13 @@
 			      	<td class="col-xs-3">{{ap.SSID}}</td>
 			      	<td class="col-xs-3">{{ap.BSSID}}</td>
 			      	<td class="col-xs-2">{{ap.channel}}</td>
-			      	<td class="col-xs-2">{{ap.level}}</td>
+			      	<td id="step4" class="col-xs-2">{{ap.level}}</td>
 			      	<td class="col-xs-2">{{ap.capabilities}}</td>
 			      </tr>
 					</div>
 				</tbody>
 		  </table>
-
 		</div>
-
 		<div filter-modal view="APTable"></div>
 	</body>
 </html>
