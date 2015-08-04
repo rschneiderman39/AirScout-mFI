@@ -2,6 +2,14 @@ app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout', 'globalSe
 function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupService) {
 
     setupService.ready.then(function() {
+
+      var prefs = {
+        navShowInterval: 3000
+      };
+
+      var navTimeout = null,
+          filterableViews = defaults.filterableViews;
+
       $scope.strings = strings;
 
       $scope.showNav = function() {
@@ -33,43 +41,6 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         });
       };
 
-/*
-        $('#current-view').addClass('anim-out-setup anim-slide-'+direction);
-
-        $animate.setClass($('#current-view'), 'anim-out', 'anim-out-setup').finally(
-          function() {
-            $('#current-view').removeClass('anim-out anim-slide-'+direction);
-            $('#current-view').css('visibility', 'hidden');
-
-            $state.go(view).finally(function() {
-
-
-              $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
-              $('#current-view').css('visibility', 'normal');
-
-              $timeout(function() {
-                $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(
-                  function() {
-                    $('#view-title').html(strings.viewTitles[view]);
-                    $('#current-view').removeClass('anim-in anim-slide-'+direction);
-                    globalSettings.updatesPaused(false);
-                  }
-                );
-              });
-            });
-          }
-        );
-      };
-
-
-      $scope.swipeTo = function(view, direction) {
-        globalSettings.updatesPaused(true);
-
-        $state.go(view).finally(function() {
-          globalSettings.updatesPaused(false);
-        });
-      };
-*/
       $scope.setView = function(view) {
         if (utils.isView(view)) {
           $('#view-title').html(strings.viewTitles[view]);
@@ -88,13 +59,6 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       $scope.startTour = function() {
         nzTour.start(tours[$state.current.name]);
       };
-
-      var prefs = {
-        navShowInterval: 3000
-      };
-
-      var navTimeout = null,
-          filterableViews = defaults.filterableViews;
 
       var init = function() {
         $scope.setView(globalSettings.startingView());

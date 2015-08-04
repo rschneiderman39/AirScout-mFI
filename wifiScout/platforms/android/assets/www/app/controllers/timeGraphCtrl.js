@@ -2,6 +2,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
 'setupService', function($scope, $timeout, timeGraphData, setupService) {
 
   setupService.ready.then(function() {
+
+    var selectedBSSID = "";
+
     $scope.strings = strings;
     $scope.legendData = undefined;
     $scope.isDuplicateSSID = {};
@@ -22,8 +25,6 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
     };
 
     $scope.sortSSID = utils.customSSIDSort;
-
-    var selectedBSSID = "";
 
     var updateDuplicateSSIDs = function() {
       var found = {},

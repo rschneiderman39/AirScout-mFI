@@ -4,6 +4,7 @@ app.factory('APTableState', ['setupService', function(setupService) {
   var service = {};
 
   setupService.ready.then(function() {
+
       var sortPredicate = 'SSID',
           sortReverse = false;
 

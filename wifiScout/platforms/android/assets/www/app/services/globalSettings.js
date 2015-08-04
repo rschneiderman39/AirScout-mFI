@@ -4,6 +4,14 @@ setupService) {
   var service = {};
 
   setupService.ready.then(function() {
+
+    var detectHidden = false,
+        globalAccessPointSelection = false,
+        startingView = undefined,
+        updatesPaused = false,
+        selections = {},
+        filterableViews = defaults.filterableViews;
+
     service.detectHidden = function(option) {
       if (option === undefined) {
         return detectHidden;
@@ -68,13 +76,6 @@ setupService) {
         updatesPaused = option;
       }
     };
-
-    var detectHidden = false,
-        globalAccessPointSelection = false,
-        startingView = undefined,
-        updatesPaused = false,
-        selections = {},
-        filterableViews = defaults.filterableViews;
 
     // Create an associative settings array for each view that will
     // use this service

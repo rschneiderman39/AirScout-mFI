@@ -2,6 +2,10 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
 'setupService', function($scope, accessPoints, globalSettings, setupService) {
 
   setupService.ready.then(function() {
+
+    var view = undefined,
+        isSelected = {};
+
     $scope.strings = strings;
 
     $scope.APData = [];
@@ -37,9 +41,6 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     $scope.sortSSID = utils.customSSIDSort;
-
-    var view = undefined,
-        isSelected = {};
 
     var onShow = function() {
       var settings = globalSettings.getAccessPointSelection(view);

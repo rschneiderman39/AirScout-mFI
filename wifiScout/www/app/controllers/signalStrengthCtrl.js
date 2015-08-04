@@ -1,12 +1,13 @@
 app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints',
 'setupService', function($scope, globalSettings, accessPoints, setupService) {
 
-  var prefs = {
-    updateInterval: 1000,
-    transitionInterval: 900
-  };
-
   setupService.ready.then(function() {
+
+    var prefs = {
+      updateInterval: 1000,
+      transitionInterval: 900
+    };
+
     $scope.strings = strings;
 
     $scope.APData = [];
@@ -103,7 +104,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
     var makeGauge = function(container, configuration) {
     	var gauge = {};
-    	var config = {
+
+      var config = {
     		ringInset					: 25,
 
     		pointerWidth				: 10,
@@ -123,20 +125,18 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         arrowInset          : 15,
     	};
 
-    	var donut = d3.layout.pie(),
-          pointer = undefined,
-          minValue = undefined,
-          maxValue = undefined,
-          r = undefined;
+      var pointer, minValue, maxValue, r, center, arcs, scale, degScale;
+
+    	var donut = d3.layout.pie();
 
     	function deg2rad(deg) {
     		return deg * Math.PI / 180;
     	}
 
-    	function newAngle(d) {
-    		var ratio = scale(d);
-    		var newAngle = config.minAngle + (ratio * range);
-    		return newAngle;
+    	function getAngle(level) {
+    		var ratio = scale(level);
+    		var angle = config.minAngle + (ratio * range);
+    		return angle;
     	}
 
     	function configure(configuration) {
@@ -153,6 +153,10 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     		scale = d3.scale.linear()
     			.range([0,1])
     			.domain([config.minValue, config.maxValue]);
+
+        degScale = d3.scale.linear()
+          .domain([config.minValue, config.maxValue])
+          .range([config.minAngle, config.maxAngle]);
 
     		ticks = scale.ticks(config.majorTicks);
     		tickData = d3.range(config.majorTicks).map(function() {return 1/config.majorTicks;});
@@ -171,10 +175,6 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     	}
     	gauge.configure = configure;
 
-    	function centerTranslation() {
-    		return 'translate('+r +','+ r +')';
-    	}
-
     	function isRendered() {
     		return (svg !== undefined);
     	}
@@ -187,11 +187,11 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     				.attr('width', config.clipWidth)
     				.attr('height', config.clipHeight);
 
-    		var centerTx = centerTranslation();
+        center = svg.append('g')
+          .attr('transform', 'translate('+r +','+ r +')');
 
-    		var arcs = svg.append('g')
+    		arcs = center.append('g')
     				.attr('class', 'arc')
-    				.attr('transform', centerTx);
 
       var colorScale = d3.scale.ordinal()
         .domain([0, 1, 2, 3, 4, 5, 6])
@@ -206,17 +206,15 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     				})
     				.attr('d', arc);
 
-    		var lg = svg.append('g')
-    				.attr('class', 'label')
-    				.attr('transform', centerTx);
+    		var lg = center.append('g')
+    				.attr('class', 'label');
+
     		lg.selectAll('text')
     				.data(ticks)
     			.enter().append('text')
     				.attr('transform', function(d) {
-    					var ratio = scale(d);
-              var newAngle = config.minAngle + (ratio * range);
-    					return 'rotate(' +newAngle +') translate(0,' +(config.labelInset - r) +')';
-    				})
+              return 'rotate(' +degScale(d) +') translate(0,' +(config.labelInset - r) +')';
+            })
     				.text(config.labelFormat);
 
     		var lineData = [ [config.pointerWidth / 2, 0],
@@ -226,9 +224,9 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     						[config.pointerWidth / 2, 0] ];
     		var pointerLine = d3.svg.line().interpolate('basis');
 
-    		var pg = svg.append('g').data([lineData])
-    				.attr('class', 'pointer')
-    				.attr('transform', centerTx);
+    		var pg = center.append('g').data([lineData])
+    				.attr('class', 'pointer');
+
         var test = svg.append("marker")
           .attr("markerWidth", 6)
           .attr("markerHeight", 4)
@@ -238,57 +236,23 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     			.attr('d', pointerLine)
     			.attr('transform', 'rotate(' +config.minAngle +')');
 
-      /*
-        minValue = svg.append('g')
-          .attr('transform', centerTx)
-          .append('g')
-            .attr('transform', 'translate(0, ' + (config.arrowInset - r) + ')')
-            .append('path')
-              .attr("d","M 0 0 L 10 0 L 5 10 z")
-              .attr("fill", "#000")
-              .attr('transform', function() {
-                var ratio = scale(-100);
-                var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
-                return 'rotate(' +newAngle+ ')';
-              });
+        minValue = center.append('g')
+          .attr('transform', 'rotate(' +degScale(constants.noSignal)+ ')');
 
-        maxValue = svg.append('g')
-          .attr('transform', centerTx)
-          .append('g')
-            .attr('transform', 'translate(0, ' + (config.arrowInset - r) + ')')
-            .append('path')
-              .attr("d","M 0 0 L 10 0 L 5 10 z")
-              .attr("fill", "#000")
-              .attr('transform', function() {
-                var ratio = scale(-100);
-                var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
-                return 'rotate(' +newAngle+ ')';
-              });
-        */
-
-          minValue = svg.append('g')
-            .attr("id", "arrowhead")
-            .attr('transform', centerTx)
-            .append("svg:path")
+        minValue.append('g')
+          .attr('transform', 'translate(0, ' +(config.arrowInset - r)+ ')')
+          .append('path')
             .attr("d","M 0 0 L 10 0 L 5 10 z")
-            .attr("fill", "#000")
-            .attr('transform', function() {
-              var ratio = scale(constants.noSignal);
-              var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
-              return 'rotate(' +newAngle +') translate(0,' + (config.arrowInset - r) +')';
-            });
+            .attr("fill", "#000");
 
-          maxValue = svg.append('g')
-            .attr("id", "arrowhead")
-            .attr('transform', centerTx)
-            .append("svg:path")
+        maxValue = center.append('g')
+          .attr('transform', 'rotate(' +degScale(constants.noSignal)+ ')');
+
+        maxValue.append('g')
+          .attr('transform', 'translate(0, ' +(config.arrowInset - r)+ ')')
+          .append('path')
             .attr("d","M 0 0 L 10 0 L 5 10 z")
-            .attr("fill", "#000")
-            .attr('transform', function() {
-              var ratio = scale(constants.noSignal);
-              var newAngle = config.arrowMinAngle + (ratio * (config.arrowMaxAngle-config.arrowMinAngle));
-              return 'rotate(' +newAngle +') translate(0,' + (config.arrowInset - r) +')';
-            });
+            .attr("fill", "#000");
 
     		update('pointer', newValue === undefined ? constants.noSignal : newValue);
         update('minValue', newValue === undefined ? constants.noSignal : newValue);
@@ -297,25 +261,20 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     	gauge.render = render;
 
     	function update(elemName, newValue) {
-        var translateY;
         if (newValue !== undefined) {
+
           if (elemName === 'pointer') {
-            translateY = 0;
             elem = pointer;
           } else if (elemName === 'minValue') {
-            translateY = config.arrowInset - r;
             elem = minValue;
           } else if (elemName === 'maxValue') {
-            translateY = config.arrowInset - r;
             elem = maxValue;
           }
 
-      		var ratio = scale(newValue);
-      		var newAngle = config.minAngle + (ratio * range);
       		elem.transition()
       			.duration(config.transitionMs)
-      			.ease('linear')
-      			.attr('transform', 'rotate(' +newAngle + ') translate(0, ' +translateY+ ')');
+      			.ease('quad')
+      			.attr('transform', 'rotate(' +degScale(newValue)+ ')');
         }
     	}
     	gauge.update = update;
@@ -331,9 +290,12 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     		clipWidth: 400,
     		clipHeight: 400,
     		ringWidth: 40,
+        pointerWidth				: 10,
+    		pointerTailLength			: 0,
+    		pointerHeadLengthPercent	: 1.2,
         minValue: constants.noSignal,
     		maxValue: constants.maxSignal,
-    		transitionMs: 900,
+    		transitionMs: prefs.transitionInterval,
     	});
     	gauge.render();
     };

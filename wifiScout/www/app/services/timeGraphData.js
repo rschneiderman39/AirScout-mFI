@@ -1,13 +1,19 @@
 app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 'setupService', function(accessPoints, globalSettings, setupService) {
 
-  var prefs = {
-    updateInterval: 1000
-  };
-
   var service = {};
 
   setupService.ready.then(function() {
+
+    var prefs = {
+      updateInterval: 1000
+    };
+
+    var isSelected = {},
+        showAll = true,
+        datasets = {},
+        plot = undefined,
+        highlightedBSSID = undefined;
 
     service.getPlot = function() {
       return plot;
@@ -29,12 +35,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
     service.getHighlightedBSSID = function(BSSID) {
       return highlightedBSSID;
     };
-
-    var isSelected = {},
-        showAll = true,
-        datasets = {},
-        plot = undefined,
-        highlightedBSSID = undefined;
 
     var generateLegendData = function() {
       var legendData = [];

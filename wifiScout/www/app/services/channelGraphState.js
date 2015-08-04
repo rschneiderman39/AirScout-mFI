@@ -4,6 +4,12 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
   var service = {};
 
   setupService.ready.then(function() {
+
+    var isSelected = {},
+        showAll = true,
+        band = undefined,
+        viewportExtent = undefined;
+
     service.getData = function() {
       var APData = accessPoints.getAll(),
           data = [];
@@ -32,11 +38,6 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
         viewportExtent = newExtent;
       }
     };
-
-    var isSelected = {},
-        showAll = true,
-        band = undefined,
-        viewportExtent = undefined;
 
     var updateSelection = function() {
       var selection = globalSettings.getAccessPointSelection('channelGraph');
