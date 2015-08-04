@@ -112,11 +112,13 @@ languages['en'] = {
     }
   },
   timeGraph: {
-    legendHeader: 'Select an AP to highlight it',
+    legendHeader: 'Select an AP to highlight it:',
     axisLabel: 'Level (dBm)',
     tour: {
       intro: "This interactive graph displays the observed signal strength of"
           + " each access point over time and is updated every half second.",
+          
+      list: "Select an access point on the list to highlight it on the graph.", 
 
       filter: "The filter button allows you to search for, select, or elimate certain"
           + " access points that are displayed on the graph.",

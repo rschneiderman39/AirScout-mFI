@@ -8,4 +8,3 @@ defaults.detectHidden = false;
 defaults.language = 'en';
 defaults.region = 'US';
 defaults.filterableViews = ['channelGraph', 'timeGraph', 'APTable'];
-defaults.swiped = false;
