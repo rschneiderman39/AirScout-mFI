@@ -4,7 +4,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
   setupService.ready.then(function() {
 
     var prefs = {
-      gaugeSizeFactor: .8,
+      gaugeSizeFactor: .84,
       updateInterval: 1000,
       transitionInterval: 900
     };
@@ -293,9 +293,11 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       var baseWidth = 400,
           // The width of the containing column is somehow unavailable at this point, so we have to scale on window width instead.
           ratio = ($(window).width() * 0.66 / baseWidth) * prefs.gaugeSizeFactor;
+          //ratio = 1;
 
     	gauge = makeGauge('#gauge', {
     		width: baseWidth * ratio,
+        //width: 300,
 
     		ringWidth: 20 * ratio,
         ringInset: 25 * ratio,

@@ -20,7 +20,35 @@
 				  	</ul>
 					</div>
 					<div class="col-xs-8" id="gauge-section">
-						<center><div id="gauge"></div></center>
+						<div id="gauge"></div>
+
+							<div class="row">
+								<div id="panel" class="col-xs-4">
+									<div>{{strings.signalStrength.minLevel}}</div>
+									<div class="panel panel-default">
+										<div class="panel-body padding">
+											<p class="padding">{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</p>
+										</div>
+									</div>
+								</div>
+								<div id="panel" class="col-xs-4">
+									<div id="current-level">{{strings.signalStrength.currentLevel}}</div>
+									<div class="panel panel-default">
+										<div class="panel-body padding">
+											<p id="current-level" class="padding">{{level !== undefined ? level + " dBm" : "---"}}</p>
+										</div>
+									</div>
+								</div>
+								<div id="panel" class="col-xs-4">
+									<div>{{strings.signalStrength.maxLevel}}</div>
+									<div class="panel panel-default">
+									 	<div class="panel-body padding">
+											<p class="padding">{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
 					</div>
 				</div>
       </div>
