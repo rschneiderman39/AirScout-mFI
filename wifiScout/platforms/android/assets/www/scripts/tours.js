@@ -28,11 +28,11 @@ setup.tours = function() {
         content: strings.channelTable.tour.intro
       },
       {
-        target: '#navLeft',
+        target: '#nav-left',
         content: strings.channelTable.tour.band2_4
       },
       {
-        target: "#navRight",
+        target: "#nav-right",
         content: strings.channelTable.tour.band5
       }
     ]

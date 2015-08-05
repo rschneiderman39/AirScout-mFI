@@ -24,10 +24,7 @@ languages['en'] = {
 
       capabilities: "The signal strength of an access point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic scale - every increase of ~3dBm is equivalent to doubling the power of the signal.  Because WiFi signals are relatively low in energy, the measured dBm is typically a negative value, with a smaller negative value representing a stronger signal.",
 
-      level: "Signal strength is expressed as a negative number because wireless networks"
-          + " are not powerful enough to radiate enough energy to give out a strong enough"
-          + " signal - theoretically a positive level could be recorded if the amount of"
-          + " energy emitted and received exceeds one milliwatt.",
+      level: "The signal strength of an access point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic scale - every increase of ~3dBm is equivalent to doubling the power of the signal.  Because WiFi signals are relatively low in energy, the measured dBm is typically a negative value, with a smaller negative value representing a stronger signal.",
 
       filter: "The filter button allows you to search for, select, or elimate certain"
           + " access points that are displayed on the table."
@@ -100,8 +97,8 @@ languages['en'] = {
     tour: {
       intro: "This interactive graph displays the observed signal strength of"
           + " each access point over time and is updated every half second.",
-          
-      list: "Select an access point on the list to highlight it on the graph.", 
+
+      list: "Select an access point on the list to highlight it on the graph.",
 
       filter: "The filter button allows you to search for, select, or elimate certain"
           + " access points that are displayed on the graph.",
