@@ -84,8 +84,8 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         saveState();
 
         d3.select('#plot').selectAll('*').remove();
-        d3.select('#navLeft').selectAll('*').remove();
-        d3.select('#navRight').selectAll('*').remove();
+        d3.select('#nav-left').selectAll('*').remove();
+        d3.select('#nav-right').selectAll('*').remove();
       });
 
       //update();
@@ -217,7 +217,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       elem.nav.left = {};
 
       /* Container */
-      elem.nav.left.container = d3.select('#navLeft').append('svg')
+      elem.nav.left.container = d3.select('#nav-left').append('svg')
         .attr('width', dim.nav.left.totalWidth)
         .attr('height', dim.nav.totalHeight)
         .append('g')
@@ -256,7 +256,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       elem.nav.right = {};
 
       /* Container */
-      elem.nav.right.container = d3.select('#navRight').append('svg')
+      elem.nav.right.container = d3.select('#nav-right').append('svg')
         .attr('width', dim.nav.right.totalWidth)
         .attr('height', dim.nav.totalHeight)
         .append('g')

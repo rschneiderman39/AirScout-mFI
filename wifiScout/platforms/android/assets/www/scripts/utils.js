@@ -29,6 +29,10 @@ utils.getRandomColor = function() {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
 };
 
+utils.getCenteredTriangle = function(width, height) {
+  return 'M ' +(-width / 2) + ' 0 L 0 -' +height+ 'L ' +(width/2)+ ' 0 z';
+};
+
 utils.customSSIDSort = function(AP) {
   if (AP.SSID.charAt(0) === '<') {
     return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" + AP.BSSID;

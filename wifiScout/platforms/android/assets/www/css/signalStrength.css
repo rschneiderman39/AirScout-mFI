@@ -1,14 +1,13 @@
-#power-gauge {
-  position: relative;
+#gauge {
   transform: translateY(8%);
 }
 
-#power-gauge g.label text {
+#gauge g.label text {
   text-anchor: middle;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-#selectableList {
+#list-section {
   transform: translateY(3%);
 }
 

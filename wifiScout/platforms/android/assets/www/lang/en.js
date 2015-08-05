@@ -18,20 +18,13 @@ languages['en'] = {
     sortLevel: 'Level (dBm)',
     sortCapabilities: 'Capabilities',
     tour: {
-      intro: "More commonly referred to as signal strenght, the level of an access"
-      + " point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic"
-      + " scale - every increase of ~3dBm is equivalent to doubling the power of the signal.",
+      intro: "This view displays all available information about the access points visible to the device.",
 
-      channel: "*****NEEDS TO BE FILLED IN*****",
+      channel: "An access point's channel number represents the frequency range it's using.  Channels 1-14 belong to the 2.4 Ghz band, while channels 34-165 belong to the 5 Ghz band.",
 
-      capabilities: "Wireless networks have three different security options: WEP, WPA,"
-          + " and WPA2. WEP is the oldest security option and is considerably outdated - "
-          + " it should only be used when no other option is available. WPA is a certification"
-          + " that includes one protocol - TKIP. WPA2 is also a certification but it includes two"
-          + " security protocols - TKIP and CCMP. WPA2-CCMP is considered to be the most secure"
-          + " protocol available and should be chosed whenever it is available.",
+      capabilities: "The signal strength of an access point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic scale - every increase of ~3dBm is equivalent to doubling the power of the signal.  Because WiFi signals are relatively low in energy, the measured dBm is typically a negative value, with a smaller negative value representing a stronger signal.",
 
-      level: "Signal strength is expressed as a negative number because wireless networks" 
+      level: "Signal strength is expressed as a negative number because wireless networks"
           + " are not powerful enough to radiate enough energy to give out a strong enough"
           + " signal - theoretically a positive level could be recorded if the amount of"
           + " energy emitted and received exceeds one milliwatt.",
@@ -46,16 +39,11 @@ languages['en'] = {
     labelX: 'Channel',
     labelY: 'AP Count',
     tour: {
-      intro: "The channel table view displays the number of access points on"
-          + " each channel in the 2.4Ghz and 5.0Ghz freqency ranges.",
+      intro: "This view displays the number of access points on each channel in the 2.4 and 5.0Ghz frequency ranges.  A high number of access points on one channel can be an indicator of congestion.",
 
-      band2_4: "This represents the 2.4Ghz frequency range. The 2.4Ghz frequency"
-          + " has a greater range than a 5.0Ghz channel.",
+      band2_4: "This section represents the 2.4 Ghz frequency band.  While offering a greater range than the 5 Ghz band, the 2.4 Ghz band only has 3 non-overlapping channels, making it more prone to interference.",
 
-      band5: "This represents the 5.0Ghz frequency range. The 5.0Ghz range allows for"
-          + " 23 nonoverlapping channels while the 2.4Ghz range can only support 3."
-          + " Therefore, the 5.0Ghz frequency can support a larger number of devices"
-          + " with less interference than the 2.4Ghz frequency."
+      band5: "This section represents the 5 Ghz frequency band.  It offers 23 non-overlapping channels, although, not all of these are available everywhere.  If a channel is greyed out,  unauthorized use is disallowed or restricted in your region."
     }
   },
   channelGraph : {
@@ -64,16 +52,11 @@ languages['en'] = {
     labelX: 'Channel',
     labelY: 'Level (dBm)',
     tour: {
-      intro: "The channel table view displays the number of access points on"
-          + " each channel in the 2.4Ghz and 5.0Ghz freqency ranges.",
+      intro: "This view displays both the channel utilization and signal strength of each access point. Due constraints imposed by device manufacturers, this application is prevented from displaying anything other than a device's primary 20 mHz wide channel - any channels wider than 20 Mhz are not recognized as such.",
 
-      band2_4: "This represents the 2.4Ghz frequency range. The 2.4Ghz frequency"
-          + " has a greater range than a 5.0Ghz channel.",
+      band2_4: "This section represents the 2.4 Ghz frequency band.  While offering a greater range than the 5 Ghz band, the 2.4 Ghz band only has 3 non-overlapping channels, making it more prone to interference.",
 
-      band5: "This represents the 5.0Ghz frequency range. The 5.0Ghz range allows for"
-          + " 23 nonoverlapping channels while the 2.4Ghz range can only support 3."
-          + " Therefore, the 5.0Ghz frequency can support a larger number of devices"
-          + " with less interference than the 2.4Ghz frequency."
+      band5: "This section represents the 5 Ghz frequency band.  It offers 23 non-overlapping channels, although not all of these are available everywhere.  If a channel is greyed out,  unauthorized use is disallowed or restricted in your region."
     }
   },
   filterModal : {
