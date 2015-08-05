@@ -1,4 +1,4 @@
-﻿body {
+body {
 	background: #eeeeee !important;
 }
 
@@ -10,9 +10,13 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
+#nzTour-box,
+#nzTour-content {
+  min-height: 50vh !important;
+}
+
 #current-view {
   position: relative;
-  overflow: hidden;
 }
 
 #touch-layer {
@@ -31,14 +35,16 @@ body.pg-loaded > #current-view {
 
 #filter-button {
 	position: relative;
+  max-height: 8.5vh;
+  max-width: 8.5vh;
   transform: translateY(-50%);
 	top: 50%;
 }
 
 #help-button {
 	position: relative;
-  max-height: 7.5vh;
-  max-width: 7.5vh;
+  max-height: 8vh;
+  max-width: 11.5vh;
   transform: translateY(-50%);
 	top: 50%;
 }
@@ -61,12 +67,18 @@ body.pg-loaded > #current-view {
   transition: bottom 0.5s ease;
 }
 
-::-webkit-scrollbar {
-    -webkit-appearance: none;
+.active_view {
+	background-color: #eeeeee;
 }
 
-::-webkit-scrollbar:vertical {
-    width: 12px;
+.nav>li>a:hover {
+	background-color: transparent;
+}
+
+/* Scrolling */
+/*
+::-webkit-scrollbar {
+    -webkit-appearance: none;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -79,14 +91,7 @@ body.pg-loaded > #current-view {
     border-radius: 10px;
     background-color: #ffffff;
 }
-
-.active_view {
-	background-color: #eeeeee;
-}
-
-.nav>li>a:hover {
-	background-color: transparent;
-}
+*/
 
 /* PATHGATHER */
 .sk-spinner {
@@ -156,11 +161,9 @@ body.pg-loaded > #current-view {
   z-index: 100;
   display: none;
 }
-
 #current-view {
   position: relative;
 }
-
 [ui-view].ng-enter, [ui-view].ng-leave {
   position: absolute;
   left: 0;
@@ -170,28 +173,24 @@ body.pg-loaded > #current-view {
   -o-transition:all .3s ease-in-out;
   transition:all .3s ease-in-out;
 }
-
 [ui-view].ng-enter {
   opacity: 0;
   -webkit-transform:translate3d(0, 0, 0);
   -moz-transform:translate3d(0, 0, 0);
   transform:translate3d(0, 0, 0);
 }
-
 [ui-view].ng-enter-active {
   opacity: 1;
   -webkit-transform:translate3d(0, 0, 0);
   -moz-transform:translate3d(0, 0, 0);
   transform:translate3d(0, 0, 0);
 }
-
 [ui-view].ng-leave {
   opacity: 1;
   -webkit-transform:translate3d(0, 0, 0);
   -moz-transform:translate3d(0, 0, 0);
   transform:translate3d(0, 0, 0);
 }
-
 [ui-view].ng-leave-active {
   opacity: 0;
   -webkit-transform:translate3d(100px, 0, 0);
