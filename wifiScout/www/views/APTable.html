@@ -10,20 +10,20 @@
 		<table class="table table-striped">
 	  	<thead>
 	    	<div class="container-fluid">
-	      	<tr class="row">
+	      	<tr id="step2" class="row">
 	          <th class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
 	            <a href="">{{strings.APTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-3" ng-click="order('BSSID'); $event.stopPropagation()">
 	          	<a href="">{{strings.APTable.sortBSSID}}<span class="sortArrow" ng-show="sortPredicate === 'BSSID'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
-	          <th class="col-xs-2" id="step2" ng-click="order('channel'); $event.stopPropagation()">
+	          <th class="col-xs-2" id="step3" ng-click="order('channel'); $event.stopPropagation()">
             	<a href="">{{strings.APTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	          <th class="col-xs-2" id="step1" ng-click="order('level'); $event.stopPropagation()">
 	           	<a href="">{{strings.APTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
-	          <th class="col-xs-2" id="step3" ng-click="order('capabilities'); $event.stopPropagation()">
+	          <th class="col-xs-2" id="step4" ng-click="order('capabilities'); $event.stopPropagation()">
             	<a href="">{{strings.APTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
 	          </th>
 	      	</tr>

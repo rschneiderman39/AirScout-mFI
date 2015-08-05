@@ -1,4 +1,4 @@
-#modalList {
+#modal-list {
   overflow-y: auto;
 }
 
@@ -18,10 +18,15 @@
   margin-bottom: 15px;
 }
 
+.nopadding {
+  padding: 5px !important;
+  margin: 0px !important;
+}
+
 .modal-dialog {
   margin-left: auto;
   margin-right: auto;
-  width: 70%;
+  width: 55%;
 }
 
 .list-group-item.selected {

@@ -308,7 +308,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         minValue: constants.noSignal,
     		maxValue: constants.maxSignal,
         numSegments: 7,
-        segmentColors: ["#ce2029", "#ce2029" ,"#fdd400", "#fdd400", "#33a532" ,"#33a532", "#33a532"],
+        segmentColors: ["#cc4748", "#cc4748" ,"#fdd400", "#fdd400", "#84b761" ,"#84b761", "#84b761"],
 
         pointerCenterRadius: 10 * ratio,
 

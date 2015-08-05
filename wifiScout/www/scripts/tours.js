@@ -28,14 +28,13 @@ setup.tours = function() {
         content: strings.channelTable.tour.intro
       },
       {
-        target: '#navLeft',
+        target: '#nav-left',
         content: strings.channelTable.tour.band2_4
       },
       {
-        target: "#navRight",
+        target: "#nav-right",
         content: strings.channelTable.tour.band5
-      }
-    ]
+      }]
   };
 
   tours.APTable = {
@@ -56,26 +55,28 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-        target: '#step1',
         content: strings.APTable.tour.intro
       },
       {
+        target: "#step1",
+        content: strings.APTable.tour.level
+      },
+      {
         target: "#step2",
-        content: strings.APTable.tour.channel
+        content: strings.APTable.tour.sorting
       },
       {
         target: "#step3",
-        content: strings.APTable.tour.capabilities
+        content: strings.APTable.tour.channel
       },
       {
         target: "#step4",
-        content: strings.APTable.tour.level
+        content: strings.APTable.tour.capabilities
       },
       {
         target: "#filter-button",
         content: strings.APTable.tour.filter
-      }
-    ]
+      }]
   };
 
   tours.timeGraph = {
@@ -97,7 +98,7 @@ setup.tours = function() {
     },
     steps: [{
         target: "#timeGraph",
-        content: strings.timeGraph.tour.intro,
+        content: strings.timeGraph.tour.graph,
       },
       {
         target: "#list",
@@ -162,11 +163,11 @@ setup.tours = function() {
       content: strings.channelGraph.tour.intro
       },
       {
-        target: '#navLeft',
+        target: '#nav-left',
         content: strings.channelGraph.tour.band2_4
       },
       {
-        target: "#navRight",
+        target: "#nav-right",
         content: strings.channelGraph.tour.band5
       }
     ]

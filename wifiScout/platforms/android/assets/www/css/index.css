@@ -12,7 +12,7 @@ body.pg-loaded > #current-view {
 
 #nzTour-box, 
 #nzTour-content {
-  min-height: 50vh !important;
+  min-height: 32vh !important;
 }
 
 #current-view {

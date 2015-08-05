@@ -11,6 +11,29 @@ languages['en'] = {
     signalStrength: 'Signal Strength',
     timeGraph: 'Time Graph'
   },
+  channelTable : {
+    label2_4: '2.4 Ghz',
+    label5: '5 Ghz',
+    labelX: 'Channel',
+    labelY: 'AP Count',
+    tour: {
+      intro: "This view displays the number of access points on each"
+        + " channel in the 2.4 and 5.0Ghz frequency ranges. A high number"
+        + " of access points on one channel can be an indicator of"
+        + " congestion.",
+
+      band2_4: "This section represents the 2.4 Ghz frequency band. While"
+        + " offering a greater range than the 5 Ghz band, the 2.4 Ghz band"
+        + " only has 3 non-overlapping channels, making it more prone to"
+        + " interference.",
+
+      band5: "This section represents the 5 Ghz frequency band. It offers"
+        + " 23 non-overlapping channels, although, not all of these are"
+        + " available everywhere.  If a channel is greyed out,"
+        + " unauthorized use may be restricted or not allowed in your"
+        + " region. "
+    }
+  },
   APTable : {
     sortSSID: 'SSID',
     sortBSSID: 'MAC Address',
@@ -18,32 +41,67 @@ languages['en'] = {
     sortLevel: 'Level (dBm)',
     sortCapabilities: 'Capabilities',
     tour: {
-      intro: "This view displays all available information about the access points visible to the device.",
+      intro: "This view displays all available information about all"
+        + " access points visible to your device.",
 
-      channel: "An access point's channel number represents the frequency range it's using.  Channels 1-14 belong to the 2.4 Ghz band, while channels 34-165 belong to the 5 Ghz band.",
+      level: "The signal strength of an access point is measured in" 
+        + " decibel milliwatts (dBm). dBm is recorded on a logarithmic"
+        + " scale - every increase of ~3dBm is equivalent to doubling the"
+        + " power of the signal.  Because WiFi signals are relatively low"
+        + " in energy, the measured dBm is typically a negative value,"
+        + " with a smaller negative value representing a stronger signal.",
 
-      capabilities: "The signal strength of an access point is measured in decibel milliwatts (dBm). dBm is recorded on a logarithmic scale - every increase of ~3dBm is equivalent to doubling the power of the signal.  Because WiFi signals are relatively low in energy, the measured dBm is typically a negative value, with a smaller negative value representing a stronger signal.",
+      sorting: "Tap on any of the table headers to sort the table by that"
+        + " field.",
 
-      level: "Signal strength is expressed as a negative number because wireless networks"
-          + " are not powerful enough to radiate enough energy to give out a strong enough"
-          + " signal - theoretically a positive level could be recorded if the amount of"
-          + " energy emitted and received exceeds one milliwatt.",
+      channel: "An access point's channel number represents the"
+        + " frequency range it's using.  Channels 1-14 belong to the 2.4"
+        + " Ghz band, while channels 34-165 belong to the 5 Ghz band.",
 
-      filter: "The filter button allows you to search for, select, or elimate certain"
-          + " access points that are displayed on the table."
+      capabilities: "This field lists the networking and security"
+        + " capabilities of a given access point. Wireless networks use"
+        + " three common security protocols: WEP, WPA, and WPA2. WEP is no"
+        + " longer considered secure - its use should be avoided.  WPA is"
+        + " far better than WEP, but not as robust as WPA2, which should"
+        + " be used whenever possible.  Another protocol supported by some"
+        + " access points is WPS, which can be used to automate the setup"
+        + " process. After setup, however, WPS should be disabled.",
+
+      filter: "The filter button allows you to search for, select or"
+        + " eliminate certain access points that are displayed in the"
+        + " table."
     }
   },
-  channelTable : {
-    label2_4: '2.4 Ghz',
-    label5: '5 Ghz',
-    labelX: 'Channel',
-    labelY: 'AP Count',
+  timeGraph: {
+    legendHeader: 'Select an AP to highlight it:',
+    axisLabel: 'Level (dBm)',
     tour: {
-      intro: "This view displays the number of access points on each channel in the 2.4 and 5.0Ghz frequency ranges.  A high number of access points on one channel can be an indicator of congestion.",
+      graph: "This interactive graph displays the measured signal strength"
+        + " of each access point over time.",
+          
+      list: "Select an access point on the list to highlight it on the"
+        + " graph.", 
 
-      band2_4: "This section represents the 2.4 Ghz frequency band.  While offering a greater range than the 5 Ghz band, the 2.4 Ghz band only has 3 non-overlapping channels, making it more prone to interference.",
+      filter: "The filter button allows you to search for, select or"
+        + " eliminate certain access points that are displayed in the"
+        + " graph.",
+    }
+  },
+    signalStrength: {
+    listHeader: 'Select an AP to view its signal strength',
+    minLevel: 'Min Level',
+    currentLevel: 'Current',
+    maxLevel: 'Max Level',
+    tour: {
+      intro: "This view provides a live signal strength reading for a"
+        + " selected access point, as well as maximum and minimum hold"
+        + " information.",
 
-      band5: "This section represents the 5 Ghz frequency band.  It offers 23 non-overlapping channels, although, not all of these are available everywhere.  If a channel is greyed out,  unauthorized use is disallowed or restricted in your region."
+      minLevel: "This box displays the weakest measured signal strength"
+        + " since the access point was selected.",
+
+      maxLevel: "Displays the strongest measured signal strength since the"
+        + " access point was selected."
     }
   },
   channelGraph : {
@@ -52,11 +110,22 @@ languages['en'] = {
     labelX: 'Channel',
     labelY: 'Level (dBm)',
     tour: {
-      intro: "This view displays both the channel utilization and signal strength of each access point. Due constraints imposed by device manufacturers, this application is prevented from displaying anything other than a device's primary 20 mHz wide channel - any channels wider than 20 Mhz are not recognized as such.",
+      intro: "This view displays both the channel utilization and signal"
+        + " strength of each access point. Due constraints imposed by"
+        + " device manufacturers, this application is unable to detect"
+        + " anything other than a device's primary 20 mHz wide channel -"
+        + " any channels wider than 20 Mhz are not recognized as such.",
 
-      band2_4: "This section represents the 2.4 Ghz frequency band.  While offering a greater range than the 5 Ghz band, the 2.4 Ghz band only has 3 non-overlapping channels, making it more prone to interference.",
+      band2_4: "This section represents the 2.4 Ghz frequency band. While"
+        + " offering a greater range than the 5 Ghz band, the 2.4 Ghz band"
+        + " only has 3 non-overlapping channels, making it more prone to"
+        + " interference.",
 
-      band5: "This section represents the 5 Ghz frequency band.  It offers 23 non-overlapping channels, although not all of these are available everywhere.  If a channel is greyed out,  unauthorized use is disallowed or restricted in your region."
+      band5: "This section represents the 5 Ghz frequency band. It offers"
+        + " 23 non-overlapping channels, although, not all of these are"
+        + " available everywhere.  If a channel is greyed out,"
+        + "  unauthorized use may be restricted or not allowed in your"
+        + " region. "
     }
   },
   filterModal : {
@@ -76,35 +145,5 @@ languages['en'] = {
     detectHiddenDescription: 'Detect or ignore hidden access points.',
     detectHiddenTrue: 'Detect',
     detectHiddenFalse: 'Ignore',
-  },
-  signalStrength: {
-    listHeader: 'Select an AP to view its signal strength',
-    minLevel: 'Min Level',
-    currentLevel: 'Current',
-    maxLevel: 'Max Level',
-    tour: {
-      intro: "This page provides a live signal strength reading for a selected"
-          + " access point - it includes a maximum, minimum, and current reading"
-          + " for any in range AP during the time the page is open.",
-
-      minLevel: "This box holds the weakest observed signal strength for the"
-          + " selected access point.",
-
-      maxLevel: "This box holds the strongest observed signal strength for the"
-          + " selected access point."
-    }
-  },
-  timeGraph: {
-    legendHeader: 'Select an AP to highlight it:',
-    axisLabel: 'Level (dBm)',
-    tour: {
-      intro: "This interactive graph displays the observed signal strength of"
-          + " each access point over time and is updated every half second.",
-          
-      list: "Select an access point on the list to highlight it on the graph.", 
-
-      filter: "The filter button allows you to search for, select, or elimate certain"
-          + " access points that are displayed on the graph.",
-    }
   }
 };
