@@ -100,6 +100,10 @@ setup.tours = function() {
         content: strings.timeGraph.tour.intro,
       },
       {
+        target: "#list",
+        content: strings.timeGraph.tour.list
+      },
+      {
         target: "#filter-button",
         content: strings.timeGraph.tour.filter
       }

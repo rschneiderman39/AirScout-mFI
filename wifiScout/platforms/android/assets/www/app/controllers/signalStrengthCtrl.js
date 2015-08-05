@@ -203,6 +203,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         })())
         .range(config.segmentColors);
 
+
     		arcs.selectAll('path')
     				.data(tickData)
     			.enter().append('path')

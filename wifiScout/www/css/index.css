@@ -10,11 +10,13 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
+#nzTour-box, 
+#nzTour-content {
+  min-height: 50vh !important;
+}
+
 #current-view {
   position: relative;
-	/*
-  overflow: hidden;
-	*/
 }
 
 #touch-layer {
@@ -41,8 +43,8 @@ body.pg-loaded > #current-view {
 
 #help-button {
 	position: relative;
-  max-height: 8.5vh;
-  max-width: 12.5vh;
+  max-height: 8vh;
+  max-width: 11.5vh;
   transform: translateY(-50%);
 	top: 50%;
 }
