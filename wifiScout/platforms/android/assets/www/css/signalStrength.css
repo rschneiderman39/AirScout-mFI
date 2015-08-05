@@ -42,7 +42,7 @@
 
 .list {
   overflow-y: scroll;
-  height: 68vh;
+  height: 66vh;
 }
 
 .listgroupitem.active {
