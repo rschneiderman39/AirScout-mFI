@@ -69,7 +69,11 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       }
 
       $scope.startTour = function() {
-        nzTour.start(tours[$state.current.name]);
+        globalSettings.updatesPaused(true);
+
+        nzTour.start(tours[$state.current.name]).finally(function() {
+          globalSettings.updatesPaused(false);
+        });
       };
 
       var init = function() {

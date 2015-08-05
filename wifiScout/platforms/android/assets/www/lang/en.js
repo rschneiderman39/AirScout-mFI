@@ -44,7 +44,7 @@ languages['en'] = {
       intro: "This view displays all available information about all"
         + " access points visible to your device.",
 
-      level: "The signal strength of an access point is measured in" 
+      level: "The signal strength of an access point is measured in"
         + " decibel milliwatts (dBm). dBm is recorded on a logarithmic"
         + " scale - every increase of ~3dBm is equivalent to doubling the"
         + " power of the signal.  Because WiFi signals are relatively low"
@@ -67,7 +67,7 @@ languages['en'] = {
         + " access points is WPS, which can be used to automate the setup"
         + " process. After setup, however, WPS should be disabled.",
 
-      filter: "The filter button allows you to search for, select or"
+      filter: "The filter button allows you to search for, select, or"
         + " eliminate certain access points that are displayed in the"
         + " table."
     }
@@ -78,11 +78,11 @@ languages['en'] = {
     tour: {
       graph: "This interactive graph displays the measured signal strength"
         + " of each access point over time.",
-          
-      list: "Select an access point on the list to highlight it on the"
-        + " graph.", 
 
-      filter: "The filter button allows you to search for, select or"
+      list: "Select an access point on the list to highlight it on the"
+        + " graph.",
+
+      filter: "The filter button allows you to search for, select, or"
         + " eliminate certain access points that are displayed in the"
         + " graph.",
     }
@@ -125,7 +125,11 @@ languages['en'] = {
         + " 23 non-overlapping channels, although, not all of these are"
         + " available everywhere.  If a channel is greyed out,"
         + "  unauthorized use may be restricted or not allowed in your"
-        + " region. "
+        + " region. ",
+
+      filter: "The filter button allows you to search for, select, or"
+        + " eliminate certain access points that are displayed in the"
+        + " graph.",
     }
   },
   filterModal : {

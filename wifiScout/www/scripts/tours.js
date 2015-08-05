@@ -97,7 +97,7 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-        target: "#timeGraph",
+        target: "#time-graph",
         content: strings.timeGraph.tour.graph,
       },
       {
@@ -169,6 +169,10 @@ setup.tours = function() {
       {
         target: "#nav-right",
         content: strings.channelGraph.tour.band5
+      },
+      {
+        target: '#filter-button',
+        content: strings.channelGraph.tour.filter
       }
     ]
   };

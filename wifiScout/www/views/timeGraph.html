@@ -14,13 +14,13 @@
               <span data-ng-repeat="d in legendData | orderBy:sortSSID">
                 <li class="listgroupitem" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
                   <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-                  <span id="text" class=>{{d.SSID}}</span>
-                  <div id="text" ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
+                  <span class="legend-text">{{d.SSID}}</span>
+                  <div class="legend-text" ng-show="isDuplicateSSID[d.SSID]">({{d.BSSID}})</div>
                 </li>
               </span>
             </ul>
           </div>
-          <div class="col-xs-9" id="timeGraph">
+          <div class="col-xs-9" id="time-graph">
             <canvas id="plot"></canvas>
             <p class="axis-label">{{strings.timeGraph.axisLabel}}</p>
           </div>
