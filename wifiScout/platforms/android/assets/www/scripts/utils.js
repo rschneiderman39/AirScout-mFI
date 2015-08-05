@@ -29,8 +29,14 @@ utils.getRandomColor = function() {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + '1)';
 };
 
-utils.getCenteredTriangle = function(width, height) {
-  return 'M ' +(-width / 2) + ' 0 L 0 -' +height+ 'L ' +(width/2)+ ' 0 z';
+utils.generateTriangle = function(width, height) {
+  return 'M' + (-width / 2) + ' 0 L 0 -' + height + 'L' + (width/2) + ' 0 z';
+};
+
+utils.generateParabola = function(channel, level, xScale, yScale) {
+  return 'M' + xScale(channel - 2) + ' ' + yScale(constants.noSignal) +
+         'Q' + xScale(channel) + ' ' + yScale(constants.noSignal + 2 * (level - constants.noSignal)) +
+         ' ' + xScale(channel + 2) + ' ' + yScale(constants.noSignal);
 };
 
 utils.customSSIDSort = function(AP) {

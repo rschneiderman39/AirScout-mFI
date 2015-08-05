@@ -69,7 +69,9 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       }
 
       $scope.startTour = function() {
-        globalSettings.updatesPaused(true);
+        if ($state.current.name !== 'timeGraph') {
+          globalSettings.updatesPaused(true);
+        };
 
         nzTour.start(tours[$state.current.name]).finally(function() {
           globalSettings.updatesPaused(false);

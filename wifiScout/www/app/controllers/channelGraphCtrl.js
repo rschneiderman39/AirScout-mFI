@@ -38,7 +38,8 @@ setupService) {
 
     var spanLen = utils.spanLen,
         setAlpha = utils.setAlpha,
-        isAllowableChannel = channelChecker.isAllowableChannel;
+        isAllowableChannel = channelChecker.isAllowableChannel,
+        generateParabola = utils.generateParabola;
 
     /* Namespaces for plot elements, scales, and dimensions. */
     var elem = {}, scales = {}, dim = {};
@@ -59,7 +60,7 @@ setupService) {
         band = newBand;
 
         resetPlotXAxis();
-        rescalePlotElements();
+        //rescalePlotElements();
         repositionPlotElements();
       }
     };
@@ -343,9 +344,10 @@ setupService) {
     /* Move plot elements to match a new viewport extent */
     var repositionPlotElements = function() {
       /* Move parabolas */
-      elem.plot.clip.selectAll('ellipse')
-        .attr('cx', function(d) {
-          return scales.plot.x(d.channel);
+      console.log('repositioning');
+      elem.plot.clip.selectAll('path')
+        .attr('d', function(d) {
+          return generateParabola(d.channel, d.level, scales.plot.x, scales.plot.y);
         });
 
       /* Move labels */
@@ -392,10 +394,10 @@ setupService) {
 
     /* Correct parabola width to account for band change */
     var rescalePlotElements = function() {
-      elem.plot.clip.selectAll('ellipse')
+      elem.plot.clip.selectAll('path')
         // Assume 20 Mhz width
-        .attr('rx', function(d) {
-          return (scales.plot.x(d.channel) - scales.plot.x(d.channel - 1)) * 2;
+        .attr('d', function(d) {
+          return generateParabola(d.channel, d.level, scales.plot.x, scales.plot.y);
         });
     };
 
@@ -481,6 +483,8 @@ setupService) {
         .remove();
     };
 
+
+
     /* Update parabolas to account for new data.
      *
      * @param {string} section - The portion of the view in which to update
@@ -507,12 +511,47 @@ setupService) {
       }
 
       /* Bind new data */
-      var parabolas = clip.selectAll('ellipse')
+      var parabolas = clip.selectAll('path')
         .data(data, function(d) {
           return d.BSSID;
         });
 
-      /* Add new parabolas where necessary */
+      parabolas.enter().append('path')
+        .attr('d', function(d) {
+          console.log(xScale(d.channel - 2));
+          console.log(xScale(d.channel + 2));
+          console.log("");
+          return generateParabola(d.channel, constants.noSignal, xScale, yScale);
+        })
+        .attr('stroke', function(d) {
+          return d.color
+        })
+        .attr('fill', function(d) {
+          return setAlpha(d.color, prefs.fillAlpha);
+        })
+        .attr('stroke-width', 2)
+          .transition()
+          .duration(prefs.transitionInterval)
+            .attr('d', function(d) {
+              return generateParabola(d.channel, d.level, xScale, yScale);
+            });
+
+      parabolas
+        .transition()
+        .duration(prefs.transitionInterval)
+          .attr('d', function(d) {
+            return generateParabola(d.channel, d.level, xScale, yScale);
+          });
+
+      parabolas.exit()
+        .transition()
+        .duration(prefs.transitionInterval)
+          .attr('d', function(d) {
+            return generateParabola(d.channel, constants.noSignal, xScale, yScale);
+          })
+          .remove();
+
+      /* Add new parabolas where necessary
       parabolas.enter().append('ellipse')
         .attr('cx', function(d) {
           return xScale(d.channel);
@@ -536,7 +575,7 @@ setupService) {
               return yScale(constants.noSignal) - yScale(d.level);
             });
 
-      /* Update existing parabolas */
+      /* Update existing parabolas
       parabolas
         .transition()
         .duration(prefs.transitionInterval)
@@ -544,12 +583,14 @@ setupService) {
             return yScale(constants.noSignal) - yScale(d.level);
           });
 
-      /* Remove parabolas that are no longer bound to data */
+      /* Remove parabolas that are no longer bound to data
       parabolas.exit()
         .transition()
         .duration(prefs.transitionInterval)
           .attr('ry', 0)
           .remove();
+
+          */
     };
 
     init();

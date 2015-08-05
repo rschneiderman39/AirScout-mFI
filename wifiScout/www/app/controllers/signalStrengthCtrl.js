@@ -230,7 +230,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         pointer.append('path')
           .attr('stroke', 'black')
           .attr('stroke-width', 2)
-          .attr('d', utils.getCenteredTriangle(config.pointerCenterRadius, r - config.ringInset - config.ringWidth));
+          .attr('d', utils.generateTriangle(config.pointerCenterRadius, r - config.ringInset - config.ringWidth));
 
         minValue = center.append('g')
           .attr('transform', 'rotate(' +degScale(constants.noSignal)+ ')');
@@ -238,7 +238,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         minValue.append('g')
           .attr('transform', 'translate(0, ' +(config.ringInset - r)+ ')')
           .append('path')
-            .attr("d", utils.getCenteredTriangle(config.arrowWidth, config.arrowHeight))
+            .attr("d", utils.generateTriangle(config.arrowWidth, config.arrowHeight))
             .attr('transform', 'rotate(180)')
             .attr("fill", "#000");
 
@@ -248,7 +248,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         maxValue.append('g')
           .attr('transform', 'translate(0, ' +(config.ringInset - r)+ ')')
           .append('path')
-            .attr("d", utils.getCenteredTriangle(config.arrowWidth, config.arrowHeight))
+            .attr("d", utils.generateTriangle(config.arrowWidth, config.arrowHeight))
             .attr('transform', 'rotate(180)')
             .attr("fill", "#000");
 
