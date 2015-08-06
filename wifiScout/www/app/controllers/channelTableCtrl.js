@@ -60,7 +60,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         }
         band = newBand;
 
-        resetPlotXAxis();
+        rescalePlotXAxis();
         rescalePlotElements();
         repositionPlotElements();
       }
@@ -414,7 +414,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
     };
 
     /* Correct X axis to account for band change */
-    var resetPlotXAxis = function() {
+    var rescalePlotXAxis = function() {
       repositionPlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);

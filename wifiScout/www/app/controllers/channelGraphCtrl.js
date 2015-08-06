@@ -59,9 +59,12 @@ setupService) {
         }
         band = newBand;
 
-        resetPlotXAxis();
-        //rescalePlotElements();
+        elem.plot.clip.selectAll('path').remove();
+        elem.plot.clip.selectAll('text').remove();
+
+        rescalePlotXAxis();
         repositionPlotElements();
+        update();
       }
     };
 
@@ -94,12 +97,15 @@ setupService) {
     /* Pull in new data and update element height */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
-        var data = channelGraphState.getData();
+        var data = {};
 
-        updateParabolas('plot', data);
-        updateParabolas('navLeft', data);
-        updateParabolas('navRight', data);
-        updateLabels(data);
+        data['2_4'] = channelGraphState.getData('2_4');
+        data['5'] = channelGraphState.getData('5');
+
+        updateParabolas('plot', data[band]);
+        updateParabolas('navLeft', data['2_4']);
+        updateParabolas('navRight', data['5']);
+        updateLabels(data[band]);
       }
     };
 
@@ -344,10 +350,9 @@ setupService) {
     /* Move plot elements to match a new viewport extent */
     var repositionPlotElements = function() {
       /* Move parabolas */
-      console.log('repositioning');
       elem.plot.clip.selectAll('path')
-        .attr('d', function(d) {
-          return generateParabola(d.channel, d.level, scales.plot.x, scales.plot.y);
+        .attr('transform', function(d) {
+          return 'translate(' + scales.plot.x(d.channel) + ')';
         });
 
       /* Move labels */
@@ -392,17 +397,8 @@ setupService) {
         .attr('x', scales.nav.right.x(viewport.extent()[0]));
     };
 
-    /* Correct parabola width to account for band change */
-    var rescalePlotElements = function() {
-      elem.plot.clip.selectAll('path')
-        // Assume 20 Mhz width
-        .attr('d', function(d) {
-          return generateParabola(d.channel, d.level, scales.plot.x, scales.plot.y);
-        });
-    };
-
     /* Correct X axis to account for band change */
-    var resetPlotXAxis = function() {
+    var rescalePlotXAxis = function() {
       repositionPlotXAxis();
       elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
       elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
@@ -518,10 +514,10 @@ setupService) {
 
       parabolas.enter().append('path')
         .attr('d', function(d) {
-          console.log(xScale(d.channel - 2));
-          console.log(xScale(d.channel + 2));
-          console.log("");
-          return generateParabola(d.channel, constants.noSignal, xScale, yScale);
+          return generateParabola(constants.noSignal, xScale, yScale);
+        })
+        .attr('transform', function(d) {
+          return 'translate(' + xScale(d.channel) + ')';
         })
         .attr('stroke', function(d) {
           return d.color
@@ -533,21 +529,21 @@ setupService) {
           .transition()
           .duration(prefs.transitionInterval)
             .attr('d', function(d) {
-              return generateParabola(d.channel, d.level, xScale, yScale);
+              return generateParabola(d.level, xScale, yScale);
             });
 
       parabolas
         .transition()
         .duration(prefs.transitionInterval)
           .attr('d', function(d) {
-            return generateParabola(d.channel, d.level, xScale, yScale);
+            return generateParabola(d.level, xScale, yScale);
           });
 
       parabolas.exit()
         .transition()
         .duration(prefs.transitionInterval)
           .attr('d', function(d) {
-            return generateParabola(d.channel, constants.noSignal, xScale, yScale);
+            return generateParabola(constants.noSignal, xScale, yScale);
           })
           .remove();
 

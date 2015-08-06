@@ -9,16 +9,16 @@ function(accessPoints, setupService) {
         viewportExtent = undefined;
 
     service.getData = function() {
-      var APData = accessPoints.getAll(),
+      var allAccessPoints = accessPoints.getAll(),
           numOccupants = {},
           data = [];
 
-      for (var i = 0; i < APData.length; ++i) {
-        var AP = APData[i];
-        if (numOccupants[AP.channel] === undefined) {
-          numOccupants[AP.channel] = 1;
+      for (var i = 0; i < allAccessPoints.length; ++i) {
+        var accessPoint = allAccessPoints[i];
+        if (numOccupants[accessPoint.channel] === undefined) {
+          numOccupants[accessPoint.channel] = 1;
         } else {
-          numOccupants[AP.channel] += 1;
+          numOccupants[accessPoint.channel] += 1;
         }
       }
 
@@ -46,7 +46,7 @@ function(accessPoints, setupService) {
       } else if (newExtent instanceof Array && newExtent.length === 2) {
         viewportExtent = newExtent;
       }
-    };  
+    };
   });
 
   return service;

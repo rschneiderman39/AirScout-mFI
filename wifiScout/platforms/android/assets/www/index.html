@@ -24,7 +24,7 @@
     <script src="scripts/lib/bootstrap-switch.min.js"></script>
     <script src="scripts/lib/smoothie.js"></script>
     <script src="scripts/lib/nz-tour.min.js"></script>
-    <script src="scripts/lib/d3.min.js"></script>
+    <script src="scripts/lib/d3.js"></script>
     <script src="scripts/lib/please-wait.min.js"></script>
 
   </head>
@@ -40,7 +40,7 @@
       <div class="col-xs-1">
       </div>
       <div class="col-xs-1" >
-        <input id="help-button" type="image" src="images/questionMark.png" alt="Submit" href="javascript:void(0);" ng-click="startTour()">
+        <input id="help-button" type="image" src="images/questionMark.png" alt="Submit" href="javascript:void(0);" ng-click="startTour(); $event.stopPropagation();">
       </div>
     </div>
 
@@ -49,32 +49,32 @@
     <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
       <div class="row">
         <div class="col-xs-2">
-          <a ng-click="setView('channelGraph'); showNav()" id="channelGraph">
+          <a ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();" id="channelGraph">
             {{strings.viewTitles['channelGraph']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('signalStrength'); showNav()" id="signalStrength">
+          <a ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();" id="signalStrength">
             {{strings.viewTitles['signalStrength']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('timeGraph'); showNav()" id="timeGraph">
+          <a ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();" id="timeGraph">
             {{strings.viewTitles['timeGraph']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('APTable'); showNav()" id="APTable">
+          <a ng-click="setView('APTable'); showNav(); $event.stopPropagation();" id="APTable">
             {{strings.viewTitles['APTable']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('channelTable'); showNav()" id="channelTable">
+          <a ng-click="setView('channelTable'); showNav(); $event.stopPropagation();" id="channelTable">
             {{strings.viewTitles['channelTable']}}
           </a>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('settings'); showNav()" id="settings">
+          <a ng-click="setView('settings'); showNav(); $event.stopPropagation();" id="settings">
             {{strings.viewTitles['settings']}}
           </a>
         </div>

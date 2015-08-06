@@ -23,12 +23,12 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       return generateLegendData();
     };
 
-    service.toggleAPHighlight = function(BSSID) {
+    service.toggleAccessPointHighlight = function(BSSID) {
       if (BSSID === highlightedBSSID) {
-        unhighlightAP(BSSID);
+        unhighlightAccessPoint(BSSID);
       } else {
-        unhighlightAP(highlightedBSSID);
-        highlightAP(BSSID);
+        unhighlightAccessPoint(highlightedBSSID);
+        highlightAccessPoint(BSSID);
       }
     };
 
@@ -52,37 +52,37 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       return legendData;
     };
 
-    var highlightAP = function(BSSID) {
-      unselectAP(BSSID);
-      selectAP(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
+    var highlightAccessPoint = function(BSSID) {
+      unselectAccessPoint(BSSID);
+      selectAccessPoint(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
       highlightedBSSID = BSSID;
     };
 
-    var unhighlightAP = function(BSSID) {
-      unselectAP(BSSID);
-      selectAP(BSSID);
+    var unhighlightAccessPoint = function(BSSID) {
+      unselectAccessPoint(BSSID);
+      selectAccessPoint(BSSID);
       highlightedBSSID = "";
     };
 
-    var addAP = function(AP) {
-      if (! datasets[AP.BSSID]) {
-        datasets[AP.BSSID] = {
-          SSID: AP.SSID,
-          color: AP.color,
+    var addAccessPoint = function(accessPoint) {
+      if (! datasets[accessPoint.BSSID]) {
+        datasets[accessPoint.BSSID] = {
+          SSID: accessPoint.SSID,
+          color: accessPoint.color,
           line: new TimeSeries({ resetBounds: false }),
           inPlot: false,
         };
       }
     };
 
-    var removeAP = function(BSSID) {
+    var removeAccessPoint = function(BSSID) {
       if (datasets[BSSID]) {
-        unselectAP(BSSID);
+        unselectAccessPoint(BSSID);
         delete datasets[BSSID];
       }
     };
 
-    var selectAP = function(BSSID, options) {
+    var selectAccessPoint = function(BSSID, options) {
       if (datasets[BSSID]) {
         if (! options) {
           options = { lineWidth: 2, strokeStyle: datasets[BSSID].color };
@@ -92,7 +92,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       }
     };
 
-    var unselectAP = function(BSSID) {
+    var unselectAccessPoint = function(BSSID) {
       if (datasets[BSSID]) {
         plot.removeTimeSeries(datasets[BSSID].line);
         datasets[BSSID].inPlot = false;
@@ -102,21 +102,21 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       }
     };
 
-    var applyAPSelection = function() {
+    var applyAccessPointSelection = function() {
       var selectionChanged = false;
 
       for (var BSSID in datasets) {
         if (isSelected[BSSID] || showAll) {
           if (! globalSettings.detectHidden() && datasets[BSSID].SSID === "<hidden>") {
-            unselectAP(BSSID);
+            unselectAccessPoint(BSSID);
             selectionChanged = true;
           } else if (! datasets[BSSID].inPlot) {
-            selectAP(BSSID);
+            selectAccessPoint(BSSID);
             selectionChanged = true;
           }
         } else {
           if (datasets[BSSID].inPlot) {
-            unselectAP(BSSID);
+            unselectAccessPoint(BSSID);
             selectionChanged = true;
           }
         }
@@ -138,34 +138,34 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
       showAll = selection.showAll;
 
-      applyAPSelection();
+      applyAccessPointSelection();
     };
 
     var updateDatasets = function() {
       var curTime = new Date().getTime(),
-          APData = accessPoints.getAll(),
-          APDataMap = {};
+          allAccessPoints = accessPoints.getAll(),
+          BSSIDtoAccessPoint = {};
 
-      for (var i = 0; i < APData.length; ++i) {
-        APDataMap[APData[i].BSSID] = APData[i];
+      for (var i = 0; i < allAccessPoints.length; ++i) {
+        BSSIDtoAccessPoint[allAccessPoints[i].BSSID] = allAccessPoints[i];
       }
 
       // Update existing datasets
       for (var BSSID in datasets) {
-        var AP = APDataMap[BSSID];
-        if (AP) {
-          datasets[BSSID].line.append(curTime, AP.level);
+        var accessPoint = BSSIDtoAccessPoint[BSSID];
+        if (accessPoint) {
+          datasets[BSSID].line.append(curTime, accessPoint.level);
         } else {
           datasets[BSSID].line.append(curTime, constants.noSignal);
         }
       }
 
       // Discover new datasets
-      for (var i = 0; i < APData.length; ++i) {
-        var AP = APData[i];
-        if (! datasets[AP.BSSID]) {
-          addAP(AP);
-          datasets[AP.BSSID].line.append(curTime, AP.level);
+      for (var i = 0; i < allAccessPoints.length; ++i) {
+        var accessPoint = allAccessPoints[i];
+        if (! datasets[accessPoint.BSSID]) {
+          addAccessPoint(accessPoint);
+          datasets[accessPoint.BSSID].line.append(curTime, accessPoint.level);
         }
       }
     };
@@ -173,7 +173,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
     var update = function() {
       if (! globalSettings.updatesPaused()) {
         updateDatasets();
-        applyAPSelection();
+        applyAccessPointSelection();
       }
     };
 

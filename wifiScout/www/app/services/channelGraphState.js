@@ -10,13 +10,19 @@ app.factory('channelGraphState', ['accessPoints', 'globalSettings',
         band = undefined,
         viewportExtent = undefined;
 
-    service.getData = function() {
-      var APData = accessPoints.getAll(),
-          data = [];
+    var inBand = utils.inBand;
 
-      for (var i = 0; i < APData.length; ++i) {
-        if (showAll || isSelected[APData[i].BSSID]) {
-          data.push(APData[i]);
+    service.getData = function(band) {
+      var allAccessPoints = accessPoints.getAll(),
+          data = [],
+          accessPoint;
+
+      for (var i = 0; i < allAccessPoints.length; ++i) {
+        accessPoint = allAccessPoints[i];
+        if (showAll || isSelected[accessPoint.BSSID]) {
+          if (inBand(accessPoint.frequency, band)) {
+            data.push(accessPoint);
+          }
         }
       }
 

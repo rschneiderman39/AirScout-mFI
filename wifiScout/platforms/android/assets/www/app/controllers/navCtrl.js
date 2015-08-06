@@ -69,7 +69,8 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       }
 
       $scope.startTour = function() {
-        if ($state.current.name !== 'timeGraph') {
+        if ($state.current.name !== 'timeGraph' &&
+            $state.current.name !== 'channelTable') {
           globalSettings.updatesPaused(true);
         };
 

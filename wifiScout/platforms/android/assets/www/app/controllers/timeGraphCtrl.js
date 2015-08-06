@@ -16,7 +16,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
         } else {
           selectedBSSID = BSSID;
         }
-        timeGraphData.toggleAPHighlight(BSSID);
+        timeGraphData.toggleAccessPointHighlight(BSSID);
       }
     };
 

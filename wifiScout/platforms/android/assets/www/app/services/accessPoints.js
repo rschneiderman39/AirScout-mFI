@@ -11,34 +11,50 @@ function(networkData, globalSettings, setupService) {
       updateInterval: 1000
     };
 
-    var APData = [],
+    var accessPoints = [],
         lineColors = {};
 
+    var inBand = utils.inBand,
+        freqToChannel = utils.freqToChannel,
+        getRandomColor = utils.getRandomColor;
+
     service.getAll = function() {
-      return APData;
+      return accessPoints;
     };
 
+    service.getAllInBand = function(band) {
+      var accessPointsInBand = [];
+
+      for (var i = 0; i < accessPoints.length; ++i) {
+        if (inBand(accessPoints[i], band)) {
+          accessPointsInBand.push(accessPoints[i]);
+        }
+      }
+
+      return accessPointInBand;
+    }
+
     service.getSelected = function(BSSIDs) {
-      var selectedAPData = [],
+      var selectedAccessPoints = [],
           isSelected = {};
       for (var i = 0; i < BSSIDs.length; ++i) {
         isSelected[BSSIDs[i]] = true;
       }
       if (BSSIDs.length > 0) {
-        for (var i = 0; i < APData.length; ++i) {
-          if (isSelected[APData[i].BSSID] === true) {
-            selectedAPData.push(APData[i]);
+        for (var i = 0; i < accessPoints.length; ++i) {
+          if (isSelected[accessPoints[i].BSSID] === true) {
+            selectedAccessPoints.push(accessPoints[i]);
           }
         }
       }
-      return selectedAPData;
+      return selectedAccessPoints;
     };
 
     service.get = function(BSSID) {
       if (BSSID !== "") {
-        for (var i = 0; i < APData.length; ++i) {
-          if (APData[i].BSSID === BSSID) {
-            return APData[i];
+        for (var i = 0; i < accessPoints.length; ++i) {
+          if (accessPoints[i].BSSID === BSSID) {
+            return accessPoints[i];
           }
         }
       }
@@ -62,7 +78,7 @@ function(networkData, globalSettings, setupService) {
 
     var appendChannels = function(data) {
       for (var i = 0; i < data.length; ++i) {
-        data[i].channel = utils.freqToChannel(data[i].frequency);
+        data[i].channel = freqToChannel(data[i].frequency);
       }
       return data;
     };
@@ -71,7 +87,7 @@ function(networkData, globalSettings, setupService) {
       for (var i = 0; i < data.length; ++i) {
         var lineColor = lineColors[data[i].BSSID];
         if (lineColor === undefined) {
-          lineColor = utils.getRandomColor();
+          lineColor = getRandomColor();
           lineColors[data[i].BSSID] = lineColor;
         }
         data[i].color = lineColor;
@@ -85,13 +101,13 @@ function(networkData, globalSettings, setupService) {
         networkData.get()
         .done(function(data) {
           if (globalSettings.detectHidden()) {
-            APData = appendColors(appendChannels(markHidden(data.available)));
+            accessPoints = appendColors(appendChannels(markHidden(data.available)));
           } else {
-            APData = appendColors(appendChannels(removeHidden(data.available)));
+            accessPoints = appendColors(appendChannels(removeHidden(data.available)));
           }
         })
         .fail(function() {
-          APData = [];
+          accessPoints = [];
         });
       }
     };

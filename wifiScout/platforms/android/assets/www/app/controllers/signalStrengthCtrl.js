@@ -66,7 +66,6 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         }
       } else {
         $scope.level = constants.noSignal;
-        $scope.minLevel = constants.noSignal;
       }
       gauge.update('pointer', $scope.level);
       gauge.update('minValue', $scope.minLevel);
