@@ -4,7 +4,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
   setupService.ready.then(function() {
 
     var prefs = {
-      gaugeSizeFactor: .8,
+      gaugeSizeFactor: .84,
       updateInterval: 1000,
       transitionInterval: 900
     };

@@ -6,47 +6,47 @@
 
   <body>
 		<div ng-controller="settingsCtrl">
-			<div class="panel-group">
-	     <div class="panel panel-default" id="panel1">
-	        <div class="panel-heading" id="step1">
+			<div class="panel-group" id="accordion1">
+    		<div class="panel panel-default">
+        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne1">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
 	              {{strings.settings.startingViewHeader}}
 	            </a>
 	          </h4>
-	        </div>
-	        <div id="collapseOne" class="panel-collapse collapse">
+        	</div>
+        	<div id="collapseOne1" class="panel-collapse collapse">
 	          <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
 	          			{{strings.settings.startingViewDescription}}
 	          		</div>
 	          		<div class="col-xs-3">
-			          	<div class="btn-group">
+			         		<div class="btn-group">
 		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 									  <ul class="dropdown-menu pull-right">
-									    <li><a ng-click="setStartingView('channelGraph')"> {{strings.viewTitles.channelGraph}}</a></li>
+									   	<li><a ng-click="setStartingView('channelGraph')"> {{strings.viewTitles.channelGraph}}</a></li>
 									    <li><a ng-click="setStartingView('signalStrength')"> {{strings.viewTitles.signalStrength}}</a></li>
-									    <li><a ng-click="setStartingView('timeGraph')"> {{strings.viewTitles.timeGraph}}</a></li>
-									    <li><a ng-click="setStartingView('APTable')"> {{strings.viewTitles.APTable}}</a></li>
-									    <li><a ng-click="setStartingView('channelTable')"> {{strings.viewTitles.channelTable}}</a></li>
-									    <li><a ng-click="setStartingView('settings')"> {{strings.viewTitles.sett}}</a></li>
-									  </ul>
+									   	<li><a ng-click="setStartingView('timeGraph')"> {{strings.viewTitles.timeGraph}}</a></li>
+									   	<li><a ng-click="setStartingView('APTable')"> {{strings.viewTitles.APTable}}</a></li>
+									   	<li><a ng-click="setStartingView('channelTable')"> {{strings.viewTitles.channelTable}}</a></li>
+									   	<li><a ng-click="setStartingView('settings')"> {{strings.viewTitles.sett}}</a></li>
+								  	</ul>
 									</div>
-			          </div>
-			        </div>
-			      </div>
-	        </div>
-	      </div>
-	      <div class="panel panel-default" id="panel2">
-	        <div class="panel-heading" id="step2">
-	          <h4 class="panel-title">
-	            <a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
+			         	</div>
+			       	</div>
+			     	</div>
+        	</div>
+    		</div>
+    		<div class="panel panel-default">
+        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseTwo1">
+          	<h4 class="panel-title">
+	          	<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
 	              {{strings.settings.globalAccessPointSelectionHeader}}
 	            </a>
 	          </h4>
-	        </div>
-	        <div id="collapseTwo" class="panel-collapse collapse">
+        	</div>
+        	<div id="collapseTwo1" class="panel-collapse collapse">
 	          <div class="panel-body">
 		          <div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
@@ -56,19 +56,19 @@
 		          		<input type="checkbox" name="filteringOptions">
 		          	</div>
 		          </div>
-		         </div>
-	        </div>
-	      </div>
-	      <div class="panel panel-default" id="panel3">
-	        <div class="panel-heading" id="step3">
-	          <h4 class="panel-title">
-	            <a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
+		        </div>
+        	</div>
+    		</div>
+    		<div class="panel panel-default">
+        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseThree1">
+          	<h4 class="panel-title">
+	          	<a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
 	              {{strings.settings.detectHiddenHeader}}
 	            </a>
 	          </h4>
-	        </div>
-	        <div id="collapseThree" class="panel-collapse collapse">
-	          <div class="panel-body">
+       		</div>
+        	<div id="collapseThree1" class="panel-collapse collapse">
+            <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
 	          			{{strings.settings.detectHiddenDescription}}
@@ -78,10 +78,10 @@
 		          	</div>
 	          	</div>
 	          </div>
-	        </div>
-	      </div>
-      </div>
-      <div class="container-fluid" id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
-    </div>
+        	</div>
+    		</div>
+			</div>
+      <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
+    </div> 
 	</body>
 </html>
