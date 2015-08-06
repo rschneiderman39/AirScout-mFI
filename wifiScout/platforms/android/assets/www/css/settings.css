@@ -1,7 +1,30 @@
 #help-button {
-  display: none;
+	display: none;
 }
 
+.panel-group {
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+.panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    bottom: 23px;
+    font-size: 15pt;
+    color: grey;
+}
+
+.panel-heading.collapsed a:after {
+    content:"\e080";
+}
+
+.bootstrap-switch-handle-on.bootstrap-switch-primary {
+  background-color: #62bf01 !important;
+}
+
+/*
 .panel-heading a:after {
     font-family:'Glyphicons Halflings';
     content:"\e114";
@@ -9,10 +32,7 @@
     color: grey;
 }
 
-.panel-heading a.collapsed:after {
+.panel-heading .collapsed:after {
     content:"\e080";
 }
-
-.bootstrap-switch-handle-on.bootstrap-switch-primary {
-  background-color: #62bf01 !important;
-}
+*/
