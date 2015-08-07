@@ -1,8 +1,18 @@
-.table-striped tbody {
-  position: fixed !important;
+#table-content {
   overflow-y: auto;
-  margin-top: 0px !important;
-  height: 75vh;
+}
+
+.table {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+th {
+  text-align: center;
+}
+
+td {
+  text-align: center;
 }
 
 a:hover {
@@ -13,4 +23,19 @@ a:hover {
 a:focus {
   color: #337ab7;
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 10px;
+    border: none;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ffffff;
 }

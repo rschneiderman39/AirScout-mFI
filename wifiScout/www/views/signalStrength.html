@@ -1,15 +1,10 @@
-<!DOCTYPE HTML>
 <html>
-  <head>
-    <link href="css/signalStrength.css" rel="stylesheet" />
-  </head>
-
   <body>
- 		<div ng-click="showNav()" ng-swipe-left="swipeTo('timeGraph', 'left')" ng-swipe-right="swipeTo('channelGraph', 'right')" ng-controller="signalStrengthCtrl" class="container-fluid">
+ 		<div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('timeGraph', 'left')" ng-swipe-right="swipeTo('channelGraph', 'right')" ng-controller="signalStrengthCtrl" class="container-fluid">
       <div class="row">
 				<div class="col-xs-3" id="list-section" >
 					<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
-					<ul class="list-group scrollable-list list">
+					<ul class="list list-group scrollable-list">
 						<span data-ng-repeat="ap in APData | orderBy:sortSSID">
 							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
 							   <div>{{ap.SSID}}</div>
@@ -21,27 +16,27 @@
 				<div class="col-xs-8" id="gauge-section">
 					<div id="gauge"></div>
 					<div class="row">
-						<div id="panel" class="col-xs-4 min-level">
+						<div class="col-xs-4 level-indicator">
 							<div>{{strings.signalStrength.minLevel}}</div>
 							<div class="panel panel-default">
-								<div class="panel-body padding">
-									<p class="padding">{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</p>
+								<div class="panel-body padded-1vh">
+									<p class="padded-1vh">{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</p>
 								</div>
 							</div>
 						</div>
-						<div id="panel" class="col-xs-4">
+						<div class="col-xs-4 level-indicator">
 							<div id="current-level">{{strings.signalStrength.currentLevel}}</div>
 							<div class="panel panel-default">
-								<div class="panel-body padding">
-									<p id="current-level" class="padding">{{level !== undefined ? level + " dBm" : "---"}}</p>
+								<div class="panel-body padded-1vh">
+									<p id="current-level" class="padded-1vh">{{level !== undefined ? level + " dBm" : "---"}}</p>
 								</div>
 							</div>
 						</div>
-						<div id="panel" class="col-xs-4 max-level">
+						<div class="col-xs-4 level-indicator">
 							<div>{{strings.signalStrength.maxLevel}}</div>
 							<div class="panel panel-default">
-							 	<div class="panel-body padding">
-									<p class="padding">{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</p>
+							 	<div class="panel-body padded-1vh">
+									<p class="padded-1vh">{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</p>
 								</div>
 							</div>
 						</div>

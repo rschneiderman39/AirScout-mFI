@@ -1,19 +1,19 @@
-#navToggleRight {
+#nav-toggle-right {
   fill-opacity: 0.3;
   stroke-width: 2;
 }
 
-#navToggleRight.active {
+#nav-toggle-right.active {
   fill: #62bf01;
   stroke: #62bf01;
 }
 
-#navToggleLeft {
+#nav-toggle-left {
   fill-opacity: 0.3;
   stroke-width: 3;
 }
 
-#navToggleLeft.active {
+#nav-toggle-left.active {
   fill: #62bf01;
   stroke: #62bf01;
 }

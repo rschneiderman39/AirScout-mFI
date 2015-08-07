@@ -134,6 +134,9 @@ app.controller('signalStrengthCtrl', ['$scope', 'accessPoints',
       var updateLoop = setInterval(update, prefs.updateInterval);
 
       $scope.$on('$destroy', function() {
+        $('link[title="view-style"]').attr('disabled', 'disabled');
+        $('link[title="view-style"]').remove();
+
         clearInterval(updateLoop);
       });
     };

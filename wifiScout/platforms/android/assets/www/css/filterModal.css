@@ -1,48 +1,62 @@
-#modal-list {
-  overflow-y: auto;
+#filter-modal  #modal-list {
+  overflow-y: scroll;
 }
 
-#SSID {
+#filter-modal  #SSID {
   text-align: center;
 }
 
-#BSSID {
+#filter-modal  #BSSID {
   text-align: center;
 }
 
-#title {
+#filter-modal  #title {
   margin: 5px;
 }
 
-#query {
+#filter-modal  #query {
   margin-bottom: 15px;
 }
 
-.nopadding {
+#filter-modal  .nopadding {
   padding: 5px !important;
   margin: 0px !important;
 }
 
-.modal-dialog {
+#filter-modal  .modal-dialog {
   margin-left: auto;
   margin-right: auto;
   width: 55%;
 }
 
-.list-group-item.selected {
+#filter-modal  .list-group-item.selected {
   background-color: #D0ECB3;
   border: 2px solid #62bf01;
   opacity: 1;
 }
 
-.list-group-item.selected + .list-group-item {
-  border-top-width: 1px;
+#filter-modal  .list-group-item.selected + .list-group-item {
+  border-top-width: 0px;
 }
 
-.list-group-item {
+#filter-modal  .list-group-item {
   z-index: 2;
   position: relative;
   background-color: #fafafa;
   border: 1px solid #ddd;
-  opacity: 0.5;
+}
+
+#filter-modal ::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+#filter-modal ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .25);
+    border-radius: 10px;
+    border: none;
+}
+
+#filter-modal ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ffffff;
 }

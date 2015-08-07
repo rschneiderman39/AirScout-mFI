@@ -1,5 +1,5 @@
-app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
-'setupService', function($scope, accessPoints, globalSettings, setupService) {
+app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings',
+'setupService', function($scope, $state, accessPoints, globalSettings, setupService) {
 
   setupService.ready.then(function() {
 
@@ -74,18 +74,13 @@ app.controller('modalCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     var prepView = function() {
-      $('.filterTable').css('height', dimensions.window.height * 0.6);
-      $('#filterModal').on('show.bs.modal', onShow);
-    };
-
-    //Determine the view from the hidden viewTitle DOM element.
-    var detectView = function() {
-      view = $('#viewTitle').attr('ng-class');
+      $('#modal-list').css('height', $(window).height() * 0.6);
+      $('#filter-modal').on('show.bs.modal', onShow);
     };
 
     var init = function() {
       prepView();
-      setTimeout(detectView, 0);
+      view = $state.current.name;
     };
 
     init();

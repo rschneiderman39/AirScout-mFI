@@ -51,11 +51,11 @@ setupService) {
     $scope.setBand = function(newBand) {
       if (newBand !== band) {
         if (newBand ===  '2_4') {
-          elem.nav.right.clip.select('#navToggleRight').classed('active', false);
-          elem.nav.left.clip.select('#navToggleLeft').classed('active', true);
+          elem.nav.right.clip.select('#nav-toggle-right').classed('active', false);
+          elem.nav.left.clip.select('#nav-toggle-left').classed('active', true);
         } else if (newBand === '5') {
-          elem.nav.left.clip.select('#navToggleLeft').classed('active', false);
-          elem.nav.right.clip.select('#navToggleRight').classed('active', true);
+          elem.nav.left.clip.select('#nav-toggle-left').classed('active', false);
+          elem.nav.right.clip.select('#nav-toggle-right').classed('active', true);
         }
         band = newBand;
 
@@ -70,8 +70,8 @@ setupService) {
 
     var init = function() {
       /* Scale to device screen */
-      dim.width = dimensions.window.width * 0.95;
-      dim.height = (dimensions.window.height - dimensions.topBar.height) * 0.95;
+      dim.width = $(window).width() * 0.95;
+      dim.height = ($(window).height() - $('#top-bar').height()) * 0.95;
 
       buildPlot();
       buildNav();
@@ -239,7 +239,7 @@ setupService) {
 
       /* 2.4 Ghz selector */
       elem.nav.left.clip.append('rect')
-        .attr('id', 'navToggleLeft')
+        .attr('id', 'nav-toggle-left')
         .attr('width', dim.nav.left.width)
         .attr('height', dim.nav.height)
 
@@ -309,7 +309,7 @@ setupService) {
 
       /* The slider the user actually sees */
       elem.nav.right.clip.append('rect')
-        .attr('id', 'navToggleRight')
+        .attr('id', 'nav-toggle-right')
         .attr('width', elem.nav.right.container.select('.viewport > .extent').attr('width'))
         .attr('height', dim.nav.height)
         .attr('x', scales.nav.right.x(elem.nav.right.viewport.extent()[0]));
@@ -393,7 +393,7 @@ setupService) {
       }
 
       /* Move visible slider to match new viewport extent */
-      elem.nav.right.clip.select('#navToggleRight')
+      elem.nav.right.clip.select('#nav-toggle-right')
         .attr('x', scales.nav.right.x(viewport.extent()[0]));
     };
 

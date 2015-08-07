@@ -19,10 +19,6 @@ body.pg-loaded > #current-view {
   position: relative;
 }
 
-#touch-layer {
-	height: 100%;
-}
-
 #top-bar {
   position: fixed;
   background-color: #62bf01;
@@ -65,10 +61,6 @@ body.pg-loaded > #current-view {
   -webkit-transition: bottom 0.5s ease;
   -moz-transition: bottom 0.5s ease;
   transition: bottom 0.5s ease;
-}
-
-.active_view {
-	background-color: #eeeeee;
 }
 
 .nav>li>a:hover {

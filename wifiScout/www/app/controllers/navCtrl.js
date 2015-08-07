@@ -17,7 +17,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         var navBar = $('#nav-bar');
         navBar.css('bottom', '0px');
         navTimeout = setTimeout(function() {
-          navBar.css('bottom', dimensions.navBar.bottom);
+          navBar.css('bottom', 1 - $('#nav-bar').height());
         }, prefs.navShowInterval);
       };
 

@@ -1,16 +1,11 @@
-<!DOCTYPE HTML>
 <html>
-  <head>
-    <link href="css/timeGraph.css" rel="stylesheet" />
-  </head>
-
   <body>
     <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('APTable', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')" ng-controller="timeGraphCtrl">
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-3" id="legend">
             <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
-            <ul class="list-group scrollable-list" id="list">
+            <ul class="list list-group scrollable-list">
               <span data-ng-repeat="d in legendData | orderBy:sortSSID">
                 <li class="listgroupitem" ng-class="{ active: isSelected(d.BSSID) }" ng-click="toggleSelected(d.BSSID);$event.stopPropagation()">
                   <div class="legend-box" ng-style="{'background-color':d.color}"></div>
@@ -27,6 +22,7 @@
         </div>
       </div>
     </div>
-    <div filter-modal view="timeGraph"></div>
+
+    <div filter-modal />
   </body>
 </html>

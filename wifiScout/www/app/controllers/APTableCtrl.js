@@ -5,7 +5,7 @@ accessPoints, globalSettings, APTableState, setupService) {
   setupService.ready.then(function() {
 
     var prefs = {
-      updateInterval: 1000
+      updateInterval: 1500
     };
 
     var showAll = true; /* True: display all access points regardless of selection.
@@ -88,10 +88,8 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Manually scale the view to the device where needed. */
     var prepView = function() {
-      $('.table-striped thead').css('height', '40px');
-      var tableHeadHeight = $('.table-striped thead').height();
-
-      $('.table-striped tbody').css('top', dimensions.topBar.height + tableHeadHeight);
+      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table-striped thead').height();
+      $('#table-content').height(contentHeight);
     };
 
     var init = function() {

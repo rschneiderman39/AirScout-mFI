@@ -1,19 +1,13 @@
 <html>
-  <head>
-    <link href="css/filterModal.css" rel="stylesheet" />
-  </head>
-
   <body>
-    <span id="viewTitle" type="hidden" ng-class="{{view}}"></span>
-
-    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="filter-modal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Filtering Options</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body container-fluid">
             <div class="row">
               <div class="col-xs-5" id="sortingDiv">
                 <p>Search by MAC address or SSID:</p>
@@ -21,13 +15,11 @@
                 <button id="btnShow" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">Select All</button>
                 <button id="btnHide" ng-click="unselectAll()" class="btn btn-default btn-sm" type="button">Deselect All</button>
               </div>
-              <div class="col-xs-7" id="modal-list">
-                <ul class="list-group scrollable-list filterTable">
+              <div class="col-xs-7">
+                <ul class="list-group scrollable-list" id="modal-list">
                   <li class="list-group-item nopadding" data-ng-repeat="ap in APData | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
-                    <div class="row">
-                      <div id="SSID">{{ap['SSID']}}</div>
-                      <div id="BSSID">({{ap['BSSID']}})</div>
-                    </div>
+                    <div id="SSID">{{ap['SSID']}}</div>
+                    <div id="BSSID">({{ap['BSSID']}})</div>
                   </li>
                 </ul>
               </div>

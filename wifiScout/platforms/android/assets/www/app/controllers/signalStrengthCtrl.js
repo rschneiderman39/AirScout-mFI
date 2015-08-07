@@ -86,12 +86,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       }
     };
 
-    var prepView = function() {
-      //$('#chartdiv').css('height', dimensions.window.height * 0.70);
-    };
-
     var init = function() {
-      prepView();
       initGauge();
 
       var updateLoop = setInterval(update, prefs.updateInterval);

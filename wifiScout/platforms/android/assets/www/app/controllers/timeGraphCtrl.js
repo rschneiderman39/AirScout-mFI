@@ -48,8 +48,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
     };
 
     var prepView = function() {
-      document.getElementById('plot').height = dimensions.window.height * 0.75;
-      document.getElementById('plot').width = dimensions.window.width * 0.69;
+      document.getElementById('plot').height = $(window).height() * 0.75;
+      document.getElementById('plot').width = $(window).width() * 0.69;
     };
 
     var init = function() {
