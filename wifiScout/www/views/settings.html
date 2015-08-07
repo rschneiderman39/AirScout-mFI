@@ -1,9 +1,9 @@
 <html>
   <body>
-		<div ng-controller="settingsCtrl">
+		<div id="testing" ng-controller="settingsCtrl">
 			<div class="panel-group" id="accordion1">
-    		<div class="panel panel-default">
-        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne1">
+    		<div id="panel1" class="panel panel-default">
+        	<div class="panel-heading accordion-toggle" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne1">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
 	              {{strings.settings.startingViewHeader}}
@@ -18,7 +18,7 @@
 	          		</div>
 	          		<div class="col-xs-3">
 			         		<div class="btn-group">
-		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
 									  <ul class="dropdown-menu pull-right">
 									   	<li><a ng-click="setStartingView('channelGraph')"> {{strings.viewTitles.channelGraph}}</a></li>
 									    <li><a ng-click="setStartingView('signalStrength')"> {{strings.viewTitles.signalStrength}}</a></li>

@@ -10,8 +10,6 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
     };
 
     var prepView = function() {
-      $('#touch-layer').css('height', $(window).height() - $('#top-bar').height() - ($('.panel-group').height() * 1.20));
-
       $(".dropdown-menu li a").click(function(){
         var selText = $(this).text();
         $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');
