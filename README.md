@@ -1,1 +1,1 @@
-# wifiScoutGithub
+# wifiScout
