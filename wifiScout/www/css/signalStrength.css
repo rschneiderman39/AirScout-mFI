@@ -2,6 +2,10 @@
   font-weight: bold;
 }
 
+#filter-button {
+  display: none;
+}
+
 #gauge {
   transform: translateX(12%);
 }
