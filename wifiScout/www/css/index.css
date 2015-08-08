@@ -37,12 +37,11 @@ body.pg-loaded > #current-view {
   -webkit-transition: bottom 0.5s ease;
 }
 
-.nav>li>a:hover {
+.nav > li > a:hover {
   background-color: transparent;
 }
 
-#nzTour-box,
-#nzTour-content {
+#nzTour-box, #nzTour-content {
   min-height: 32vh !important;
 }
 
