@@ -31,6 +31,8 @@
   </head>
 
   <body ng-controller="navCtrl">
+    
+    <!-- View title bar -->
     <div id="top-bar" class="row">
       <div class="col-xs-2">
         <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal">
@@ -44,8 +46,10 @@
       </div>
     </div>
 
+    <!-- View goes here -->
     <div ui-view id="current-view"></div>
 
+    <!-- Self-collapsing navigation bar -->
     <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
       <div class="row">
         <div class="col-xs-2">
@@ -81,6 +85,7 @@
       </div>
     </nav>
 
+    <!-- Splash screen -->
     <script type="text/javascript">
       var loading_screen = pleaseWait({
         logo: "",
