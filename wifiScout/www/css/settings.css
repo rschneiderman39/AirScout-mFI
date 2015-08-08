@@ -2,6 +2,10 @@
   background-color: #62bf01 !important;
 }
 
+#filter-button {
+  display: none;
+}
+
 #help-button {
   display: none;
 }
