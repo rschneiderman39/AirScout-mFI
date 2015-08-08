@@ -48,26 +48,6 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         }
       };
 
-      $scope.usesFilterBtn = function() {
-        var view = $state.current.name;
-        for (var i = 0; i < filterableViews.length; ++i) {
-          if (view === filterableViews[i]) return true;
-        }
-        return false;
-      };
-
-      $scope.swipeRight = function (view) {
-        console.log("swiping right");
-        defaults.swiped = true;
-        $scope.setView(view);
-      }
-
-      $scope.swipeLeft = function (view) {
-        console.log("swiping left");
-        defaults.swiped = true;
-        $scope.setView(view);
-      }
-
       $scope.startTour = function() {
         if ($state.current.name !== 'timeGraph' &&
             $state.current.name !== 'channelTable') {
