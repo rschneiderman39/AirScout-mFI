@@ -5,10 +5,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
   setupService.ready.then(function() {
 
-    var prefs = {
-      updateInterval: 1000
-    };
-
     var isSelected = {},
         showAll = true,
         datasets = {},
@@ -172,6 +168,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     var update = function() {
       if (! globalSettings.updatesPaused()) {
+        console.log(accessPoints.count());
         updateDatasets();
         applyAccessPointSelection();
       }
@@ -218,9 +215,8 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
       showAll = selection.showAll;
 
+      document.addEventListener(events.newAccessPointData, update);
       document.addEventListener(events.newAccessPointSelection['timeGraph'], updateSelection);
-
-      setInterval(update, prefs.updateInterval);
     };
 
     init();

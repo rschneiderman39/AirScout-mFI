@@ -7,9 +7,7 @@ function(networkData, globalSettings, setupService) {
 
   setupService.ready.then(function() {
 
-    var prefs = {
-      updateInterval: 1000
-    };
+    var updateInterval = 2000;
 
     var accessPoints = [],
         lineColors = {};
@@ -49,6 +47,14 @@ function(networkData, globalSettings, setupService) {
       }
       return selectedAccessPoints;
     };
+
+    service.getUpdateInterval = function() {
+      return updateInterval;
+    }
+
+    service.count = function() {
+      return accessPoints.length;
+    }
 
     service.get = function(BSSID) {
       if (BSSID !== "") {
@@ -109,13 +115,14 @@ function(networkData, globalSettings, setupService) {
         .fail(function() {
           accessPoints = [];
         });
+
+        document.dispatchEvent(new Event(events.newAccessPointData));
       }
+      setTimeout(update, updateInterval);
     };
 
     var init = function() {
       update();
-
-      setInterval(update, prefs.updateInterval);
     };
 
     init();

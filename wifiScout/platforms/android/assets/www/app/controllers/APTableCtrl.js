@@ -4,10 +4,6 @@ accessPoints, globalSettings, APTableState, setupService) {
 
   setupService.ready.then(function() {
 
-    var prefs = {
-      updateInterval: 1500
-    };
-
     var showAll = true; /* True: display all access points regardless of selection.
                            False: display only selected access points. */
 
@@ -45,11 +41,10 @@ accessPoints, globalSettings, APTableState, setupService) {
     var updateSelection = function() {
       var selection = globalSettings.getAccessPointSelection('APTable');
 
-      console.log('updating APTable selection to: ' + JSON.stringify(selection));
       selectedBSSIDs = selection.selectedBSSIDs;
       showAll = selection.showAll;
 
-      update();
+      $timeout(update);
     };
 
     /* Store current sort ordering. */
@@ -75,15 +70,16 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Pull in new data and update the table. */
     var update = function() {
-      $timeout(function() {
-        if (! globalSettings.updatesPaused()) {
+      if (! globalSettings.updatesPaused()) {
+        $timeout(function() {
+          console.log('updating table');
           if (showAll) {
             $scope.selectedAPData = accessPoints.getAll();
           } else {
             $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
           }
-        }
-      });
+        });
+      }
     };
 
     /* Manually scale the view to the device where needed. */
@@ -97,12 +93,24 @@ accessPoints, globalSettings, APTableState, setupService) {
 
       restoreState();
 
-      var updateLoop = setInterval(update, prefs.updateInterval);
+      var firstUpdate = function() {
+        update();
+        document.removeEventListener(events.swipeDone, firstUpdate);
+      }
 
+      if (globalSettings.updatesPaused()) {
+        document.addEventListener(events.swipeDone, firstUpdate);
+      } else {
+        update();
+      }
+
+      document.addEventListener(events.newAccessPointData, update);
       document.addEventListener(events.newAccessPointSelection['APTable'], updateSelection);
 
       $scope.$on('$destroy', function() {
-        clearInterval(updateLoop);
+        document.removeEventListener(events.newAccessPointData, update);
+        document.removeEventListener(events.newAccessPointSelection['APTable'], updateSelection);
+
         saveState();
       });
     };

@@ -29,8 +29,7 @@ setupService) {
         left: 60,
         right: 0
       },
-      transitionInterval: 1800,      // Parabola and label animation time (ms)
-      updateInterval: 2000           // Time between data updates (ms)
+      transitionInterval: 1000
     };
 
     /* Current band being displayed ('2_4' or '5'). */
@@ -77,11 +76,22 @@ setupService) {
       buildNav();
       $scope.setBand(channelGraphState.band() || prefs.defaultBand);
 
-      var updateLoop = setInterval(update, prefs.updateInterval)
+      var firstUpdate = function() {
+        update();
+        document.removeEventListener(events.swipeDone, firstUpdate);
+      }
+
+      if (globalSettings.updatesPaused()) {
+        document.addEventListener(events.swipeDone, firstUpdate);
+      } else {
+        update();
+      }
+
+      document.addEventListener(events.newAccessPointData, update);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
-        clearInterval(updateLoop);
+        document.removeEventListener(events.newAccessPointData, update);
 
         saveState();
 
@@ -97,6 +107,8 @@ setupService) {
     /* Pull in new data and update element height */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
+        console.log('updating channel graph');
+
         var data = {};
 
         data['2_4'] = channelGraphState.getData('2_4');
@@ -458,7 +470,7 @@ setupService) {
         })
         .attr('y', scales.plot.y(constants.noSignal))
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelGraphState.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.level) - prefs.labelPadding;
           });
@@ -466,7 +478,7 @@ setupService) {
       /* Update existing labels */
       labels
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelGraphState.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.level) - prefs.labelPadding;
           });
@@ -474,7 +486,7 @@ setupService) {
       /* Remove labels that no longer belong to any data */
       labels.exit()
       .transition()
-      .duration(prefs.transitionInterval)
+      .duration(channelGraphState.getTransitionInterval())
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
@@ -527,21 +539,21 @@ setupService) {
         })
         .attr('stroke-width', 2)
           .transition()
-          .duration(prefs.transitionInterval)
+          .duration(channelGraphState.getTransitionInterval())
             .attr('d', function(d) {
               return generateParabola(d.level, xScale, yScale);
             });
 
       parabolas
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelGraphState.getTransitionInterval())
           .attr('d', function(d) {
             return generateParabola(d.level, xScale, yScale);
           });
 
       parabolas.exit()
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelGraphState.getTransitionInterval())
           .attr('d', function(d) {
             return generateParabola(constants.noSignal, xScale, yScale);
           })

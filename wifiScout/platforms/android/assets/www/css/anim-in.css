@@ -1,0 +1,17 @@
+.anim-in-setup.anim-slide-left, .anim-in-out.anim-in-setup .anim-slide-left {
+  -webkit-transform: translateX(100%);
+}
+
+.anim-in-setup.anim-slide-right, .anim-in-out.anim-in-setup .anim-slide-right {
+  -webkit-transform: translateX(-100%);
+}
+
+.anim-in.anim-slide-left, .anim-in-out.anim-in .anim-slide-left {
+  -webkit-transform: translateX(0);
+  -webkit-transition: all 500ms;
+}
+
+.anim-in.anim-slide-right, .anim-in-out.anim-in .anim-slide-right {
+  -webkit-transform: translateX(0);
+  -webkit-transition: all 500ms;
+}

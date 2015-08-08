@@ -36,6 +36,8 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
                 $('#view-title').html(strings.viewTitles[view]);
                 $('#current-view').removeClass('anim-in anim-slide-'+direction);
                 globalSettings.updatesPaused(false);
+
+                document.dispatchEvent(new Event(events.swipeDone));
               });
           });
         });

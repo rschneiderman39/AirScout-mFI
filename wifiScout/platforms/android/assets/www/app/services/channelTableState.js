@@ -32,6 +32,10 @@ function(accessPoints, setupService) {
       return data;
     };
 
+    service.getTransitionInterval = function() {
+      return accessPoints.getUpdateInterval() * 0.8;
+    }
+
     service.band = function(newBand) {
       if (newBand === undefined) {
         return band;

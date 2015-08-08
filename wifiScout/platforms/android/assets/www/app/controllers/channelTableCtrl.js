@@ -31,8 +31,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         left: 40,
         right: 0
       },
-      transitionInterval: 1800,        // Parabola and label animation time (ms)
-      updateInterval: 2000             // Time between data updates (ms)
+      transitionInterval: 1000
     };
 
     /* Current band being displayed ('2_4' or '5'). */
@@ -75,11 +74,22 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       buildNav();
       $scope.setBand(channelTableState.band() || prefs.defaultBand);
 
-      var updateLoop = setInterval(update, prefs.updateInterval)
+      var firstUpdate = function() {
+        update();
+        document.removeEventListener(events.swipeDone, firstUpdate);
+      }
+
+      if (globalSettings.updatesPaused()) {
+        document.addEventListener(events.swipeDone, firstUpdate);
+      } else {
+        update();
+      }
+
+      document.addEventListener(events.newAccessPointData, update);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
-        clearInterval(updateLoop);
+        document.removeEventListener(events.newAccessPointData, update);
 
         saveState();
 
@@ -94,6 +104,8 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
     /* Pull in new data and update element height */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
+        console.log('updating ap table');
+
         var data = channelTableState.getData();
 
         rescaleVertically('plot');
@@ -537,7 +549,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         .attr('stroke-width', prefs.barStrokeWidth)
         .attr('stroke', prefs.barStrokeColor)
           .transition()
-          .duration(prefs.transitionInterval)
+          .duration(channelTableState.getTransitionInterval())
             .attr('height', function(d) {
               return yScale(0) - yScale(d.occupancy);
             })
@@ -547,7 +559,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       bars
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelTableState.getTransitionInterval())
           .attr('y', function(d) {
             return yScale(d.occupancy);
           })
@@ -557,7 +569,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       bars.exit()
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelTableState.getTransitionInterval())
           .attr('y', yScale(0))
           .remove();
     };
@@ -578,14 +590,14 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         })
         .attr('y', scales.plot.y(0))
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelTableState.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           });
 
       labels
         .transition()
-        .duration(prefs.transitionInterval)
+        .duration(channelTableState.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           })
@@ -595,7 +607,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       labels.exit()
       .transition()
-      .duration(prefs.transitionInterval)
+      .duration(channelTableState.getTransitionInterval())
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
