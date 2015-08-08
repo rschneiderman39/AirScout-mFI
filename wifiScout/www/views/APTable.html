@@ -1,7 +1,9 @@
 <html>
 	<body>
-		<div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelTable', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="APTableCtrl">
-			<table class="table table-striped">
+		<div ng-click="showNav()" ng-swipe-left="swipeTo('channelTable', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="APTableCtrl">
+			
+			<!-- Fixed table header -->
+			<table class="table">
 	  		<thead class="container-fluid">
       		<tr id="step2" class="row">
           	<th class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
@@ -22,6 +24,8 @@
       		</tr>
 	      </thead>
 			</table>
+			
+			<!-- Scrollable table body -->
 			<div id="table-content">
 				<table class="table table-striped">
 		    	<tbody class="container-fluid">
@@ -35,6 +39,7 @@
 					</tbody>
 			  </table>
 			</div>
+			
 		</div>
 
 		<div filter-modal />
