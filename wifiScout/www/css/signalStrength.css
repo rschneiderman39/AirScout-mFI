@@ -1,6 +1,5 @@
-#gauge-section {
-  position: relative;
-  transform: translateY(4%) !important;
+#current-level {
+  font-weight: bold;
 }
 
 #gauge {
@@ -8,33 +7,22 @@
 }
 
 #gauge g.label text {
-  text-anchor: middle;
   font-size: 1.60vw;
+  text-anchor: middle;
+}
+
+#gauge-section {
+  position: relative;
+  transform: translateY(4%) !important;
+}
+
+.list {
+  height: 66vh;
+  overflow-y: scroll;
 }
 
 #list-section {
   transform: translateY(4%);
-}
-
-#current-level {
-  font-weight: bold;
-}
-
-.list {
-  overflow-y: scroll;
-  height: 66vh;
-}
-
-.level-indicator {
-  text-align: center;
-  padding-top: 4vh;
-  transform: translateX(17%);
-  font-size: 1.60vw;
-}
-
-.padded-1vh {
-  padding: 1vh !important;
-  margin: 0px !important;
 }
 
 .list-title {
@@ -42,18 +30,18 @@
   font-weight: bold;
 }
 
-.listgroupitem.active {
-  color: #fafafa;
-  background-color: #62bf01;
-  border-color: #62bf01;
-}
-
 .listgroupitem {
-  font-size: 1.65vw;
-  padding: 1.5vh 2.5vh;
-  margin-bottom: -1px;
   background-color: #fafafa;
   border: 1px solid #ddd;
+  font-size: 1.65vw;
+  margin-bottom: -1px;
+  padding: 1.5vh 2.5vh;
+}
+
+.listgroupitem.active {
+  background-color: #62bf01;
+  border-color: #62bf01;
+  color: #fafafa;
 }
 
 .listgroupitem:first-child {
@@ -62,21 +50,33 @@
 }
 
 .listgroupitem:last-child {
-  border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.level-indicator {
+  font-size: 1.60vw;
+  padding-top: 4vh;
+  text-align: center;
+  transform: translateX(17%);
+}
+
+.padded-1vh {
+  margin: 0px !important;
+  padding: 1vh !important;
 }
 
 ::-webkit-scrollbar {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .25);
-    border-radius: 10px;
-    border: none;
+  background-color: rgba(0, 0, 0, .25);
+  border-radius: 10px;
+  border: none;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #ffffff;
+  border-radius: 10px;
+  background-color: #ffffff;
 }
