@@ -1,5 +1,5 @@
 body {
-  background: #eeeeee !important;
+	background: #f1f1f1 !important;
 }
 
 body > #current-view {
@@ -10,8 +10,40 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
+#settings-img,
+#channel-table-img,
+#ap-table-img,
+#time-graph-img,
+#signal-strength-img,
+#channel-graph-img {
+  height: 43px;
+  width: 61px;
+}
+
+#nzTour-box,
+#nzTour-content {
+  min-height: 32vh !important;
+}
+
 #current-view {
   position: relative;
+}
+
+#touch-layer {
+	height: 100%;
+}
+
+#top-bar {
+  position: fixed;
+  /*
+  background-color: #62bf01;
+  */
+  background-image: url('../images/topBar.png');
+  height: 11vh;
+}
+
+#top-bar > div {
+	height: 100%;
 }
 
 #filter-button {
@@ -25,6 +57,15 @@ body.pg-loaded > #current-view {
 #help-button {
   max-height: 8vh;
   max-width: 11.5vh;
+  transform: translateY(-50%);
+	top: 50%;
+}
+
+#view-title {
+  font-size: 30px;
+  font-size: 3.5vw;
+  color: #fafafa;
+	text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -43,6 +84,8 @@ body.pg-loaded > #current-view {
 
 #nzTour-box, #nzTour-content {
   min-height: 32vh !important;
+.nav>li>a:hover {
+	background-color: transparent;
 }
 
 #top-bar {

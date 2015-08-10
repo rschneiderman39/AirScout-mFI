@@ -37,6 +37,7 @@ languages['en'] = {
   APTable : {
     sortSSID: 'SSID',
     sortBSSID: 'MAC Address',
+    sortManufacturer: 'Vendor',
     sortChannel: 'Channel',
     sortLevel: 'Level (dBm)',
     sortCapabilities: 'Capabilities',

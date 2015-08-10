@@ -101,15 +101,22 @@ function(networkData, globalSettings, setupService) {
       return data;
     };
 
+    var appendManufacturer = function(data) {
+      for (var i = 0; i < data.length; ++i) {
+        data[i].manufacturer = utils.macToManufacturer(data[i].BSSID);
+      }
+      return data;
+    };
+
     /* Get data from the device and update internal state accordingly */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
         networkData.get()
         .done(function(data) {
           if (globalSettings.detectHidden()) {
-            accessPoints = appendColors(appendChannels(markHidden(data.available)));
+            APData = appendManufacturer(appendColors(appendChannels(markHidden(data.available))));
           } else {
-            accessPoints = appendColors(appendChannels(removeHidden(data.available)));
+            APData = appendManufacturer(appendColors(appendChannels(removeHidden(data.available))));
           }
         })
         .fail(function() {

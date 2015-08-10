@@ -21,6 +21,30 @@ utils.freqToChannel = function(freq) {
   }
 };
 
+utils.macToManufacturer = function(mac) {
+  var macPrefix = mac.toUpperCase().substring(0, 8);
+  console.log(macPrefix);
+  /*function readTextFile(file) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function () {
+      if(rawFile.readyState === 4) {
+        if(rawFile.status === 200 || rawFile.status == 0) {
+          var allText = rawFile.responseText;
+          for(var line = 0; line < lines.length; line++) {
+            if( lines[line].indexOf(macPrefix) > 0 ) {
+            }
+          }
+        }
+      }
+    }
+    rawFile.send(null);
+  }
+
+  readTextFile("vendorMacsFormatted.txt");*/
+  return "DONE";
+};
+
 utils.getRandomColor = function() {
   var r = (Math.floor(Math.random() * 256)).toString(10),
       g = (Math.floor(Math.random() * 256)).toString(10),
