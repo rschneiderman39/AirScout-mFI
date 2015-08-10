@@ -1,5 +1,5 @@
-app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableState', 'channelChecker',
-'setupService', function($scope, globalSettings, channelTableState, channelChecker, setupService) {
+app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableManager', 'channelChecker',
+'setupService', function($scope, globalSettings, channelTableManager, channelChecker, setupService) {
 
   setupService.ready.then(function() {
 
@@ -38,7 +38,6 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
     var band = undefined;
 
     var spanLen = utils.spanLen,
-        setAlpha = utils.setAlpha,
         isAllowableChannel = channelChecker.isAllowableChannel;
 
     /* Namespaces for plot elements, scales, and dimensions. */
@@ -72,7 +71,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       buildPlot();
       buildNav();
-      $scope.setBand(channelTableState.band() || prefs.defaultBand);
+      $scope.setBand(channelTableManager.band() || prefs.defaultBand);
 
       var firstUpdate = function() {
         update();
@@ -106,7 +105,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       if (! globalSettings.updatesPaused()) {
         console.log('updating ap table');
 
-        var data = channelTableState.getData();
+        var data = channelTableManager.getData();
 
         rescaleVertically('plot');
         rescaleVertically('navLeft');
@@ -293,7 +292,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
       /* Viewport */
       elem.nav.right.viewport = d3.svg.brush()
         .x(scales.nav.right.x)
-        .extent(channelTableState.viewportExtent() || prefs.defaultViewportExtent)
+        .extent(channelTableManager.viewportExtent() || prefs.defaultViewportExtent)
         .on("brushstart", function() {
           $scope.setBand('5');
           repositionViewport();
@@ -362,8 +361,8 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
     /* Store selected band and viewport location */
     var saveState = function() {
-      channelTableState.band(band);
-      channelTableState.viewportExtent(elem.nav.right.viewport.extent());
+      channelTableManager.band(band);
+      channelTableManager.viewportExtent(elem.nav.right.viewport.extent());
     };
 
     /* Move plot elements to match a new viewport extent */
@@ -549,7 +548,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         .attr('stroke-width', prefs.barStrokeWidth)
         .attr('stroke', prefs.barStrokeColor)
           .transition()
-          .duration(channelTableState.getTransitionInterval())
+          .duration(channelTableManager.getTransitionInterval())
             .attr('height', function(d) {
               return yScale(0) - yScale(d.occupancy);
             })
@@ -559,7 +558,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       bars
         .transition()
-        .duration(channelTableState.getTransitionInterval())
+        .duration(channelTableManager.getTransitionInterval())
           .attr('y', function(d) {
             return yScale(d.occupancy);
           })
@@ -569,7 +568,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       bars.exit()
         .transition()
-        .duration(channelTableState.getTransitionInterval())
+        .duration(channelTableManager.getTransitionInterval())
           .attr('y', yScale(0))
           .remove();
     };
@@ -590,14 +589,14 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
         })
         .attr('y', scales.plot.y(0))
         .transition()
-        .duration(channelTableState.getTransitionInterval())
+        .duration(channelTableManager.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           });
 
       labels
         .transition()
-        .duration(channelTableState.getTransitionInterval())
+        .duration(channelTableManager.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           })
@@ -607,7 +606,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableSta
 
       labels.exit()
       .transition()
-      .duration(channelTableState.getTransitionInterval())
+      .duration(channelTableManager.getTransitionInterval())
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };

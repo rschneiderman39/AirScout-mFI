@@ -5,7 +5,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
     var prefs = {
       gaugeSizeFactor: .84,
-      gaugeTransitionInterval: 1300,
       listUpdateInterval: 5000,
     };
 
@@ -287,7 +286,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           }
 
       		elem.transition()
-      			.duration(config.transitionMs)
+      			.duration(accessPoints.getUpdateInterval() * 0.8)
       			.ease('quad')
       			.attr('transform', 'rotate(' +degScale(newValue)+ ')');
         }

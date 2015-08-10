@@ -12,6 +12,7 @@ body.pg-loaded > #current-view {
 
 #current-view {
   position: relative;
+  overflow: hidden;
 }
 
 #filter-button {

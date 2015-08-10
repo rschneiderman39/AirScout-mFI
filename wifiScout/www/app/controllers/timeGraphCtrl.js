@@ -1,5 +1,5 @@
-app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
-'setupService', function($scope, $timeout, timeGraphData, setupService) {
+app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
+'setupService', function($scope, $timeout, timeGraphManager, setupService) {
 
   setupService.ready.then(function() {
 
@@ -16,12 +16,12 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
         } else {
           selectedBSSID = BSSID;
         }
-        timeGraphData.toggleAccessPointHighlight(BSSID);
+        timeGraphManager.toggleAccessPointHighlight(BSSID);
       }
     };
 
     $scope.isSelected = function(BSSID) {
-      return BSSID === timeGraphData.getHighlightedBSSID();
+      return BSSID === timeGraphManager.getHighlightedBSSID();
     };
 
     $scope.sortSSID = utils.customSSIDSort;
@@ -41,7 +41,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
 
     var updateLegend = function() {
       $timeout(function() {
-        $scope.legendData = timeGraphData.getLegendData();
+        $scope.legendData = timeGraphManager.getLegendData();
 
         updateDuplicateSSIDs();
       });
@@ -55,14 +55,14 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphData',
     var init = function() {
       prepView();
 
-      var plot = timeGraphData.getPlot();
-      plot.streamTo($('#plot')[0], 1000);
+      var plot = timeGraphManager.getPlot();
+      plot.streamTo($('#plot')[0], timeGraphManager.getDelay());
 
       $scope.$on('$destroy', function() {
         plot.stop();
       });
 
-      $scope.legendData = timeGraphData.getLegendData();
+      $scope.legendData = timeGraphManager.getLegendData();
       updateDuplicateSSIDs();
 
       document.addEventListener(events.newLegendData, updateLegend);

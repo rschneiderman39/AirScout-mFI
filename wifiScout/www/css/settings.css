@@ -11,7 +11,7 @@
 }
 
 .panel-group {
-  height: 60vh;
+  /*height: 60vh;*/
   margin: 0px !important;
   padding: 0px !important;
 }
@@ -22,7 +22,7 @@
   content:"\e114";
   float: right;
   font-family:'Glyphicons Halflings';
-  font-size: 15pt; 
+  font-size: 15pt;
 }
 
 .panel-heading.collapsed a:after {
@@ -30,6 +30,5 @@
 }
 
 #touch-layer {
-  height: 30vh;
+  height: 100vh;
 }
-

@@ -1,6 +1,6 @@
 /* Controller for the channel graph view. */
-app.controller('channelGraphCtrl', ['$scope', 'globalSettings', 'channelGraphState',
-'channelChecker', 'setupService', function($scope, globalSettings, channelGraphState, channelChecker,
+app.controller('channelGraphCtrl', ['$scope', 'globalSettings', 'channelGraphManager',
+'channelChecker', 'setupService', function($scope, globalSettings, channelGraphManager, channelChecker,
 setupService) {
 
   setupService.ready.then(function() {
@@ -9,9 +9,9 @@ setupService) {
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
       domain5: [34, 167],              // X-scale for 5 Ghz band
-      range: [constants.noSignal, constants.maxSignal],              // Y-scale for level
+      range: [constants.noSignal, constants.maxSignal],  // Y-scale for level
       defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
-      fillAlpha: 0.2,                  // Opacity of parabola fill
+      fillShadeFactor: 0.75,           // [0,...1] Determines how light the fill shade is
       labelPadding: 10,                // Pixels between parabola top and label bottom
       disallowedChannelOpacity: 0.35,
       disallowedChannelColor: 'black',
@@ -36,7 +36,7 @@ setupService) {
     var band = undefined;
 
     var spanLen = utils.spanLen,
-        setAlpha = utils.setAlpha,
+        toLighterShade = utils.toLighterShade,
         isAllowableChannel = channelChecker.isAllowableChannel,
         generateParabola = utils.generateParabola;
 
@@ -74,7 +74,7 @@ setupService) {
 
       buildPlot();
       buildNav();
-      $scope.setBand(channelGraphState.band() || prefs.defaultBand);
+      $scope.setBand(channelGraphManager.band() || prefs.defaultBand);
 
       var firstUpdate = function() {
         update();
@@ -99,9 +99,6 @@ setupService) {
         d3.select('#nav-left').selectAll('*').remove();
         d3.select('#nav-right').selectAll('*').remove();
       });
-
-      // COMMENTED THIS OUT SO THAT SWIPE WILL WORK SMOOTHLY
-      //update();
     };
 
     /* Pull in new data and update element height */
@@ -111,8 +108,8 @@ setupService) {
 
         var data = {};
 
-        data['2_4'] = channelGraphState.getData('2_4');
-        data['5'] = channelGraphState.getData('5');
+        data['2_4'] = channelGraphManager.getData('2_4');
+        data['5'] = channelGraphManager.getData('5');
 
         updateParabolas('plot', data[band]);
         updateParabolas('navLeft', data['2_4']);
@@ -295,7 +292,7 @@ setupService) {
       /* Viewport */
       elem.nav.right.viewport = d3.svg.brush()
         .x(scales.nav.right.x)
-        .extent(channelGraphState.viewportExtent() || prefs.defaultViewportExtent)
+        .extent(channelGraphManager.viewportExtent() || prefs.defaultViewportExtent)
         .on("brushstart", function() {
           $scope.setBand('5');
           repositionViewport();
@@ -355,8 +352,8 @@ setupService) {
 
     /* Store selected band and viewport location */
     var saveState = function() {
-      channelGraphState.band(band);
-      channelGraphState.viewportExtent(elem.nav.right.viewport.extent());
+      channelGraphManager.band(band);
+      channelGraphManager.viewportExtent(elem.nav.right.viewport.extent());
     };
 
     /* Move plot elements to match a new viewport extent */
@@ -453,7 +450,9 @@ setupService) {
     var updateLabels = function(data) {
       /* Bind new data */
       var labels = elem.plot.clip.selectAll('text')
-        .data(data, function(d) {
+        .data(data.sort(function(a, b) {
+          return b.level - a.level;
+        }), function(d) {
           return d.BSSID;
         });
 
@@ -469,16 +468,13 @@ setupService) {
           return scales.plot.x(d.channel) - this.getBBox().width / 2;
         })
         .attr('y', scales.plot.y(constants.noSignal))
-        .transition()
-        .duration(channelGraphState.getTransitionInterval())
-          .attr('y', function(d) {
-            return scales.plot.y(d.level) - prefs.labelPadding;
-          });
+
+      labels.order();
 
       /* Update existing labels */
       labels
         .transition()
-        .duration(channelGraphState.getTransitionInterval())
+        .duration(channelGraphManager.getTransitionInterval())
           .attr('y', function(d) {
             return scales.plot.y(d.level) - prefs.labelPadding;
           });
@@ -486,12 +482,10 @@ setupService) {
       /* Remove labels that no longer belong to any data */
       labels.exit()
       .transition()
-      .duration(channelGraphState.getTransitionInterval())
+      .duration(channelGraphManager.getTransitionInterval())
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
-
-
 
     /* Update parabolas to account for new data.
      *
@@ -520,7 +514,9 @@ setupService) {
 
       /* Bind new data */
       var parabolas = clip.selectAll('path')
-        .data(data, function(d) {
+        .data(data.sort(function(a, b) {
+          return b.level - a.level;
+        }), function(d) {
           return d.BSSID;
         });
 
@@ -535,25 +531,22 @@ setupService) {
           return d.color
         })
         .attr('fill', function(d) {
-          return setAlpha(d.color, prefs.fillAlpha);
+          return toLighterShade(d.color, prefs.fillShadeFactor);
         })
-        .attr('stroke-width', 2)
-          .transition()
-          .duration(channelGraphState.getTransitionInterval())
-            .attr('d', function(d) {
-              return generateParabola(d.level, xScale, yScale);
-            });
+        .attr('stroke-width', 2);
+
+      parabolas.order();
 
       parabolas
         .transition()
-        .duration(channelGraphState.getTransitionInterval())
+        .duration(channelGraphManager.getTransitionInterval())
           .attr('d', function(d) {
             return generateParabola(d.level, xScale, yScale);
           });
 
       parabolas.exit()
         .transition()
-        .duration(channelGraphState.getTransitionInterval())
+        .duration(channelGraphManager.getTransitionInterval())
           .attr('d', function(d) {
             return generateParabola(constants.noSignal, xScale, yScale);
           })

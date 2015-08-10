@@ -1,6 +1,6 @@
 app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
-'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
-accessPoints, globalSettings, APTableState, setupService) {
+'globalSettings', 'APTableManager', 'setupService', function($scope, $timeout,
+accessPoints, globalSettings, APTableManager, setupService) {
 
   setupService.ready.then(function() {
 
@@ -49,8 +49,8 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Store current sort ordering. */
     var saveState = function() {
-      APTableState.sortPredicate($scope.sortPredicate);
-      APTableState.sortReverse($scope.sortReverse);
+      APTableManager.sortPredicate($scope.sortPredicate);
+      APTableManager.sortReverse($scope.sortReverse);
     };
 
     /* Load the previously used selection and sort ordering. */
@@ -59,13 +59,13 @@ accessPoints, globalSettings, APTableState, setupService) {
       selectedBSSIDs = selection.selectedBSSIDs;
       showAll = selection.showAll;
 
-      var predicate = APTableState.sortPredicate();
+      var predicate = APTableManager.sortPredicate();
       if (predicate === 'SSID') {
         $scope.sortPredicate = $scope.sortSSID;
       } else {
         $scope.sortPredicate = predicate;
       }
-      $scope.sortReverse = APTableState.sortReverse();
+      $scope.sortReverse = APTableManager.sortReverse();
     };
 
     /* Pull in new data and update the table. */
@@ -84,7 +84,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Manually scale the view to the device where needed. */
     var prepView = function() {
-      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table-striped thead').height();
+      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
       $('#table-content').height(contentHeight);
     };
 
