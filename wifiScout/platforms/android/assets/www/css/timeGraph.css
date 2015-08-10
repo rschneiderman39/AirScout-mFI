@@ -1,11 +1,41 @@
+.axis-label {
+  float: left;
+  font-size: 1.85vw;
+  font-weight: bold;
+}
+
 #legend {
   position: relative;
   transform: translateY(2%);
 }
 
+.legend-box {
+  display: inline-block;
+  height: 3.75vh;
+  margin-left: 1.5vh;
+  margin-right: 1vh;
+  width: 3.75vh;
+  vertical-align: middle;
+}
+
+.legend-text {
+  font-size: 1.65vw;
+}
+
+.legend-title {
+  font-size: 1.85vw;
+  font-weight: bold;
+  position: relative;
+}
+
+.list {
+  height: 68vh;
+  overflow-y: scroll;
+}
+
 #plot {
-  border: 1px;
   background-color: #c0c0c0;
+  border: 1px;
 }
 
 #time-graph {
@@ -13,47 +43,11 @@
   transform: translateY(3%);
 }
 
-.axis-label {
-	float: left;
-	font-weight: bold;
-  font-size: 1.85vw;
-}
-
-.legend-text {
-  font-size: 1.65vw;
-}
-
-.legend-box {
-	display: inline-block;
-	width: 3.75vh;
-	height: 3.75vh;
-	margin-right: 1vh;
-  margin-left: 1.5vh;
-  vertical-align: middle;
-}
-
-.legend-title {
-  font-size: 1.85vw;
-	position: relative;
-	font-weight: bold;
-}
-
-.list {
-  overflow-y: scroll;
-  height: 68vh;
-}
-
-.listgroupitem.active {
-  color: #fafafa;
-  background-color: #62bf01;
-  border-color: #62bf01;
-}
-
 .listgroupitem {
-  padding: 1.5vh 1.25vh;
-  margin-bottom: -1px;
   background-color: #fafafa;
   border: 1px solid #ddd;
+  margin-bottom: -1px;
+  padding: 1.5vh 1.25vh;
 }
 
 .listgroupitem:first-child {
@@ -62,21 +56,27 @@
 }
 
 .listgroupitem:last-child {
-  border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.listgroupitem.active {
+  background-color: #62bf01;
+  border-color: #62bf01;
+  color: #fafafa;
 }
 
 ::-webkit-scrollbar {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .25);
-    border-radius: 10px;
-    border: none;
+  background-color: rgba(0, 0, 0, .25);
+  border: none;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #ffffff;
+  background-color: #ffffff;
+  border-radius: 10px;
 }

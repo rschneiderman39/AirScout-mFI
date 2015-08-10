@@ -1,32 +1,12 @@
-#filter-modal  #modal-list {
-  overflow-y: scroll;
-}
-
-#filter-modal  #SSID {
-  text-align: center;
-}
-
 #filter-modal  #BSSID {
   text-align: center;
 }
 
-#filter-modal  #title {
-  margin: 5px;
-}
-
-#filter-modal  #query {
-  margin-bottom: 15px;
-}
-
-#filter-modal  .nopadding {
-  padding: 5px !important;
-  margin: 0px !important;
-}
-
-#filter-modal  .modal-dialog {
-  margin-left: auto;
-  margin-right: auto;
-  width: 55%;
+#filter-modal  .list-group-item {
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  position: relative;
+  z-index: 2;
 }
 
 #filter-modal  .list-group-item.selected {
@@ -39,24 +19,44 @@
   border-top-width: 0px;
 }
 
-#filter-modal  .list-group-item {
-  z-index: 2;
-  position: relative;
-  background-color: #fafafa;
-  border: 1px solid #ddd;
+#filter-modal  .modal-dialog {
+  margin-left: auto;
+  margin-right: auto;
+  width: 55%;
+}
+
+#filter-modal  #modal-list {
+  overflow-y: scroll;
+}
+
+#filter-modal  .nopadding {
+  margin: 0px !important;
+  padding: 5px !important;
+}
+
+#filter-modal  #query {
+  margin-bottom: 15px;
+}
+
+#filter-modal  #SSID {
+  text-align: center;
+}
+
+#filter-modal  #title {
+  margin: 5px;
 }
 
 #filter-modal ::-webkit-scrollbar {
-    -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 #filter-modal ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .25);
-    border-radius: 10px;
-    border: none;
+  background-color: rgba(0, 0, 0, .25);
+  border: none;
+  border-radius: 10px;
 }
 
 #filter-modal ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #ffffff;
+  background-color: #ffffff;
+  border-radius: 10px;
 }

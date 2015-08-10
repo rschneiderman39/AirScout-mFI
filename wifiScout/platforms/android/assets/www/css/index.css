@@ -1,5 +1,5 @@
 body {
-	background: #eeeeee !important;
+  background: #eeeeee !important;
 }
 
 body > #current-view {
@@ -10,80 +10,60 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
-#nzTour-box,
-#nzTour-content {
-  min-height: 32vh !important;
-}
-
 #current-view {
   position: relative;
 }
 
-#top-bar {
-  position: fixed;
-  background-color: #62bf01;
-  height: 11vh;
-}
-
-#top-bar > div {
-	height: 100%;
-}
-
 #filter-button {
-	position: relative;
   max-height: 8.5vh;
   max-width: 8.5vh;
+  position: relative;
+  top: 50%;
   transform: translateY(-50%);
-	top: 50%;
 }
 
 #help-button {
-	position: relative;
   max-height: 8vh;
   max-width: 11.5vh;
-  transform: translateY(-50%);
-	top: 50%;
-}
-
-#view-title {
-  font-size: 30px;
-  font-size: 3.5vw;
-	text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
 
 #nav-bar {
-  position: fixed;
-	height: 13vh;
+  height: 13vh;
   min-height: 0px;
+  position: fixed;
   -webkit-transition: bottom 0.5s ease;
-  -moz-transition: bottom 0.5s ease;
-  transition: bottom 0.5s ease;
 }
 
-.nav>li>a:hover {
-	background-color: transparent;
+.nav > li > a:hover {
+  background-color: transparent;
 }
 
-/* Scrolling */
-/*
-::-webkit-scrollbar {
-    -webkit-appearance: none;
+#nzTour-box, #nzTour-content {
+  min-height: 32vh !important;
 }
 
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, .5);
-    border-radius: 10px;
-    border: 2px solid #ffffff;
+#top-bar {
+  background-color: #62bf01;
+  height: 11vh;
+  margin: 0px;
+  position: fixed;
+  width: 100vw;
 }
 
-::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #ffffff;
+#top-bar > div {
+  height: 100%;
 }
-*/
+
+#view-title {
+  font-size: 3.5vw;
+  position: relative;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 /* PATHGATHER */
 .sk-spinner {
@@ -139,53 +119,3 @@ body.pg-loaded > #current-view {
     -webkit-transform: scaleY(1.0);
   }
 }
-
-.ng-enter {}
-
-.ng-leave {}
-
-/* CAROUSEL SWIPE NAVIGATION */
-/*#dropDownOpen {
-  position:absolute;
-  bottom:0;
-  width: 100%;
-  padding-bottom:2%;
-  z-index: 100;
-  display: none;
-}
-#current-view {
-  position: relative;
-}
-[ui-view].ng-enter, [ui-view].ng-leave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  -webkit-transition:all .3s ease-in-out;
-  -moz-transition:all .3s ease-in-out;
-  -o-transition:all .3s ease-in-out;
-  transition:all .3s ease-in-out;
-}
-[ui-view].ng-enter {
-  opacity: 0;
-  -webkit-transform:translate3d(0, 0, 0);
-  -moz-transform:translate3d(0, 0, 0);
-  transform:translate3d(0, 0, 0);
-}
-[ui-view].ng-enter-active {
-  opacity: 1;
-  -webkit-transform:translate3d(0, 0, 0);
-  -moz-transform:translate3d(0, 0, 0);
-  transform:translate3d(0, 0, 0);
-}
-[ui-view].ng-leave {
-  opacity: 1;
-  -webkit-transform:translate3d(0, 0, 0);
-  -moz-transform:translate3d(0, 0, 0);
-  transform:translate3d(0, 0, 0);
-}
-[ui-view].ng-leave-active {
-  opacity: 0;
-  -webkit-transform:translate3d(100px, 0, 0);
-  -moz-transform:translate3d(100px, 0, 0);
-  transform:translate3d(100px, 0, 0);
-}*/
