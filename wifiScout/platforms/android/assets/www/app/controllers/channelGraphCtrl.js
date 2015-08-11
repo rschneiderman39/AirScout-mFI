@@ -216,14 +216,8 @@ setupService) {
         dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
         dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
 
-<<<<<<< HEAD
-    /* Pull in new data and update element height */
-    var update = function() {
-      if (! globalSettings.updatesPaused()) {
-=======
         elem.nav = {};
         elem.nav.left = {};
->>>>>>> 8b542675b5c90f9e4e2493869cbfd35ac8ff6b46
 
         /* Container */
         elem.nav.left.container = d3.select('#nav-left').append('svg')

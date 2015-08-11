@@ -8,7 +8,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       listUpdateInterval: 5000,
     };
 
-    $scope.strings = strings;
+    //$scope.strings = strings;
 
     $scope.APData = [];
     $scope.isDuplicateSSID = {};
@@ -59,7 +59,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var updateGauge = function() {
       if (! globalSettings.updatesPaused()) {
         $timeout(function() {
-          console.log('updating signal strength');
           var selectedAP = accessPoints.get(selectedBSSID);
 
           if (selectedAP !== null) {
@@ -127,7 +126,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     		numSegments: 0,
         segmentColors: [],
 
-    		labelFormat: d3.format(',g'),
+    		//labelFormat: d3.format(',g'),
     		labelInset: 0,
 
         arrowWidth: 0,
@@ -137,6 +136,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
         bottomPadding: 0
     	};
+
+      var labelFormat = d3.format(',g');
 
       var pointer, minValue, maxValue, r, center, arcs, scale, degScale;
 
@@ -168,7 +169,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     		//tickData = d3.range(config.numSegments).map(function() {return 1/config.numSegments;});
         ticks = scale.ticks(14);
         ticksTEST = scale.ticks(7);
-        tickData = d3.range(14).map(function() {return 1/14;});
+        //tickData = d3.range(14).map(function() {return 1/14;});
 
     		arc = d3.svg.arc()
     			.innerRadius(r - config.ringWidth - config.ringInset)
@@ -216,8 +217,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         })())
         .range(config.segmentColors);
 
-
-    		arcs.selectAll('path')
+    		/*
+        arcs.selectAll('path')
     				.data(tickData)
     			.enter().append('path')
     				.attr('fill', function (d, i) {
@@ -225,16 +226,20 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
     				})
     				.attr('d', arc);
+        */
 
-    		var lg = center.append('g')
-    				.attr('class', 'label');
+        var arcLabels = center.append('g')
+            .attr('class', 'label');
 
-    		lg.selectAll('text')
-    				.data(ticksTEST)
-    			.enter().append('text')
-    				.text(config.labelFormat)
+        arcLabels.selectAll('text')
+          .data(ticksTEST)
+          .enter().append('text')
+            .text(labelFormat)
             .attr('transform', function(d) {
-              return 'rotate(' +degScale(d) +') translate(-' +(this.getBBox().width / 2)+ ',' +(config.labelInset - r)+ ')';
+              console.log((this.getBBox().width / 2));
+              console.log((degScale(d)));
+              console.log('during');
+              return 'rotate(' +degScale(d) +') translate(-' +(this.getBBox().width / 2)+ ', -150)';
             });
 
         pointer = center.append('g')
@@ -264,8 +269,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             .attr("d", utils.generateTriangle(config.arrowWidth, config.arrowHeight))
             .attr('transform', 'rotate(180)')
             .attr("fill", "#000");
-        console.log("constants.noSignal is: " + constants.noSignal);
-        console.log("degScale() is: " + degScale(constants.noSignal));
 
     		update('pointer', newValue === undefined ? constants.noSignal : newValue);
         update('minValue', newValue === undefined ? constants.noSignal : newValue);

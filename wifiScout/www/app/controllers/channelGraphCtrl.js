@@ -216,9 +216,6 @@ setupService) {
         dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
         dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
 
-    /* Pull in new data and update element height */
-    var update = function() {
-      if (! globalSettings.updatesPaused()) {
         elem.nav = {};
         elem.nav.left = {};
 
