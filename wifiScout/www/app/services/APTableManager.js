@@ -1,5 +1,5 @@
 /* Globally preserves sort settings for AP Table view. */
-app.factory('APTableState', ['setupService', function(setupService) {
+app.factory('APTableManager', ['setupService', function(setupService) {
 
   var service = {};
 

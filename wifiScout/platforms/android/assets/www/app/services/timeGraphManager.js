@@ -1,9 +1,13 @@
-app.factory('timeGraphData', ['accessPoints', 'globalSettings',
+app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
 'setupService', function(accessPoints, globalSettings, setupService) {
 
   var service = {};
 
   setupService.ready.then(function() {
+
+    var prefs = {
+      highlightOpacity: 0.4
+    };
 
     var isSelected = {},
         showAll = true,
@@ -32,6 +36,10 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
       return highlightedBSSID;
     };
 
+    service.getDelay = function() {
+      return accessPoints.getUpdateInterval();
+    }
+
     var generateLegendData = function() {
       var legendData = [];
       for (var BSSID in datasets) {
@@ -50,7 +58,7 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     var highlightAccessPoint = function(BSSID) {
       unselectAccessPoint(BSSID);
-      selectAccessPoint(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.setAlpha(datasets[BSSID].color, 0.4)});
+      selectAccessPoint(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.toNewAlpha(datasets[BSSID].color, prefs.highlightOpacity)});
       highlightedBSSID = BSSID;
     };
 
@@ -168,7 +176,6 @@ app.factory('timeGraphData', ['accessPoints', 'globalSettings',
 
     var update = function() {
       if (! globalSettings.updatesPaused()) {
-        console.log(accessPoints.count());
         updateDatasets();
         applyAccessPointSelection();
       }

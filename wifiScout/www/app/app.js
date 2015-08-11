@@ -45,6 +45,5 @@ var app = angular.module('app', ['ngAnimate', 'ui.router', 'uiRouterStyles', 'se
         }
       });
   })
-  .run(function() {
-    FastClick.attach(document.body, {});
-  });
+  .run(['timeGraphManager', function(timeGraphManager) {
+  }]);

@@ -1,13 +1,13 @@
 /* Maintains current data about every AP the device can see. Each view
    should use this service whenever it wants to update its local data */
-app.factory('accessPoints', ['networkData', 'globalSettings', 'setupService',
-function(networkData, globalSettings, setupService) {
+app.factory('accessPoints', ['$rootScope', '$state', 'networkData', 'globalSettings', 'setupService',
+function($rootScope, $state, networkData, globalSettings, setupService) {
 
   var service = {};
 
   setupService.ready.then(function() {
 
-    var updateInterval = 2000;
+    var updateInterval = constants.updateIntervalNormal;
 
     var accessPoints = [],
         lineColors = {};
@@ -108,15 +108,49 @@ function(networkData, globalSettings, setupService) {
       return data;
     };
 
+    var getNextUpdateInterval = function(toState) {
+
+      if (toState.name === 'channelGraph') {
+        if (accessPoints.length < constants.moderateAPCountThresh) {
+          return constants.updateIntervalFast;
+        } else if (accessPoints.length < constants.highAPCountThresh) {
+          return constants.updateIntervalNormal;
+        } else {
+          return constants.updateIntervalSlow;
+        }
+
+      } else if (toState.name === 'signalStrength') {
+        return constants.updateIntervalFast;
+
+      } else if (toState.name === 'timeGraph') {
+        return constants.updateIntervalNormal;
+
+      } else if (toState.name === 'APTable') {
+        if (accessPoints.length < constants.highAPCountThresh) {
+          return constants.updateIntervalNormal;
+        } else {
+          return constants.updateIntervalSlow;
+        }
+
+      } else if (toState.name === 'channelTable') {
+        return constants.updateIntervalNormal;
+
+      } else {
+        return constants.updateIntervalNormal;
+      }
+    };
+
     /* Get data from the device and update internal state accordingly */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
         networkData.get()
         .done(function(data) {
           if (globalSettings.detectHidden()) {
-            APData = appendManufacturer(appendColors(appendChannels(markHidden(data.available))));
+            //APData = appendManufacturer(appendColors(appendChannels(markHidden(data.available))));
+            accessPoints = appendColors(appendChannels(markHidden(data.available)));
           } else {
-            APData = appendManufacturer(appendColors(appendChannels(removeHidden(data.available))));
+            //APData = appendManufacturer(appendColors(appendChannels(removeHidden(data.available))));
+            accessPoints = appendColors(appendChannels(removeHidden(data.available)));
           }
         })
         .fail(function() {
@@ -125,10 +159,16 @@ function(networkData, globalSettings, setupService) {
 
         document.dispatchEvent(new Event(events.newAccessPointData));
       }
+
       setTimeout(update, updateInterval);
     };
 
     var init = function() {
+      $rootScope.$on('$stateChangeStart',
+        function(event, toState, toParams, fromState, fromParams) {
+          updateInterval = getNextUpdateInterval(toState);
+        });
+
       update();
     };
 

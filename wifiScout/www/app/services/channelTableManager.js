@@ -1,4 +1,4 @@
-app.factory('channelTableState', ['accessPoints', 'setupService',
+app.factory('channelTableManager', ['accessPoints', 'setupService',
 function(accessPoints, setupService) {
 
   var service = {};

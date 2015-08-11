@@ -61,13 +61,13 @@
         </div>
         <div class="col-xs-2">
           <a ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
-            <img id="signal-strength-img" src="images/signalStrength.png" />
+            <img id="signal-strength-img" src="images/signalStrength5.png" />
             {{strings.viewTitles['signalStrength']}}
           </a>
         </div>
         <div class="col-xs-2">
           <a ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
-            <img id="time-graph-img" src="images/timeGraph2.png" />
+            <img id="time-graph-img" src="images/timeGraph5.png" />
             {{strings.viewTitles['timeGraph']}}
           </a>
         </div>
@@ -93,7 +93,7 @@
     </nav>
 
     <!-- Splash screen -->
-    <script type="text/javascript">
+     <script type="text/javascript">
       var loading_screen = pleaseWait({
         logo: "",
         backgroundColor: '#62BF01',
@@ -118,10 +118,10 @@
     <!-- Anglar Services -->
     <script src="app/services/networkData.js"></script>
     <script src="app/services/accessPoints.js"></script>
-    <script src="app/services/timeGraphData.js"></script>
-    <script src="app/services/APTableState.js"></script>
-    <script src="app/services/channelGraphState.js"></script>
-    <script src="app/services/channelTableState.js"></script>
+    <script src="app/services/timeGraphManager.js"></script>
+    <script src="app/services/APTableManager.js"></script>
+    <script src="app/services/channelGraphManager.js"></script>
+    <script src="app/services/channelTableManager.js"></script>
     <script src="app/services/channelChecker.js"></script>
     <script src="app/services/globalSettings.js"></script>
 
