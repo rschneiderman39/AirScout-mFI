@@ -23,7 +23,7 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
 
         this.channel = utils.freqToChannel(this.frequency);
 
-        //this.manufacturer = utils.macToManufacturer(this.MAC);
+        this.manufacturer = utils.getManufacturer(this.MAC);
 
         if (accessPointColors[this.MAC]) {
           this.color = accessPointColors[this.MAC];
@@ -73,6 +73,8 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
                 ++accessPointCount;
               }
             }
+
+            console.log(accessPointCount);
 
             defer.resolve(accessPoints);
           },

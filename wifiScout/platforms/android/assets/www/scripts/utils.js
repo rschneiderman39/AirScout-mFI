@@ -19,6 +19,10 @@ utils.accessPointSubset = function(accessPoints, macAddrs) {
   return subset;
 };
 
+utils.getManufacturer = function(macAddr) {
+  return manufacturers[macAddr.slice(0, 8)] || "Unknown";
+};
+
 utils.deepCopy = function(object) {
   return JSON.parse(JSON.stringify(object));
 };
