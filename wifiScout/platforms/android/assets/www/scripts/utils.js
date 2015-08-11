@@ -2,6 +2,27 @@ if (typeof utils === 'undefined') {
   utils = {};
 }
 
+utils.accessPointSubset = function(accessPoints, macAddrs) {
+  var subset = [],
+      include = {};
+
+  for (var i = 0; i < macAddrs.length; ++i) {
+    include[macAddrs[i]] = true;
+  }
+
+  for (var i = 0; i < accessPoints.length; ++i) {
+    if (include[accessPoints[i].MAC]) {
+      subset.push(accessPoints[i]);
+    }
+  }
+
+  return subset;
+};
+
+utils.getManufacturer = function(macAddr) {
+  return manufacturers[macAddr.slice(0, 8)] || "Unknown";
+};
+
 utils.deepCopy = function(object) {
   return JSON.parse(JSON.stringify(object));
 };

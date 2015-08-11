@@ -9,28 +9,37 @@ function(accessPoints, setupService) {
         viewportExtent = undefined;
 
     service.getData = function() {
-      var allAccessPoints = accessPoints.getAll(),
-          numOccupants = {},
-          data = [];
+      var defer = $.Deferred();
 
-      for (var i = 0; i < allAccessPoints.length; ++i) {
-        var accessPoint = allAccessPoints[i];
-        if (numOccupants[accessPoint.channel] === undefined) {
-          numOccupants[accessPoint.channel] = 1;
-        } else {
-          numOccupants[accessPoint.channel] += 1;
+      accessPoints.getAll().done(function(results) {
+        var numOccupants = {},
+            data = [],
+            accessPoint;
+
+        for (var i = 0; i < results.length; ++i) {
+          accessPoint = results[i];
+
+          if (numOccupants[accessPoint.channel] === undefined) {
+            numOccupants[accessPoint.channel] = 1;
+
+          } else {
+            numOccupants[accessPoint.channel] += 1;
+          }
         }
-      }
 
-      for (var ch in numOccupants) {
-        data.push({
-          channel: ch,
-          occupancy: numOccupants[ch]
-        });
-      }
+        for (var channel in numOccupants) {
+          data.push({
+            channel: channel,
+            occupancy: numOccupants[channel]
+          });
+        }
 
-      return data;
+        defer.resolve(data);
+      });
+
+      return defer;
     };
+
 
     service.getTransitionInterval = function() {
       return accessPoints.getUpdateInterval() * 0.8;

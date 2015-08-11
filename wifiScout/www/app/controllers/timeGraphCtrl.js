@@ -20,8 +20,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       }
     };
 
-    $scope.isSelected = function(BSSID) {
-      return BSSID === timeGraphManager.getHighlightedBSSID();
+    $scope.isSelected = function(MAC) {
+      return MAC === timeGraphManager.getHighlightedMAC();
     };
 
     $scope.sortSSID = utils.customSSIDSort;

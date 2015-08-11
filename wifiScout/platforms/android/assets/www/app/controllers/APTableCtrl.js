@@ -4,13 +4,15 @@ accessPoints, globalSettings, APTableManager, setupService) {
 
   setupService.ready.then(function() {
 
+    var updateInterval;
+
     var showAll = true; /* True: display all access points regardless of selection.
                            False: display only selected access points. */
 
-    var selectedBSSIDs = []; /* Current access point selection. @type {{Array.<string>}} */
+    var selectedMACs = []; /* Current access point selection. @type {{Array.<string>}} */
 
     $scope.strings = strings;
-    $scope.selectedAPData = [];       // Array of AP data objects to be displayed
+    $scope.accessPoints = [];       // Array of AP data objects to be displayed
     $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
     $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
 
@@ -36,15 +38,15 @@ accessPoints, globalSettings, APTableManager, setupService) {
     /* Update the locally stored selection whenever the user changes the selection with the
        filter modal.
 
-       @param {{showAll: boolean, selectedBSSIDs: Array.<string>}} newSelection - The new selection.
+       @param {{showAll: boolean, selectedMACs: Array.<string>}} newSelection - The new selection.
     */
     var updateSelection = function() {
       var selection = globalSettings.getAccessPointSelection('APTable');
 
-      selectedBSSIDs = selection.selectedBSSIDs;
+      selectedMACs = selection.macAddrs;
       showAll = selection.showAll;
 
-      $timeout(update);
+      update();
     };
 
     /* Store current sort ordering. */
@@ -56,7 +58,7 @@ accessPoints, globalSettings, APTableManager, setupService) {
     /* Load the previously used selection and sort ordering. */
     var restoreState = function() {
       var selection = globalSettings.getAccessPointSelection('APTable');
-      selectedBSSIDs = selection.selectedBSSIDs;
+      selectedMACs = selection.macAddrs;
       showAll = selection.showAll;
 
       var predicate = APTableManager.sortPredicate();
@@ -68,16 +70,17 @@ accessPoints, globalSettings, APTableManager, setupService) {
       $scope.sortReverse = APTableManager.sortReverse();
     };
 
-    /* Pull in new data and update the table. */
     var update = function() {
       if (! globalSettings.updatesPaused()) {
-        $timeout(function() {
-          console.log('updating table');
-          if (showAll) {
-            $scope.selectedAPData = accessPoints.getAll();
-          } else {
-            $scope.selectedAPData = accessPoints.getSelected(selectedBSSIDs);
-          }
+        accessPoints.getAll().done(function(results) {
+          $timeout(function() {
+            if (showAll) {
+              $scope.accessPoints = results;
+            } else {
+              $scope.accessPoints =
+              utils.accessPointSubset(results, selectedMACs);
+            }
+          });
         });
       }
     };
@@ -89,6 +92,13 @@ accessPoints, globalSettings, APTableManager, setupService) {
     };
 
     var init = function() {
+      if (accessPoints.count() < constants.moderateThresh) {
+        updateInterval = constants.updateIntervalNormal;
+
+      } else {
+        updateInterval = constants.updateIntervalSlow;
+      }
+
       prepView();
 
       restoreState();
@@ -104,11 +114,11 @@ accessPoints, globalSettings, APTableManager, setupService) {
         update();
       }
 
-      document.addEventListener(events.newAccessPointData, update);
+      var updateLoop = setInterval(update, updateInterval);
       document.addEventListener(events.newAccessPointSelection['APTable'], updateSelection);
 
       $scope.$on('$destroy', function() {
-        document.removeEventListener(events.newAccessPointData, update);
+        clearInterval(updateLoop);
         document.removeEventListener(events.newAccessPointSelection['APTable'], updateSelection);
 
         saveState();

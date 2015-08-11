@@ -1,53 +1,7 @@
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'accessPoints',
 'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
   setupService.ready.then(function() {
-    /*$scope.strings = strings;
-
-    $scope.APData = [];
-    $scope.isDuplicateSSID = {};
-    $scope.level = constants.noSignal;
-    $scope.minLevel = constants.noSignal;
-    $scope.maxLevel = constants.noSignal;
-    $scope.sortSSID = utils.customSSIDSort;
-
-    $scope.isSelected = function(ap) {
-      if (typeof ap.BSSID !== 'undefined') {
-        return ap.BSSID === selectedBSSID;
-      }
-    };
-
-    $scope.setSelected = function(ap) {
-      if (typeof ap.BSSID !== 'undefined') {
-        selectedBSSID = ap.BSSID;
-      }
-      $scope.level = undefined;
-      $scope.minLevel = undefined;
-      $scope.maxLevel = undefined;
-    };
-
-    var selectedBSSID = "",
-        gauge = undefined;
-
-    var updateList = function() {
-      if (! globalSettings.updatesPaused()) {
-        $timeout(function() {
-          $scope.APData = accessPoints.getAll();
-
-          var found = {},
-              newDuplicates = {};
-          for (var i = 0; i < $scope.APData.length; ++i) {
-            if (found[$scope.APData[i].SSID]) {
-              newDuplicates[$scope.APData[i].SSID] = true;
-            } else {
-              found[$scope.APData[i].SSID] = true;
-            }
-          }
-
-          $scope.isDuplicateSSID = newDuplicates;
-        });
-      }
-    };*/
-
+    
     var makeGauge = function() {
       var vis = d3.select("#test").append("svg");
 
@@ -162,7 +116,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .attr('transform', 'rotate(180)')
           .attr("fill", "#000");
     };
-
     makeGauge();
   });
 }]);

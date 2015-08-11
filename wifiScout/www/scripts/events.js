@@ -4,8 +4,6 @@ if (typeof events === 'undefined') {
 
 events.setupDone = "setupdone";
 
-events.newAccessPointData = "newaccesspointdata";
-
 events.newAccessPointSelection = {};
 events.newAccessPointSelection.APTable = 'newselectionaptable';
 events.newAccessPointSelection.channelGraph = 'newselectionchannelgraph';

@@ -5,6 +5,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
 
   setupService.ready.then(function() {
 
+    var updateInterval = constants.updateIntervalNormal;
+
     var prefs = {
       highlightOpacity: 0.4
     };
@@ -13,7 +15,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
         showAll = true,
         datasets = {},
         plot = undefined,
-        highlightedBSSID = undefined;
+        highlightedMAC = undefined;
 
     service.getPlot = function() {
       return plot;
@@ -23,32 +25,32 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       return generateLegendData();
     };
 
-    service.toggleAccessPointHighlight = function(BSSID) {
-      if (BSSID === highlightedBSSID) {
-        unhighlightAccessPoint(BSSID);
+    service.toggleAccessPointHighlight = function(MAC) {
+      if (MAC === highlightedMAC) {
+        unhighlightAccessPoint(MAC);
       } else {
-        unhighlightAccessPoint(highlightedBSSID);
-        highlightAccessPoint(BSSID);
+        unhighlightAccessPoint(highlightedMAC);
+        highlightAccessPoint(MAC);
       }
     };
 
-    service.getHighlightedBSSID = function(BSSID) {
-      return highlightedBSSID;
+    service.getHighlightedMAC = function() {
+      return highlightedMAC;
     };
 
     service.getDelay = function() {
-      return accessPoints.getUpdateInterval();
-    }
+      return updateInterval;
+    };
 
     var generateLegendData = function() {
       var legendData = [];
-      for (var BSSID in datasets) {
-        if (datasets[BSSID].inPlot) {
+      for (var MAC in datasets) {
+        if (datasets[MAC].inPlot) {
           legendData.push(
             {
-              SSID: datasets[BSSID].SSID,
-              BSSID: BSSID,
-              color: datasets[BSSID].color,
+              SSID: datasets[MAC].SSID,
+              MAC: MAC,
+              color: datasets[MAC].color,
             }
           );
         }
@@ -56,21 +58,21 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       return legendData;
     };
 
-    var highlightAccessPoint = function(BSSID) {
-      unselectAccessPoint(BSSID);
-      selectAccessPoint(BSSID, { lineWidth: 6, strokeStyle: datasets[BSSID].color, fillStyle: utils.toNewAlpha(datasets[BSSID].color, prefs.highlightOpacity)});
-      highlightedBSSID = BSSID;
+    var highlightAccessPoint = function(MAC) {
+      unselectAccessPoint(MAC);
+      selectAccessPoint(MAC, { lineWidth: 6, strokeStyle: datasets[MAC].color, fillStyle: utils.toNewAlpha(datasets[MAC].color, prefs.highlightOpacity)});
+      highlightedMAC = MAC;
     };
 
-    var unhighlightAccessPoint = function(BSSID) {
-      unselectAccessPoint(BSSID);
-      selectAccessPoint(BSSID);
-      highlightedBSSID = "";
+    var unhighlightAccessPoint = function(MAC) {
+      unselectAccessPoint(MAC);
+      selectAccessPoint(MAC);
+      highlightedMAC = "";
     };
 
     var addAccessPoint = function(accessPoint) {
-      if (! datasets[accessPoint.BSSID]) {
-        datasets[accessPoint.BSSID] = {
+      if (! datasets[accessPoint.MAC]) {
+        datasets[accessPoint.MAC] = {
           SSID: accessPoint.SSID,
           color: accessPoint.color,
           line: new TimeSeries({ resetBounds: false }),
@@ -79,29 +81,29 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       }
     };
 
-    var removeAccessPoint = function(BSSID) {
-      if (datasets[BSSID]) {
-        unselectAccessPoint(BSSID);
-        delete datasets[BSSID];
+    var removeAccessPoint = function(MAC) {
+      if (datasets[MAC]) {
+        unselectAccessPoint(MAC);
+        delete datasets[MAC];
       }
     };
 
-    var selectAccessPoint = function(BSSID, options) {
-      if (datasets[BSSID]) {
+    var selectAccessPoint = function(MAC, options) {
+      if (datasets[MAC]) {
         if (! options) {
-          options = { lineWidth: 2, strokeStyle: datasets[BSSID].color };
+          options = { lineWidth: 2, strokeStyle: datasets[MAC].color };
         }
-        plot.addTimeSeries(datasets[BSSID].line, options);
-        datasets[BSSID].inPlot = true;
+        plot.addTimeSeries(datasets[MAC].line, options);
+        datasets[MAC].inPlot = true;
       }
     };
 
-    var unselectAccessPoint = function(BSSID) {
-      if (datasets[BSSID]) {
-        plot.removeTimeSeries(datasets[BSSID].line);
-        datasets[BSSID].inPlot = false;
-        if (BSSID === highlightedBSSID) {
-          highlightedBSSID = "";
+    var unselectAccessPoint = function(MAC) {
+      if (datasets[MAC]) {
+        plot.removeTimeSeries(datasets[MAC].line);
+        datasets[MAC].inPlot = false;
+        if (MAC === highlightedMAC) {
+          highlightedMAC = "";
         }
       }
     };
@@ -109,18 +111,18 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
     var applyAccessPointSelection = function() {
       var selectionChanged = false;
 
-      for (var BSSID in datasets) {
-        if (isSelected[BSSID] || showAll) {
-          if (! globalSettings.detectHidden() && datasets[BSSID].SSID === "<hidden>") {
-            unselectAccessPoint(BSSID);
+      for (var MAC in datasets) {
+        if (isSelected[MAC] || showAll) {
+          if (! globalSettings.detectHidden() && datasets[MAC].SSID === "<hidden>") {
+            unselectAccessPoint(MAC);
             selectionChanged = true;
-          } else if (! datasets[BSSID].inPlot) {
-            selectAccessPoint(BSSID);
+          } else if (! datasets[MAC].inPlot) {
+            selectAccessPoint(MAC);
             selectionChanged = true;
           }
         } else {
-          if (datasets[BSSID].inPlot) {
-            unselectAccessPoint(BSSID);
+          if (datasets[MAC].inPlot) {
+            unselectAccessPoint(MAC);
             selectionChanged = true;
           }
         }
@@ -136,8 +138,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
 
       isSelected = {};
 
-      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
-        isSelected[selection.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.macAddrs.length; ++i) {
+        isSelected[selection.macAddrs[i]] = true;
       }
 
       showAll = selection.showAll;
@@ -147,31 +149,33 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
 
     var updateDatasets = function() {
       var curTime = new Date().getTime(),
-          allAccessPoints = accessPoints.getAll(),
-          BSSIDtoAccessPoint = {};
+          MACtoAccessPoint = {};
 
-      for (var i = 0; i < allAccessPoints.length; ++i) {
-        BSSIDtoAccessPoint[allAccessPoints[i].BSSID] = allAccessPoints[i];
-      }
-
-      // Update existing datasets
-      for (var BSSID in datasets) {
-        var accessPoint = BSSIDtoAccessPoint[BSSID];
-        if (accessPoint) {
-          datasets[BSSID].line.append(curTime, accessPoint.level);
-        } else {
-          datasets[BSSID].line.append(curTime, constants.noSignal);
+      accessPoints.getAll().done(function(results) {
+        for (var i = 0; i < results.length; ++i) {
+          MACtoAccessPoint[results[i].MAC] = results[i];
         }
-      }
 
-      // Discover new datasets
-      for (var i = 0; i < allAccessPoints.length; ++i) {
-        var accessPoint = allAccessPoints[i];
-        if (! datasets[accessPoint.BSSID]) {
-          addAccessPoint(accessPoint);
-          datasets[accessPoint.BSSID].line.append(curTime, accessPoint.level);
+        // Update existing datasets
+        for (var MAC in datasets) {
+          var accessPoint = MACtoAccessPoint[MAC];
+          if (accessPoint) {
+            datasets[MAC].line.append(curTime, accessPoint.level);
+          } else {
+            datasets[MAC].line.append(curTime, constants.noSignal);
+          }
         }
-      }
+
+        // Discover new datasets
+        for (var i = 0; i < results.length; ++i) {
+          var accessPoint = results[i];
+          if (! datasets[accessPoint.MAC]) {
+            addAccessPoint(accessPoint);
+            datasets[accessPoint.MAC].line.append(curTime, accessPoint.level);
+          }
+        }
+
+      });
     };
 
     var update = function() {
@@ -216,13 +220,15 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
 
       var selection = globalSettings.getAccessPointSelection('timeGraph');
 
-      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
-        isSelected[selection.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.macAddrs.length; ++i) {
+        isSelected[selection.macAddrs[i]] = true;
       }
 
       showAll = selection.showAll;
 
-      document.addEventListener(events.newAccessPointData, update);
+      update();
+      setInterval(update, updateInterval);
+
       document.addEventListener(events.newAccessPointSelection['timeGraph'], updateSelection);
     };
 
