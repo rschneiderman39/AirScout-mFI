@@ -1,7 +1,7 @@
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'accessPoints',
 'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
   setupService.ready.then(function() {
-    
+
     var makeGauge = function() {
       var vis = d3.select("#test").append("svg");
 

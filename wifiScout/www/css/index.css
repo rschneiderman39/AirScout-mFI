@@ -30,10 +30,6 @@ body.pg-loaded > #current-view {
   overflow: hidden;
 }
 
-#touch-layer {
-	height: 100%;
-}
-
 #top-bar {
   position: fixed;
   background-image: url('../images/topBar.png');

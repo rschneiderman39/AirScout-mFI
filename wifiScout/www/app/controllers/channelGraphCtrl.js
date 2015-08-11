@@ -216,9 +216,6 @@ setupService) {
         dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
         dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
 
-    /* Pull in new data and update element height */
-    var update = function() {
-      if (! globalSettings.updatesPaused()) {
         elem.nav = {};
         elem.nav.left = {};
 
@@ -540,47 +537,6 @@ setupService) {
               return generateParabola(constants.noSignal, xScale, yScale);
             })
             .remove();
-
-        /* Add new parabolas where necessary
-        parabolas.enter().append('ellipse')
-          .attr('cx', function(d) {
-            return xScale(d.channel);
-          })
-          .attr('cy', yScale(constants.noSignal))
-          // Assume 20 Mhz width
-          .attr('rx', function(d) {
-            return (xScale(d.channel) - xScale(d.channel - 1)) * 2;
-          })
-          .attr('ry', 0)
-          .attr('stroke', function(d) {
-            return d.color;
-          })
-          .attr('fill', function(d) {
-            return setAlpha(d.color, prefs.fillAlpha);
-          })
-          .attr('stroke-width', '2')
-            .transition()
-            .duration(prefs.transitionInterval)
-              .attr('ry', function(d) {
-                return yScale(constants.noSignal) - yScale(d.level);
-              });
-
-        /* Update existing parabolas
-        parabolas
-          .transition()
-          .duration(prefs.transitionInterval)
-            .attr('ry', function(d) {
-              return yScale(constants.noSignal) - yScale(d.level);
-            });
-
-        /* Remove parabolas that are no longer bound to data
-        parabolas.exit()
-          .transition()
-          .duration(prefs.transitionInterval)
-            .attr('ry', 0)
-            .remove();
-
-            */
       };
 
       return vis;

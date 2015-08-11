@@ -59,11 +59,11 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
       /* Pull in new data and update element height */
       vis.update = function() {
-        rescaleVertically('plot');
-        rescaleVertically('navLeft');
-        rescaleVertically('navRight');
-
         channelTableManager.getData().done(function(data) {
+          rescaleVertically('plot');
+          rescaleVertically('navLeft');
+          rescaleVertically('navRight');
+
           updateBars('plot', data);
           updateBars('navLeft', data);
           updateBars('navRight', data);

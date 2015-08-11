@@ -13,7 +13,6 @@
 .panel-group {
 	padding: 0px !important;
 	margin: 0px !important;
-  height: 58vh;
 }
 
 .panel {
@@ -37,5 +36,6 @@
 }
 
 #touch-layer {
-  height: 30vh;
+  height: 100vh;
+  position: relative;
 }

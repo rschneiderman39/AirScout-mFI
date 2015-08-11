@@ -20,7 +20,7 @@ utils.accessPointSubset = function(accessPoints, macAddrs) {
 };
 
 utils.getManufacturer = function(macAddr) {
-  return manufacturers[macAddr.slice(0, 8)] || "Unknown";
+  return manufacturers[macAddr.slice(0, 8)] || "<unknown>";
 };
 
 utils.deepCopy = function(object) {
@@ -41,30 +41,6 @@ utils.freqToChannel = function(freq) {
     return (freq - 5000) / 5;
   }
 };
-
-/*utils.macToManufacturer = function(mac) {
-  var macPrefix = mac.toUpperCase().substring(0, 8);
-  console.log(macPrefix);
-  /*function readTextFile(file) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function () {
-      if(rawFile.readyState === 4) {
-        if(rawFile.status === 200 || rawFile.status == 0) {
-          var allText = rawFile.responseText;
-          for(var line = 0; line < lines.length; line++) {
-            if( lines[line].indexOf(macPrefix) > 0 ) {
-            }
-          }
-        }
-      }
-    }
-    rawFile.send(null);
-  }
-
-  readTextFile("vendorMacsFormatted.txt");*/
-  //return "DONE";
-//};
 
 utils.getRandomColor = function() {
   var hue = (Math.floor(Math.random() * 360)).toString(10),
