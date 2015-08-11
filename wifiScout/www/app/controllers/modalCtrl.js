@@ -8,26 +8,26 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
     $scope.strings = strings;
 
-    $scope.APData = [];
+    $scope.accessPoints = [];
 
     $scope.toggleSelected = function(AP) {
-      isSelected[AP.BSSID] = isSelected[AP.BSSID] ? false : true;
+      isSelected[AP.MAC] = isSelected[AP.MAC] ? false : true;
       sendSelection();
     };
 
     $scope.isSelected = function(AP) {
-      return isSelected[AP.BSSID];
+      return isSelected[AP.MAC];
     };
 
     // Select all APs, and show any new AP that later becomes visible
     $scope.selectAll = function() {
-      for (var i = 0; i < $scope.APData.length; ++i) {
-        isSelected[$scope.APData[i].BSSID] = true;
+      for (var i = 0; i < $scope.accessPoints.length; ++i) {
+        isSelected[$scope.accessPoints[i].MAC] = true;
       }
 
       globalSettings.setAccessPointSelection(view, {
         showAll: true,
-        selectedBSSIDs: []
+        macAddrs: []
       });
     };
 
@@ -36,40 +36,45 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
       globalSettings.setAccessPointSelection(view, {
         showAll: false,
-        selectedBSSIDs: []
+        macAddrs: []
       });
     };
 
     $scope.sortSSID = utils.customSSIDSort;
 
     var onShow = function() {
-      var settings = globalSettings.getAccessPointSelection(view);
-      $scope.$apply(function() {
-        $scope.APData = accessPoints.getAll();
-        if (settings.showAll) {
-          for (var i = 0; i < $scope.APData.length; ++i) {
-            isSelected[$scope.APData[i].BSSID] = true;
+      var selection = globalSettings.getAccessPointSelection(view);
+
+      accessPoints.getAll().done(function(results) {
+        $scope.$apply(function() {
+          $scope.accessPoints = results;
+
+          if (selection.showAll) {
+            for (var i = 0; i < $scope.accessPoints.length; ++i) {
+              isSelected[$scope.accessPoints[i].MAC] = true;
+            }
+
+          } else {
+            for (var i = 0; i < selection.macAddrs.length; ++i) {
+              isSelected[selection.macAddrs[i]] = true;
+            }
           }
-        } else {
-          for (var i = 0; i < settings.selectedBSSIDs.length; ++i) {
-            isSelected[settings.selectedBSSIDs[i]] = true;
-          }
-        }
+        });
       });
     };
 
     var sendSelection = function() {
       var selection = [];
 
-      for (var BSSID in isSelected) {
-        if (isSelected[BSSID]) {
-          selection.push(BSSID);
+      for (var macAddr in isSelected) {
+        if (isSelected[macAddr]) {
+          selection.push(macAddr);
         }
       }
 
       globalSettings.setAccessPointSelection(view, {
         showAll: false,
-        selectedBSSIDs: selection
+        macAddrs: selection
       });
     };
 

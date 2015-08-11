@@ -5,6 +5,8 @@ setupService) {
 
   setupService.ready.then(function() {
 
+    var updateInterval = constants.updateIntervalSlow;
+
     var prefs = {
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
@@ -28,8 +30,7 @@ setupService) {
         bottom: 18,
         left: 60,
         right: 0
-      },
-      transitionInterval: 1000
+      }
     };
 
     /* Current band being displayed ('2_4' or '5'). */
@@ -87,11 +88,11 @@ setupService) {
         update();
       }
 
-      document.addEventListener(events.newAccessPointData, update);
+      var updateLoop = setInterval(update, updateInterval);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
-        document.removeEventListener(events.newAccessPointData, update);
+        clearInterval(updateLoop);
 
         saveState();
 
@@ -103,18 +104,25 @@ setupService) {
 
     /* Pull in new data and update element height */
     var update = function() {
+
       if (! globalSettings.updatesPaused()) {
-        console.log('updating channel graph');
+        channelGraphManager.getData('2_4').done(function(data) {
+          if (band === '2_4') {
+            updateParabolas('plot', data);
+            updateLabels(data);
+          }
 
-        var data = {};
+          updateParabolas('navLeft', data);
+        });
 
-        data['2_4'] = channelGraphManager.getData('2_4');
-        data['5'] = channelGraphManager.getData('5');
+        channelGraphManager.getData('5').done(function(data) {
+          if (band === '5') {
+            updateParabolas('plot', data);
+            updateLabels(data);
+          }
 
-        updateParabolas('plot', data[band]);
-        updateParabolas('navLeft', data['2_4']);
-        updateParabolas('navRight', data['5']);
-        updateLabels(data[band]);
+          updateParabolas('navRight', data);
+        });
       }
     };
 
@@ -453,7 +461,7 @@ setupService) {
         .data(data.sort(function(a, b) {
           return b.level - a.level;
         }), function(d) {
-          return d.BSSID;
+          return d.MAC;
         });
 
       /* Add new labels where necessary */
@@ -474,7 +482,7 @@ setupService) {
       /* Update existing labels */
       labels
         .transition()
-        .duration(channelGraphManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('y', function(d) {
             return scales.plot.y(d.level) - prefs.labelPadding;
           });
@@ -482,7 +490,7 @@ setupService) {
       /* Remove labels that no longer belong to any data */
       labels.exit()
       .transition()
-      .duration(channelGraphManager.getTransitionInterval())
+      .duration(updateInterval * 0.8)
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
@@ -517,7 +525,7 @@ setupService) {
         .data(data.sort(function(a, b) {
           return b.level - a.level;
         }), function(d) {
-          return d.BSSID;
+          return d.MAC;
         });
 
       parabolas.enter().append('path')
@@ -539,14 +547,14 @@ setupService) {
 
       parabolas
         .transition()
-        .duration(channelGraphManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('d', function(d) {
             return generateParabola(d.level, xScale, yScale);
           });
 
       parabolas.exit()
         .transition()
-        .duration(channelGraphManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('d', function(d) {
             return generateParabola(constants.noSignal, xScale, yScale);
           })

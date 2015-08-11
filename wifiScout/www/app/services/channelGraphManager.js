@@ -5,7 +5,7 @@ app.factory('channelGraphManager', ['accessPoints', 'globalSettings',
 
   setupService.ready.then(function() {
 
-    var isSelected = {},
+    var selectedMACs = [],
         showAll = true,
         band = undefined,
         viewportExtent = undefined;
@@ -13,25 +13,19 @@ app.factory('channelGraphManager', ['accessPoints', 'globalSettings',
     var inBand = utils.inBand;
 
     service.getData = function(band) {
-      var allAccessPoints = accessPoints.getAll(),
-          data = [],
-          accessPoint;
+      var defer = $.Deferred();
 
-      for (var i = 0; i < allAccessPoints.length; ++i) {
-        accessPoint = allAccessPoints[i];
-        if (showAll || isSelected[accessPoint.BSSID]) {
-          if (inBand(accessPoint.frequency, band)) {
-            data.push(accessPoint);
-          }
+      accessPoints.getAllInBand(band).done(function(results) {
+        if (showAll) {
+          defer.resolve(results);
+
+        } else {
+          defer.resolve(utils.accessPointSubset(results, selectedMACs));
         }
-      }
+      });
 
-      return data;
+      return defer;
     };
-
-    service.getTransitionInterval = function() {
-      return accessPoints.getUpdateInterval() * 0.8;
-    }
 
     service.band = function(newBand) {
       if (newBand === undefined) {
@@ -52,11 +46,7 @@ app.factory('channelGraphManager', ['accessPoints', 'globalSettings',
     var updateSelection = function() {
       var selection = globalSettings.getAccessPointSelection('channelGraph');
 
-      isSelected = {};
-
-      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
-        isSelected[selection.selectedBSSIDs[i]] = true;
-      }
+      selectedMACs = selection.macAddrs;
 
       showAll = selection.showAll;
     };
@@ -64,8 +54,8 @@ app.factory('channelGraphManager', ['accessPoints', 'globalSettings',
     var init = function() {
       var selection = globalSettings.getAccessPointSelection('channelGraph');
 
-      for (var i = 0; i < selection.selectedBSSIDs.length; ++i) {
-        isSelected[selection.selectedBSSIDs[i]] = true;
+      for (var i = 0; i < selection.macAddrs.length; ++i) {
+        isSelected[selection.macAddrs[i]] = true;
       }
 
       showAll = selection.showAll;

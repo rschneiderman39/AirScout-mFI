@@ -457,8 +457,6 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
 
         if (!angular.isDefined(attr.disabled) || attr.disabled === false) {
 
-          console.log('firing ng-click');
-
           element.triggerHandler('click', [event]);
         }
       }

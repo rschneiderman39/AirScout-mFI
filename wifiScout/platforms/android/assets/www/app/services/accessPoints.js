@@ -1,173 +1,109 @@
-/* Maintains current data about every AP the device can see. Each view
-   should use this service whenever it wants to update its local data */
-app.factory('accessPoints', ['$rootScope', '$state', 'networkData', 'globalSettings', 'setupService',
-function($rootScope, $state, networkData, globalSettings, setupService) {
+app.factory('accessPoints', ['globalSettings', 'setupService', function(
+  globalSettings, setupService) {
 
-  var service = {};
+    var service = {};
 
-  setupService.ready.then(function() {
+    setupService.ready.then(function() {
 
-    var updateInterval = constants.updateIntervalNormal;
+      var accessPointColors = {},
+          accessPointCount = 0;
 
-    var accessPoints = [],
-        lineColors = {};
+      function AccessPoint(scanResult) {
+        var randColor;
 
-    var inBand = utils.inBand,
-        freqToChannel = utils.freqToChannel,
-        getRandomColor = utils.getRandomColor;
+        this.SSID = scanResult.SSID || "<hidden>";
 
-    service.getAll = function() {
-      return accessPoints;
-    };
+        this.MAC = scanResult.BSSID;
 
-    service.getAllInBand = function(band) {
-      var accessPointsInBand = [];
+        this.capabilities = scanResult.capabilities;
 
-      for (var i = 0; i < accessPoints.length; ++i) {
-        if (inBand(accessPoints[i], band)) {
-          accessPointsInBand.push(accessPoints[i]);
-        }
-      }
+        this.level = scanResult.level;
 
-      return accessPointInBand;
-    }
+        this.frequency = scanResult.frequency;
 
-    service.getSelected = function(BSSIDs) {
-      var selectedAccessPoints = [],
-          isSelected = {};
-      for (var i = 0; i < BSSIDs.length; ++i) {
-        isSelected[BSSIDs[i]] = true;
-      }
-      if (BSSIDs.length > 0) {
-        for (var i = 0; i < accessPoints.length; ++i) {
-          if (isSelected[accessPoints[i].BSSID] === true) {
-            selectedAccessPoints.push(accessPoints[i]);
-          }
-        }
-      }
-      return selectedAccessPoints;
-    };
+        this.channel = utils.freqToChannel(this.frequency);
 
-    service.getUpdateInterval = function() {
-      return updateInterval;
-    }
+        //this.manufacturer = utils.macToManufacturer(this.MAC);
 
-    service.count = function() {
-      return accessPoints.length;
-    }
+        if (accessPointColors[this.MAC]) {
+          this.color = accessPointColors[this.MAC];
 
-    service.get = function(BSSID) {
-      if (BSSID !== "") {
-        for (var i = 0; i < accessPoints.length; ++i) {
-          if (accessPoints[i].BSSID === BSSID) {
-            return accessPoints[i];
-          }
-        }
-      }
-      return null;
-    };
-
-    var markHidden = function(data) {
-      for (var i = 0; i < data.length; ++i) {
-        if (data[i].SSID === "") {
-          data[i].SSID = "<hidden>";
-        }
-      }
-      return data;
-    };
-
-    var removeHidden = function(data) {
-      return data.filter(function(ap) {
-        return ap.SSID !== "";
-      });
-    };
-
-    var appendChannels = function(data) {
-      for (var i = 0; i < data.length; ++i) {
-        data[i].channel = freqToChannel(data[i].frequency);
-      }
-      return data;
-    };
-
-    var appendColors = function(data) {
-      for (var i = 0; i < data.length; ++i) {
-        var lineColor = lineColors[data[i].BSSID];
-        if (lineColor === undefined) {
-          lineColor = getRandomColor();
-          lineColors[data[i].BSSID] = lineColor;
-        }
-        data[i].color = lineColor;
-      }
-      return data;
-    };
-
-    var getNextUpdateInterval = function(toState) {
-
-      if (toState.name === 'channelGraph') {
-        if (accessPoints.length < constants.moderateAPCountThresh) {
-          return constants.updateIntervalFast;
-        } else if (accessPoints.length < constants.highAPCountThresh) {
-          return constants.updateIntervalNormal;
         } else {
-          return constants.updateIntervalSlow;
+          randColor = utils.getRandomColor();
+          this.color = randColor;
+          accessPointColors[this.MAC] = randColor;
         }
 
-      } else if (toState.name === 'signalStrength') {
-        return constants.updateIntervalFast;
+        return this;
+      };
 
-      } else if (toState.name === 'timeGraph') {
-        return constants.updateIntervalNormal;
+      service.count = function() {
+        return accessPointCount;
+      };
 
-      } else if (toState.name === 'APTable') {
-        if (accessPoints.length < constants.highAPCountThresh) {
-          return constants.updateIntervalNormal;
-        } else {
-          return constants.updateIntervalSlow;
-        }
+      service.get = function(macAddr) {
+        var defer = $.Deferred();
 
-      } else if (toState.name === 'channelTable') {
-        return constants.updateIntervalNormal;
-
-      } else {
-        return constants.updateIntervalNormal;
-      }
-    };
-
-    /* Get data from the device and update internal state accordingly */
-    var update = function() {
-      if (! globalSettings.updatesPaused()) {
-        networkData.get()
-        .done(function(data) {
-          if (globalSettings.detectHidden()) {
-            accessPoints = appendColors(appendChannels(markHidden(data.available)));
-          } else {
-            accessPoints = appendColors(appendChannels(removeHidden(data.available)));
+        service.getAll().done(function(accessPoints) {
+          for (var i = 0; i < accessPoints.length; ++i) {
+            if (accessPoints[i].MAC === macAddr) {
+              defer.resolve(accessPoints[i]);
+            }
           }
-        })
-        .fail(function() {
-          accessPoints = [];
         });
 
-        document.dispatchEvent(new Event(events.newAccessPointData));
-      }
+        return defer;
+      };
 
-      console.log('updateInerval');
-      setTimeout(update, updateInterval);
-    };
+      service.getAll = function() {
+        var defer = $.Deferred();
 
-    var init = function() {
-      $rootScope.$on('$stateChangeStart',
-        function(event, toState, toParams, fromState, fromParams) {
-          updateInterval = getNextUpdateInterval(toState);
+        window.plugins.WifiAdmin.scan();
+
+        window.plugins.WifiAdmin.getWifiInfo(
+          function success(info) {
+            var accessPoints = [],
+                avail = info.available;
+
+            accessPointCount = 0;
+
+            for (var i = 0; i < avail.length; ++i) {
+              if (globalSettings.detectHidden() || avail[i].SSID !== "") {
+                accessPoints.push(new AccessPoint(avail[i]));
+                ++accessPointCount;
+              }
+            }
+
+            defer.resolve(accessPoints);
+          },
+          function failure() {
+            console.log("Failed to collect access point data.");
+            defer.resolve([]);
+          }
+        );
+
+        return defer;
+      };
+
+      service.getAllInBand = function(band) {
+        var defer = $.Deferred();
+
+        service.getAll().done(function(accessPoints) {
+          var accessPointsInBand = [];
+
+          for (var i = 0; i < accessPoints.length; ++i) {
+            if (utils.inBand(accessPoints[i].frequency, band)) {
+              accessPointsInBand.push(accessPoints[i]);
+            }
+          }
+
+          defer.resolve(accessPointsInBand);
         });
 
-      update();
-    };
+        return defer;
+      };
 
-    init();
+    });
 
-  });
-
-  return service;
-
+    return service;
 }]);

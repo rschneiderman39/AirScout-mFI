@@ -53,7 +53,7 @@ setupService) {
     };
 
     service.setAccessPointSelection = function(view, newSelection) {
-      if (newSelection.selectedBSSIDs instanceof Array &&
+      if (newSelection.macAddrs instanceof Array &&
           typeof newSelection.showAll === 'boolean') {
         if (globalAccessPointSelection) {
           selections['global'] = utils.deepCopy(newSelection);
@@ -86,13 +86,13 @@ setupService) {
 
       for (var i = 0; i < filterableViews.length; ++i) {
         selections[filterableViews[i]] = {
-          selectedBSSIDs: [],
+          macAddrs: [],
           showAll: true
         };
       }
 
       selections['global'] = {
-        selectedBSSIDs: [],
+        macAddrs: [],
         showAll: true
       };
     };

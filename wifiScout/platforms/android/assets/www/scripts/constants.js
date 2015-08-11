@@ -4,8 +4,8 @@ if (typeof constants === 'undefined') {
 
 constants.noSignal = -100;
 constants.maxSignal = -30;
-constants.moderateAPCountThresh = 15;
-constants.highAPCountThresh = 30;
+constants.moderateThresh = 15;
+constants.highThresh = 30;
 constants.updateIntervalFast = 500;
 constants.updateIntervalNormal = 1000;
 constants.updateIntervalSlow = 2000;

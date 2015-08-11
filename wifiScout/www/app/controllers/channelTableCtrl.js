@@ -3,6 +3,8 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
   setupService.ready.then(function() {
 
+    var updateInterval = constants.updateIntervalSlow;
+
     var prefs = {
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
@@ -30,8 +32,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         bottom: 18,
         left: 40,
         right: 0
-      },
-      transitionInterval: 1000
+      }
     };
 
     /* Current band being displayed ('2_4' or '5'). */
@@ -84,11 +85,11 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         update();
       }
 
-      document.addEventListener(events.newAccessPointData, update);
+      var updateLoop = setInterval(update, updateInterval);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
-        document.removeEventListener(events.newAccessPointData, update);
+        clearInterval(updateLoop);
 
         saveState();
 
@@ -97,24 +98,22 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         d3.select('#nav-right').selectAll('*').remove();
       });
 
-      //update();
     };
 
     /* Pull in new data and update element height */
     var update = function() {
+
+      rescaleVertically('plot');
+      rescaleVertically('navLeft');
+      rescaleVertically('navRight');
+
       if (! globalSettings.updatesPaused()) {
-        console.log('updating ap table');
-
-        var data = channelTableManager.getData();
-
-        rescaleVertically('plot');
-        rescaleVertically('navLeft');
-        rescaleVertically('navRight');
-
-        updateBars('plot', data);
-        updateBars('navLeft', data);
-        updateBars('navRight', data);
-        updateLabels(data);
+        channelTableManager.getData().done(function(data) {
+          updateBars('plot', data);
+          updateBars('navLeft', data);
+          updateBars('navRight', data);
+          updateLabels(data);
+        });
       }
     };
 
@@ -548,7 +547,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         .attr('stroke-width', prefs.barStrokeWidth)
         .attr('stroke', prefs.barStrokeColor)
           .transition()
-          .duration(channelTableManager.getTransitionInterval())
+          .duration(updateInterval * 0.8)
             .attr('height', function(d) {
               return yScale(0) - yScale(d.occupancy);
             })
@@ -558,7 +557,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
       bars
         .transition()
-        .duration(channelTableManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('y', function(d) {
             return yScale(d.occupancy);
           })
@@ -568,7 +567,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
       bars.exit()
         .transition()
-        .duration(channelTableManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('y', yScale(0))
           .remove();
     };
@@ -589,14 +588,14 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         })
         .attr('y', scales.plot.y(0))
         .transition()
-        .duration(channelTableManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           });
 
       labels
         .transition()
-        .duration(channelTableManager.getTransitionInterval())
+        .duration(updateInterval * 0.8)
           .attr('y', function(d) {
             return scales.plot.y(d.occupancy) - prefs.labelPadding;
           })
@@ -606,7 +605,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
       labels.exit()
       .transition()
-      .duration(channelTableManager.getTransitionInterval())
+      .duration(updateInterval * 0.8)
         .attr('y', scales.plot.y(constants.noSignal))
         .remove();
     };
