@@ -10,36 +10,9 @@ body.pg-loaded > #current-view {
   display: block;
 }
 
-#settings-img,
-#channel-table-img,
-#ap-table-img,
-#time-graph-img,
-#signal-strength-img,
-#channel-graph-img {
-  height: 43px;
-  width: 61px;
-}
-
-#nzTour-box,
-#nzTour-content {
-  min-height: 32vh !important;
-}
-
 #current-view {
   position: relative;
   overflow: hidden;
-}
-
-#top-bar {
-  position: fixed;
-  background-image: url('../images/topBar.png');
-  height: 11vh;
-  margin: 0px;
-  width: 100vw;
-}
-
-#top-bar > div {
-	height: 100%;
 }
 
 #filter-button {
@@ -58,16 +31,6 @@ body.pg-loaded > #current-view {
 	top: 50%;
 }
 
-#view-title {
-  font-size: 30px;
-  font-size: 3.5vw;
-  color: #fafafa;
-	text-align: center;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 #nav-bar {
   height: 13vh;
   min-height: 0px;
@@ -75,21 +38,31 @@ body.pg-loaded > #current-view {
   -webkit-transition: bottom 0.5s ease;
 }
 
+#nav-bar div {
+	height: 100%;
+}
+
 .nav > li > a:hover {
   background-color: transparent;
 }
 
+.nav-icon {
+  height: 11vh;
+	position: relative;
+  transform: translateY(-50%);
+	top: 50%;
+	width: 8vw;
+}
+
 #nzTour-box, #nzTour-content {
   min-height: 32vh !important;
-.nav>li>a:hover {
-	background-color: transparent;
 }
 
 #top-bar {
-  background-color: #62bf01;
+  background-image: url('../images/topBar.png');
   height: 11vh;
   margin: 0px;
-  position: fixed;
+	position: fixed;
   width: 100vw;
 }
 
@@ -99,8 +72,9 @@ body.pg-loaded > #current-view {
 
 #view-title {
   font-size: 3.5vw;
+  color: #fafafa;
+	text-align: center;
   position: relative;
-  text-align: center;
   top: 50%;
   transform: translateY(-50%);
 }

@@ -179,10 +179,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
     };
 
     var update = function() {
-      if (! globalSettings.updatesPaused()) {
-        updateDatasets();
-        applyAccessPointSelection();
-      }
+      updateDatasets();
+      applyAccessPointSelection();
     };
 
     var init = function() {

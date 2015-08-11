@@ -58,19 +58,19 @@ setup.tours = function() {
         content: strings.APTable.tour.intro
       },
       {
-        target: "#step1",
+        target: "#sample-level",
         content: strings.APTable.tour.level
       },
       {
-        target: "#step2",
+        target: "#header",
         content: strings.APTable.tour.sorting
       },
       {
-        target: "#step3",
+        target: "#channel-header",
         content: strings.APTable.tour.channel
       },
       {
-        target: "#step4",
+        target: "#capabilities-header",
         content: strings.APTable.tour.capabilities
       },
       {
