@@ -71,7 +71,6 @@ accessPoints, globalSettings, APTableManager, setupService) {
     };
 
     var update = function() {
-
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $timeout(function() {
