@@ -12,7 +12,9 @@
 
 #gauge g.label text {
   font-size: 1.60vw;
+  /*
   text-anchor: middle;
+  */
 }
 
 #gauge-section {

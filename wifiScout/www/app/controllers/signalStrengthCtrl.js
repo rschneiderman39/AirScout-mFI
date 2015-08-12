@@ -2,19 +2,40 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
   setupService.ready.then(function() {
 
-    var makeGauge = function() {
-      var outerInnerRatio = (175/150);
-      var innerRadius = 150;
+    var transitionTime = 2000;
 
+    // Sets arrow to grey area on gauge - AKA - AP went out of range
+    var noSignal = -90;
+
+    // Valid signal strength range on the gauge
+    var minSignal = -100;
+    var maxSignal = -10;
+
+    var renderGauge = function() {
       var arcHeights = "400";
       var arcWidths = "400";
+      var arcRadius = arcWidths / 2;
       var arcTransform = "translate(200,200)";
+
+      var gaugeSizeRatio = .84;
+      var gaugeRatio = ($(window).width() * 0.66 / arcWidths) * gaugeSizeRatio;
+
+      var minMaxArrowHeight = 10;
+      var minMaxArrowWidth = 10;
+      var minMaxArrowInset = 40;
+
+      var pointerLength = arcWidths / 2;
+      var pointerWidth = 20;
+      var pointerInset = 31;
+
+      var outerInnerRatio = (175/150);
+      var innerRadius = 150;
 
       var minValue = -100;
       var maxValue = -10;
 
-      var minAngle = -86;
-      var maxAngle = 86;
+      var minAngle = -84;
+      var maxAngle = 90;
 
       var pi = Math.PI;
       var degreesToRads = (pi/180);
@@ -27,15 +48,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var goodSignalStart = 13 * degreesToRads;
       var goodSignalEnd = 90 * degreesToRads;
 
+      var arrowCircleSize = 10;
+
       var noSignalFill = "#d3d3d3";
       var badSignalFill = "#cc4748";
       var okSignalFill = "#fdd400";
       var goodSignalFill = "#84b761";
+      var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
       var labelInset = 15;
-
-      var arcRadius = arcWidths / 2;
+      var numLabels = 10;
 
       // Canvas to draw all elements on
       var vis = d3.select("#test").append("svg");
@@ -90,12 +113,12 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         .attr("transform", arcTransform);
 
       // Draw circle below arrow
-      center = vis.append('g')
-        .attr("transform", "translate(200,200)");
+      arrowCircle = vis.append('g')
+        .attr("transform", arcTransform);
 
-      center.append('circle')
-        .attr('fill', 'black')
-        .attr('r', 9);
+      arrowCircle.append('circle')
+        .attr('fill', blackFill)
+        .attr('r', arrowCircleSize * gaugeRatio);
 
       // Scale for text formatting around arcs
       scale = d3.scale.linear()
@@ -106,10 +129,10 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         .domain([minValue, maxValue])
         .range([minAngle, maxAngle]);
 
-      ticks = scale.ticks(10);
+      ticks = scale.ticks(numLabels);
 
       // Draw text labels on arc
-      var arcLabels = center.append('g')
+      var arcLabels = arrowCircle.append('g')
             .attr('class', 'label');
 
       arcLabels.selectAll('text')
@@ -117,41 +140,80 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .enter().append('text')
             .text(labelFormat)
             .attr('transform', function(d) {
-              //+(config.labelInset - r)+ 
               return 'rotate(' +degScale(d) +') translate(0,' +(labelInset - arcRadius)+ ')';
             });
 
       // Draw arrow
-      pointer = center.append('g')
-        .attr("transform", "rotate(-90)");
+      pointer = arrowCircle.append('g')
+        .attr('transform', 'rotate(' +noSignal+ ')');
 
       pointer.append('path')
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
-        .attr('d', utils.generateTriangle(8, 149));
+        .attr('d', utils.generateTriangle((arrowCircleSize * gaugeRatio), (pointerLength - pointerInset - pointerWidth)));
+        //.attr('d', utils.generateTriangle(8, 149));
 
       // Draw minimum indicator triangle
-      minValue = center.append('g')
+      minValueIndicator = arrowCircle.append('g')
         .attr("transform", "rotate(-90)");
 
-      minValue.append('g')
-        .attr("transform", "translate(0, -160)")
+      minValueIndicator.append('g')
+        //.attr('transform', 'translate(0, ' +(config.ringInset - r)+ ')')
+        .attr('transform', 'translate(0, ' +(minMaxArrowInset - pointerLength)+ ')')
         .append('path')
-        .attr("d", utils.generateTriangle(12,12))
+        .attr("d", utils.generateTriangle((minMaxArrowWidth * gaugeRatio), (minMaxArrowHeight * gaugeRatio)))
         .attr('transform', 'rotate(180)')
-        .attr("fill", "#000");
+        .attr("fill", blackFill);
 
       // Draw maximum indicator triangle
-      maxValue = center.append('g')
+      maxValueIndicator = arrowCircle.append('g')
         .attr('transform', 'rotate(-90)');
 
-      maxValue.append('g')
-        .attr('transform', 'translate(0, -160)')
+      maxValueIndicator.append('g')
+        .attr('transform', 'translate(0, ' +(minMaxArrowInset - pointerLength)+ ')')
         .append('path')
-          .attr("d", utils.generateTriangle(12,12))
+          .attr("d", utils.generateTriangle((minMaxArrowWidth * gaugeRatio), (minMaxArrowHeight * gaugeRatio)))
           .attr('transform', 'rotate(180)')
-          .attr("fill", "#000");
+          .attr("fill", blackFill);
+
+      //updateGauge('pointer', newValue === undefined ? noSignal : newValue);
+      //updateGauge('minValueIndicator', newValue === undefined ? noSignal : newValue);
+      //updateGauge('maxValueIndicator', newValue === undefined ? noSignal : newValue);
+
+      updateGauge('minValueIndicator', -10);
+      updateGauge('pointer', -10);
     };
-    makeGauge();
+
+    function updateGauge(elemName, newValue) {
+      if (newValue !== undefined) {
+        if (newValue > maxSignal) {
+          newValue = maxSignal;
+        } 
+        else if (newValue < minSignal) {
+          newValue = noSignal;
+        }
+
+        if (elemName === 'pointer') {
+          elem = pointer;
+        } 
+        else if (elemName === 'minValueIndicator') {
+          elem = minValueIndicator;
+        } 
+        else if (elemName === 'maxValueIndicator') {
+          elem = maxValueIndicator;
+        }
+
+        elem.transition()
+          .duration(transitionTime)
+          .ease('quad')
+          .attr('transform', 'rotate(' +degScale(newValue)+ ')');
+        }
+      };
+
+    function initGauge() {
+      renderGauge();
+    };
+
+    initGauge();
   });
 }]);
