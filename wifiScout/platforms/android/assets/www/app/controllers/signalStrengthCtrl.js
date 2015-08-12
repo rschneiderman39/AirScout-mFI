@@ -22,7 +22,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       var minMaxArrowHeight = 10;
       var minMaxArrowWidth = 10;
-      var minMaxArrowInset = 40;
+      var minMaxArrowInset = 41;
 
       var pointerLength = arcWidths / 2;
       var pointerWidth = 20;
@@ -57,7 +57,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
-      var labelInset = 15;
+      var labelInset = 20;
       var numLabels = 10;
 
       // Canvas to draw all elements on
@@ -140,7 +140,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .enter().append('text')
             .text(labelFormat)
             .attr('transform', function(d) {
-              return 'rotate(' +degScale(d) +') translate(0,' +(labelInset - arcRadius)+ ')';
+              return 'rotate(' +degScale(d) +') translate(-12,' +(labelInset - arcRadius)+ ')';
             });
 
       // Draw arrow
@@ -180,8 +180,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       //updateGauge('minValueIndicator', newValue === undefined ? noSignal : newValue);
       //updateGauge('maxValueIndicator', newValue === undefined ? noSignal : newValue);
 
-      updateGauge('minValueIndicator', -10);
-      updateGauge('pointer', -10);
+      updateGauge('minValueIndicator', -80);
+      updateGauge('pointer', -80);
     };
 
     function updateGauge(elemName, newValue) {

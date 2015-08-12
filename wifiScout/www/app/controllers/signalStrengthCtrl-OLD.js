@@ -236,9 +236,6 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .enter().append('text')
             .text(labelFormat)
             .attr('transform', function(d) {
-              console.log((this.getBBox().width / 2));
-              console.log((degScale(d)));
-              console.log('during');
               return 'rotate(' +degScale(d) +') translate(-' +(this.getBBox().width / 2)+ ', -150)';
             });
 
