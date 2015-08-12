@@ -54,40 +54,34 @@
     <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
       <div class="row">
         <div class="col-xs-2">
-          <a ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
-            <img id="channel-graph-img" src="images/channelGraph.png" />
-            {{strings.viewTitles['channelGraph']}}
-          </a>
+          <div ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/channelGraph.png" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
-            <img id="signal-strength-img" src="images/signalStrength5.png" />
-            {{strings.viewTitles['signalStrength']}}
-          </a>
+          <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/signalStrength5.png" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
-            <img id="time-graph-img" src="images/timeGraph5.png" />
-            {{strings.viewTitles['timeGraph']}}
-          </a>
+          <div ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/timeGraph5.png" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('APTable'); showNav(); $event.stopPropagation();">
-            <img id="ap-table-img" src="images/table2.png" />
-            {{strings.viewTitles['APTable']}}
-          </a>
+          <div ng-click="setView('APTable'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/table2.png" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('channelTable'); showNav(); $event.stopPropagation();">
-            <img id="channel-table-img" src="images/channelTable2.png" />
-            {{strings.viewTitles['channelTable']}}
-          </a>
+          <div ng-click="setView('channelTable'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/channelTable2.png" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <a ng-click="setView('settings'); showNav(); $event.stopPropagation();">
-            <img id="settings-img" src="images/settings.png" />
-            {{strings.viewTitles['settings']}}
-          </a>
+          <div ng-click="setView('settings'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/settings.png" />
+          </div>
         </div>
       </div>
     </nav>
@@ -119,9 +113,9 @@
     <!-- Anglar Services -->
     <script src="app/services/accessPoints.js"></script>
     <script src="app/services/timeGraphManager.js"></script>
-    <script src="app/services/APTableManager.js"></script>
-    <script src="app/services/channelGraphManager.js"></script>
-    <script src="app/services/channelTableManager.js"></script>
+    <script src="app/services/APTableState.js"></script>
+    <script src="app/services/channelGraphState.js"></script>
+    <script src="app/services/channelTableState.js"></script>
     <script src="app/services/channelChecker.js"></script>
     <script src="app/services/globalSettings.js"></script>
 

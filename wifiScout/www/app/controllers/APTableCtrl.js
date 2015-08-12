@@ -1,6 +1,6 @@
 app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
-'globalSettings', 'APTableManager', 'setupService', function($scope, $timeout,
-accessPoints, globalSettings, APTableManager, setupService) {
+'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
+accessPoints, globalSettings, APTableState, setupService) {
 
   setupService.ready.then(function() {
 
@@ -51,8 +51,8 @@ accessPoints, globalSettings, APTableManager, setupService) {
 
     /* Store current sort ordering. */
     var saveState = function() {
-      APTableManager.sortPredicate($scope.sortPredicate);
-      APTableManager.sortReverse($scope.sortReverse);
+      APTableState.sortPredicate($scope.sortPredicate);
+      APTableState.sortReverse($scope.sortReverse);
     };
 
     /* Load the previously used selection and sort ordering. */
@@ -61,13 +61,13 @@ accessPoints, globalSettings, APTableManager, setupService) {
       selectedMACs = selection.macAddrs;
       showAll = selection.showAll;
 
-      var predicate = APTableManager.sortPredicate();
+      var predicate = APTableState.sortPredicate();
       if (predicate === 'SSID') {
         $scope.sortPredicate = $scope.sortSSID;
       } else {
         $scope.sortPredicate = predicate;
       }
-      $scope.sortReverse = APTableManager.sortReverse();
+      $scope.sortReverse = APTableState.sortReverse();
     };
 
     var update = function() {
@@ -95,8 +95,10 @@ accessPoints, globalSettings, APTableManager, setupService) {
       if (accessPoints.count() < constants.moderateThresh) {
         updateInterval = constants.updateIntervalNormal;
 
-      } else {
+      } else if (accessPoints.count() < constants.highThresh) {
         updateInterval = constants.updateIntervalSlow;
+      } else {
+        updateInterval = constants.updateIntervalVerySlow;
       }
 
       prepView();

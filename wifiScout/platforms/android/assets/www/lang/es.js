@@ -13,7 +13,8 @@ languages['es'] = {
   },
   APTable : {
     sortSSID: 'SSID',
-    sortBSSID: 'Direccion MAC',
+    sortMAC: 'Direccion MAC',
+    sortManufacturer: 'Vendedor',
     sortChannel: 'Canal',
     sortLevel: 'Nivel (dBm)',
     sortCapabilities: 'Capacidades',

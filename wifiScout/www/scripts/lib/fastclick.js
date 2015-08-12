@@ -306,7 +306,7 @@
 		clickEvent.initMouseEvent(this.determineEventType(targetElement), true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
 		clickEvent.forwardedTouchEvent = true;
 
-		console.log('dispatching fast-click');
+		console.log('firing fast-click');
 
 		targetElement.dispatchEvent(clickEvent);
 	};
@@ -760,7 +760,8 @@
 					}
 					// Chrome 32 and above with width=device-width or less don't need FastClick
 					if (chromeVersion > 31 && document.documentElement.scrollWidth <= window.outerWidth) {
-						return true;
+						//return true;
+						return false;
 					}
 				}
 

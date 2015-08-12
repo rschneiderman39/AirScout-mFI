@@ -1,7 +1,7 @@
 /* Controller for the channel graph view. */
-app.controller('channelGraphCtrl', ['$scope', 'globalSettings', 'channelGraphManager',
-'channelChecker', 'setupService', function($scope, globalSettings, channelGraphManager, channelChecker,
-setupService) {
+app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
+  'channelGraphState', 'channelChecker', 'setupService', function($scope,
+  accessPoints, globalSettings, channelGraphState, channelChecker, setupService) {
 
   setupService.ready.then(function() {
 
@@ -36,7 +36,11 @@ setupService) {
     var spanLen = utils.spanLen,
         toLighterShade = utils.toLighterShade,
         isAllowableChannel = channelChecker.isAllowableChannel,
-        generateParabola = utils.generateParabola;
+        generateParabola = utils.generateParabola,
+        accessPointSubset = utils.accessPointSubset;
+
+    var selectedMACs = [],
+        showAll = true;
 
     var vis = (function() {
       var vis = {};
@@ -54,7 +58,7 @@ setupService) {
 
         buildPlot();
         buildNav();
-        vis.setBand(channelGraphManager.band() || prefs.defaultBand);
+        vis.setBand(channelGraphState.band() || prefs.defaultBand);
       };
 
       /* Select the band to display.
@@ -83,31 +87,53 @@ setupService) {
 
       /* Store selected band and viewport location */
       vis.saveState = function() {
-        channelGraphManager.band(band);
-        channelGraphManager.viewportExtent(elem.nav.right.viewport.extent());
+        channelGraphState.band(band);
+        channelGraphState.viewportExtent(elem.nav.right.viewport.extent());
       };
 
       /* Pull in new data and update element height */
       vis.update = function() {
         if (! globalSettings.updatesPaused()) {
-          channelGraphManager.getData('2_4').done(function(data) {
-            if (band === '2_4') {
-              updateParabolas('plot', data);
-              updateLabels(data);
+          accessPoints.getAllInBand('2_4').done(function(data) {
+            var selectedData;
+
+            if (showAll) {
+              selectedData = data;
+            } else {
+              selectedData = accessPointSubset(data, selectedMACs);
             }
 
-            updateParabolas('navLeft', data);
+            if (band === '2_4') {
+              updateParabolas('plot', selectedData);
+              updateLabels(selectedData);
+            }
+
+            updateParabolas('navLeft', selectedData);
           });
 
-          channelGraphManager.getData('5').done(function(data) {
-            if (band === '5') {
-              updateParabolas('plot', data);
-              updateLabels(data);
+          accessPoints.getAllInBand('5').done(function(data) {
+            var selectedData;
+
+            if (showAll) {
+              selectedData = data;
+            } else {
+              selectedData = accessPointSubset(data, selectedMACs);
             }
 
-            updateParabolas('navRight', data);
+            if (band === '5') {
+              updateParabolas('plot', selectedData);
+              updateLabels(selectedData);
+            }
+
+            updateParabolas('navRight', selectedData);
           });
         }
+      };
+
+      vis.destroy = function() {
+        d3.select('#plot').selectAll('*').remove();
+        d3.select('#nav-left').selectAll('*').remove();
+        d3.select('#nav-right').selectAll('*').remove();
       };
 
       /* Derive plot dimensions and add elements to DOM */
@@ -284,7 +310,7 @@ setupService) {
         /* Viewport */
         elem.nav.right.viewport = d3.svg.brush()
           .x(scales.nav.right.x)
-          .extent(channelGraphManager.viewportExtent() || prefs.defaultViewportExtent)
+          .extent(channelGraphState.viewportExtent() || prefs.defaultViewportExtent)
           .on("brushstart", function() {
             vis.setBand('5');
             repositionViewport();
@@ -537,47 +563,6 @@ setupService) {
               return generateParabola(constants.noSignal, xScale, yScale);
             })
             .remove();
-
-        /* Add new parabolas where necessary
-        parabolas.enter().append('ellipse')
-          .attr('cx', function(d) {
-            return xScale(d.channel);
-          })
-          .attr('cy', yScale(constants.noSignal))
-          // Assume 20 Mhz width
-          .attr('rx', function(d) {
-            return (xScale(d.channel) - xScale(d.channel - 1)) * 2;
-          })
-          .attr('ry', 0)
-          .attr('stroke', function(d) {
-            return d.color;
-          })
-          .attr('fill', function(d) {
-            return setAlpha(d.color, prefs.fillAlpha);
-          })
-          .attr('stroke-width', '2')
-            .transition()
-            .duration(prefs.transitionInterval)
-              .attr('ry', function(d) {
-                return yScale(constants.noSignal) - yScale(d.level);
-              });
-
-        /* Update existing parabolas
-        parabolas
-          .transition()
-          .duration(prefs.transitionInterval)
-            .attr('ry', function(d) {
-              return yScale(constants.noSignal) - yScale(d.level);
-            });
-
-        /* Remove parabolas that are no longer bound to data
-        parabolas.exit()
-          .transition()
-          .duration(prefs.transitionInterval)
-            .attr('ry', 0)
-            .remove();
-
-            */
       };
 
       return vis;
@@ -585,8 +570,16 @@ setupService) {
 
     $scope.setBand = vis.setBand;
 
+    var updateSelection = function() {
+      var selection = globalSettings.getAccessPointSelection('channelGraph');
+      selectedMACs = selection.macAddrs;
+      showAll = selection.showAll;
+    };
+
     var init = function() {
       vis.init();
+
+      updateSelection();
 
       var firstUpdate = function() {
         vis.update();
@@ -600,16 +593,15 @@ setupService) {
       }
 
       var updateLoop = setInterval(vis.update, updateInterval);
+      document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
+        document.removeEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
         vis.saveState();
-
-        d3.select('#plot').selectAll('*').remove();
-        d3.select('#nav-left').selectAll('*').remove();
-        d3.select('#nav-right').selectAll('*').remove();
+        vis.destroy();
       });
     };
 

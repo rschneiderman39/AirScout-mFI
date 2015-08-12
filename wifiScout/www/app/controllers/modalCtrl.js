@@ -43,6 +43,8 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
     $scope.sortSSID = utils.customSSIDSort;
 
     var onShow = function() {
+      $scope.stopTour();
+
       var selection = globalSettings.getAccessPointSelection(view);
 
       accessPoints.getAll().done(function(results) {

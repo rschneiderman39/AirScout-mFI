@@ -5,39 +5,45 @@
 			<!-- Fixed table header -->
 			<table class="table">
 	  		<thead class="container-fluid">
-      		<tr id="step2" class="row">
-          	<th class="col-xs-3" ng-click="order('SSID'); $event.stopPropagation()">
-            	<a href="">{{strings.APTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
+      		<tr id="header" class="row">
+          	<th class="col-xs-2 col-ssid" ng-click="order('SSID'); $event.stopPropagation()">
+            	<a href="">{{strings.APTable.sortSSID}} <span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
-          	<th class="col-xs-2" ng-click="order('MAC'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortBSSID}}<span class="sortArrow" ng-show="sortPredicate === 'MAC'" ng-class="{reverse:sortReverse}"></span></a>
+          	<th class="col-xs-2 col-mac" ng-click="order('MAC'); $event.stopPropagation()">
+          		<a href="">{{strings.APTable.sortMAC}} <span class="sortArrow" ng-show="sortPredicate === 'MAC'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
-          	<th class="col-xs-2" id="step3" ng-click="order('channel'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
+						<th class="col-xs-2 col-manufacturer" ng-click="order('manufacturer'); $event.stopPropagation()">
+							<a href="">{{strings.APTable.sortManufacturer}} <span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
+						</th>
+          	<th class="col-xs-2 col-channel" id="channel-header" ng-click="order('channel'); $event.stopPropagation()">
+          		<a href="">{{strings.APTable.sortChannel}} <span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
-          	<th class="col-xs-2" id="step1" ng-click="order('level'); $event.stopPropagation()">
-           		<a href="">{{strings.APTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+          	<th class="col-xs-2 col-level" id="level-header" ng-click="order('level'); $event.stopPropagation()">
+           		<a href="">{{strings.APTable.sortLevel}} <span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
-          	<th class="col-xs-3" id="step4" ng-click="order('capabilities'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+          	<th class="col-xs-2 col-capabilities" id="capabilities-header" ng-click="order('capabilities'); $event.stopPropagation()">
+          		<a href="">{{strings.APTable.sortCapabilities}} <span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
       		</tr>
 	      </thead>
 			</table>
+
 			<!-- Scrollable table body -->
 			<div id="table-content">
 				<table class="table table-striped">
 		    	<tbody class="container-fluid">
 						<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse">
-			      	<td class="col-xs-3">{{ap.SSID}}</td>
-			      	<td class="col-xs-2">{{ap.MAC}}</td>
-			      	<td class="col-xs-2">{{ap.channel}}</td>
-			      	<td id="step4" class="col-xs-2">{{ap.level}}</td>
-			      	<td class="col-xs-3">{{ap.manufacturer}}</td>
+			      	<td class="col-xs-2 col-ssid">{{ap.SSID}}</td>
+			      	<td class="col-xs-2 col-mac">{{ap.MAC}}</td>
+							<td class="col-xs-2 col-manufacturer">{{ap.manufacturer}}</td>
+			      	<td class="col-xs-2 col-channel">{{ap.channel}}</td>
+			      	<td class="col-xs-2 col-level" id="sample-level" >{{ap.level}}</td>
+			      	<td class="col-xs-2 col-capabilities">{{ap.capabilities}}</td>
 			      </tr>
 					</tbody>
 			  </table>
 			</div>
+
 		</div>
 		<div filter-modal />
 	</body>
