@@ -2,6 +2,11 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
   setupService.ready.then(function() {
 
+    // Scale speedometer to device size
+    var scale = ( 400 / $(window).width() ) * 1.4;
+    console.log(scale);
+
+    // Animation speed for pointer and min/maxValueIndicator
     var transitionTime = 2000;
 
     // Sets arrow to grey area on gauge - AKA - AP went out of range
@@ -12,23 +17,21 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var maxSignal = -10;
 
     var renderGauge = function() {
-      var arcHeights = "400";
-      var arcWidths = "400";
-      var arcRadius = arcWidths / 2;
-      var arcTransform = "translate(200,200)";
+      var arcHeights = 400;
+      var arcWidths = 400;
+      var arcRadius = ( arcWidths / 2 ) * scale;
+      var arcTransform = 200 * scale;
 
-      var sizeRatio = .80;
-      var ratio = ($(window).width() * 0.66 / arcWidths) * sizeRatio;
+      var canvasRadius = ( arcWidths / 2 ) * scale;
 
-      var pointerLength = arcWidths / 2;
-      var pointerWidth = 20;
-      var pointerInset = 25;
+      var ringWidth = 20 * scale;
+      var ringInset = 25 * scale;
 
-      var outerInnerRatio = (175/150);
-      var innerRadius = 155;
+      var outerInnerRatio = (7/6);
+      var innerRadius = 155 * scale;
 
-      var minMaxArrowHeight = 10;
-      var minMaxArrowWidth = 10;
+      var minMaxArrowHeight = 10 * scale;
+      var minMaxArrowWidth = 10 * scale;
       var minMaxArrowOffset = ((outerInnerRatio * innerRadius) - innerRadius ) / 4;
 
       var minValue = -100;
@@ -44,11 +47,11 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var badSignalStart = -84 * degreesToRads;
       var badSignalEnd = -45 * degreesToRads;
       var okSignalStart = -45 * degreesToRads;
-      var okSignalEnd = 13 * degreesToRads;
-      var goodSignalStart = 13 * degreesToRads;
+      var okSignalEnd = 12.5 * degreesToRads;
+      var goodSignalStart = 12.5 * degreesToRads;
       var goodSignalEnd = 90 * degreesToRads;
 
-      var arrowCircleSize = 8;
+      var arrowCircleSize = 9 * scale;
 
       var noSignalFill = "#d3d3d3";
       var badSignalFill = "#cc4748";
@@ -57,11 +60,11 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
-      var labelInset = 15;
+      var labelInset = 15 * scale;
       var numLabels = 10;
 
       // Canvas to draw all elements on
-      var vis = d3.select("#test").append("svg");
+      var vis = d3.select("#gauge").append("svg");
 
       // Draw Arcs
       var noSignalArc = d3.svg.arc()
@@ -92,33 +95,33 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         .append("path")
         .attr("d", noSignalArc)
         .attr("fill", noSignalFill)
-        .attr("transform", arcTransform);
+        .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
       vis.attr("width", arcWidths).attr("height", arcHeights)
         .append("path")
         .attr("d", badSignalArc)
         .attr("fill", badSignalFill)
-        .attr("transform", arcTransform);
+        .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
       vis.attr("width", arcWidths).attr("height", arcHeights)
         .append("path")
         .attr("d", okSignalArc)
         .attr("fill", okSignalFill)
-        .attr("transform", arcTransform);
+        .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
       vis.attr("width", arcWidths).attr("height", arcHeights)
         .append("path")
         .attr("d", goodSignalArc)
         .attr("fill", goodSignalFill)
-        .attr("transform", arcTransform);
+        .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
       // Draw circle below arrow
       arrowCircle = vis.append('g')
-        .attr("transform", arcTransform);
+        .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
       arrowCircle.append('circle')
         .attr('fill', blackFill)
-        .attr('r', arrowCircleSize * ratio);
+        .attr('r', arrowCircleSize);
 
       // Scale for text formatting around arcs
       scale = d3.scale.linear()
@@ -136,22 +139,21 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             .attr('class', 'label');
 
       arcLabels.selectAll('text')
-          .data(ticks)
-          .enter().append('text')
-            .text(labelFormat)
-            .attr('transform', function(d) {
-              return 'rotate(' +degScale(d) +') translate(-12,' +(labelInset - arcRadius)+ ')';
-            });
+        .data(ticks)
+        .enter().append('text')
+          .text(labelFormat)
+          .attr('transform', function(d) {
+            return 'rotate(' +degScale(d) +') translate(0,' +(labelInset - arcRadius)+ ')';
+          });
 
       // Draw arrow
       pointer = arrowCircle.append('g')
-        .attr('transform', 'rotate(' +noSignal+ ')');
+        .attr('transform', 'rotate(' +noSignal + ')');
 
       pointer.append('path')
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
-        .attr('d', utils.generateTriangle((arrowCircleSize * ratio), (pointerLength - pointerInset - pointerWidth)));
-        //.attr('d', utils.generateTriangle(8, 149));
+        .attr('d', utils.generateTriangle(arrowCircleSize, (canvasRadius - ringInset - ringWidth)));
 
       // Draw minimum indicator triangle
       minValueIndicator = arrowCircle.append('g')
@@ -159,9 +161,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       minValueIndicator.append('g')
         //.attr('transform', 'translate(0, ' +(config.ringInset - r)+ ')')
-        .attr('transform', 'translate(0, ' +(pointerInset - pointerLength - minMaxArrowOffset)+ ')')
+        .attr('transform', 'translate(0, ' +(ringInset - canvasRadius  - minMaxArrowOffset)+ ')')
         .append('path')
-        .attr("d", utils.generateTriangle((minMaxArrowWidth * ratio), (minMaxArrowHeight * ratio)))
+        .attr("d", utils.generateTriangle(minMaxArrowWidth, minMaxArrowHeight))
         .attr('transform', 'rotate(180)')
         .attr("fill", blackFill);
 
@@ -170,9 +172,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         .attr('transform', 'rotate(-90)');
 
       maxValueIndicator.append('g')
-        .attr('transform', 'translate(0, ' +(pointerInset - pointerLength - minMaxArrowOffset)+ ')')
+        .attr('transform', 'translate(0, ' +(ringInset - canvasRadius  - minMaxArrowOffset)+ ')')
         .append('path')
-          .attr("d", utils.generateTriangle((minMaxArrowWidth * ratio), (minMaxArrowHeight * ratio)))
+          .attr("d", utils.generateTriangle((minMaxArrowWidth), (minMaxArrowHeight)))
           .attr('transform', 'rotate(180)')
           .attr("fill", blackFill);
 
