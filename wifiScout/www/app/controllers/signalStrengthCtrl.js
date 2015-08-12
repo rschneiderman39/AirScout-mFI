@@ -35,8 +35,13 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var gauge = {};
 
       // Scale speedometer to device size
-      var scale = ($(window).width() / 400) * 0.4;
-      console.log(scale);
+      // Initial SVG canvas sizing
+      var baseWidth = 400;
+      var width = $(window).width() * .6;
+      var scale = width / baseWidth;
+
+      var height = $(window).height() * .6;
+
 
       // Sets arrow to grey area on gauge - AKA - AP went out of range
       var noSignal = -90;
@@ -45,12 +50,10 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var minSignal = -100;
       var maxSignal = -10;
 
-      var arcHeights = 400;
-      var arcWidths = 400;
-      var arcRadius = ( arcWidths / 2 ) * scale;
+      var arcRadius = ( baseWidth / 2 ) * scale;
       var arcTransform = 200 * scale;
 
-      var canvasRadius = ( arcWidths / 2 ) * scale;
+      var canvasRadius = ( baseWidth / 2 ) * scale;
 
       var ringWidth = 20 * scale;
       var ringInset = 25 * scale;
@@ -120,26 +123,23 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .startAngle(goodSignalStart)
           .endAngle(goodSignalEnd)
 
-        vis.attr("width", arcWidths).attr("height", arcHeights) // Added height and width so arc is visible
+        vis.attr("width", width).attr("height", height) // Added height and width so arc is visible
           .append("path")
           .attr("d", noSignalArc)
           .attr("fill", noSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
-        vis.attr("width", arcWidths).attr("height", arcHeights)
-          .append("path")
+        vis.append("path")
           .attr("d", badSignalArc)
           .attr("fill", badSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
-        vis.attr("width", arcWidths).attr("height", arcHeights)
-          .append("path")
+        vis.append("path")
           .attr("d", okSignalArc)
           .attr("fill", okSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
-        vis.attr("width", arcWidths).attr("height", arcHeights)
-          .append("path")
+        vis.append("path")
           .attr("d", goodSignalArc)
           .attr("fill", goodSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
