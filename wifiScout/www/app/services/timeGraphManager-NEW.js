@@ -13,4 +13,6 @@ app.factory('timeGraphManager', ['accessPoints', 'setupService',
     }
   });
 
-});
+  return service;
+
+}]);

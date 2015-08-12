@@ -4,6 +4,55 @@
 	</head>
 
   <body>
-  	<div ng-controller="signalStrengthCtrl" id="test"></div>
+  	<div ng-click="showNav()" ng-swipe-left="swipeTo('timeGraph', 'left')" ng-swipe-right="swipeTo('channelGraph', 'right')" ng-controller="signalStrengthCtrl" class="container-fluid">
+      <div class="row">
+				<!-- Access point list -->
+				<div class="col-xs-3" id="list-section" >
+					<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
+					<ul class="list list-group scrollable-list">
+						<span data-ng-repeat="ap in accessPoints | orderBy:sortSSID">
+							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
+							  <div>{{ap.SSID}}</div>
+								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.MAC}})</div>
+							</li>
+						</span>
+				  </ul>
+				</div>
+				<!-- Signal strength readings -->
+				<div class="col-xs-8" id="gauge-section">
+					<!-- Signal strength gauge -->
+					<div id="gauge"></div>
+					<div class="row">
+						<!-- Minimum level indicator -->
+						<div class="col-xs-4 level-indicator">
+							<div>{{strings.signalStrength.minLevel}}</div>
+							<div class="panel panel-default">
+								<div class="panel-body padded-1vh">
+									<p class="padded-1vh">{{minLevel !== undefined ? minLevel + " dBm" : "---"}}</p>
+								</div>
+							</div>
+						</div>
+						<!-- Current level indicator -->
+						<div class="col-xs-4 level-indicator">
+							<div id="current-level">{{strings.signalStrength.currentLevel}}</div>
+							<div class="panel panel-default">
+								<div class="panel-body padded-1vh">
+									<p id="current-level" class="padded-1vh">{{level !== undefined ? level + " dBm" : "---"}}</p>
+								</div>
+							</div>
+						</div>
+						<!-- Max level indicator -->
+						<div class="col-xs-4 level-indicator">
+							<div>{{strings.signalStrength.maxLevel}}</div>
+							<div class="panel panel-default">
+							 	<div class="panel-body padded-1vh">
+									<p class="padded-1vh">{{maxLevel !== undefined ? maxLevel + " dBm" : "---"}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

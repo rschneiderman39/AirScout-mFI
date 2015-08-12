@@ -50,7 +50,19 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         };
 
         graph.update = function(datasets) {
+          var lines = elem.clip.selectAll('path')
+            .data(datasets, function(d) {
+              return d.MAC
+            });
 
+          lines.enter()
+            .append('path');
+
+          lines
+            .attr('d', dataLine(d.data));
+
+          lines.exit()
+            .remove();
         };
 
         graph.toggleHighlight = function(macAddr) {
@@ -60,6 +72,14 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         graph.destroy = function() {
 
         };
+
+        var dataLine = d3.line()
+          .x(function(d, i) {
+            return scales.x(d.times[i]);
+          })
+          .y(function(d, i) {
+            return scales.y(d.levels[i]);
+          });
 
         /* Derive graph dimensions and add elements to DOM */
         var build = function() {
