@@ -1,14 +1,15 @@
-app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'accessPoints',
-'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
+app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints',
+'setupService', function($scope, globalSettings, accessPoints, setupService) {
 
   setupService.ready.then(function() {
 
     var prefs = {
       gaugeSizeFactor: .84,
-      listUpdateInterval: 5000,
+      updateInterval: 1000,
+      transitionInterval: 900
     };
 
-    //$scope.strings = strings;
+    $scope.strings = strings;
 
     $scope.APData = [];
     $scope.isDuplicateSSID = {};
@@ -36,52 +37,51 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var selectedBSSID = "",
         gauge = undefined;
 
-    var updateList = function() {
-      if (! globalSettings.updatesPaused()) {
-        $timeout(function() {
-          $scope.APData = accessPoints.getAll();
-
-          var found = {},
-              newDuplicates = {};
-          for (var i = 0; i < $scope.APData.length; ++i) {
-            if (found[$scope.APData[i].SSID]) {
-              newDuplicates[$scope.APData[i].SSID] = true;
-            } else {
-              found[$scope.APData[i].SSID] = true;
-            }
-          }
-
-          $scope.isDuplicateSSID = newDuplicates;
-        });
+    var updateDuplicateSSIDs = function() {
+      var found = {},
+          newDuplicates = {};
+      for (var i = 0; i < $scope.APData.length; ++i) {
+        if (found[$scope.APData[i].SSID]) {
+          newDuplicates[$scope.APData[i].SSID] = true;
+        } else {
+          found[$scope.APData[i].SSID] = true;
+        }
       }
+      $scope.isDuplicateSSID = newDuplicates;
     };
 
-    var updateGauge = function() {
+    var updateLevels = function() {
+      var selectedAP = accessPoints.get(selectedBSSID);
+      if (selectedAP !== null) {
+        $scope.level = selectedAP.level;
+        if ($scope.minLevel === undefined) {
+          $scope.minLevel = $scope.level;
+        } else if ($scope.level < $scope.minLevel) {
+          $scope.minLevel = $scope.level;
+        }
+        if ($scope.maxLevel === undefined) {
+          $scope.maxLevel = $scope.level;
+        } else if ($scope.level > $scope.maxLevel) {
+          $scope.maxLevel = $scope.level;
+        }
+      } else {
+        $scope.level = constants.noSignal;
+      }
+      gauge.update('pointer', $scope.level);
+      gauge.update('minValue', $scope.minLevel);
+      gauge.update('maxValue', $scope.maxLevel);
+    };
+
+    var updateList = function() {
+      $scope.APData = accessPoints.getAll();
+    };
+
+    var update = function() {
       if (! globalSettings.updatesPaused()) {
-        $timeout(function() {
-          var selectedAP = accessPoints.get(selectedBSSID);
-
-          if (selectedAP !== null) {
-            $scope.level = selectedAP.level;
-
-            if ($scope.minLevel === undefined) {
-              $scope.minLevel = $scope.level;
-            } else if ($scope.level < $scope.minLevel) {
-              $scope.minLevel = $scope.level;
-            }
-
-            if ($scope.maxLevel === undefined) {
-              $scope.maxLevel = $scope.level;
-            } else if ($scope.level > $scope.maxLevel) {
-              $scope.maxLevel = $scope.level;
-            }
-          } else {
-            $scope.level = constants.noSignal;
-          }
-
-          gauge.update('pointer', $scope.level);
-          gauge.update('minValue', $scope.minLevel);
-          gauge.update('maxValue', $scope.maxLevel);
+        $scope.$apply(function() {
+          updateList();
+          updateLevels();
+          updateDuplicateSSIDs();
         });
       }
     };
@@ -89,30 +89,15 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var init = function() {
       initGauge();
 
-      var firstUpdate = function() {
-        updateList();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      }
-
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      } else {
-        updateList();
-      }
-
-      document.addEventListener(events.newAccessPointData, updateGauge);
-      var listUpdateLoop = setInterval(updateList, prefs.listUpdateInterval);
+      var updateLoop = setInterval(update, prefs.updateInterval);
 
       $scope.$on('$destroy', function() {
-        document.removeEventListener(events.newAccessPointData, updateGauge);
-        clearInterval(listUpdateLoop);
+        clearInterval(updateLoop);
       });
-
-      document.addEventListener(events.swipeDone, updateList);
     };
 
     var makeGauge = function(container, configuration) {
-    	var gauge = {};
+      var gauge = {};
 
       var config = {
         width: 0,
@@ -120,14 +105,14 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         ringInset: 0,
         ringWidth: 0,
 
-    		minAngle: -90,
-    		maxAngle: 90,
+        minAngle: -90,
+        maxAngle: 90,
 
-    		numSegments: 0,
+        numSegments: 0,
         segmentColors: [],
 
-    		//labelFormat: d3.format(',g'),
-    		labelInset: 0,
+        labelFormat: d3.format(',g'),
+        labelInset: 0,
 
         arrowWidth: 0,
         arrowHeight: 0,
@@ -135,67 +120,62 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         pointerCenterRadius: 0,
 
         bottomPadding: 0
-    	};
-
-      var labelFormat = d3.format(',g');
+      };
 
       var pointer, minValue, maxValue, r, center, arcs, scale, degScale;
 
-    	var donut = d3.layout.pie();
+      var donut = d3.layout.pie();
 
-    	function deg2rad(deg) {
-    		return deg * Math.PI / 180;
-    	}
+      function deg2rad(deg) {
+        return deg * Math.PI / 180;
+      }
 
-    	function configure(configuration) {
-    		var prop = undefined;
-    		for ( prop in configuration ) {
-    			config[prop] = configuration[prop];
-    	  }
+      function configure(configuration) {
+        var prop = undefined;
+        for ( prop in configuration ) {
+          config[prop] = configuration[prop];
+        }
 
-    		range = config.maxAngle - config.minAngle;
-    		r = config.width / 2;
+        range = config.maxAngle - config.minAngle;
+        r = config.width / 2;
 
-    		// a linear scale that maps domain values to a percent from 0..1
-    		scale = d3.scale.linear()
+        // a linear scale that maps domain values to a percent from 0..1
+        scale = d3.scale.linear()
           .domain([config.minValue, config.maxValue])
-    			.range([0,1]);
+          .range([0,1]);
 
         degScale = d3.scale.linear()
           .domain([config.minValue, config.maxValue])
           .range([config.minAngle, config.maxAngle]);
 
-    		//ticks = scale.ticks(config.numSegments);
-    		//tickData = d3.range(config.numSegments).map(function() {return 1/config.numSegments;});
-        ticks = scale.ticks(14);
-        ticksTEST = scale.ticks(7);
-        //tickData = d3.range(14).map(function() {return 1/14;});
+        ticks = scale.ticks(config.numSegments);
+        tickData = d3.range(config.numSegments).map(function() {return 1/config.numSegments;});
 
-    		arc = d3.svg.arc()
-    			.innerRadius(r - config.ringWidth - config.ringInset)
-    			.outerRadius(r - config.ringInset)
-    			.startAngle(function(d, i) {
-    				var ratio = d * i;
-    				return deg2rad(config.minAngle + (ratio * range));
-    			})
-    			.endAngle(function(d, i) {
-    				var ratio = d * (i+1);
-    				return deg2rad(config.minAngle + (ratio * range));
-    			});
-    	}
-    	gauge.configure = configure;
+        arc = d3.svg.arc()
+          .innerRadius(r - config.ringWidth - config.ringInset)
+          .outerRadius(r - config.ringInset)
+          .startAngle(function(d, i) {
+            var ratio = d * i;
+            return deg2rad(config.minAngle + (ratio * range));
+          })
+          .endAngle(function(d, i) {
+            var ratio = d * (i+1);
+            return deg2rad(config.minAngle + (ratio * range));
+          });
+      }
+      gauge.configure = configure;
 
-    	function isRendered() {
-    		return (svg !== undefined);
-    	}
-    	gauge.isRendered = isRendered;
+      function isRendered() {
+        return (svg !== undefined);
+      }
+      gauge.isRendered = isRendered;
 
-    	function render(newValue) {
-    		svg = d3.select(container)
-    			.append('svg:svg')
-    				.attr('class', 'gauge')
-    				.attr('width', config.width)
-    				.attr('height', r + config.bottomPadding);
+      function render(newValue) {
+        svg = d3.select(container)
+          .append('svg:svg')
+            .attr('class', 'gauge')
+            .attr('width', config.width)
+            .attr('height', r + config.bottomPadding);
 
         center = svg.append('g')
           .attr('transform', 'translate('+r +','+ r +')');
@@ -204,8 +184,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .attr('fill', 'black')
           .attr('r', config.pointerCenterRadius);
 
-    		arcs = center.append('g')
-    				.attr('class', 'arc')
+        arcs = center.append('g')
+            .attr('class', 'arc')
 
       var colorScale = d3.scale.ordinal()
         .domain((function() {
@@ -217,26 +197,25 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         })())
         .range(config.segmentColors);
 
-    		/*
+
         arcs.selectAll('path')
-    				.data(tickData)
-    			.enter().append('path')
-    				.attr('fill', function (d, i) {
+            .data(tickData)
+          .enter().append('path')
+            .attr('fill', function (d, i) {
               return colorScale(i)
 
-    				})
-    				.attr('d', arc);
-        */
+            })
+            .attr('d', arc);
 
-        var arcLabels = center.append('g')
+        var lg = center.append('g')
             .attr('class', 'label');
 
-        arcLabels.selectAll('text')
-          .data(ticksTEST)
+        lg.selectAll('text')
+            .data(ticks)
           .enter().append('text')
-            .text(labelFormat)
+            .text(config.labelFormat)
             .attr('transform', function(d) {
-              return 'rotate(' +degScale(d) +') translate(-' +(this.getBBox().width / 2)+ ', -150)';
+              return 'rotate(' +degScale(d) +') translate(-' +(this.getBBox().width / 2)+ ',' +(config.labelInset - r)+ ')';
             });
 
         pointer = center.append('g')
@@ -267,13 +246,13 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             .attr('transform', 'rotate(180)')
             .attr("fill", "#000");
 
-    		update('pointer', newValue === undefined ? constants.noSignal : newValue);
+        update('pointer', newValue === undefined ? constants.noSignal : newValue);
         update('minValue', newValue === undefined ? constants.noSignal : newValue);
         update('maxValue', newValue === undefined ? constants.noSignal : newValue);
-    	}
-    	gauge.render = render;
+      }
+      gauge.render = render;
 
-    	function update(elemName, newValue) {
+      function update(elemName, newValue) {
         if (newValue !== undefined) {
 
           if (newValue > constants.maxSignal) {
@@ -290,17 +269,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             elem = maxValue;
           }
 
-      		elem.transition()
-      			.duration(accessPoints.getUpdateInterval() * 0.8)
-      			.ease('quad')
-      			.attr('transform', 'rotate(' +degScale(newValue)+ ')');
+          elem.transition()
+            .duration(config.transitionMs)
+            .ease('quad')
+            .attr('transform', 'rotate(' +degScale(newValue)+ ')');
         }
-    	}
-    	gauge.update = update;
+      }
+      gauge.update = update;
 
-    	configure(configuration);
+      configure(configuration);
 
-    	return gauge;
+      return gauge;
     };
 
     function initGauge() {
@@ -309,10 +288,10 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           // The width of the containing column is somehow unavailable at this point, so we have to scale on window width instead.
           ratio = ($(window).width() * 0.66 / baseWidth) * prefs.gaugeSizeFactor;
 
-    	gauge = makeGauge('#gauge', {
-    		width: baseWidth * ratio,
+      gauge = makeGauge('#gauge', {
+        width: baseWidth * ratio,
 
-    		ringWidth: 20 * ratio,
+        ringWidth: 20 * ratio,
         ringInset: 25 * ratio,
 
         arrowWidth: 10 * ratio,
@@ -321,19 +300,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         labelInset: 15 * ratio,
 
         minValue: constants.noSignal,
-    		maxValue: constants.maxSignal,
-        numSegments: 14,
-        segmentColors: ["#d3d3d3", "#cc4748", "#cc4748" , "#cc4748", "#cc4748",
-          "#fdd400", "#fdd400", "#fdd400" ,"#fdd400", "#fdd400",
-          "#84b761","#84b761","#84b761","#84b761"],
+        maxValue: constants.maxSignal,
+        numSegments: 7,
+        segmentColors: ["#cc4748", "#cc4748" ,"#fdd400", "#fdd400", "#84b761" ,"#84b761", "#84b761"],
 
         pointerCenterRadius: 10 * ratio,
 
         bottomPadding: 20 * ratio,
 
-    		transitionMs: prefs.gaugeTransitionInterval
-    	});
-    	gauge.render();
+        transitionMs: prefs.transitionInterval
+      });
+      gauge.render();
     };
 
     init();

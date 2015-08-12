@@ -17,19 +17,19 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var arcRadius = arcWidths / 2;
       var arcTransform = "translate(200,200)";
 
-      var gaugeSizeRatio = .84;
-      var gaugeRatio = ($(window).width() * 0.66 / arcWidths) * gaugeSizeRatio;
-
-      var minMaxArrowHeight = 10;
-      var minMaxArrowWidth = 10;
-      var minMaxArrowInset = 41;
+      var sizeRatio = .80;
+      var ratio = ($(window).width() * 0.66 / arcWidths) * sizeRatio;
 
       var pointerLength = arcWidths / 2;
       var pointerWidth = 20;
-      var pointerInset = 31;
+      var pointerInset = 25;
 
       var outerInnerRatio = (175/150);
-      var innerRadius = 150;
+      var innerRadius = 155;
+
+      var minMaxArrowHeight = 10;
+      var minMaxArrowWidth = 10;
+      var minMaxArrowOffset = ((outerInnerRatio * innerRadius) - innerRadius ) / 4;
 
       var minValue = -100;
       var maxValue = -10;
@@ -48,7 +48,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var goodSignalStart = 13 * degreesToRads;
       var goodSignalEnd = 90 * degreesToRads;
 
-      var arrowCircleSize = 10;
+      var arrowCircleSize = 8;
 
       var noSignalFill = "#d3d3d3";
       var badSignalFill = "#cc4748";
@@ -57,7 +57,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
-      var labelInset = 20;
+      var labelInset = 15;
       var numLabels = 10;
 
       // Canvas to draw all elements on
@@ -118,7 +118,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       arrowCircle.append('circle')
         .attr('fill', blackFill)
-        .attr('r', arrowCircleSize * gaugeRatio);
+        .attr('r', arrowCircleSize * ratio);
 
       // Scale for text formatting around arcs
       scale = d3.scale.linear()
@@ -150,7 +150,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       pointer.append('path')
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
-        .attr('d', utils.generateTriangle((arrowCircleSize * gaugeRatio), (pointerLength - pointerInset - pointerWidth)));
+        .attr('d', utils.generateTriangle((arrowCircleSize * ratio), (pointerLength - pointerInset - pointerWidth)));
         //.attr('d', utils.generateTriangle(8, 149));
 
       // Draw minimum indicator triangle
@@ -159,9 +159,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       minValueIndicator.append('g')
         //.attr('transform', 'translate(0, ' +(config.ringInset - r)+ ')')
-        .attr('transform', 'translate(0, ' +(minMaxArrowInset - pointerLength)+ ')')
+        .attr('transform', 'translate(0, ' +(pointerInset - pointerLength - minMaxArrowOffset)+ ')')
         .append('path')
-        .attr("d", utils.generateTriangle((minMaxArrowWidth * gaugeRatio), (minMaxArrowHeight * gaugeRatio)))
+        .attr("d", utils.generateTriangle((minMaxArrowWidth * ratio), (minMaxArrowHeight * ratio)))
         .attr('transform', 'rotate(180)')
         .attr("fill", blackFill);
 
@@ -170,9 +170,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         .attr('transform', 'rotate(-90)');
 
       maxValueIndicator.append('g')
-        .attr('transform', 'translate(0, ' +(minMaxArrowInset - pointerLength)+ ')')
+        .attr('transform', 'translate(0, ' +(pointerInset - pointerLength - minMaxArrowOffset)+ ')')
         .append('path')
-          .attr("d", utils.generateTriangle((minMaxArrowWidth * gaugeRatio), (minMaxArrowHeight * gaugeRatio)))
+          .attr("d", utils.generateTriangle((minMaxArrowWidth * ratio), (minMaxArrowHeight * ratio)))
           .attr('transform', 'rotate(180)')
           .attr("fill", blackFill);
 
@@ -181,7 +181,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       //updateGauge('maxValueIndicator', newValue === undefined ? noSignal : newValue);
 
       updateGauge('minValueIndicator', -80);
-      updateGauge('pointer', -80);
+      updateGauge('pointer', -50);
     };
 
     function updateGauge(elemName, newValue) {
