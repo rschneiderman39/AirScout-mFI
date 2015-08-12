@@ -1,21 +1,19 @@
-if (typeof setup === 'undefined') {
-  setup = {};
-}
-
-if (typeof localization === 'undefined') {
-  localization = {};
-}
+if (typeof setup === 'undefined') { setup = {} }
 
 setup.region = function() {
+  var progress = $.Deferred();
+
   navigator.globalization.getLocaleName(
     function success(locale) {
       var regionCode = locale.value.split('-')[1];
-      localization.region = channels[regionCode] ? regionCode : defaults.region;
-      setup.language();
+      constants.region = channels[regionCode] ? regionCode : defaults.region;
+      progress.resolve();
     },
     function failure() {
-      localization.region = defaults.region;
-      setup.language();
+      constants.region = defaults.region;
+      progress.resolve();
     }
   );
+
+  return progress;
 };

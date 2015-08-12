@@ -6,7 +6,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
     var updateInterval = constants.updateIntervalSlow;
 
-    var prefs = {
+    var config = {
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
       domain5 : [34, 167],             // X-scale for 5 Ghz band
@@ -55,7 +55,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         buildPlot();
         buildNav();
-        vis.setBand(channelTableState.band() || prefs.defaultBand);
+        vis.setBand(channelTableState.band() || config.defaultBand);
       };
 
       /* Pull in new data and update element height */
@@ -108,12 +108,12 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         dim.plot = {};
 
         /* Dimensions */
-        dim.plot.totalHeight = dim.height * (1 - prefs.navPercent);
+        dim.plot.totalHeight = dim.height * (1 - config.navPercent);
 
-        dim.plot.margin = prefs.plotMargins;
+        dim.plot.margins = config.plotMargins;
 
-        dim.plot.width = dim.width - dim.plot.margin.left - dim.plot.margin.right;
-        dim.plot.height = dim.plot.totalHeight - dim.plot.margin.top - dim.plot.margin.bottom;
+        dim.plot.width = dim.width - dim.plot.margins.left - dim.plot.margins.right;
+        dim.plot.height = dim.plot.totalHeight - dim.plot.margins.top - dim.plot.margins.bottom;
 
         elem.plot = {};
 
@@ -122,7 +122,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('width', dim.width)
           .attr('height', dim.plot.totalHeight)
           .append('g')
-            .attr('transform', 'translate(' + dim.plot.margin.left + ',' + dim.plot.margin.top + ')');
+            .attr('transform', 'translate(' + dim.plot.margins.left + ',' + dim.plot.margins.top + ')');
 
         /* Clip-path */
         elem.plot.clip = elem.plot.container.append('g')
@@ -138,7 +138,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         /* X Axis */
         scales.plot.x = d3.scale.linear()
-          .domain(prefs.domain2_4)
+          .domain(config.domain2_4)
           .range([0, dim.plot.width]);
 
         elem.plot.axis.x = d3.svg.axis()
@@ -158,11 +158,11 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('x', function() {
             return (dim.plot.width / 2) - (this.getBBox().width / 2);
           })
-          .attr('y', dim.plot.height + dim.plot.margin.bottom - 1);
+          .attr('y', dim.plot.height + dim.plot.margins.bottom - 1);
 
         /* Y Axis */
         scales.plot.y = d3.scale.linear()
-          .domain(prefs.range)
+          .domain(config.range)
           .range([dim.plot.height, 0]);
 
         elem.plot.axis.y = d3.svg.axis()
@@ -188,26 +188,26 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         dim.nav = {};
 
         /* Dimensions */
-        dim.nav.totalHeight = dim.height * prefs.navPercent;
+        dim.nav.totalHeight = dim.height * config.navPercent;
 
-        dim.nav.margin = prefs.navMargins;
+        dim.nav.margins = config.navMargins;
 
-        dim.nav.width = dim.width - dim.nav.margin.left - dim.nav.margin.right;
-        dim.nav.height = dim.nav.totalHeight - dim.nav.margin.top - dim.nav.margin.bottom;
+        dim.nav.width = dim.width - dim.nav.margins.left - dim.nav.margins.right;
+        dim.nav.height = dim.nav.totalHeight - dim.nav.margins.top - dim.nav.margins.bottom;
 
         scales.nav = {};
 
         /* Y Scale */
         scales.nav.y = d3.scale.linear()
-          .domain(prefs.range)
+          .domain(config.range)
           .range([dim.nav.height, 0]);
 
         /* 2.4 Ghz Portion */
         dim.nav.left = {};
 
         /* Dimensions */
-        dim.nav.left.width = dim.nav.width * prefs.navLeftPercent;
-        dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margin.left;
+        dim.nav.left.width = dim.nav.width * config.navLeftPercent;
+        dim.nav.left.totalWidth = dim.nav.left.width + dim.nav.margins.left;
 
         elem.nav = {};
         elem.nav.left = {};
@@ -217,7 +217,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('width', dim.nav.left.totalWidth)
           .attr('height', dim.nav.totalHeight)
           .append('g')
-            .attr('transform', 'translate(' + dim.nav.margin.left + ',' + dim.nav.margin.top + ')');
+            .attr('transform', 'translate(' + dim.nav.margins.left + ',' + dim.nav.margins.top + ')');
 
         /* Clip-path */
         elem.nav.left.clip = elem.nav.left.container.append('g')
@@ -239,15 +239,15 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         /* X Scale */
         scales.nav.left.x = d3.scale.linear()
-          .domain(prefs.domain2_4)
+          .domain(config.domain2_4)
           .range([0, dim.nav.left.width]);
 
         /* 5 Ghz Portion */
         dim.nav.right = {};
 
         /* Dimensions */
-        dim.nav.right.width = dim.nav.width * (1 - prefs.navLeftPercent);
-        dim.nav.right.totalWidth = dim.nav.right.width + dim.nav.margin.right;
+        dim.nav.right.width = dim.nav.width * (1 - config.navLeftPercent);
+        dim.nav.right.totalWidth = dim.nav.right.width + dim.nav.margins.right;
 
         elem.nav.right = {};
 
@@ -257,7 +257,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('height', dim.nav.totalHeight)
           .append('g')
             .classed('navigator', true)
-            .attr('transform', 'translate(0, ' + dim.nav.margin.top + ')');
+            .attr('transform', 'translate(0, ' + dim.nav.margins.top + ')');
 
         elem.nav.right.clip = elem.nav.right.container.append('g')
           .attr('clip-path', 'url(#nav-clip-right)');
@@ -270,14 +270,14 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         scales.nav.right = {};
 
         scales.nav.right.x = d3.scale.linear()
-          .domain(prefs.domain5)
+          .domain(config.domain5)
           .range([0, dim.nav.right.width]);
 
 
         /* Viewport */
         elem.nav.right.viewport = d3.svg.brush()
           .x(scales.nav.right.x)
-          .extent(channelTableState.viewportExtent() || prefs.defaultViewportExtent)
+          .extent(channelTableState.viewportExtent() || config.defaultViewportExtent)
           .on("brushstart", function() {
             vis.setBand('5');
             repositionViewport();
@@ -328,11 +328,11 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Labels */
         elem.nav.left.container.append('text')
           .text(strings.channelGraph.label2_4)
-          .attr('y', dim.nav.height + dim.nav.margin.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom);
 
         elem.nav.right.container.append('text')
           .text(strings.channelGraph.label5)
-          .attr('y', dim.nav.height + dim.nav.margin.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom);
       };
 
       /* Get the correct bar width, in pixels, for the desired scale
@@ -341,7 +341,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
        * @returns {number} - The correct bar width (px)
        */
       var barWidth = function(scale) {
-        return (scale(1) - scale(0)) * prefs.barWidth;
+        return (scale(1) - scale(0)) * config.barWidth;
       };
 
       /* Move plot elements to match a new viewport extent */
@@ -374,7 +374,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
             domainMin = scales.nav.right.x.domain()[0],
             domainMax = scales.nav.right.x.domain()[1];
 
-        var correctLen = spanLen(prefs.defaultViewportExtent);
+        var correctLen = spanLen(config.defaultViewportExtent);
 
         if (spanLen(viewport.extent()) !== correctLen) {
           if (extentMin + correctLen > domainMax) {
@@ -414,7 +414,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
       /* "Translate" (really a rescale) x axis to account for a new viewport extent */
       var repositionPlotXAxis = function() {
         if (band === '2_4') {
-          scales.plot.x.domain(prefs.domain2_4);
+          scales.plot.x.domain(config.domain2_4);
         } else if (band === '5') {
           scales.plot.x.domain(elem.nav.right.viewport.extent());
         }
@@ -449,8 +449,8 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         if (maxOccupancy >= yScale.domain()[1]) {
           yScale.domain([0, maxOccupancy * 1.125]);
           updateElements = true;
-        } else if (maxOccupancy < prefs.range[1] * 0.875) {
-          yScale.domain(prefs.range);
+        } else if (maxOccupancy < config.range[1] * 0.875) {
+          yScale.domain(config.range);
           updateElements = true;
         }
 
@@ -469,7 +469,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
           clip.selectAll('text')
             .attr('y', function(d) {
-              return yScale(d.occupancy) - prefs.labelPadding
+              return yScale(d.occupancy) - config.labelPadding
             });
         }
       };
@@ -487,8 +487,8 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .filter(function(d) {
             return isAllowableChannel(d) === false;
           })
-            .style('opacity', prefs.disallowedChannelOpacity)
-            .attr('fill', prefs.disallowedChannelColor);
+            .style('opacity', config.disallowedChannelOpacity)
+            .attr('fill', config.disallowedChannelColor);
       };
 
       var updateBars = function(section, data) {
@@ -523,9 +523,9 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
             return xScale(d.channel) - barWidth(xScale) / 2;
           })
           .attr('y', yScale(0))
-          .attr('fill', prefs.barFillColor)
-          .attr('stroke-width', prefs.barStrokeWidth)
-          .attr('stroke', prefs.barStrokeColor)
+          .attr('fill', config.barFillColor)
+          .attr('stroke-width', config.barStrokeWidth)
+          .attr('stroke', config.barStrokeColor)
             .transition()
             .duration(updateInterval * 0.8)
               .attr('height', function(d) {
@@ -562,7 +562,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .text(function(d) {
             return d.occupancy;
           })
-          .attr('fill', prefs.labelColor)
+          .attr('fill', config.labelColor)
           .attr('x', function(d) {
             return scales.plot.x(d.channel) - this.getBBox().width / 2;
           })
@@ -570,14 +570,14 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .transition()
           .duration(updateInterval * 0.8)
             .attr('y', function(d) {
-              return scales.plot.y(d.occupancy) - prefs.labelPadding;
+              return scales.plot.y(d.occupancy) - config.labelPadding;
             });
 
         labels
           .transition()
           .duration(updateInterval * 0.8)
             .attr('y', function(d) {
-              return scales.plot.y(d.occupancy) - prefs.labelPadding;
+              return scales.plot.y(d.occupancy) - config.labelPadding;
             })
             .text(function(d) {
               return d.occupancy;

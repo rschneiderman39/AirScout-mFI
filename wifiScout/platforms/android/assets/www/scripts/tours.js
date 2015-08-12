@@ -1,11 +1,7 @@
-if (typeof setup === 'undefined') {
-  setup = {};
-}
+if (typeof setup === 'undefined') { setup = {} }
 
 setup.tours = function() {
-  if (typeof tours === 'undefined') {
-    tours = {};
-  }
+  tours = {};
 
   tours.channelTable = {
     config: {
@@ -176,4 +172,5 @@ setup.tours = function() {
       }
     ]
   };
+  
 };

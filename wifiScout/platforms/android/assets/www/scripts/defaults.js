@@ -1,10 +1,11 @@
-if (typeof defaults === 'undefined') {
-  defaults = {};
-}
-
-defaults.startingView = 'settings';
-defaults.globalAccessPointSelection = false,
-defaults.detectHidden = false;
-defaults.language = 'en';
-defaults.region = 'US';
-defaults.filterableViews = ['channelGraph', 'timeGraph', 'APTable'];
+(function() {
+  defaults = {
+    startingView: 'settings',
+    globalAccessPointSelection: false,
+    detectHidden: false,
+    language: 'en',
+    region: 'US',
+    filterableViews: ['channelGraph', 'timeGraph', 'APTable']
+  };
+  
+})();

@@ -3,7 +3,7 @@ body {
 }
 
 body > #current-view {
-  display: none;
+  display: hidden;
 }
 
 body.pg-loaded > #current-view {

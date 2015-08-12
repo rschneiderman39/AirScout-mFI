@@ -1,5 +1,10 @@
 document.addEventListener('deviceready', function() {
-  setup.region();
+
+  setup.region().done(function() {
+    setup.language().done(function() {
+      setup.tours();
+    });
+  });
 
   document.dispatchEvent(new Event(events.setupDone));
 });

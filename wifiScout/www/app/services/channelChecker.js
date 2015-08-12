@@ -11,7 +11,7 @@ app.factory('channelChecker', ['setupService', function(setupService) {
     };
 
     var init = function() {
-      isAllowableChannel = channels[localization.region] || channels[defaults.region];
+      isAllowableChannel = channels[constants.region] || channels[defaults.region];
     };
 
     init();
