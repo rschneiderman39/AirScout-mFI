@@ -131,7 +131,8 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         elem.plot.clip.append('svg:clipPath')
           .attr('id', 'plot-clip')
           .append('rect')
-            .attr({ width: dim.plot.width, height: dim.plot.height });
+          .attr('width', dim.plot.width)
+          .attr('height', dim.plot.height);
 
         scales.plot = {};
         elem.plot.axis = {};
@@ -265,7 +266,8 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         elem.nav.right.clip.append('svg:clipPath')
           .attr('id', 'nav-clip-right')
           .append('rect')
-            .attr({ width: dim.nav.right.width, height: dim.nav.height });
+          .attr('width', dim.nav.right.width)
+          .attr('height', dim.nav.height);
 
         scales.nav.right = {};
 
