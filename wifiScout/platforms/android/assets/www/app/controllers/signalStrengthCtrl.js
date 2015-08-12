@@ -35,7 +35,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var gauge = {};
 
       // Scale speedometer to device size
-      var scale = ($(window).width() / 400) * 0.6;
+      var scale = ($(window).width() / 400) * 0.4;
       console.log(scale);
 
       // Sets arrow to grey area on gauge - AKA - AP went out of range
