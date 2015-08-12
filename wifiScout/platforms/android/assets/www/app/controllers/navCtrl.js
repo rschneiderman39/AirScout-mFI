@@ -8,6 +8,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       };
 
       var navTimeout = null,
+          tourInProgress = false,
           filterableViews = defaults.filterableViews;
 
       $scope.strings = strings;
@@ -22,6 +23,8 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       };
 
       $scope.swipeTo = function(view, direction) {
+        $scope.stopTour();
+
         globalSettings.updatesPaused(true);
 
         $('#view-title').html("");
@@ -45,6 +48,8 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
       $scope.setView = function(view) {
         if (utils.isView(view)) {
+          $scope.stopTour();
+
           $('#view-title').html(strings.viewTitles[view]);
           $state.go(view);
         }
@@ -56,9 +61,17 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
           globalSettings.updatesPaused(true);
         };
 
+        tourInProgress = true;
         nzTour.start(tours[$state.current.name]).finally(function() {
+          tourInProgress = false;
           globalSettings.updatesPaused(false);
         });
+      };
+
+      $scope.stopTour = function() {
+        if (tourInProgress) {
+          nzTour.stop();
+        }
       };
 
       var init = function() {

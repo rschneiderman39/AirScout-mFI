@@ -1,5 +1,6 @@
-app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableManager', 'channelChecker',
-'setupService', function($scope, globalSettings, channelTableManager, channelChecker, setupService) {
+app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
+  'channelTableState', 'channelChecker', 'setupService', function($scope, accessPoints,
+  globalSettings, channelTableState, channelChecker, setupService) {
 
   setupService.ready.then(function() {
 
@@ -54,27 +55,25 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
         buildPlot();
         buildNav();
-        vis.setBand(channelTableManager.band() || prefs.defaultBand);
+        vis.setBand(channelTableState.band() || prefs.defaultBand);
       };
 
       /* Pull in new data and update element height */
-      vis.update = function() {
-        channelTableManager.getData().done(function(data) {
-          rescaleVertically('plot');
-          rescaleVertically('navLeft');
-          rescaleVertically('navRight');
+      vis.update = function(data) {
+        rescaleVertically('plot');
+        rescaleVertically('navLeft');
+        rescaleVertically('navRight');
 
-          updateBars('plot', data);
-          updateBars('navLeft', data);
-          updateBars('navRight', data);
-          updateLabels(data);
-        });
+        updateBars('plot', data);
+        updateBars('navLeft', data);
+        updateBars('navRight', data);
+        updateLabels(data);
       };
 
       /* Store selected band and viewport location */
       vis.saveState = function() {
-        channelTableManager.band(band);
-        channelTableManager.viewportExtent(elem.nav.right.viewport.extent());
+        channelTableState.band(band);
+        channelTableState.viewportExtent(elem.nav.right.viewport.extent());
       };
 
       /* Select the band to display.
@@ -96,6 +95,12 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
           rescalePlotElements();
           repositionPlotElements();
         }
+      };
+
+      vis.destroy = function() {
+        d3.select('#plot').selectAll('*').remove();
+        d3.select('#nav-left').selectAll('*').remove();
+        d3.select('#nav-right').selectAll('*').remove();
       };
 
       /* Derive plot dimensions and add elements to DOM */
@@ -272,7 +277,7 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
         /* Viewport */
         elem.nav.right.viewport = d3.svg.brush()
           .x(scales.nav.right.x)
-          .extent(channelTableManager.viewportExtent() || prefs.defaultViewportExtent)
+          .extent(channelTableState.viewportExtent() || prefs.defaultViewportExtent)
           .on("brushstart", function() {
             vis.setBand('5');
             repositionViewport();
@@ -590,31 +595,58 @@ app.controller('channelTableCtrl', ['$scope', 'globalSettings', 'channelTableMan
 
     $scope.setBand = vis.setBand;
 
+    var update = function() {
+      if (! globalSettings.updatesPaused()) {
+        accessPoints.getAll().done(function(results) {
+          var numOccupants = {},
+              data = [],
+              accessPoint;
+
+          for (var i = 0; i < results.length; ++i) {
+            accessPoint = results[i];
+
+            if (numOccupants[accessPoint.channel] === undefined) {
+              numOccupants[accessPoint.channel] = 1;
+
+            } else {
+              numOccupants[accessPoint.channel] += 1;
+            }
+          }
+
+          for (var channel in numOccupants) {
+            data.push({
+              channel: channel,
+              occupancy: numOccupants[channel]
+            });
+          }
+
+          vis.update(data);
+        });
+      }
+    };
+
     var init = function() {
       vis.init();
 
       var firstUpdate = function() {
-        vis.update();
+        update();
         document.removeEventListener(events.swipeDone, firstUpdate);
       }
 
       if (globalSettings.updatesPaused()) {
         document.addEventListener(events.swipeDone, firstUpdate);
       } else {
-        vis.update();
+        update();
       }
 
-      var updateLoop = setInterval(vis.update, updateInterval);
+      var updateLoop = setInterval(update, updateInterval);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
 
         vis.saveState();
-
-        d3.select('#plot').selectAll('*').remove();
-        d3.select('#nav-left').selectAll('*').remove();
-        d3.select('#nav-right').selectAll('*').remove();
+        vis.destroy();
       });
     };
 

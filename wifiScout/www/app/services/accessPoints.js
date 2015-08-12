@@ -73,9 +73,6 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
                 ++accessPointCount;
               }
             }
-
-            console.log(accessPointCount);
-
             defer.resolve(accessPoints);
           },
           function failure() {
