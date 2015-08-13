@@ -3,8 +3,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
   setupService.ready.then(function() {
 
-    var gaugeUpdateInterval = constants.updateIntervalFast,
-        listUpdateInterval = constants.updateIntervalVerySlow;
+    var gaugeUpdateInterval = constants.updateIntervalNormal,
+        listUpdateInterval = 5000;
 
     $scope.accessPoints = [];
     $scope.isDuplicateSSID = {};
@@ -207,12 +207,22 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             .attr('transform', 'rotate(180)')
             .attr("fill", blackFill);
 
-        gauge.updateElement('pointer', constants.noSignal);
-        gauge.updateElement('minValueIndicator', constants.noSignal);
-        gauge.updateElement('maxValueIndicator', constants.noSignal);
+        gauge.updateElement('pointer', undefined);
+        gauge.updateElement('minValueIndicator', undefined);
+        gauge.updateElement('maxValueIndicator', undefined);
       };
 
       gauge.updateElement = function(elemName, newValue) {
+        if (elemName === 'pointer') {
+          elem = pointer;
+        }
+        else if (elemName === 'minValueIndicator') {
+          elem = minValueIndicator;
+        }
+        else if (elemName === 'maxValueIndicator') {
+          elem = maxValueIndicator;
+        }
+
         if (newValue !== undefined) {
           if (newValue > maxSignal) {
             newValue = maxSignal;
@@ -221,24 +231,20 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             newValue = noSignal;
           }
 
-          if (elemName === 'pointer') {
-            elem = pointer;
-          }
-          else if (elemName === 'minValueIndicator') {
-            elem = minValueIndicator;
-          }
-          else if (elemName === 'maxValueIndicator') {
-            elem = maxValueIndicator;
-          }
-
           elem.transition()
-            .duration(gaugeUpdateInterval * .8)
+            .duration(gaugeUpdateInterval)
             .ease('quad')
             .attr('transform', 'rotate(' +degScale(newValue)+ ')');
-          }
-        };
 
-        return gauge;
+        } else {
+          elem.transition()
+            .duration(gaugeUpdateInterval)
+            .ease('quad')
+            .attr('transform', 'rotate(-90)');
+        }
+      };
+
+      return gauge;
     })();
 
     var updateList = function() {
@@ -283,7 +289,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
                 $scope.maxLevel = $scope.level;
               }
             } else {
-              $scope.level = constants.noSignal;
+              $scope.level = undefined;
             }
 
             gauge.updateElement('pointer', $scope.level);
@@ -296,6 +302,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
     var init = function() {
       gauge.render();
+
+      var firstUpdate = function() {
+        updateList();
+        document.removeEventListener(events.swipeDone, firstUpdate);
+      }
+
+      if (globalSettings.updatesPaused()) {
+        document.addEventListener(events.swipeDone, firstUpdate);
+      } else {
+        updateList();
+      }
 
       var listUpdateLoop = setInterval(updateList, listUpdateInterval),
           gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);

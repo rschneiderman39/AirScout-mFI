@@ -48,7 +48,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
       /* Namespaces for plot elements, scales, and dimensions. */
       var elem = {}, scales = {}, dim = {};
 
-      vis.init = function() {
+      vis.render = function() {
         /* Scale to device screen */
         dim.width = $(window).width() * 0.95;
         dim.height = ($(window).height() - $('#top-bar').height()) * 0.95;
@@ -161,7 +161,6 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           })
           .attr('y', dim.plot.height + dim.plot.margins.bottom - 1);
 
-        /* Y Axis */
         scales.plot.y = d3.scale.linear()
           .domain(config.range)
           .range([dim.plot.height, 0]);
@@ -182,6 +181,15 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('transform', function() {
             return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
           });
+
+        /* Border */
+        elem.plot.container.append('rect')
+          .attr('width', dim.plot.width - 1)
+          .attr('height', dim.plot.height)
+          .attr('stroke', 'black')
+          .attr('stroke-width', '1')
+          .attr('fill', 'transparent')
+          .attr('pointer-events', 'none');
       };
 
       /* Derive navigator dimensions and add elments to DOM */
@@ -529,7 +537,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('stroke-width', config.barStrokeWidth)
           .attr('stroke', config.barStrokeColor)
             .transition()
-            .duration(updateInterval * 0.8)
+            .duration(updateInterval * .8)
               .attr('height', function(d) {
                 return yScale(0) - yScale(d.occupancy);
               })
@@ -539,7 +547,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         bars
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return yScale(d.occupancy);
             })
@@ -549,7 +557,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         bars.exit()
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval * .8)
             .attr('y', yScale(0))
             .remove();
       };
@@ -570,14 +578,14 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           })
           .attr('y', scales.plot.y(0))
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return scales.plot.y(d.occupancy) - config.labelPadding;
             });
 
         labels
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return scales.plot.y(d.occupancy) - config.labelPadding;
             })
@@ -587,7 +595,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         labels.exit()
         .transition()
-        .duration(updateInterval * 0.8)
+        .duration(updateInterval * .8)
           .attr('y', scales.plot.y(constants.noSignal))
           .remove();
       };
@@ -628,7 +636,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     var init = function() {
-      vis.init();
+      vis.render();
 
       var firstUpdate = function() {
         update();

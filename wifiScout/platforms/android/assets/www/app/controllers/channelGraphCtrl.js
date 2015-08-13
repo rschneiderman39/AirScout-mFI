@@ -15,6 +15,8 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
       fillShadeFactor: 0.75,           // [0,...1] Determines how light the fill shade is
       labelPadding: 10,                // Pixels between parabola top and label bottom
+      gridLineOpacity: 0.5,
+      yAxisTickInterval: 10,
       disallowedChannelOpacity: 0.35,
       disallowedChannelColor: 'black',
       navPercent: 0.2,                 // The portion of the graphic to be occupied by the navigator pane
@@ -51,7 +53,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       /* Namespaces for plot elements, scales, and dimensions. */
       var elem = {}, scales = {}, dim = {};
 
-      vis.init = function() {
+      vis.render = function() {
         /* Scale to device screen */
         dim.width = $(window).width() * 0.95;
         dim.height = ($(window).height() - $('#top-bar').height()) * 0.95;
@@ -76,7 +78,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           }
           band = newBand;
 
-          elem.plot.clip.selectAll('path').remove();
+          elem.plot.clip.selectAll('.parabola').remove();
           elem.plot.clip.selectAll('text').remove();
 
           rescalePlotXAxis();
@@ -195,6 +197,8 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('y', dim.plot.height + dim.plot.margins.bottom - 1);
 
         /* Y Axis */
+        var numTicks_yAxis = spanLen(config.range) / config.yAxisTickInterval + 1;
+
         scales.plot.y = d3.scale.linear()
           .domain(config.range)
           .range([dim.plot.height, 0]);
@@ -202,7 +206,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         elem.plot.axis.y = d3.svg.axis()
           .scale(scales.plot.y)
           .orient('left')
-          .ticks(8)
+          .ticks(numTicks_yAxis)
           .tickSize(1);
 
         elem.plot.container.append('g')
@@ -215,6 +219,26 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('transform', function() {
             return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
           });
+
+        /* Grid lines */
+        for (var i = 1; i < numTicks_yAxis; ++i) {
+          elem.plot.clip.append('path')
+            .attr('stroke', 'black')
+            .style('opacity', config.gridLineOpacity)
+            .attr('d', function() {
+              var y = scales.plot.y(config.range[0] + i * config.yAxisTickInterval);
+              return 'M 0 ' + y + ' H ' + dim.plot.width + ' ' + y;
+            });
+        }
+
+        /* Border */
+        elem.plot.container.append('rect')
+          .attr('width', dim.plot.width - 1)
+          .attr('height', dim.plot.height)
+          .attr('stroke', 'black')
+          .attr('stroke-width', '1')
+          .attr('fill', 'transparent')
+          .attr('pointer-events', 'none');
       };
 
       /* Derive navigator dimensions and add elments to DOM */
@@ -373,7 +397,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       /* Move plot elements to match a new viewport extent */
       var repositionPlotElements = function() {
         /* Move parabolas */
-        elem.plot.clip.selectAll('path')
+        elem.plot.clip.selectAll('.parabola')
           .attr('transform', function(d) {
             return 'translate(' + scales.plot.x(d.channel) + ')';
           });
@@ -488,7 +512,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Update existing labels */
         labels
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval)
             .attr('y', function(d) {
               return scales.plot.y(d.level) - config.labelPadding;
             });
@@ -496,7 +520,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Remove labels that no longer belong to any data */
         labels.exit()
         .transition()
-        .duration(updateInterval * 0.8)
+        .duration(updateInterval)
           .attr('y', scales.plot.y(constants.noSignal))
           .remove();
       };
@@ -527,7 +551,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         }
 
         /* Bind new data */
-        var parabolas = clip.selectAll('path')
+        var parabolas = clip.selectAll('.parabola')
           .data(data.sort(function(a, b) {
             return b.level - a.level;
           }), function(d) {
@@ -535,6 +559,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           });
 
         parabolas.enter().append('path')
+          .classed('parabola', true)
           .attr('d', function(d) {
             return generateParabola(constants.noSignal, xScale, yScale);
           })
@@ -553,14 +578,14 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         parabolas
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval)
             .attr('d', function(d) {
               return generateParabola(d.level, xScale, yScale);
             });
 
         parabolas.exit()
           .transition()
-          .duration(updateInterval * 0.8)
+          .duration(updateInterval)
             .attr('d', function(d) {
               return generateParabola(constants.noSignal, xScale, yScale);
             })
@@ -579,7 +604,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
     };
 
     var init = function() {
-      vis.init();
+      vis.render();
 
       updateSelection();
 
@@ -595,6 +620,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       }
 
       var updateLoop = setInterval(vis.update, updateInterval);
+
       document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
       /* Runs on view unload */

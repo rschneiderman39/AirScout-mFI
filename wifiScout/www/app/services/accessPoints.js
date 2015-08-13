@@ -50,6 +50,7 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
               defer.resolve(accessPoints[i]);
             }
           }
+          defer.resolve(null);
         });
 
         return defer;

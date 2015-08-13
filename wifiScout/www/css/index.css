@@ -47,7 +47,9 @@ body.pg-loaded > #current-view {
 }
 
 .nav-icon {
+	display: block;
   height: 11vh;
+	margin: auto;
 	position: relative;
   transform: translateY(-50%);
 	top: 50%;
