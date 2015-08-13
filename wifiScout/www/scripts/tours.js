@@ -97,7 +97,7 @@ setup.tours = function() {
         content: strings.timeGraph.tour.graph,
       },
       {
-        target: "#list",
+        target: "#legend",
         content: strings.timeGraph.tour.list
       },
       {
