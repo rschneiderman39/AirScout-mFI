@@ -8,30 +8,6 @@ a:hover {
   text-decoration: none;
 }
 
-.col-ssid {
-  width: 21%;
-}
-
-.col-mac {
-  width: 16%;
-}
-
-.col-manufacturer {
-  width: 21%;
-}
-
-.col-channel {
-  width: 10%;
-}
-
-.col-level {
-  width: 12%;
-}
-
-.col-capabilities {
-  width: 20%
-}
-
 .table {
   margin-bottom: 0px;
   margin-top: 0px;
@@ -43,10 +19,12 @@ a:hover {
 
 td {
   text-align: center;
+  font-size: 12px;
 }
 
 th {
   text-align: center;
+  font-size: 12px;
 }
 
 ::-webkit-scrollbar {
