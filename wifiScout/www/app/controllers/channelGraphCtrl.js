@@ -5,7 +5,8 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
   setupService.ready.then(function() {
 
-    var updateInterval = constants.updateIntervalSlow;
+    var updateInterval = constants.updateIntervalSlow,
+        transitionInterval = updateInterval * .9;
 
     var config = {
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
@@ -226,7 +227,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         elem.plot.container.append('text')
           .text(strings.channelGraph.labelY)
           .attr('transform', function() {
-            return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
+            return 'rotate(-90) translate(-' + dim.plot.totalHeight/2 + ', -' + this.getBBox().width/2 + ')';
           });
 
         /* Grid lines */
@@ -500,6 +501,8 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
             return d.MAC;
           });
 
+        labels.interrupt();
+
         /* Add new labels where necessary */
         labels.enter().append('text')
           .text(function(d) {
@@ -518,7 +521,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Update existing labels */
         labels
           .transition()
-          .duration(updateInterval)
+          .duration(transitionInterval)
             .attr('y', function(d) {
               return scales.plot.y(d.level) - config.labelPadding;
             });
@@ -526,7 +529,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Remove labels that no longer belong to any data */
         labels.exit()
         .transition()
-        .duration(updateInterval)
+        .duration(transitionInterval)
           .attr('y', scales.plot.y(constants.noSignal))
           .remove();
       };
@@ -585,14 +588,14 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         parabolas
           .transition()
-          .duration(updateInterval)
+          .duration(transitionInterval)
             .attr('d', function(d) {
               return generateParabola(d.level, xScale, yScale);
             });
 
         parabolas.exit()
           .transition()
-          .duration(updateInterval)
+          .duration(transitionInterval)
             .attr('d', function(d) {
               return generateParabola(constants.noSignal, xScale, yScale);
             })

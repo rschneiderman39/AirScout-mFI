@@ -31,7 +31,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
       navMargins: {
         top: 1,
         bottom: 18,
-        left: 40,
+        left: 60,
         right: 0
       }
     };
@@ -188,7 +188,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         elem.plot.container.append('text')
           .text(strings.channelTable.labelY)
           .attr('transform', function() {
-            return 'rotate(90) translate(' + dim.plot.height/2 + ', ' + this.getBBox().width/2 + ')';
+            return 'rotate(-90) translate(-' + dim.plot.totalHeight/2 + ', -' + this.getBBox().width/2 + ')';
           });
 
         /* Border */
