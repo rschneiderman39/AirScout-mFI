@@ -14,5 +14,4 @@
     maxFreq5Ghz: 5825,
     region: undefined
   };
-  
 })();

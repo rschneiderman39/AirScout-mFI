@@ -12,6 +12,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     $scope.minLevel = undefined;
     $scope.maxLevel = undefined;
 
+    $scope.selectedSSID = undefined;
+    $scope.selectedBSSID = undefined;
+
     $scope.isSelected = function(ap) {
       if (typeof ap.MAC !== 'undefined') {
         return ap.MAC === selectedMAC;
@@ -21,6 +24,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     $scope.setSelected = function(ap) {
       if (typeof ap.MAC !== 'undefined') {
         selectedMAC = ap.MAC;
+
+        $scope.selectedSSID = ap.SSID;
+        $scope.selectedBSSID = ap.MAC;
       }
       $scope.level = undefined;
       $scope.minLevel = undefined;

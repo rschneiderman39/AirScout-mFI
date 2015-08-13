@@ -7,5 +7,4 @@
     region: 'US',
     filterableViews: ['channelGraph', 'timeGraph', 'APTable']
   };
-  
 })();

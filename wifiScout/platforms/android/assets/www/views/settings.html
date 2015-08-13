@@ -3,6 +3,7 @@
 		<div id="testing" ng-controller="settingsCtrl">
 			<div class="panel-group" id="accordion1">
     		<div id="panel1" class="panel panel-default">
+    			<!-- Starting View Header -->
         	<div class="panel-heading accordion-toggle" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne1">
 	          <h4 class="panel-title">
 	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
@@ -10,6 +11,7 @@
 	            </a>
 	          </h4>
         	</div>
+        	<!-- Starting View Description and Dropdown List -->
         	<div id="collapseOne1" class="panel-collapse collapse in">
 	          <div class="panel-body">
 	          	<div class="row">
@@ -34,6 +36,7 @@
         	</div>
     		</div>
     		<div class="panel panel-default">
+    			<!-- Global Filtering Header -->
         	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseTwo1">
           	<h4 class="panel-title">
 	          	<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
@@ -41,6 +44,7 @@
 	            </a>
 	          </h4>
         	</div>
+        	<!-- Global Filtering Description and Toggle Selector -->
         	<div id="collapseTwo1" class="panel-collapse collapse">
 	          <div class="panel-body">
 		          <div class="row">
@@ -55,6 +59,7 @@
         	</div>
     		</div>
     		<div class="panel panel-default">
+    			<!-- Detect Hidden APs Header -->
         	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseThree1">
           	<h4 class="panel-title">
 	          	<a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
@@ -62,6 +67,7 @@
 	            </a>
 	          </h4>
        		</div>
+       		<!-- Detect Hidden APs Description and Toggle Selector -->
         	<div id="collapseThree1" class="panel-collapse collapse">
             <div class="panel-body">
 	          	<div class="row">
@@ -76,7 +82,6 @@
         	</div>
     		</div>
 			</div>
-
       <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
     </div>
 	</body>

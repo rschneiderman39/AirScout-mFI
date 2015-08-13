@@ -9,12 +9,33 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
     $scope.legendData = undefined;
     $scope.isDuplicateSSID = {};
 
+    $scope.selectedSSID = undefined;
+    $scope.selectedBSSID = undefined;
+
     $scope.toggleSelected = function(MAC) {
       if (typeof MAC === 'string') {
         if (MAC === selectedMAC) {
           selectedMAC = "";
+
+          for (var i = 0; i < $scope.legendData.length; ++i) {
+            if ($scope.legendData[i].MAC === MAC) {
+              console.log("HERE");
+              $scope.selectedSSID = $scope.legendData[i].SSID;
+            } 
+          }
+          $scope.selectedBSSID = MAC;
+
         } else {
           selectedMAC = MAC;
+
+          for (var i = 0; i < $scope.legendData.length; ++i) {
+            if ($scope.legendData[i].MAC === MAC) {
+              console.log("HERE");
+              $scope.selectedSSID = $scope.legendData[i].SSID;
+            } 
+          }
+          $scope.selectedBSSID = MAC;
+          $scope.selectedBSSID = MAC;
         }
         timeGraphManager.toggleAccessPointHighlight(MAC);
       }

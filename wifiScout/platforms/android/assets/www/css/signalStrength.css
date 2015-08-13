@@ -21,7 +21,7 @@
 }
 
 .list {
-  height: 66vh;
+  height: 54vh;
   overflow-y: scroll;
 }
 
@@ -65,9 +65,30 @@
   transform: translateX(17%);
 }
 
+.no-padding {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
 .padded-1vh {
   margin: 0px !important;
   padding: 1vh !important;
+}
+
+.scrollable-list {
+  transform: translateY(2%);
+}
+
+#selected-ap {
+  font-size: 1.65vw;
+  text-align: center;
+  background-color: #62bf01;
+  color: #fafafa;
+}
+
+.selected-ap-title {
+  font-size: 1.75vw;
+  font-weight: bold;
 }
 
 ::-webkit-scrollbar {

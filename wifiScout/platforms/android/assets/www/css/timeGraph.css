@@ -29,13 +29,39 @@
 }
 
 .list {
-  height: 68vh;
+  height: 55vh;
   overflow-y: scroll;
+}
+
+.no-padding {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.padded-1vh {
+  margin: 0px !important;
+  padding: 1vh !important;
 }
 
 #plot {
   background-color: #c0c0c0;
   border: 1px;
+}
+
+.scrollable-list {
+  transform: translateY(2%);
+}
+
+#selected-ap {
+  font-size: 1.65vw;
+  text-align: center;
+  background-color: #62bf01;
+  color: #fafafa;
+}
+
+.selected-ap-title {
+  font-size: 1.75vw;
+  font-weight: bold;
 }
 
 #time-graph {

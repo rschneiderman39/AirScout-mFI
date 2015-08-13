@@ -88,7 +88,8 @@ languages['en'] = {
     }
   },
     signalStrength: {
-    listHeader: 'Select an AP to view its signal strength',
+    listHeader: 'Select an AP to view its signal strength:',
+    selectedAPHeader: 'Selected AP:',
     minLevel: 'Min Level',
     currentLevel: 'Current',
     maxLevel: 'Max Level',
