@@ -537,7 +537,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('stroke-width', config.barStrokeWidth)
           .attr('stroke', config.barStrokeColor)
             .transition()
-            .duration(updateInterval)
+            .duration(updateInterval * .8)
               .attr('height', function(d) {
                 return yScale(0) - yScale(d.occupancy);
               })
@@ -547,7 +547,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         bars
           .transition()
-          .duration(updateInterval)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return yScale(d.occupancy);
             })
@@ -557,7 +557,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         bars.exit()
           .transition()
-          .duration(updateInterval)
+          .duration(updateInterval * .8)
             .attr('y', yScale(0))
             .remove();
       };
@@ -578,14 +578,14 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           })
           .attr('y', scales.plot.y(0))
           .transition()
-          .duration(updateInterval)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return scales.plot.y(d.occupancy) - config.labelPadding;
             });
 
         labels
           .transition()
-          .duration(updateInterval)
+          .duration(updateInterval * .8)
             .attr('y', function(d) {
               return scales.plot.y(d.occupancy) - config.labelPadding;
             })
@@ -595,7 +595,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         labels.exit()
         .transition()
-        .duration(updateInterval)
+        .duration(updateInterval * .8)
           .attr('y', scales.plot.y(constants.noSignal))
           .remove();
       };
