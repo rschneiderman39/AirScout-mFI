@@ -11,7 +11,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
       domain5 : [34, 167],             // X-scale for 5 Ghz band
       range : [0, 15],                 // Y-scale for occupancy
-      defaultSliderExtent: [34, 66], // 5Ghz nav viewport extent on first view open
+      defaultSliderExtent: [34, 66],   // 5Ghz nav viewport extent on first view open
       labelPadding: 10,                // Pixels between bar top and label bottom
       labelColor: 'black',             // Style...
       barStrokeWidth: 0,
