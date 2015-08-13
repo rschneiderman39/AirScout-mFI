@@ -7,7 +7,7 @@
 }
 
 #gauge {
-  transform: translateX(12%);
+  transform: translateX(8%);
 }
 
 #gauge g.label text {

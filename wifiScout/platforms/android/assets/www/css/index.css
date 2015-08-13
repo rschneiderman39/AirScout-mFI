@@ -57,10 +57,6 @@ body.pg-loaded > #current-view {
 	width: 8vw;
 }
 
-#nzTour-box, #nzTour-content {
-  min-height: 32vh !important;
-}
-
 #top-bar {
   background-image: url('../images/topBar.png');
   height: 11vh;
