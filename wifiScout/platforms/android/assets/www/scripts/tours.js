@@ -54,7 +54,7 @@ setup.tours = function() {
         content: strings.APTable.tour.intro
       },
       {
-        target: "#sample-level",
+        target: "#level-header",
         content: strings.APTable.tour.level
       },
       {
