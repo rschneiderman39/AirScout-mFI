@@ -21,6 +21,7 @@ body.pg-loaded > #current-view {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+  outline: none;
 }
 
 #help-button {
