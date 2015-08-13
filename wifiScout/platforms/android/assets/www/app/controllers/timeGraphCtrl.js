@@ -3,46 +3,29 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
   setupService.ready.then(function() {
 
-    var selectedMAC = "";
-
     $scope.strings = strings;
     $scope.legendData = undefined;
     $scope.isDuplicateSSID = {};
 
     $scope.selectedSSID = undefined;
-    $scope.selectedBSSID = undefined;
+    $scope.selectedMAC = undefined;
 
     $scope.toggleSelected = function(MAC) {
       if (typeof MAC === 'string') {
-        if (MAC === selectedMAC) {
-          selectedMAC = "";
-
-          for (var i = 0; i < $scope.legendData.length; ++i) {
-            if ($scope.legendData[i].MAC === MAC) {
-              console.log("HERE");
-              $scope.selectedSSID = $scope.legendData[i].SSID;
-            } 
-          }
-          $scope.selectedBSSID = MAC;
-
+        if (MAC === $scope.selectedMAC) {
+          $scope.selectedMAC = "";
         } else {
-          selectedMAC = MAC;
-
-          for (var i = 0; i < $scope.legendData.length; ++i) {
-            if ($scope.legendData[i].MAC === MAC) {
-              console.log("HERE");
-              $scope.selectedSSID = $scope.legendData[i].SSID;
-            } 
-          }
-          $scope.selectedBSSID = MAC;
-          $scope.selectedBSSID = MAC;
+          $scope.selectedMAC = MAC;
         }
+
         timeGraphManager.toggleAccessPointHighlight(MAC);
+
+        $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
       }
     };
 
     $scope.isSelected = function(MAC) {
-      return MAC === timeGraphManager.getHighlightedMAC();
+      return MAC === $scope.selectedMAC;
     };
 
     $scope.sortSSID = utils.customSSIDSort;
@@ -85,6 +68,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
       $scope.legendData = timeGraphManager.getLegendData();
       updateDuplicateSSIDs();
+
+      $scope.selectedMAC = timeGraphManager.getHighlightedMAC();
+      $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
 
       document.addEventListener(events.newLegendData, updateLegend);
     };

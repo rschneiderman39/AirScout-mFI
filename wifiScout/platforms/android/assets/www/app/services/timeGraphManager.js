@@ -38,6 +38,10 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       return highlightedMAC;
     };
 
+    service.getHighlightedSSID = function() {
+      return datasets[highlightedMAC] ? datasets[highlightedMAC].SSID : undefined;
+    };
+
     service.getDelay = function() {
       return updateInterval;
     };
