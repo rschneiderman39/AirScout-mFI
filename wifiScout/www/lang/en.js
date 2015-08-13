@@ -30,8 +30,7 @@ languages['en'] = {
       band5: "This section represents the 5 Ghz frequency band. It offers"
         + " 23 non-overlapping channels, although, not all of these are"
         + " available everywhere.  If a channel is greyed out,"
-        + " unauthorized use may be restricted or not allowed in your"
-        + " region. "
+        + " unauthorized use may be restricted in your region. "
     }
   },
   APTable : {
@@ -89,7 +88,8 @@ languages['en'] = {
     }
   },
     signalStrength: {
-    listHeader: 'Select an AP to view its signal strength',
+    listHeader: 'Select an AP to view its signal strength:',
+    selectedAPHeader: 'Selected AP:',
     minLevel: 'Min Level',
     currentLevel: 'Current',
     maxLevel: 'Max Level',
@@ -101,8 +101,8 @@ languages['en'] = {
       minLevel: "This box displays the weakest measured signal strength"
         + " since the access point was selected.",
 
-      maxLevel: "Displays the strongest measured signal strength since the"
-        + " access point was selected."
+      maxLevel: "This box displays the strongest measured signal strength"
+        + " since the access point was selected."
     }
   },
   channelGraph : {

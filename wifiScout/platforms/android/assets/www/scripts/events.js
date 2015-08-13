@@ -10,5 +10,4 @@
     newTimeGraphData: 'newtimegraphdata',
     swipeDone: 'swipedone'
   };
-  
 })();

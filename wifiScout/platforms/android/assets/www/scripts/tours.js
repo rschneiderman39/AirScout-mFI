@@ -17,7 +17,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 400, // Animation Duration for the box and mask
+      animationDuration: 1000, // Animation Duration for the box and mask
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
@@ -47,7 +47,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 400,
+      animationDuration: 1000,
       dark: false
     },
     steps: [{
@@ -89,7 +89,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 400,
+      animationDuration: 1000,
       dark: false
     },
     steps: [{
@@ -97,7 +97,7 @@ setup.tours = function() {
         content: strings.timeGraph.tour.graph,
       },
       {
-        target: "#list",
+        target: "#legend",
         content: strings.timeGraph.tour.list
       },
       {
@@ -121,7 +121,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 400,
+      animationDuration: 1000,
       dark: false
     },
     steps: [{
@@ -152,7 +152,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 400,
+      animationDuration: 1000,
       dark: false
     },
     steps: [{
@@ -172,5 +172,5 @@ setup.tours = function() {
       }
     ]
   };
-  
+
 };
