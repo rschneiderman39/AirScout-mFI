@@ -606,8 +606,6 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
       return vis;
     })();
 
-    $scope.setBand = vis.setBand;
-
     var update = function() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {

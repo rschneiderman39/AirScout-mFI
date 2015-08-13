@@ -503,7 +503,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         /* Add new labels where necessary */
         labels.enter().append('text')
           .text(function(d) {
-            return d.SSID;
+            return d.SSID !== "<hidden>" ? d.SSID : "";
           })
           .attr('fill', function(d) {
             return d.color;
@@ -601,8 +601,6 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
       return vis;
     })();
-
-    $scope.setBand = vis.setBand;
 
     var updateSelection = function() {
       var selection = globalSettings.getAccessPointSelection('channelGraph');
