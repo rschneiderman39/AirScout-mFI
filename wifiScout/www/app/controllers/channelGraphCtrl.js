@@ -12,7 +12,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
       domain5: [34, 167],              // X-scale for 5 Ghz band
       range: [constants.noSignal, constants.maxSignal],  // Y-scale for level
-      defaultViewportExtent: [34, 66], // 5Ghz nav viewport extent on first view open
+      defaultSliderExtent: [34, 66], // 5Ghz nav viewport extent on first view open
       fillShadeFactor: 0.75,           // [0,...1] Determines how light the fill shade is
       labelPadding: 10,                // Pixels between parabola top and label bottom
       gridLineOpacity: 0.5,
@@ -89,8 +89,17 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
       /* Store selected band and viewport location */
       vis.saveState = function() {
+        var slider, extentMin, extentMax, xScale;
+
+        slider = elem.nav.right.slider;
+        xScale = scales.nav.right.x;
+
+        extentMin = xScale.invert(parseFloat(slider.attr('x'))),
+        extentMax = xScale.invert(parseFloat(slider.attr('x')) +
+                                        parseFloat(slider.attr('width')));
+
         channelGraphState.band(band);
-        channelGraphState.viewportExtent(elem.nav.right.viewport.extent());
+        channelGraphState.sliderExtent([extentMin, extentMax]);
       };
 
       /* Pull in new data and update element height */
@@ -294,6 +303,10 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('id', 'nav-toggle-left')
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height)
+          .on('touchstart', function() {
+            d3.event.stopPropagation();
+            vis.setBand('2_4');
+          });
 
         /* X Scale */
         scales.nav.left.x = d3.scale.linear()
@@ -332,40 +345,59 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .domain(config.domain5)
           .range([0, dim.nav.right.width]);
 
+        /* Slider */
+        var touchStartX, sliderStartX;
 
-        /* Viewport */
-        elem.nav.right.viewport = d3.svg.brush()
-          .x(scales.nav.right.x)
-          .extent(channelGraphState.viewportExtent() || config.defaultViewportExtent)
-          .on("brushstart", function() {
-            vis.setBand('5');
-            repositionViewport();
-          })
-          .on("brush", function() {
-            vis.setBand('5');
-            repositionViewport();
-            repositionPlotXAxis();
-            repositionPlotElements();
-          })
-          .on("brushend", function() {
-            vis.setBand('5');
-            repositionViewport();
-            repositionPlotXAxis();
-            repositionPlotElements();
-          });
+        var onTouchStart = function() {
+          d3.event.stopPropagation();
 
-        elem.nav.right.container.append('g')
-          .attr("class", "viewport")
-          .call(elem.nav.right.viewport)
-            .selectAll('rect')
-            .attr("height", dim.nav.height);
+          vis.setBand('5');
 
-        /* The slider the user actually sees */
-        elem.nav.right.clip.append('rect')
+          touchStartX = d3.event.changedTouches[0].screenX -
+            document.getElementById('nav-right').getBoundingClientRect().left;
+
+          sliderStartX = parseFloat(elem.nav.right.slider.attr('x'));
+        };
+
+        var onTouchMove = function() {
+          var touchX, sliderX, xScale, slider;
+
+          d3.event.stopPropagation();
+
+          touchX = d3.event.changedTouches[0].screenX -
+            document.getElementById('nav-right').getBoundingClientRect().left;
+
+          sliderX = sliderStartX + (touchX - touchStartX);
+
+          slider = elem.nav.right.slider;
+          xScale = scales.nav.right.x;
+
+          if (sliderX < xScale.range()[0]) {
+            sliderX = xScale.range()[0];
+          } else if (sliderX + parseFloat(slider.attr('width')) > xScale.range()[1]) {
+            sliderX = xScale.range()[1] - parseFloat(slider.attr('width'));
+          }
+
+          slider.attr('x', sliderX);
+
+          repositionPlotXAxis();
+          repositionPlotElements();
+        };
+
+        var sliderExtent = channelGraphState.sliderExtent() || config.defaultSliderExtent;
+
+        elem.nav.right.slider = elem.nav.right.clip.append('rect')
           .attr('id', 'nav-toggle-right')
-          .attr('width', elem.nav.right.container.select('.viewport > .extent').attr('width'))
+          .attr('x', function() {
+            return scales.nav.right.x(sliderExtent[0]);
+          })
+          .attr('width', function() {
+            return scales.nav.right.x(sliderExtent[1]) -
+                   scales.nav.right.x(sliderExtent[0]);
+          })
           .attr('height', dim.nav.height)
-          .attr('x', scales.nav.right.x(elem.nav.right.viewport.extent()[0]));
+          .on('touchstart', onTouchStart)
+          .on('touchmove', onTouchMove);
 
         /* Borders */
         elem.nav.left.container.append('rect')
@@ -409,55 +441,29 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           });
       };
 
-      /* Move the visible slider to match a new viewport extent */
-      var repositionViewport = function() {
-        var viewport = elem.nav.right.viewport;
-
-        /* Since d3 doesn't provide a good way to prevent
-           brush resizing, we need to manually correct the
-           viewport extent in order for it to behave like a slider.
-           We also need to make it impossible for the slider
-           to leave frame.
-        */
-        var extentMin = viewport.extent()[0],
-            extentMax = viewport.extent()[1],
-            domainMin = scales.nav.right.x.domain()[0],
-            domainMax = scales.nav.right.x.domain()[1];
-
-        var correctLen = spanLen(config.defaultViewportExtent);
-
-        if (spanLen(viewport.extent()) !== correctLen) {
-          if (extentMin + correctLen > domainMax) {
-            /* Prevent slider from leaving frame to the right */
-            viewport.extent([domainMax - correctLen, domainMax]);
-          } else if (extentMax - correctLen < domainMin) {
-            /* Prevent slider from leaving frame to the left */
-            viewport.extent([domainMin, domainMin + correctLen]);
-          } else {
-            /* Otherwise, simply correct the size */
-            viewport.extent([extentMin, extentMin + correctLen]);
-          }
-        }
-
-        /* Move visible slider to match new viewport extent */
-        elem.nav.right.clip.select('#nav-toggle-right')
-          .attr('x', scales.nav.right.x(viewport.extent()[0]));
-      };
-
       /* Correct X axis to account for band change */
       var rescalePlotXAxis = function() {
         repositionPlotXAxis();
+
         elem.plot.axis.x.ticks(spanLen(scales.plot.x.domain()));
         elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
+
         removeDisallowedChannels();
       };
 
-      /* "Translate" x axis to account for a new viewport extent */
+      /* "Translate" x axis to account for a new slider extent */
       var repositionPlotXAxis = function() {
         if (band === '2_4') {
           scales.plot.x.domain(config.domain2_4);
+
         } else if (band === '5') {
-          scales.plot.x.domain(elem.nav.right.viewport.extent());
+          var xScale = scales.nav.right.x,
+              slider = elem.nav.right.slider;
+
+          scales.plot.x
+            .domain([xScale.invert(slider.attr('x')),
+              xScale.invert(parseFloat(slider.attr('x')) +
+              parseFloat(slider.attr('width')))]);
         }
 
         elem.plot.container.select('.x.axis').call(elem.plot.axis.x);
@@ -560,6 +566,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         parabolas.enter().append('path')
           .classed('parabola', true)
+          .attr('pointer-events', 'none')
           .attr('d', function(d) {
             return generateParabola(constants.noSignal, xScale, yScale);
           })

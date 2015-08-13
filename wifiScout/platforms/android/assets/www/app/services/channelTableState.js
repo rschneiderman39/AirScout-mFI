@@ -5,7 +5,7 @@ app.factory('channelTableState', ['setupService', function(setupService) {
   setupService.ready.then(function() {
 
     var band = undefined,
-        viewportExtent = undefined;
+        sliderExtent = undefined;
 
     service.band = function(newBand) {
       if (newBand === undefined) {
@@ -15,11 +15,11 @@ app.factory('channelTableState', ['setupService', function(setupService) {
       }
     };
 
-    service.viewportExtent = function(newExtent) {
+    service.sliderExtent = function(newExtent) {
       if (newExtent === undefined) {
-        return viewportExtent
+        return sliderExtent
       } else if (newExtent instanceof Array && newExtent.length === 2) {
-        viewportExtent = newExtent;
+        sliderExtent = newExtent;
       }
     };
   });
