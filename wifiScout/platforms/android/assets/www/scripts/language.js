@@ -7,6 +7,7 @@ setup.language = function() {
     function success(lang) {
       var langCode = lang.value.split('-')[0];
       strings = languages[langCode] || languages[defaults.language];
+      console.log(langCode);
       progress.resolve();
     }, function failure() {
       strings = languages[defaults.language];

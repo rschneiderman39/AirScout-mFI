@@ -3,6 +3,8 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
     setupService.ready.then(function() {
 
+      console.log('setting up nav ctrl');
+
       var prefs = {
         navShowInterval: 3000
       };

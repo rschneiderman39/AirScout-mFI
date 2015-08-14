@@ -20,7 +20,7 @@ body.pg-loaded > #current-view {
   max-width: 8.5vh;
   position: relative;
   top: 50%;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   outline: none;
 }
 
@@ -28,7 +28,7 @@ body.pg-loaded > #current-view {
   max-height: 8vh;
   max-width: 11.5vh;
   position: relative;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 	top: 50%;
 }
 
@@ -52,7 +52,7 @@ body.pg-loaded > #current-view {
   height: 11vh;
 	margin: auto;
 	position: relative;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 	top: 50%;
 	width: 8vw;
 }
@@ -75,7 +75,7 @@ body.pg-loaded > #current-view {
 	text-align: center;
   position: relative;
   top: 50%;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 }
 
 /* PATHGATHER */
@@ -126,10 +126,8 @@ body.pg-loaded > #current-view {
 
 @keyframes sk-stretchdelay {
   0%, 40%, 100% {
-    transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
   }  20% {
-    transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
 }

@@ -7,7 +7,7 @@
 }
 
 #gauge {
-  transform: translateX(8%);
+  -webkit-transform: translateX(8%);
 }
 
 #gauge g.label text {
@@ -17,7 +17,7 @@
 
 #gauge-section {
   position: relative;
-  transform: translateY(4%) !important;
+  -webkit-transform: translateY(4%) !important;
 }
 
 .list {
@@ -26,7 +26,7 @@
 }
 
 #list-section {
-  transform: translateY(4%);
+  -webkit-transform: translateY(4%);
 }
 
 .list-title {
@@ -62,7 +62,7 @@
   font-size: 1.60vw;
   padding-top: 4vh;
   text-align: center;
-  transform: translateX(17%);
+  -webkit-transform: translateX(17%);
 }
 
 .no-padding {
@@ -76,7 +76,7 @@
 }
 
 .scrollable-list {
-  transform: translateY(2%);
+  -webkit-transform: translateY(2%);
 }
 
 #selected-ap {
@@ -99,7 +99,7 @@
   background-color: rgba(0, 0, 0, .25);
   border: none;
   border-radius: 10px;
-  
+
 }
 
 ::-webkit-scrollbar-track {
