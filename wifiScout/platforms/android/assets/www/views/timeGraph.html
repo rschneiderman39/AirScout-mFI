@@ -1,35 +1,30 @@
 <html>
-  <body>
-    <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('APTable', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')" ng-controller="timeGraphCtrl">
+	<body>
+	  <div ng-click="showNav(); $event.stopPropagation();" ng-swipe-left="swipeTo('signalStrength', 'left'); $event.stopPropagation();" ng-swipe-right="swipeTo('settings', 'right'); $event.stopPropagation();" ng-controller="timeGraphCtrl">
       <div class="container-fluid">
-        <div class="row">
-          <!-- Scrollable List of APs -->
-          <div class="col-xs-3" id="legend">
-            <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
-            <div id="selected-ap" class="panel panel-default no-padding">
-              <div class="panel-body padded-1vh">
-                <div id="selectedAP" class="padded-1vh">{{selectedSSID !== undefined ? selectedSSID : "---"}}</div>
-                <div ng-show="isDuplicateSSID[selectedSSID]">({{selectedMAC}})</div>
-              </div>
+          <div class="row">
+
+            <div class="col-xs-3" id="legend">
+              <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
+              <ul class="list list-group scrollable-list">
+                <span data-ng-repeat="d in legendData | orderBy:sortSSID">
+                  <li class="listgroupitem" ng-class="{ active: isSelected(d.MAC) }" ng-click="toggleSelected(d.MAC);$event.stopPropagation()">
+                    <div class="legend-box" ng-style="{'background-color':d.color}"></div>
+                    <span class="legend-text">{{d.SSID}}</span>
+                    <div class="legend-text" ng-show="isDuplicateSSID[d.SSID]">({{d.MAC}})</div>
+                  </li>
+                </span>
+              </ul>
             </div>
-            <ul class="list list-group scrollable-list">
-              <span data-ng-repeat="d in legendData | orderBy:sortSSID">
-                <li class="listgroupitem" ng-class="{ active: isSelected(d.MAC) }" ng-click="toggleSelected(d.MAC);$event.stopPropagation()">
-                  <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-                  <span class="legend-text">{{d.SSID}}</span>
-                  <div class="legend-text" ng-show="isDuplicateSSID[d.SSID]">({{d.MAC}})</div>
-                </li>
-              </span>
-            </ul>
+
+          <div class="col-xs-9" id="graph">
           </div>
-          <!-- Time Graph Plot -->
-          <div class="col-xs-9" id="time-graph">
-            <canvas id="plot"></canvas>
-            <p class="axis-label">{{strings.timeGraph.axisLabel}}</p>
-          </div>
+
         </div>
       </div>
-    </div>
-    <div filter-modal />
-  </body>
+
+	 	</div>
+
+		<div filter-modal />
+	</body>
 </html>

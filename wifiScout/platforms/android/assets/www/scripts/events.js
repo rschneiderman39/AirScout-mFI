@@ -6,7 +6,7 @@
       channelGraph: 'newselectionchannelgraph',
       timeGraph: 'newselectiontimegraph'
     },
-    newLegendData: 'newlegenddata',
+    newTimeGraphLegendData: 'newtimegraphlegenddata',
     newTimeGraphData: 'newtimegraphdata',
     swipeDone: 'swipedone'
   };
