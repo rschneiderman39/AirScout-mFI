@@ -5,12 +5,18 @@ app.factory('timeGraphManager', ['accessPoints', 'setupService',
 
   setupService.ready.then(function() {
 
+    var datasets = {};
+
     service.getDatasets = function() {
-      var times = [];
-      for (var i = -60; i <= 1; ++i) {
-        times.push(i);
-      }
-    }
+      accessPoints.getAll().done(function(results) {
+        var macAddrToAccessPoint = {};
+
+        for (var i = 0; i < results.length; ++i) {
+          macAddrToAccessPoint[results[i].MAC] = results[i];
+        }
+      });
+    };
+
   });
 
   return service;

@@ -24,29 +24,8 @@ var argscheck = require('cordova/argscheck'),
 
 var wifiExport = {};
 
-//get connected AND available wifi
 wifiExport.getWifiInfo = function(okcallback, failcallback) {
 	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'getWifiInfo', []);
-};
-
-// open / close
-wifiExport.enableWifi = function(istrue, okcallback, failcallback) {
-	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'enableWifi', [ istrue ]);
-};
-
-// connect / disconnect
-wifiExport.connectWifi = function(istrue, params, okcallback, failcallback) {
-	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'connectWifi', [ istrue, params ]);
-};
-
-// open / close
-wifiExport.enableWifiAP = function(istrue, params, okcallback, failcallback) {
-	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'enableWifiAP', [ istrue, params ]);
-};
-
-// lock / unlock wifi, keep wifi always on if lock
-wifiExport.enableWifiLock = function(istrue, okcallback, failcallback) {
-	cordova.exec(okcallback, failcallback, 'WifiAdmin', 'enableWifiLock', [ istrue ]);
 };
 
 wifiExport.scan = function(okcallback, failcallback) {

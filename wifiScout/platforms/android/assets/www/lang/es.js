@@ -15,7 +15,7 @@ languages['es'] = {
     label2_4: '2.4 Ghz',
     label5: '5 Ghz',
     labelX: 'Canal',
-    labelY: 'Ocupancia',
+    labelY: 'Ocupantes',
     tour: {
       intro: "This view displays the number of access points on each"
         + " channel in the 2.4 and 5.0Ghz frequency ranges. A high number"

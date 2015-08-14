@@ -7,15 +7,8 @@ Cordova plugin to access mobile device WiFi
 
 getWifiInfo(okcallback, failcallback);
 
-enableWifi(istrue, okcallback, failcallback)
-
-connectWifi(istrue, params, okcallback, failcallback);
-
-enableWifiAP(istrue, params, okcallback, failcallback);
-
-enableWifiLock(istrue, okcallback, failcallback);
+scan(okcallback, failcallback);
 
 ### Credits ###
 
 The plugin is created and maintained by Raymond Xie.
-
