@@ -300,6 +300,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
           var touchStartX, sliderStartX;
 
           var onTouchStart = function() {
+            d3.event.preventDefault();
             d3.event.stopPropagation();
 
             vis.setBand('5');
@@ -310,9 +311,15 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
             sliderStartX = parseFloat(elem.nav.right.slider.attr('x'));
           };
 
+          var onTouchEnd = function() {
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+          };
+
           var onTouchMove = function() {
             var touchX, sliderX, xScale, slider;
 
+            d3.event.preventDefault();
             d3.event.stopPropagation();
 
             touchX = d3.event.changedTouches[0].screenX -
