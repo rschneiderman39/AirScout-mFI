@@ -10,7 +10,7 @@ app.factory('channelChecker', ['setupService', function(setupService) {
       return isAllowableChannel[channel];
     };
 
-    var init = function() {
+    function init() {
       isAllowableChannel = channels[constants.region] || channels[defaults.region];
     };
 

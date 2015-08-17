@@ -79,7 +79,7 @@ setupService) {
 
     // Create an associative settings array for each view that will
     // use this service
-    var init = function(){
+    function init() {
       detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || defaults.detectHidden;
       globalAccessPointSelection = JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) || defaults.globalAccessPointSelection;
       startingView = window.localStorage.getItem('startingView') || defaults.startingView;

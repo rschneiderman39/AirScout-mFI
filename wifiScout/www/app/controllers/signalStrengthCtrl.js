@@ -253,7 +253,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       return gauge;
     })();
 
-    var updateList = function() {
+    function updateList() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $scope.$apply(function() {
@@ -276,7 +276,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       }
     };
 
-    var updateGauge = function() {
+    function updateGauge() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.get(selectedMAC).done(function(result) {
           $scope.$apply(function() {
@@ -306,10 +306,10 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       }
     };
 
-    var init = function() {
+    function init() {
       gauge.render();
 
-      var firstUpdate = function() {
+      function firstUpdate() {
         updateList();
         document.removeEventListener(events.swipeDone, firstUpdate);
       }

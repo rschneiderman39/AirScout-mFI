@@ -46,7 +46,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       return updateInterval;
     };
 
-    var generateLegendData = function() {
+    function generateLegendData() {
       var legendData = [];
       for (var MAC in datasets) {
         if (datasets[MAC].inPlot) {
@@ -62,19 +62,19 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       return legendData;
     };
 
-    var highlightAccessPoint = function(MAC) {
+    function highlightAccessPoint(MAC) {
       unselectAccessPoint(MAC);
       selectAccessPoint(MAC, { lineWidth: 6, strokeStyle: datasets[MAC].color, fillStyle: utils.toNewAlpha(datasets[MAC].color, prefs.highlightOpacity)});
       highlightedMAC = MAC;
     };
 
-    var unhighlightAccessPoint = function(MAC) {
+    function unhighlightAccessPoint(MAC) {
       unselectAccessPoint(MAC);
       selectAccessPoint(MAC);
       highlightedMAC = "";
     };
 
-    var addAccessPoint = function(accessPoint) {
+    function addAccessPoint(accessPoint) {
       if (! datasets[accessPoint.MAC]) {
         datasets[accessPoint.MAC] = {
           SSID: accessPoint.SSID,
@@ -85,14 +85,14 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       }
     };
 
-    var removeAccessPoint = function(MAC) {
+    function removeAccessPoint(MAC) {
       if (datasets[MAC]) {
         unselectAccessPoint(MAC);
         delete datasets[MAC];
       }
     };
 
-    var selectAccessPoint = function(MAC, options) {
+    function selectAccessPoint(MAC, options) {
       if (datasets[MAC]) {
         if (! options) {
           options = { lineWidth: 2, strokeStyle: datasets[MAC].color };
@@ -102,7 +102,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       }
     };
 
-    var unselectAccessPoint = function(MAC) {
+    function unselectAccessPoint(MAC) {
       if (datasets[MAC]) {
         plot.removeTimeSeries(datasets[MAC].line);
         datasets[MAC].inPlot = false;
@@ -112,7 +112,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       }
     };
 
-    var applyAccessPointSelection = function() {
+    function applyAccessPointSelection() {
       var selectionChanged = false;
 
       for (var MAC in datasets) {
@@ -137,7 +137,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       }
     };
 
-    var updateSelection = function() {
+    function updateSelection() {
       var selection = globalSettings.getAccessPointSelection('timeGraph');
 
       isSelected = {};
@@ -151,7 +151,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       applyAccessPointSelection();
     };
 
-    var updateDatasets = function() {
+    function updateDatasets() {
       var curTime = new Date().getTime(),
           MACtoAccessPoint = {};
 
@@ -182,12 +182,12 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       });
     };
 
-    var update = function() {
+    function update() {
       updateDatasets();
       applyAccessPointSelection();
     };
 
-    var init = function() {
+    function init() {
       plot = new SmoothieChart(
         {
           minValue: constants.noSignal,

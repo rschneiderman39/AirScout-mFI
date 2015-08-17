@@ -30,7 +30,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
     $scope.sortSSID = utils.customSSIDSort;
 
-    var updateDuplicateSSIDs = function() {
+    function updateDuplicateSSIDs() {
       var found = {},
           newDuplicates = {};
       for (var i = 0; i < $scope.legendData.length; ++i) {
@@ -43,7 +43,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       $scope.isDuplicateSSID = newDuplicates;
     };
 
-    var updateLegend = function() {
+    function updateLegend() {
       $timeout(function() {
         $scope.legendData = timeGraphManager.getLegendData();
 
@@ -51,12 +51,12 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       });
     };
 
-    var prepView = function() {
+    function prepView() {
       document.getElementById('plot').height = $(window).height() * 0.75;
       document.getElementById('plot').width = $(window).width() * 0.69;
     };
 
-    var init = function() {
+    function init() {
       prepView();
 
       var plot = timeGraphManager.getPlot();

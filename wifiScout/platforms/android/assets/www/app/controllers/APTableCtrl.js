@@ -40,7 +40,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
        @param {{showAll: boolean, selectedMACs: Array.<string>}} newSelection - The new selection.
     */
-    var updateSelection = function() {
+    function updateSelection() {
       var selection = globalSettings.getAccessPointSelection('APTable');
 
       selectedMACs = selection.macAddrs;
@@ -50,13 +50,13 @@ accessPoints, globalSettings, APTableState, setupService) {
     };
 
     /* Store current sort ordering. */
-    var saveState = function() {
+    function saveState() {
       APTableState.sortPredicate($scope.sortPredicate);
       APTableState.sortReverse($scope.sortReverse);
     };
 
     /* Load the previously used selection and sort ordering. */
-    var restoreState = function() {
+    function restoreState() {
       var selection = globalSettings.getAccessPointSelection('APTable');
       selectedMACs = selection.macAddrs;
       showAll = selection.showAll;
@@ -70,7 +70,7 @@ accessPoints, globalSettings, APTableState, setupService) {
       $scope.sortReverse = APTableState.sortReverse();
     };
 
-    var update = function() {
+    function update() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $timeout(function() {
@@ -86,12 +86,12 @@ accessPoints, globalSettings, APTableState, setupService) {
     };
 
     /* Manually scale the view to the device where needed. */
-    var prepView = function() {
+    function prepView() {
       var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
       $('#table-content').height(contentHeight);
     };
 
-    var init = function() {
+    function init() {
       if (accessPoints.count() < constants.moderateThresh) {
         updateInterval = constants.updateIntervalNormal;
 
@@ -105,7 +105,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
       restoreState();
 
-      var firstUpdate = function() {
+      function firstUpdate() {
         update();
         document.removeEventListener(events.swipeDone, firstUpdate);
       }

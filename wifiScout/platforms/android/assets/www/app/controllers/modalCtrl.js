@@ -42,7 +42,7 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
     $scope.sortSSID = utils.customSSIDSort;
 
-    var onShow = function() {
+    function onShow() {
       $scope.stopTour();
 
       var selection = globalSettings.getAccessPointSelection(view);
@@ -65,7 +65,7 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
       });
     };
 
-    var sendSelection = function() {
+    function sendSelection() {
       var selection = [];
 
       for (var macAddr in isSelected) {
@@ -80,12 +80,12 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
       });
     };
 
-    var prepView = function() {
+    function prepView() {
       $('#modal-list').css('height', $(window).height() * 0.6);
       $('#filter-modal').on('show.bs.modal', onShow);
     };
 
-    var init = function() {
+    function init() {
       prepView();
       view = $state.current.name;
     };

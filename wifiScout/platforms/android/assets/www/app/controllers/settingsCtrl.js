@@ -9,7 +9,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       globalSettings.startingView(view);
     };
 
-    var prepView = function() {
+    function prepView() {
       $(".dropdown-menu li a").click(function(){
         var selText = $(this).text();
         $(this).parents('.btn-group').find('.dropdown-toggle').html( selText + '  <span class="caret"></span>');
@@ -39,9 +39,9 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       });
     };
 
-    var init = function() {
+    function init() {
       prepView();
-      };
+    };
 
     init();
   });
