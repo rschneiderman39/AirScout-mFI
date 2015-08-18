@@ -1,6 +1,6 @@
 "use strict";
 
-if (typeof setup === 'undefined') { setup = {} }
+if (typeof setup === 'undefined') { var setup = {}; }
 
 setup.region = function() {
   var progress = $.Deferred();

@@ -92,7 +92,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
                              graphContainer, graphAxisFnX, graphAxisFnY,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
-                             navScalesY, _) {
+                             navScalesY) {
 
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {

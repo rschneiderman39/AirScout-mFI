@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
   'channelTableState', 'channelChecker', 'setupService', function($scope,
   visBuilder, accessPoints, globalSettings, channelTableState, channelChecker,
@@ -90,7 +92,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
                              graphContainer, graphAxisFnX, graphAxisFnY,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
-                             navScalesY, _) {
+                             navScalesY) {
 
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {

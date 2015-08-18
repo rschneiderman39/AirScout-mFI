@@ -1,5 +1,7 @@
+"use strict";
+
 if (typeof languages === 'undefined') {
-  languages = {};
+  var languages = {};
 }
 
 languages['en'] = {

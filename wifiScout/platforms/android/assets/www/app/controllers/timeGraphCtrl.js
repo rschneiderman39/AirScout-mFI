@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
   'visBuilder', 'setupService', function($scope, $timeout, timeGraphManager,
   visBuilder, setupService) {
@@ -71,7 +73,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
       };
 
-      function elementUpdateFn(graphClip, graphScalesX, graphScalesY, _, _) {
+      function elementUpdateFn(graphClip, graphScalesX, graphScalesY) {
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
             return graphScalesX(domain[0] + (i-2) * (updateInterval / 1000));

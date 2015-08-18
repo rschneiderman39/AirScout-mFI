@@ -1,10 +1,10 @@
 "use strict";
 
-if (typeof setup === 'undefined') { setup = {} }
+if (typeof setup === 'undefined') { var setup = {}; }
+
+var tours = {};
 
 setup.tours = function() {
-  tours = {};
-
   tours.channelTable = {
     config: {
       mask: {

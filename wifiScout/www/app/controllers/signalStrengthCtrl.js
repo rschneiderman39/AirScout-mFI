@@ -46,7 +46,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       // Initial SVG canvas sizing
       var baseWidth = 400;
       var width = $(window).width() * .6;
-      var scale = width / baseWidth;
+      var scaleFactor = width / baseWidth;
 
       var height = $(window).height() * .6;
 
@@ -58,19 +58,19 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var minSignal = -100;
       var maxSignal = -10;
 
-      var arcRadius = ( baseWidth / 2 ) * scale;
-      var arcTransform = 200 * scale;
+      var arcRadius = ( baseWidth / 2 ) * scaleFactor;
+      var arcTransform = 200 * scaleFactor;
 
-      var canvasRadius = ( baseWidth / 2 ) * scale;
+      var canvasRadius = ( baseWidth / 2 ) * scaleFactor;
 
-      var ringWidth = 20 * scale;
-      var ringInset = 25 * scale;
+      var ringWidth = 20 * scaleFactor;
+      var ringInset = 25 * scaleFactor;
 
       var outerInnerRatio = (7/6);
-      var innerRadius = 155 * scale;
+      var innerRadius = 155 * scaleFactor;
 
-      var minMaxArrowHeight = 10 * scale;
-      var minMaxArrowWidth = 10 * scale;
+      var minMaxArrowHeight = 10 * scaleFactor;
+      var minMaxArrowWidth = 10 * scaleFactor;
       var minMaxArrowOffset = ((outerInnerRatio * innerRadius) - innerRadius ) / 4;
 
       var minValue = -100;
@@ -90,7 +90,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var goodSignalStart = 12.5 * degreesToRads;
       var goodSignalEnd = 90 * degreesToRads;
 
-      var arrowCircleSize = 9 * scale;
+      var arrowCircleSize = 9 * scaleFactor;
 
       var noSignalFill = "#d3d3d3";
       var badSignalFill = "#cc4748";
@@ -99,8 +99,12 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
-      var labelInset = 15 * scale;
+      var labelInset = 15 * scaleFactor;
       var numLabels = 10;
+
+      var scale, degScale;
+
+      var pointer, minValueIndicator, maxValueIndicator;
 
       gauge.render = function() {
         // Canvas to draw all elements on
@@ -153,7 +157,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         // Draw circle below arrow
-        arrowCircle = vis.append('g')
+        var arrowCircle = vis.append('g')
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         arrowCircle.append('circle')
@@ -169,14 +173,14 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .domain([minValue, maxValue])
           .range([minAngle, maxAngle]);
 
-        ticks = scale.ticks(numLabels);
+        var numTicks = scale.ticks(numLabels);
 
         // Draw text labels on arc
         var arcLabels = arrowCircle.append('g')
               .attr('class', 'label');
 
         arcLabels.selectAll('text')
-          .data(ticks)
+          .data(numTicks)
           .enter().append('text')
             .text(labelFormat)
             .attr('transform', function(d) {
@@ -221,6 +225,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       };
 
       gauge.updateElement = function(elemName, newValue) {
+        var elem;
+
         if (elemName === 'pointer') {
           elem = pointer;
         }

@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('visBuilder', ['setupService', function(setupService) {
 
   var service = {};

@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('globalSettings', ['$timeout', 'setupService', function($timeout,
 setupService) {
 

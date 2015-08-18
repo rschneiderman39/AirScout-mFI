@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
   'channelGraphState', 'channelChecker', 'setupService', function($scope,
   visBuilder, accessPoints,  globalSettings, channelGraphState, channelChecker,
@@ -95,7 +97,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
     };
 
     function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
-                             _, _, _,
+                             _ignore1, _ignore2, _ignore3,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
                              navScalesY, band) {

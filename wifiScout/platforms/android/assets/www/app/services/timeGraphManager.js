@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService',
   function(accessPoints, globalSettings, setupService) {
 
