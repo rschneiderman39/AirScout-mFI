@@ -1,3 +1,5 @@
+"use strict";
+
 var app = angular.module('app', ['ngAnimate', 'ui.router', 'uiRouterStyles', 'setup', 'ngTouch', 'nzTour'])
   .config(function ($stateProvider, $urlRouterProvider) {
 

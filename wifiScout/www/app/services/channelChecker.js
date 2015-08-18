@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('channelChecker', ['setupService', function(setupService) {
 
   var service = {};

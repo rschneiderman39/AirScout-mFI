@@ -8,16 +8,16 @@
             <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
             <div id="selected-ap" class="panel panel-default no-padding">
               <div class="panel-body padded-1vh">
-                <div id="selectedAP" class="padded-1vh">{{selectedSSID !== undefined ? selectedSSID : "---"}}</div>
-                <div ng-show="isDuplicateSSID[selectedSSID]">({{selectedMAC}})</div>
+                <div id="selectedAP" class="padded-1vh">{{selectedSSID !== null ? selectedSSID : "---"}}</div>
+                <div ng-show="isDuplicateSSID[selectedSSID]">({{selectedMacAddr}})</div>
               </div>
             </div>
             <ul class="list list-group scrollable-list">
-              <span data-ng-repeat="d in legendData | orderBy:sortSSID">
-                <li class="listgroupitem" ng-class="{ active: isSelected(d.MAC) }" ng-click="toggleSelected(d.MAC);$event.stopPropagation()">
-                  <div class="legend-box" ng-style="{'background-color':d.color}"></div>
-                  <span class="legend-text">{{d.SSID}}</span>
-                  <div class="legend-text" ng-show="isDuplicateSSID[d.SSID]">({{d.MAC}})</div>
+              <span data-ng-repeat="item in legendData | orderBy:sortSSID">
+                <li class="listgroupitem" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
+                  <div class="legend-box" ng-style="{'background-color':item.color}"></div>
+                  <span class="legend-text">{{item.SSID}}</span>
+                  <div class="legend-text" ng-show="isDuplicateSSID[item.SSID]">({{item.MAC}})</div>
                 </li>
               </span>
             </ul>

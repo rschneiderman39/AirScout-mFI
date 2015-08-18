@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('globalSettings', ['$timeout', 'setupService', function($timeout,
 setupService) {
 
@@ -29,9 +31,9 @@ setupService) {
         globalAccessPointSelection = option;
         window.localStorage.setItem('globalAccessPointSelection', JSON.stringify(option));
 
-        for (var i = 0; i < filterableViews.length; ++i) {
-          document.dispatchEvent(new Event(events.newAccessPointSelection[filterableViews[i]]));
-        }
+        $.each(filterableViews, function(i, view) {
+          document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
+        });
       }
     };
 
@@ -58,9 +60,10 @@ setupService) {
         if (globalAccessPointSelection) {
           selections['global'] = utils.deepCopy(newSelection);
 
-          for (var i = 0; i < filterableViews.length; ++i) {
-            document.dispatchEvent(new Event(events.newAccessPointSelection[filterableViews[i]]));
-          }
+          $.each(filterableViews, function(i, view) {
+            document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
+          });
+
         } else {
           selections[view] = utils.deepCopy(newSelection);
 
@@ -84,12 +87,12 @@ setupService) {
       globalAccessPointSelection = JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) || defaults.globalAccessPointSelection;
       startingView = window.localStorage.getItem('startingView') || defaults.startingView;
 
-      for (var i = 0; i < filterableViews.length; ++i) {
-        selections[filterableViews[i]] = {
+      $.each(filterableViews, function(i, view) {
+        selections[view] = {
           macAddrs: [],
           showAll: true
         };
-      }
+      });
 
       selections['global'] = {
         macAddrs: [],

@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('visBuilder', ['setupService', function(setupService) {
 
   var service = {};
@@ -23,27 +25,38 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // navRightLabel
 
     service.buildVis = function(config, updateFn, elemScrollFn,
-      axisScrollFn, bandChangeFn, destructor) {
+      axisScrollFn, bandChangeFn, saveStateFn) {
       var vis = {};
 
       var band;
 
       var dim = {}, scales = {}, elem = {};
 
+      var hasNav = false;
+
       vis.update = function() {
-        updateFn(scales, elem, band);
+        if (hasNav) {
+          updateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
+                   elem.graph.container, elem.graph.axisFn.x, elem.graph.axisFn.y,
+                   elem.nav.left.clip, scales.nav.left.x,
+                   elem.nav.right.clip, scales.nav.right.x,
+                   scales.nav.y, band);
+        } else {
+          updateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
+                   elem.graph.axisFn.x, elem.graph.axisFn.y);
+        }
+
       };
 
-      vis.destroy = function() {
-        destructor(scales, elem, band);
-
-        d3.select('#vis').selectAll('*').remove();
+      vis.saveState = function() {
+        saveStateFn(elem.nav.right.slider, scales.nav.right.x, band);
       };
 
       buildGraph();
 
       if (config.navPercent > 0) {
         buildNav();
+        hasNav = true;
         setBand(config.band);
       }
 
@@ -306,8 +319,11 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
           slider.attr('x', sliderX);
 
-          axisScrollFn(scales, elem, band);
-          elemScrollFn(scales, elem, band);
+          axisScrollFn(elem.graph.container, elem.graph.axisFn.x,
+                       scales.graph.x, elem.nav.right.slider,
+                       scales.nav.right.x, band);
+
+          elemScrollFn(elem.graph.clip, scales.graph.x);
         };
 
         var sliderExtent = config.sliderExtent;
@@ -372,7 +388,9 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
           band = newBand;
 
-          bandChangeFn(scales, elem, band);
+          bandChangeFn(elem.graph.clip, scales.graph.x, elem.graph.container,
+                       elem.graph.axisFn.x, elem.nav.right.slider,
+                       scales.nav.right.x, band);
 
           vis.update();
         }

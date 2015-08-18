@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
   'channelGraphState', 'channelChecker', 'setupService', function($scope,
   visBuilder, accessPoints,  globalSettings, channelGraphState, channelChecker,
@@ -62,20 +64,24 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       config.sliderExtent = channelGraphState.sliderExtent() || prefs.defaultSliderExtent;
 
       var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
-        axisScrollFn, bandChangeFn, visDestructor);
+        axisScrollFn, bandChangeFn, saveStateFn);
 
       if (globalSettings.updatesPaused()) {
         document.addEventListener(events.swipeDone, firstUpdate);
       }
 
       var updateLoop = setInterval(vis.update, updateInterval);
+
       document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
+
         document.removeEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
-        vis.destroy();
+        vis.saveState();
+
+        d3.select('#vis').selectAll('*').remove();
       });
 
       function firstUpdate() {
@@ -90,7 +96,12 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       showAll = selection.showAll;
     };
 
-    function elementUpdateFn(scales, elem, band) {
+    function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
+                             _ignore1, _ignore2, _ignore3,
+                             navLeftClip, navLeftScalesX,
+                             navRightClip, navRightScalesX,
+                             navScalesY, band) {
+
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(data) {
           var selectedData;
@@ -116,13 +127,13 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         });
 
         if (band === '2_4') {
-          updateSection(scales.graph.x, scales.graph.y, elem.graph.clip, data2_4Ghz);
+          updateSection(graphScalesX, graphScalesY, graphClip, data2_4Ghz);
         } else if (band === '5') {
-          updateSection(scales.graph.x, scales.graph.y, elem.graph.clip, data5Ghz);
+          updateSection(graphScalesX, graphScalesY, graphClip, data5Ghz);
         }
 
-        updateSection(scales.nav.left.x, scales.nav.y, elem.nav.left.clip, data2_4Ghz);
-        updateSection(scales.nav.right.x, scales.nav.y, elem.nav.right.clip, data5Ghz);
+        updateSection(navLeftScalesX, navScalesY, navLeftClip, data2_4Ghz);
+        updateSection(navRightScalesX, navScalesY, navRightClip, data5Ghz);
 
         function updateSection(xScale, yScale, clip, data) {
           var parabolas = clip.selectAll('.parabola')
@@ -170,7 +181,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       function updateLabels(data) {
         /* Bind new data */
-        var labels = elem.graph.clip.selectAll('text')
+        var labels = graphClip.selectAll('text')
           .data(data.sort(function(a, b) {
             return b.level - a.level;
           }), function(d) {
@@ -188,9 +199,9 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
             return d.color;
           })
           .attr('x', function(d) {
-            return scales.graph.x(d.channel) - this.getBBox().width / 2;
+            return graphScalesX(d.channel) - this.getBBox().width / 2;
           })
-          .attr('y', scales.graph.y(constants.noSignal))
+          .attr('y', graphScalesY(constants.noSignal))
 
         labels.order();
 
@@ -204,76 +215,84 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return scales.graph.y(d.level) - prefs.labelPadding;
+              return graphScalesY(d.level) - prefs.labelPadding;
             });
 
         /* Remove labels that no longer belong to any data */
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', scales.graph.y(constants.noSignal))
+          .attr('y', graphScalesY(constants.noSignal))
           .remove();
       };
     };
 
     /* Move plot elements to match a new viewport extent */
-    function elementScrollFn(scales, elem) {
+    function elementScrollFn(graphClip, graphScalesX) {
       /* Move parabolas */
-      elem.graph.clip.selectAll('.parabola')
+      graphClip.selectAll('.parabola')
         .attr('transform', function(d) {
-          return 'translate(' + scales.graph.x(d.channel) + ')';
+          return 'translate(' + graphScalesX(d.channel) + ')';
         });
 
       /* Move labels */
-      elem.graph.clip.selectAll('text')
+      graphClip.selectAll('text')
         .attr('x', function(d) {
-          return scales.graph.x(d.channel) - this.getBBox().width / 2;
+          return graphScalesX(d.channel) - this.getBBox().width / 2;
         });
     };
 
     /* "Translate" x axis to account for a new slider extent */
-    function axisScrollFn(scales, elem, band) {
+    function axisScrollFn(graphContainer, graphAxisFnX,
+                          graphScalesX, navRightSlider,
+                          navRightScalesX, band) {
+
       if (band === '2_4') {
-        scales.graph.x.domain(prefs.domain2_4);
+        graphScalesX.domain(prefs.domain2_4);
 
       } else if (band === '5') {
-        var xScale = scales.nav.right.x,
-            slider = elem.nav.right.slider;
+        var xScale = navRightScalesX,
+            slider = navRightSlider;
 
-        scales.graph.x
+        graphScalesX
           .domain([xScale.invert(slider.attr('x')),
             xScale.invert(parseFloat(slider.attr('x')) +
             parseFloat(slider.attr('width')))]);
       }
 
-      elem.graph.container.select('.x.axis').call(elem.graph.axisFn.x);
+      graphContainer.select('.x.axis').call(graphAxisFnX);
 
-      markDisallowedChannels(elem);
+      markDisallowedChannels(graphContainer);
     };
 
-    function bandChangeFn(scales, elem, band) {
-      axisScrollFn(scales, elem, band);
-      elementScrollFn(scales, elem, band);
+    function bandChangeFn(graphClip, graphScalesX,
+                          graphContainer, graphAxisFnX,
+                          navRightSlider, navRightScalesX, band) {
 
-      elem.graph.clip.selectAll('.parabola').remove();
-      elem.graph.clip.selectAll('text').remove();
+      axisScrollFn(graphContainer, graphAxisFnX, graphScalesX,
+                   navRightSlider, navRightScalesX, band);
 
-      elem.graph.axisFn.x.ticks(utils.spanLen(scales.graph.x.domain()));
-      elem.graph.container.select('.x.axis').call(elem.graph.axisFn.x);
+      elementScrollFn(graphClip, graphScalesX, band);
 
-      markDisallowedChannels(elem);
+      graphClip.selectAll('.parabola').remove();
+      graphClip.selectAll('text').remove();
+
+      graphAxisFnX.ticks(utils.spanLen(graphScalesX.domain()));
+      graphContainer.select('.x.axis').call(graphAxisFnX);
+
+      markDisallowedChannels(graphContainer);
     };
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    function markDisallowedChannels(elem) {
-      elem.graph.container.selectAll('.x.axis > .tick')
+    function markDisallowedChannels(graphContainer) {
+      graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelChecker.isAllowableChannel(d) === undefined;
         })
           .remove();
 
-      elem.graph.container.selectAll('.x.axis > .tick')
+      graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelChecker.isAllowableChannel(d) === false;
         })
@@ -281,11 +300,11 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function visDestructor(scales, elem, band) {
+    function saveStateFn(navRightSlider, navRightScalesX, band) {
       var slider, extentMin, extentMax, xScale;
 
-      slider = elem.nav.right.slider;
-      xScale = scales.nav.right.x;
+      slider = navRightSlider;
+      xScale = navRightScalesX;
 
       extentMin = xScale.invert(parseFloat(slider.attr('x'))),
       extentMax = xScale.invert(parseFloat(slider.attr('x')) +

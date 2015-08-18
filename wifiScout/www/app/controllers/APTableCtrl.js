@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
 'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
 accessPoints, globalSettings, APTableState, setupService) {

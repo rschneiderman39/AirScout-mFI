@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
   $('#nav-bar').css('bottom',  1 - $('#nav-bar').height());
 

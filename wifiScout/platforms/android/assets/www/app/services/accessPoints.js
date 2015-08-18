@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('accessPoints', ['globalSettings', 'setupService', function(
   globalSettings, setupService) {
 
@@ -45,11 +47,13 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
         var defer = $.Deferred();
 
         service.getAll().done(function(accessPoints) {
-          for (var i = 0; i < accessPoints.length; ++i) {
-            if (accessPoints[i].MAC === macAddr) {
-              defer.resolve(accessPoints[i]);
+
+          $.each(accessPoints, function(i, accessPoint) {
+            if (accessPoint.MAC === macAddr) {
+              defer.resolve(accessPoint);
             }
-          }
+          });
+
           defer.resolve(null);
         });
 
@@ -63,17 +67,17 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
 
         window.plugins.WifiAdmin.getWifiInfo(
           function success(info) {
-            var accessPoints = [],
-                avail = info.available;
+            var accessPoints = [];
 
             accessPointCount = 0;
 
-            for (var i = 0; i < avail.length; ++i) {
-              if (globalSettings.detectHidden() || avail[i].SSID !== "") {
-                accessPoints.push(new AccessPoint(avail[i]));
+            $.each(info.available, function(i, scanResult) {
+              if (globalSettings.detectHidden() || scanResult.SSID !== "") {
+                accessPoints.push(new AccessPoint(scanResult));
                 ++accessPointCount;
               }
-            }
+            });
+
             defer.resolve(accessPoints);
           },
           function failure() {
@@ -81,24 +85,6 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
             defer.resolve([]);
           }
         );
-
-        return defer;
-      };
-
-      service.getAllInBand = function(band) {
-        var defer = $.Deferred();
-
-        service.getAll().done(function(accessPoints) {
-          var accessPointsInBand = [];
-
-          for (var i = 0; i < accessPoints.length; ++i) {
-            if (utils.inBand(accessPoints[i].frequency, band)) {
-              accessPointsInBand.push(accessPoints[i]);
-            }
-          }
-
-          defer.resolve(accessPointsInBand);
-        });
 
         return defer;
       };

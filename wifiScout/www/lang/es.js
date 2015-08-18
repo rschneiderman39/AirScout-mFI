@@ -1,5 +1,7 @@
+"use strict";
+
 if (typeof languages === 'undefined') {
-  languages = {};
+  var languages = {};
 }
 
 languages['es'] = {
@@ -75,7 +77,8 @@ languages['es'] = {
   },
   timeGraph: {
     legendHeader: 'Selecciona un punto de acceso para destacarlo:',
-    axisLabel: 'Nivel (dBm)',
+    labelX: 'Segundos Transcurrido',
+    labelY: 'Nivel (dBm)',
     tour: {
       graph: "This interactive graph displays the measured signal strength"
         + " of each access point over time.",

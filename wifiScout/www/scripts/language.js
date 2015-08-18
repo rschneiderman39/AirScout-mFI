@@ -1,4 +1,8 @@
-if (typeof setup === 'undefined') { setup = {} }
+"use strict";
+
+if (typeof setup === 'undefined') { var setup = {}; }
+
+var strings = {};
 
 setup.language = function() {
   var progress = $.Deferred();

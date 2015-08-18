@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
   'channelTableState', 'channelChecker', 'setupService', function($scope,
   visBuilder, accessPoints, globalSettings, channelTableState, channelChecker,
@@ -64,7 +66,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       config.sliderExtent = channelTableState.sliderExtent() || prefs.defaultSliderExtent;
 
       var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
-        axisScrollFn, bandChangeFn, visDestructor);
+        axisScrollFn, bandChangeFn, saveStateFn);
 
       if (globalSettings.updatesPaused()) {
         document.addEventListener(events.swipeDone, firstUpdate);
@@ -75,7 +77,9 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
 
-        vis.destroy();
+        vis.saveState();
+
+        d3.select('#vis').selectAll('*').remove();
       });
 
       function firstUpdate() {
@@ -84,7 +88,12 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       };
     };
 
-    function elementUpdateFn(scales, elem, band) {
+    function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
+                             graphContainer, graphAxisFnX, graphAxisFnY,
+                             navLeftClip, navLeftScalesX,
+                             navRightClip, navRightScalesX,
+                             navScalesY) {
+
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           var numOccupants = {},
@@ -116,9 +125,9 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       }
 
       function updateBars(data) {
-        updateSection(scales.graph.x, scales.graph.y, elem.graph.clip, data);
-        updateSection(scales.nav.left.x, scales.nav.y, elem.nav.left.clip, data);
-        updateSection(scales.nav.right.x, scales.nav.y, elem.nav.right.clip, data);
+        updateSection(graphScalesX, graphScalesY, graphClip, data);
+        updateSection(navLeftScalesX, navScalesY, navLeftClip, data);
+        updateSection(navRightScalesX, navScalesY, navRightClip, data);
 
         function updateSection(xScale, yScale, clip, data) {
           var bars = clip.selectAll('.bar')
@@ -161,7 +170,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       };
 
       function updateLabels(data) {
-        var labels = elem.graph.clip.selectAll('text')
+        var labels = graphClip.selectAll('text')
           .data(data, function(d) {
             return d.channel;
           });
@@ -172,19 +181,19 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           })
           .attr('fill', prefs.labelColor)
           .attr('x', function(d) {
-            return scales.graph.x(d.channel);
+            return graphScalesX(d.channel);
           })
           .attr('transform', function(d) {
             return 'translate(-' + (this.getBBox().width / 2) + ')';
           })
-          .attr('y', scales.graph.y(0))
+          .attr('y', graphScalesY(0))
 
         labels
           .interrupt()
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return scales.graph.y(d.occupancy) - prefs.labelPadding;
+              return graphScalesY(d.occupancy) - prefs.labelPadding;
             })
             .text(function(d) {
               return d.occupancy;
@@ -193,7 +202,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', scales.graph.y(constants.noSignal))
+          .attr('y', graphScalesY(constants.noSignal))
           .remove();
       };
 
@@ -203,10 +212,10 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           return d.occupancy;
         });
 
-        rescaleSection(elem.graph.container, elem.graph.axisFn.y,
-                       elem.graph.clip, scales.graph.y);
-        rescaleSection(null, null, elem.nav.left.clip, scales.nav.y);
-        rescaleSection(null, null, elem.nav.right.clip, scales.nav.y);
+        rescaleSection(graphContainer, graphAxisFnY,
+                       graphClip, graphScalesY);
+        rescaleSection(null, null, navLeftClip, navScalesY);
+        rescaleSection(null, null, navRightClip, navScalesY);
 
         function rescaleSection(container, axisFn, clip, yScale) {
           var rescaleNeeded = false;
@@ -250,72 +259,81 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
     };
 
     /* Move plot elements to match a new viewport extent */
-    function elementScrollFn(scales, elem) {
+    function elementScrollFn(graphClip, graphScalesX) {
       /* Move parabolas */
-      elem.graph.clip.selectAll('.bar')
+      graphClip.selectAll('.bar')
         .attr('x', function(d) {
-          return scales.graph.x(d.channel);
+          return graphScalesX(d.channel);
         });
 
       /* Move labels */
-      elem.graph.clip.selectAll('text')
+      graphClip.selectAll('text')
         .attr('x', function(d) {
-          return scales.graph.x(d.channel);
+          return graphScalesX(d.channel);
         });
     };
 
     /* "Translate" (really a rescale) x axis to account for a new viewport extent */
-    function axisScrollFn(scales, elem, band) {
-      if (band === '2_4') {
-        scales.graph.x.domain(prefs.domain2_4);
-      } else if (band === '5') {
-        var xScale = scales.nav.right.x,
-            slider = elem.nav.right.slider;
+    function axisScrollFn(graphContainer, graphAxisFnX,
+                          graphScalesX, navRightSlider,
+                          navRightScalesX, band) {
 
-        scales.graph.x
+      if (band === '2_4') {
+        graphScalesX.domain(prefs.domain2_4);
+      } else if (band === '5') {
+        var xScale = navRightScalesX,
+            slider = navRightSlider;
+
+        graphScalesX
           .domain([xScale.invert(slider.attr('x')),
             xScale.invert(parseFloat(slider.attr('x')) +
             parseFloat(slider.attr('width')))]);
       }
 
-      elem.graph.container.select('.x.axis').call(elem.graph.axisFn.x);
+      graphContainer.select('.x.axis').call(graphAxisFnX);
 
-      removeDisallowedChannels(elem);
+      removeDisallowedChannels(graphContainer);
     };
 
-    function bandChangeFn(scales, elem, band) {
-      axisScrollFn(scales, elem, band);
-      elementScrollFn(scales, elem, band);
+    function bandChangeFn(graphClip, graphScalesX,
+                          graphContainer, graphAxisFnX,
+                          navRightSlider, navRightScalesX, band) {
 
-      elem.graph.clip.selectAll('.bar')
+      axisScrollFn(graphContainer, graphAxisFnX,
+                   graphScalesX, navRightSlider,
+                   navRightScalesX, band);
+
+      elementScrollFn(graphClip, graphScalesX);
+
+      graphClip.selectAll('.bar')
         .attr('width', function(d) {
-          return barWidth(scales.graph.x);
+          return barWidth(graphScalesX);
         })
         .attr('transform', function(d) {
-          return 'translate(-' + (barWidth(scales.graph.x) / 2) + ')';
+          return 'translate(-' + (barWidth(graphScalesX) / 2) + ')';
         });
 
-      elem.graph.clip.selectAll('text')
+      graphClip.selectAll('text')
         .attr('transform', function(d) {
           return 'translate(-' + (this.getBBox().width / 2) + ')';
         });
 
-      elem.graph.axisFn.x.ticks(utils.spanLen(scales.graph.x.domain()));
-      elem.graph.container.select('.x.axis').call(elem.graph.axisFn.x);
+      graphAxisFnX.ticks(utils.spanLen(graphScalesX.domain()));
+      graphContainer.select('.x.axis').call(graphAxisFnX);
 
-      removeDisallowedChannels(elem);
+      removeDisallowedChannels(graphContainer);
     };
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    function removeDisallowedChannels(elem) {
-      elem.graph.container.selectAll('.x.axis > .tick')
+    function removeDisallowedChannels(graphContainer) {
+      graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelChecker.isAllowableChannel(d) === undefined;
         })
           .remove();
 
-      elem.graph.container.selectAll('.x.axis > .tick')
+      graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelChecker.isAllowableChannel(d) === false;
         })
@@ -323,11 +341,11 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function visDestructor(scales, elem, band) {
+    function saveStateFn(navRightSlider, navRightScalesX, band) {
       var slider, extentMin, extentMax, xScale;
 
-      slider = elem.nav.right.slider;
-      xScale = scales.nav.right.x;
+      slider = navRightSlider;
+      xScale = navRightScalesX;
 
       extentMin = xScale.invert(parseFloat(slider.attr('x'))),
       extentMax = xScale.invert(parseFloat(slider.attr('x')) +
