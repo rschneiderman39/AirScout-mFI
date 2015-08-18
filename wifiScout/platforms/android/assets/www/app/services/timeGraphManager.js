@@ -111,10 +111,6 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           correspondingDataPoint = macAddrToDataPoint[macAddr];
 
           /* Remove dummy end points (there to allow fill) */
-<<<<<<< HEAD
-          dataset.shift();
-=======
->>>>>>> 075e0c04f388732fe183b9cd8ab89578a9909e2e
           dataset.shift();
           dataset.pop();
 
