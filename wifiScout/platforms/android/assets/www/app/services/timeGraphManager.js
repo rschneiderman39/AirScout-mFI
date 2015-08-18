@@ -56,7 +56,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
 
           correspondingDataPoint = macAddrToDataPoint[macAddr];
 
-          /* get rid of dummy datapoints */
+          /* Remove dummy end points (there to allow fill) */
           dataset.shift();
           dataset.shift();
           dataset.pop();
@@ -71,7 +71,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
             });
           }
 
-          /* Add dummy data points to allow fill */
+          /* Add dummy end points (to allow fill)*/
           dataset.unshift({
             level: constants.noSignal
           });
