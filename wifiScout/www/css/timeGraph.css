@@ -65,6 +65,7 @@
 }
 
 #time-graph {
+  padding: 0px;
   position: relative;
   -webkit-transform: translateY(3%);
 }

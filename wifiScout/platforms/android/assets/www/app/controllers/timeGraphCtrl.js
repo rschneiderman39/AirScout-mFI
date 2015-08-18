@@ -10,10 +10,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         domain: timeGraphManager.getDomain(),
         range: [constants.noSignal, constants.maxSignal],
         lineWidth: 2,
+        highlightedLineWidth: 6,
         highlightOpacity: 0.3
       };
-
-      var selectedMacAddr = "";
 
       var updateInterval = timeGraphManager.getUpdateInterval(),
           domain = timeGraphManager.getDomain();
@@ -21,29 +20,32 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       $scope.strings = strings;
       $scope.legendData = undefined;
       $scope.isDuplicateSSID = {};
+      $scope.selectedSSID = null;
+      $scope.selectedMacAddr = null;
 
-      $scope.toggleSelected = function(macAddr) {
-        if (typeof macAddr === 'string') {
-          if (macAddr === selectedMacAddr) {
-            selectedMacAddr = "";
-          } else {
-            selectedMacAddr = macAddr;
-          }
-          graph.toggleHighlight(macAddr);
+      $scope.toggleSelected = function(legendItem) {
+        if (legendItem.MAC === $scope.selectedMacAddr) {
+          $scope.selectedMacAddr = null;
+          $scope.selectedSSID = null;
+        } else {
+          $scope.selectedMacAddr = legendItem.MAC;
+          $scope.selectedSSID = legendItem.SSID;
         }
+
+        timeGraphManager.toggleHighlight(legendItem.MAC);
       };
 
-      $scope.isSelected = function(macAddr) {
-        return macAddr === selectedMacAddr;
+      $scope.isSelected = function(legendItem) {
+        return legendItem.MAC === $scope.selectedMacAddr;
       };
 
       function init() {
         var config = {
           graphDomain: prefs.domain,
           graphMargins: {
-            top: 30,
-            bottom: 40,
-            left: 40,
+            top: 20,
+            bottom: 25,
+            left: 50,
             right: 10
           },
           gridLineOpacity: 0.5,
@@ -53,24 +55,56 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           navPercent: 0,
           range: prefs.range,
           width: undefined,
-          xAxisTickInterval: 10,
+          xAxisTickInterval: 5,
           yAxisTickInterval: 10
         };
 
-        config.width = $('#time-graph').width() * 0.95;
+        config.width = $('#time-graph').width();
         config.height = ($(window).height() - $('#top-bar').height()) * 0.95;
 
         var vis = visBuilder.buildVis(config, elementUpdateFn, null,
           null, null, null);
 
+        $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
+        $scope.selectedMacAddr = timeGraphManager.getHighlightedMacAddr();
+
+        updateLegend();
+
         document.addEventListener(events.newTimeGraphData, vis.update);
+
+        document.addEventListener(events.newLegendData, updateLegend);
 
         $scope.$on('$destroy', function() {
           document.removeEventListener(events.newTimeGraphData, vis.update);
 
+          document.removeEventListener(events.newLegendData, updateLegend);
+
           d3.select('#vis').selectAll('*').remove();
         });
 
+      };
+
+      function updateDuplicateSSIDs() {
+        var found = {},
+            duplicates = {};
+
+        $.each($scope.legendData, function(i, legendItem) {
+          if (found[legendItem.SSID]) {
+            duplicates[legendItem.SSID] = true;
+          } else {
+            found[legendItem.SSID] = true;
+          }
+        });
+
+        $scope.isDuplicateSSID = duplicates;
+      };
+
+      function updateLegend() {
+        $timeout(function() {
+          $scope.legendData = timeGraphManager.getLegendData();
+
+          updateDuplicateSSIDs();
+        });
       };
 
       function elementUpdateFn(graphClip, graphScalesX, graphScalesY) {
@@ -112,6 +146,13 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
               return 'none';
             }
           })
+          .attr('stroke-width', function(d) {
+            if (d.highlight) {
+              return prefs.highlightedLineWidth;
+            } else {
+              return prefs.lineWidth;
+            }
+          })
           .attr('d', function(d) {
             return lineGenerator(d.dataset);
           })
@@ -121,7 +162,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
             .ease('linear')
             .attr('transform', 'translate(0)');
 
-      }
+      };
 
       init();
 

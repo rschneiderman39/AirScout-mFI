@@ -77,7 +77,8 @@ languages['en'] = {
   },
   timeGraph: {
     legendHeader: 'Select an AP to highlight it:',
-    axisLabel: 'Level (dBm)',
+    labelX: 'Time (s)',
+    labelY: 'Level (dBm)',
     tour: {
       graph: "This interactive graph displays the measured signal strength"
         + " of each access point over time.",
