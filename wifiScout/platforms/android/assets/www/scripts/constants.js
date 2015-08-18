@@ -2,7 +2,7 @@
 
 var constants = {
   noSignal: -100,
-  maxSignal: -30,
+  maxSignal: -20,
   moderateThresh: 15,
   highThresh: 30,
   updateIntervalFast: 500,

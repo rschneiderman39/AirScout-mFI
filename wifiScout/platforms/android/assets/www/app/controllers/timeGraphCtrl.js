@@ -141,6 +141,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         lines
           .attr('fill', function(d) {
             if (d.highlight) {
+              this.parentNode.appendChild(this);
               return utils.toNewAlpha(d.color, prefs.highlightOpacity);
             } else {
               return 'none';

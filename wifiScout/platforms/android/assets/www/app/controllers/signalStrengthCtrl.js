@@ -8,6 +8,16 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var gaugeUpdateInterval = constants.updateIntervalNormal,
         listUpdateInterval = 5000;
 
+    var prefs = {
+      badSignalThresh: -95,
+      okSignalThresh: -80,
+      goodSignalThresh: -55,
+      noSignalFill: "#d3d3d3",
+      badSignalFill: "#cc4748",
+      okSignalFill: "#fdd400",
+      goodSignalFill: "#84b761"
+    };
+
     $scope.accessPoints = [];
     $scope.isDuplicateSSID = {};
     $scope.level = undefined;
@@ -45,19 +55,37 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       // Scale speedometer to device size
       // Initial SVG canvas sizing
       var baseWidth = 400;
-      var width = $(window).width() * .6;
-      var scaleFactor = width / baseWidth;
 
+      var width = $(window).width() * .6;
       var height = $(window).height() * .6;
 
+      var scaleFactor = width / baseWidth;
 
       // Sets arrow to grey area on gauge - AKA - AP went out of range
-      var noSignal = -90;
+      var minAngle = -90,
+          maxAngle = 90;
+
+      var minLevelAngle = -84,
+          maxLevelAngle = 90;
+
+      // Scale for text formatting around arcs
+      var scale = d3.scale.linear()
+        .domain([constants.noSignal, constants.maxSignal])
+        .range([0,1])
+
+      var ticks = scale.ticks(numLabels);
+
+      var levelDegScale = d3.scale.linear()
+        .domain([constants.noSignal, constants.maxSignal])
+        .range([minLevelAngle, maxLevelAngle]);
+
+      var arcDegScale = d3.scale.linear()
+        .domain([constants.noSignal, constants.maxSignal])
+        .range([minAngle, maxAngle]);
+
+      var degreesToRads = Math.PI / 180;
 
       // Valid signal strength range on the gauge
-      var minSignal = -100;
-      var maxSignal = -10;
-
       var arcRadius = ( baseWidth / 2 ) * scaleFactor;
       var arcTransform = 200 * scaleFactor;
 
@@ -73,36 +101,16 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var minMaxArrowWidth = 10 * scaleFactor;
       var minMaxArrowOffset = ((outerInnerRatio * innerRadius) - innerRadius ) / 4;
 
-      var minValue = -100;
-      var maxValue = -10;
-
-      var minAngle = -84;
-      var maxAngle = 90;
-
-      var pi = Math.PI;
-      var degreesToRads = (pi/180);
-      var noSignalStart = -90 * degreesToRads; //converting from degs to radians
-      var noSignalEnd = -84 * degreesToRads;
-      var badSignalStart = -84 * degreesToRads;
-      var badSignalEnd = -45 * degreesToRads;
-      var okSignalStart = -45 * degreesToRads;
-      var okSignalEnd = 12.5 * degreesToRads;
-      var goodSignalStart = 12.5 * degreesToRads;
-      var goodSignalEnd = 90 * degreesToRads;
+      var noSignalStart = arcDegScale(constants.noSignal) * degreesToRads,
+          badSignalStart = arcDegScale(prefs.badSignalThresh) * degreesToRads,
+          okSignalStart = arcDegScale(prefs.okSignalThresh) * degreesToRads,
+          goodSignalStart = arcDegScale(prefs.goodSignalThresh) * degreesToRads;
 
       var arrowCircleSize = 9 * scaleFactor;
-
-      var noSignalFill = "#d3d3d3";
-      var badSignalFill = "#cc4748";
-      var okSignalFill = "#fdd400";
-      var goodSignalFill = "#84b761";
-      var blackFill = "#000000";
 
       var labelFormat = d3.format(',g');
       var labelInset = 15 * scaleFactor;
       var numLabels = 10;
-
-      var scale, degScale;
 
       var pointer, minValueIndicator, maxValueIndicator;
 
@@ -115,45 +123,45 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .innerRadius(innerRadius)
           .outerRadius(innerRadius * outerInnerRatio)
           .startAngle(noSignalStart)
-          .endAngle(noSignalEnd)
+          .endAngle(badSignalStart)
 
         var badSignalArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(innerRadius * outerInnerRatio)
           .startAngle(badSignalStart)
-          .endAngle(badSignalEnd)
+          .endAngle(okSignalStart)
 
         var okSignalArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(innerRadius * outerInnerRatio)
           .startAngle(okSignalStart)
-          .endAngle(okSignalEnd)
+          .endAngle(goodSignalStart)
 
         var goodSignalArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(innerRadius * outerInnerRatio)
           .startAngle(goodSignalStart)
-          .endAngle(goodSignalEnd)
+          .endAngle(maxAngle * degreesToRads)
 
         vis.attr("width", width).attr("height", height) // Added height and width so arc is visible
           .append("path")
           .attr("d", noSignalArc)
-          .attr("fill", noSignalFill)
+          .attr("fill", prefs.noSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         vis.append("path")
           .attr("d", badSignalArc)
-          .attr("fill", badSignalFill)
+          .attr("fill", prefs.badSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         vis.append("path")
           .attr("d", okSignalArc)
-          .attr("fill", okSignalFill)
+          .attr("fill", prefs.okSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         vis.append("path")
           .attr("d", goodSignalArc)
-          .attr("fill", goodSignalFill)
+          .attr("fill", prefs.goodSignalFill)
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         // Draw circle below arrow
@@ -161,35 +169,24 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .attr("transform", "translate(" +arcTransform +"," +arcTransform +")");
 
         arrowCircle.append('circle')
-          .attr('fill', blackFill)
+          .attr('fill', 'black')
           .attr('r', arrowCircleSize);
-
-        // Scale for text formatting around arcs
-        scale = d3.scale.linear()
-          .domain([minValue, maxValue])
-          .range([0,1]);
-
-        degScale = d3.scale.linear()
-          .domain([minValue, maxValue])
-          .range([minAngle, maxAngle]);
-
-        var numTicks = scale.ticks(numLabels);
 
         // Draw text labels on arc
         var arcLabels = arrowCircle.append('g')
               .attr('class', 'label');
 
         arcLabels.selectAll('text')
-          .data(numTicks)
+          .data(ticks)
           .enter().append('text')
             .text(labelFormat)
             .attr('transform', function(d) {
-              return 'rotate(' +degScale(d) +') translate(0,' +(labelInset - arcRadius)+ ')';
+              return 'rotate(' +arcDegScale(d) +') translate(0,' +(labelInset - arcRadius)+ ')';
             });
 
         // Draw arrow
         pointer = arrowCircle.append('g')
-          .attr('transform', 'rotate(' +noSignal + ')');
+          .attr('transform', 'rotate(' + minAngle + ')');
 
         pointer.append('path')
           .attr('stroke', 'black')
@@ -206,7 +203,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .append('path')
           .attr("d", utils.generateTriangle(minMaxArrowWidth, minMaxArrowHeight))
           .attr('transform', 'rotate(180)')
-          .attr("fill", blackFill);
+          .attr("fill", 'black');
 
         // Draw maximum indicator triangle
         maxValueIndicator = arrowCircle.append('g')
@@ -217,7 +214,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           .append('path')
             .attr("d", utils.generateTriangle((minMaxArrowWidth), (minMaxArrowHeight)))
             .attr('transform', 'rotate(180)')
-            .attr("fill", blackFill);
+            .attr("fill", 'black');
 
         gauge.updateElement('pointer', undefined);
         gauge.updateElement('minValueIndicator', undefined);
@@ -238,17 +235,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         }
 
         if (newValue !== undefined) {
-          if (newValue > maxSignal) {
-            newValue = maxSignal;
+          if (newValue > constants.maxSignal) {
+            newValue = constants.maxSignal;
           }
-          else if (newValue < minSignal) {
-            newValue = noSignal;
+          else if (newValue < constants.noSignal) {
+            newValue = constants.noSignal;
           }
 
           elem.transition()
             .duration(gaugeUpdateInterval)
             .ease('quad')
-            .attr('transform', 'rotate(' +degScale(newValue)+ ')');
+            .attr('transform', 'rotate(' +levelDegScale(newValue)+ ')');
 
         } else {
           elem.transition()
