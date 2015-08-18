@@ -1,3 +1,5 @@
+"use strict";
+
 document.addEventListener('deviceready', function() {
 
   setup.region().done(function() {

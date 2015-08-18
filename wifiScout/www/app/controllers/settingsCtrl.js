@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 'setupService', function($scope, $location, globalSettings, setupService) {
 

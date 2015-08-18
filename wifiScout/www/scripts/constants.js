@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
   constants = {
     noSignal: -100,

@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
   'visBuilder', 'setupService', function($scope, $timeout, timeGraphManager,
   visBuilder, setupService) {
@@ -65,22 +67,25 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
         $scope.$on('$destroy', function() {
           document.removeEventListener(events.newTimeGraphData, vis.update);
-        })
+
+          d3.select('#vis').selectAll('*').remove();
+        });
+
       };
 
-      function elementUpdateFn(scales, elem) {
+      function elementUpdateFn(graphClip, graphScalesX, graphScalesY, _, _) {
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
-            return scales.graph.x(domain[0] + (i-2) * (updateInterval / 1000));
+            return graphScalesX(domain[0] + (i-2) * (updateInterval / 1000));
           })
           .y(function(d, i) {
-            return scales.graph.y(d.level);
+            return graphScalesY(d.level);
           })
           .interpolate('linear');
 
         var datasets = timeGraphManager.getSelectedDatasets();
 
-        var lines = elem.graph.clip.selectAll('.data-line')
+        var lines = graphClip.selectAll('.data-line')
           .data(datasets, function(d, i) {
             return d.MAC;
           });
@@ -97,7 +102,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           .attr('stroke-width', prefs.lineWidth)
           .attr('fill', 'none');
 
-        var translation = scales.graph.x(updateInterval / 1000) - scales.graph.x(0);
+        var translation = graphScalesX(updateInterval / 1000) - graphScalesX(0);
 
         lines
           .attr('fill', function(d) {

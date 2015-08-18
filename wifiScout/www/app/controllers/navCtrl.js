@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout', 'globalSettings', 'nzTour', 'setupService',
 function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupService) {
 

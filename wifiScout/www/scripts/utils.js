@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
   utils = {};
 
@@ -101,5 +103,5 @@
   utils.spanLen = function(span) {
     return span[1] - span[0];
   };
-  
+
 })();

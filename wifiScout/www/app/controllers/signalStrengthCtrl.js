@@ -1,3 +1,5 @@
+"use strict";
+
 app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'accessPoints',
 'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
 

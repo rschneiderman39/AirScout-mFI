@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
   channels = {};
   channels.presets = {};
@@ -661,5 +663,5 @@
   channels['YE'] = channels.presets['1-13'];
   channels['ZA'] = channels.presets['1-13,36-48,149-165'];
   channels['ZW'] = channels.presets['1-13'];
-  
+
 })();

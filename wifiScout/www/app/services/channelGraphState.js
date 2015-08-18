@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('channelGraphState', ['setupService', function(setupService) {
 
   var service = {};

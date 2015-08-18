@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('channelTableState', ['setupService', function(setupService) {
 
   var service = {};

@@ -1,3 +1,5 @@
+"use strict";
+
 if (typeof setup === 'undefined') { setup = {} }
 
 setup.language = function() {
