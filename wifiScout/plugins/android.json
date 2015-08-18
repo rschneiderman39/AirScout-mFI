@@ -13,6 +13,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"WifiAdmin\"><param name=\"android-package\" value=\"com.rjfun.cordova.plugin.WifiAdmin\" /></feature>",
                             "count": 1
                         }
@@ -49,6 +53,9 @@
     },
     "installed_plugins": {
         "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
+        },
+        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7"
         },
         "cordova-plugin-wifi": {

@@ -15,6 +15,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "id": "cordova-plugin-splashscreen.SplashScreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-wifi/www/WifiAdmin.js",
         "id": "cordova-plugin-wifi.WifiAdmin",
         "clobbers": [
@@ -26,6 +33,7 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-globalization": "1.0.1",
+    "cordova-plugin-splashscreen": "2.1.0",
     "cordova-plugin-wifi": "0.5.0"
 }
 // BOTTOM OF METADATA

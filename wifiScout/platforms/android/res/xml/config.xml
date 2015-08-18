@@ -4,6 +4,10 @@
     <feature name="Globalization">
         <param name="android-package" value="org.apache.cordova.globalization.Globalization" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="WifiAdmin">
         <param name="android-package" value="com.rjfun.cordova.plugin.WifiAdmin" />
     </feature>
@@ -11,23 +15,20 @@
     <icon density="mdpi" src="res/icons/android/icon.png" />
     <icon density="hdpi" src="res/icons/android/icon.png" />
     <icon density="xhdpi" src="res/icons/android/icon.png" />
-    <splash density="land-hdpi" src="res/screens/android/screen-hdpi-landscape.png" />
-    <splash density="land-ldpi" src="res/screens/android/screen-ldpi-landscape.png" />
-    <splash density="land-mdpi" src="res/screens/android/screen-mdpi-landscape.png" />
-    <splash density="land-xhdpi" src="res/screens/android/screen-xhdpi-landscape.png" />
-    <splash density="port-hdpi" src="res/screens/android/screen-hdpi-portrait.png" />
-    <splash density="port-ldpi" src="res/screens/android/screen-ldpi-portrait.png" />
-    <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
-    <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />
+    <splash density="land-hdpi" src="res/screens/android/stock.png" />
+    <splash density="land-ldpi" src="res/screens/android/stock.png" />
+    <splash density="land-mdpi" src="res/screens/android/stock.png" />
+    <splash density="land-xhdpi" src="res/screens/android/stock.png" />
     <name>AirScout mFI</name>
     <description />
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team </author>
+    <preference name="Orientation" value="landscape" />
     <content src="index.html" />
     <access origin="*" />
     <vs:features />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="windows-target-version" value="8.1" />
-    <preference name="windows-phone-target-version" value="8.1" />
     <log level="debug" />
-    <preference name="Orientation" value="landscape" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="4000" />
+    <preference name="SplashMaintainAspectRatio" value="false" />
+    <preference name="windows-target-version" value="8.1" />
 </widget>
