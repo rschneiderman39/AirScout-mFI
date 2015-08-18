@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService',
   function(accessPoints, globalSettings, setupService) {
 
@@ -13,23 +15,45 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
 
     var datasets = {},
         isSelected = {},
-        showAll = true;
+        showAll = true,
+        highlightedMacAddr = null;
 
     var numDataPoints;
 
     service.getSelectedDatasets = function() {
       var selectedDatasets = [];
 
-      for (var macAddr in datasets) {
+      $.each(datasets, function(macAddr) {
         if (showAll || isSelected[macAddr]) {
           if (globalSettings.detectHidden() ||
               datasets[macAddr].SSID !== strings.hiddenSSID) {
+
             selectedDatasets.push(datasets[macAddr]);
           }
         }
-      }
+      });
 
       return selectedDatasets;
+    };
+
+    service.getLegendData = function() {
+      var legendData = [];
+
+      $.each(datasets, function(macAddr) {
+        if (showAll || isSelected[macAddr]) {
+          if (globalSettings.detectHidden() ||
+              datasets[macAddr].SSID !== strings.hiddenSSID) {
+
+            legendData.push({
+              SSID: datasets[macAddr].SSID,
+              MAC: macAddr,
+              color: datasets[macAddr].color,
+            });
+          }
+        }
+      });
+
+      return legendData;
     };
 
     service.getDomain = function() {
@@ -40,26 +64,61 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       return updateInterval;
     };
 
-    var updateDatasets = function() {
-      accessPoints.getAll().done(function(results) {
-        var macAddrToDataPoint = {};
+    service.toggleHighlight = function(macAddr) {
+      if (datasets[macAddr]) {
+        if (macAddr === highlightedMacAddr) {
+          datasets[macAddr].highlight = false;
+          highlightedMacAddr = null;
 
-        for (var i = 0; i < results.length; ++i) {
-          macAddrToDataPoint[results[i].MAC] = results[i];
+        } else {
+          if (datasets[highlightedMacAddr]) {
+            datasets[highlightedMacAddr].highlight = false;
+          }
+
+          datasets[macAddr].highlight = true;
+          highlightedMacAddr = macAddr;
         }
+      }
+    };
+
+    service.getHighlightedMacAddr = function() {
+      return highlightedMacAddr;
+    };
+
+    service.getHighlightedSSID = function() {
+      if (datasets[highlightedMacAddr]) {
+        return datasets[highlightedMacAddr].SSID;
+      } else {
+        return null;
+      }
+    };
+
+    function updateDatasets() {
+      accessPoints.getAll().done(function(results) {
+        var macAddrToDataPoint = {},
+            legendUpdateNeeded = false;
+
+        $.each(results, function(i, dataPoint) {
+          macAddrToDataPoint[dataPoint.MAC] = dataPoint;
+        });
 
         /* Update existing datasets */
         var correspondingDataPoint;
 
-        for (var macAddr in datasets) {
+        $.each(datasets, function(macAddr) {
           var dataset = datasets[macAddr].dataset;
 
           correspondingDataPoint = macAddrToDataPoint[macAddr];
 
           /* Remove dummy end points (there to allow fill) */
+<<<<<<< HEAD
           dataset.shift();
+=======
+>>>>>>> 075e0c04f388732fe183b9cd8ab89578a9909e2e
           dataset.shift();
           dataset.pop();
+
+          dataset.shift();
 
           if (correspondingDataPoint) {
             dataset.push({
@@ -79,13 +138,12 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           dataset.push({
             level: constants.noSignal
           });
-        }
+        });
 
         /* Build new datasets */
         var dataPoint, newDataset;
 
-        for (var i = 0; i < results.length; ++i) {
-          dataPoint = results[i];
+        $.each(results, function(i, dataPoint) {
 
           if (! datasets[dataPoint.MAC]) {
             newDataset = [];
@@ -113,21 +171,48 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
               MAC: dataPoint.MAC,
               SSID: dataPoint.SSID,
               color: dataPoint.color,
-              highlight: (i === 0 ? true : false),
+              highlight: false,
               dataset: newDataset
             }
+
+            legendUpdateNeeded = true;
           }
-        }
+
+        });
 
         document.dispatchEvent(new Event(events.newTimeGraphData));
+
+        if (legendUpdateNeeded) {
+          document.dispatchEvent(new Event(events.newLegendData));
+        }
+
       });
     };
 
-    var init = function() {
+    function init() {
       numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
 
       updateDatasets();
       setInterval(updateDatasets, updateInterval);
+
+      document.addEventListener(events.newAccessPointSelection['timeGraph'],
+                                updateSelection);
+    };
+
+    function updateSelection() {
+      var selection = globalSettings.getAccessPointSelection('timeGraph');
+
+      $.each(isSelected, function(macAddr) {
+        isSelected[macAddr] = false;
+      });
+
+      $.each(selection.macAddrs, function(i, macAddr) {
+        isSelected[macAddr] = true;
+      });
+
+      showAll = selection.showAll;
+
+      document.dispatchEvent(new Event(events.newLegendData));
     };
 
     init();
