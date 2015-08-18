@@ -11,7 +11,7 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
       function AccessPoint(scanResult) {
         var randColor;
 
-        this.SSID = scanResult.SSID || "<hidden>";
+        this.SSID = scanResult.SSID || strings.hiddenSSID;
 
         this.MAC = scanResult.BSSID;
 

@@ -3,6 +3,7 @@ if (typeof languages === 'undefined') {
 }
 
 languages['en'] = {
+  hiddenSSID: '<hidden>',
   viewTitles: {
     APTable: 'AP Table',
     channelGraph: 'Channel Graph',

@@ -10,36 +10,18 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           top: 30,
           bottom: 40
         },
-        domain: [-60, 0],
-        range: [-100, -30]
+        range: [constants.noSignal, constants.maxSignal]
       };
 
-      var selectedMacAddr = "";
 
-      $scope.strings = strings;
-      $scope.legendData = undefined;
-      $scope.isDuplicateSSID = {};
-
-      $scope.toggleSelected = function(macAddr) {
-        if (typeof macAddr === 'string') {
-          if (macAddr === selectedMacAddr) {
-            selectedMacAddr = "";
-          } else {
-            selectedMacAddr = macAddr;
-          }
-          graph.toggleHighlight(macAddr);
-        }
-      };
-
-      $scope.isSelected = function(macAddr) {
-        return macAddr === selectedMacAddr;
-      };
 
       var graph = (function() {
         var graph = {};
 
         /* Namespaces for plot elements, scales, and dimensions. */
         var elem = {}, scales = {}, dim = {};
+
+        var lineGenerator;
 
         graph.init = function() {
           /* Scale to device screen */
@@ -50,36 +32,36 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         };
 
         graph.update = function(datasets) {
+          console.log(JSON.stringify(datasets[0].dataset));
+
           var lines = elem.clip.selectAll('path')
             .data(datasets, function(d) {
               return d.MAC
             });
 
+          lines.interrupt();
+
           lines.enter()
-            .append('path');
+            .append('path')
+            .attr('fill', 'none')
+            .attr('stroke', function(d) { return d.color })
+            .attr('stroke-width', 1);
 
           lines
-            .attr('d', dataLine(d.data));
+            .attr('d', function(d) { return lineGenerator(d.dataset) });
 
           lines.exit()
             .remove();
+
+          var translation = scales.x(updateInterval / 1000) - scales.x(0);
+
+          lines
+            .attr('transform', 'translate(' + translation + ')')
+            .transition()
+              .duration(updateInterval)
+              .ease('linear')
+              .attr('transform', 'translate(0)');
         };
-
-        graph.toggleHighlight = function(macAddr) {
-
-        };
-
-        graph.destroy = function() {
-
-        };
-
-        var dataLine = d3.line()
-          .x(function(d, i) {
-            return scales.x(d.times[i]);
-          })
-          .y(function(d, i) {
-            return scales.y(d.levels[i]);
-          });
 
         /* Derive graph dimensions and add elements to DOM */
         var build = function() {
@@ -110,7 +92,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
           /* X Axis */
           scales.x = d3.scale.linear()
-            .domain(config.domain)
+            .domain(domain)
             .range([0, dim.width]);
 
           elem.axis.x = d3.svg.axis()
@@ -153,13 +135,23 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
             .attr('transform', function() {
               return 'rotate(90) translate(' + dim.height/2 + ', ' + this.getBBox().width/2 + ')';
             });
+
+          lineGenerator = d3.svg.line()
+            .x(function(d, i) {
+              return scales.x(domain[0] + (i-1) * (updateInterval / 1000));
+            })
+            .y(function(d, i) {
+              return scales.y(d.level);
+            })
+            .interpolate('linear');
+
         };
 
         return graph;
       })();
 
       var updateGraph = function() {
-        graph.update(timeGraphManager.getDatasets());
+        graph.update(timeGraphManager.getSelectedDatasets());
       };
 
       var updateLegend = function() {
@@ -176,4 +168,4 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
     });
 
-  }])
+}]);

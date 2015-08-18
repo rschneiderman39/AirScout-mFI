@@ -58,6 +58,30 @@ body.pg-loaded > #current-view {
 	width: 8vw;
 }
 
+.nav-pane {
+  display: inline-block;
+}
+
+.nav-toggle-right {
+  fill-opacity: 0.3;
+  stroke-width: 2;
+}
+
+.nav-toggle-right.active {
+  fill: #62bf01;
+  stroke: #62bf01;
+}
+
+.nav-toggle-left {
+  fill-opacity: 0.3;
+  stroke-width: 3;
+}
+
+.nav-toggle-left.active {
+  fill: #62bf01;
+  stroke: #62bf01;
+}
+
 #top-bar {
   background-image: url('../images/topBar.png');
   height: 11vh;
