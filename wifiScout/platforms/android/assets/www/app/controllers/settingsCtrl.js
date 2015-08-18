@@ -11,6 +11,10 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       globalSettings.startingView(view);
     };
 
+    function init() {
+      prepView();
+    };
+
     function prepView() {
       $(".dropdown-menu li a").click(function(){
         var selText = $(this).text();
@@ -39,10 +43,6 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
       	globalSettings.detectHidden(state);
       });
-    };
-
-    function init() {
-      prepView();
     };
 
     init();

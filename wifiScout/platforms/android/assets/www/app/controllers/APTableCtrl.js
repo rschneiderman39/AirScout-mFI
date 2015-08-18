@@ -8,7 +8,7 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     var updateInterval;
 
-    var showAll = true; /* True: display all access points regardless of selection.
+    var showAll; /* True: display all access points regardless of selection.
                            False: display only selected access points. */
 
     var selectedMACs = []; /* Current access point selection. @type {{Array.<string>}} */
@@ -42,56 +42,6 @@ accessPoints, globalSettings, APTableState, setupService) {
 
        @param {{showAll: boolean, selectedMACs: Array.<string>}} newSelection - The new selection.
     */
-    function updateSelection() {
-      var selection = globalSettings.getAccessPointSelection('APTable');
-
-      selectedMACs = selection.macAddrs;
-      showAll = selection.showAll;
-
-      update();
-    };
-
-    /* Store current sort ordering. */
-    function saveState() {
-      APTableState.sortPredicate($scope.sortPredicate);
-      APTableState.sortReverse($scope.sortReverse);
-    };
-
-    /* Load the previously used selection and sort ordering. */
-    function restoreState() {
-      var selection = globalSettings.getAccessPointSelection('APTable');
-      selectedMACs = selection.macAddrs;
-      showAll = selection.showAll;
-
-      var predicate = APTableState.sortPredicate();
-      if (predicate === 'SSID') {
-        $scope.sortPredicate = $scope.sortSSID;
-      } else {
-        $scope.sortPredicate = predicate;
-      }
-      $scope.sortReverse = APTableState.sortReverse();
-    };
-
-    function update() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(results) {
-          $timeout(function() {
-            if (showAll) {
-              $scope.accessPoints = results;
-            } else {
-              $scope.accessPoints =
-              utils.accessPointSubset(results, selectedMACs);
-            }
-          });
-        });
-      }
-    };
-
-    /* Manually scale the view to the device where needed. */
-    function prepView() {
-      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
-      $('#table-content').height(contentHeight);
-    };
 
     function init() {
       if (accessPoints.count() < constants.moderateThresh) {
@@ -127,6 +77,57 @@ accessPoints, globalSettings, APTableState, setupService) {
 
         saveState();
       });
+    };
+
+    function updateSelection() {
+      var selection = globalSettings.getAccessPointSelection('APTable');
+
+      selectedMACs = selection.macAddrs;
+      showAll = selection.showAll;
+
+      update();
+    };
+
+    function update() {
+      if (! globalSettings.updatesPaused()) {
+        accessPoints.getAll().done(function(results) {
+          $timeout(function() {
+            if (showAll) {
+              $scope.accessPoints = results;
+            } else {
+              $scope.accessPoints =
+              utils.accessPointSubset(results, selectedMACs);
+            }
+          });
+        });
+      }
+    };
+
+    /* Store current sort ordering. */
+    function saveState() {
+      APTableState.sortPredicate($scope.sortPredicate);
+      APTableState.sortReverse($scope.sortReverse);
+    };
+
+    /* Load the previously used selection and sort ordering. */
+    function restoreState() {
+      var selection = globalSettings.getAccessPointSelection('APTable');
+      selectedMACs = selection.macAddrs;
+      showAll = selection.showAll;
+
+      var predicate = APTableState.sortPredicate();
+      if (predicate === 'SSID') {
+        $scope.sortPredicate = $scope.sortSSID;
+      } else {
+        $scope.sortPredicate = predicate;
+      }
+      $scope.sortReverse = APTableState.sortReverse();
+    };
+
+    /* Manually scale the view to the device where needed. */
+    function prepView() {
+      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
+      $('#table-content').height(contentHeight);
     };
 
     init();

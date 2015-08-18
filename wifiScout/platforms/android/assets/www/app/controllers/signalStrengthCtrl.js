@@ -11,7 +11,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     var prefs = {
       badSignalThresh: -95,
       okSignalThresh: -80,
-      goodSignalThresh: -55,
+      goodSignalThresh: -60,
       noSignalFill: "#d3d3d3",
       badSignalFill: "#cc4748",
       okSignalFill: "#fdd400",
@@ -20,34 +20,107 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
     $scope.accessPoints = [];
     $scope.isDuplicateSSID = {};
-    $scope.level = undefined;
-    $scope.minLevel = undefined;
-    $scope.maxLevel = undefined;
+    $scope.level = null;
+    $scope.minLevel = null;
+    $scope.maxLevel = null;
 
-    $scope.selectedSSID = undefined;
-    $scope.selectedBSSID = undefined;
+    $scope.selectedSSID = null;
+    $scope.selectedMAC = null;
 
     $scope.isSelected = function(ap) {
       if (typeof ap.MAC !== 'undefined') {
-        return ap.MAC === selectedMAC;
+        return ap.MAC === $scope.selectedMAC;
       }
     };
 
     $scope.setSelected = function(ap) {
       if (typeof ap.MAC !== 'undefined') {
-        selectedMAC = ap.MAC;
-
         $scope.selectedSSID = ap.SSID;
-        $scope.selectedBSSID = ap.MAC;
+        $scope.selectedMAC = ap.MAC;
       }
-      $scope.level = undefined;
-      $scope.minLevel = undefined;
-      $scope.maxLevel = undefined;
+      $scope.level = null;
+      $scope.minLevel = null;
+      $scope.maxLevel = null;
     };
 
     $scope.sortSSID = utils.customSSIDSort;
 
-    var selectedMAC = "";
+    function init() {
+      gauge.render();
+
+      function firstUpdate() {
+        updateList();
+        document.removeEventListener(events.swipeDone, firstUpdate);
+      }
+
+      if (globalSettings.updatesPaused()) {
+        document.addEventListener(events.swipeDone, firstUpdate);
+      } else {
+        updateList();
+      }
+
+      var listUpdateLoop = setInterval(updateList, listUpdateInterval),
+          gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);
+
+      $scope.$on('$destroy', function() {
+        clearInterval(listUpdateLoop);
+        clearInterval(gaugeUpdateLoop);
+      });
+
+    };
+
+    function updateList() {
+      if (! globalSettings.updatesPaused()) {
+        accessPoints.getAll().done(function(results) {
+          $scope.$apply(function() {
+            var encountered = {},
+                isDuplicateSSID = {};
+
+            $scope.accessPoints = results;
+
+            for (var i = 0; i < $scope.accessPoints.length; ++i) {
+              if (encountered[$scope.accessPoints[i].SSID]) {
+                isDuplicateSSID[$scope.accessPoints[i].SSID] = true;
+              } else {
+                encountered[$scope.accessPoints[i].SSID] = true;
+              }
+            }
+
+            $scope.isDuplicateSSID = isDuplicateSSID;
+          });
+        });
+      }
+    };
+
+    function updateGauge() {
+      if (! globalSettings.updatesPaused()) {
+        accessPoints.get($scope.selectedMAC).done(function(result) {
+          $scope.$apply(function() {
+            if (result !== null) {
+              $scope.level = result.level;
+
+              if ($scope.minLevel === null) {
+                $scope.minLevel = $scope.level;
+              } else if ($scope.level < $scope.minLevel) {
+                $scope.minLevel = $scope.level;
+              }
+
+              if ($scope.maxLevel === null) {
+                $scope.maxLevel = $scope.level;
+              } else if ($scope.level > $scope.maxLevel) {
+                $scope.maxLevel = $scope.level;
+              }
+            } else {
+              $scope.level = null;
+            }
+
+            gauge.updateElement('pointer', $scope.level);
+            gauge.updateElement('minValueIndicator', $scope.minLevel);
+            gauge.updateElement('maxValueIndicator', $scope.maxLevel);
+          });
+        });
+      }
+    };
 
     var gauge = (function() {
       var gauge = {};
@@ -216,9 +289,9 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             .attr('transform', 'rotate(180)')
             .attr("fill", 'black');
 
-        gauge.updateElement('pointer', undefined);
-        gauge.updateElement('minValueIndicator', undefined);
-        gauge.updateElement('maxValueIndicator', undefined);
+        gauge.updateElement('pointer', null);
+        gauge.updateElement('minValueIndicator', null);
+        gauge.updateElement('maxValueIndicator', null);
       };
 
       gauge.updateElement = function(elemName, newValue) {
@@ -234,7 +307,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
           elem = maxValueIndicator;
         }
 
-        if (newValue !== undefined) {
+        if (newValue !== null) {
           if (newValue > constants.maxSignal) {
             newValue = constants.maxSignal;
           }
@@ -256,84 +329,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       };
 
       return gauge;
+
     })();
-
-    function updateList() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(results) {
-          $scope.$apply(function() {
-            var encountered = {},
-                isDuplicateSSID = {};
-
-            $scope.accessPoints = results;
-
-            for (var i = 0; i < $scope.accessPoints.length; ++i) {
-              if (encountered[$scope.accessPoints[i].SSID]) {
-                isDuplicateSSID[$scope.accessPoints[i].SSID] = true;
-              } else {
-                encountered[$scope.accessPoints[i].SSID] = true;
-              }
-            }
-
-            $scope.isDuplicateSSID = isDuplicateSSID;
-          });
-        });
-      }
-    };
-
-    function updateGauge() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.get(selectedMAC).done(function(result) {
-          $scope.$apply(function() {
-            if (result !== null) {
-              $scope.level = result.level;
-
-              if ($scope.minLevel === undefined) {
-                $scope.minLevel = $scope.level;
-              } else if ($scope.level < $scope.minLevel) {
-                $scope.minLevel = $scope.level;
-              }
-
-              if ($scope.maxLevel === undefined) {
-                $scope.maxLevel = $scope.level;
-              } else if ($scope.level > $scope.maxLevel) {
-                $scope.maxLevel = $scope.level;
-              }
-            } else {
-              $scope.level = undefined;
-            }
-
-            gauge.updateElement('pointer', $scope.level);
-            gauge.updateElement('minValueIndicator', $scope.minLevel);
-            gauge.updateElement('maxValueIndicator', $scope.maxLevel);
-          });
-        });
-      }
-    };
-
-    function init() {
-      gauge.render();
-
-      function firstUpdate() {
-        updateList();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      }
-
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      } else {
-        updateList();
-      }
-
-      var listUpdateLoop = setInterval(updateList, listUpdateInterval),
-          gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);
-
-      $scope.$on('$destroy', function() {
-        clearInterval(listUpdateLoop);
-        clearInterval(gaugeUpdateLoop);
-      });
-
-    };
 
     init();
 

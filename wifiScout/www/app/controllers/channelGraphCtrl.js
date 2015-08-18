@@ -22,7 +22,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
     };
 
     var selectedMACs = [],
-        showAll = true;
+        showAll;
 
     function init() {
       var config = {
@@ -72,6 +72,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       var updateLoop = setInterval(vis.update, updateInterval);
 
+      updateSelection();
       document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
       $scope.$on('$destroy', function() {

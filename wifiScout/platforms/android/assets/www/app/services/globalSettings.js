@@ -29,7 +29,8 @@ setupService) {
       } else if (typeof option === 'boolean' && option != globalAccessPointSelection) {
 
         globalAccessPointSelection = option;
-        window.localStorage.setItem('globalAccessPointSelection', JSON.stringify(option));
+        window.localStorage.setItem('globalAccessPointSelection',
+                                     JSON.stringify(option));
 
         $.each(filterableViews, function(i, view) {
           document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
@@ -83,9 +84,17 @@ setupService) {
     // Create an associative settings array for each view that will
     // use this service
     function init() {
-      detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) || defaults.detectHidden;
-      globalAccessPointSelection = JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) || defaults.globalAccessPointSelection;
-      startingView = window.localStorage.getItem('startingView') || defaults.startingView;
+      detectHidden =
+        JSON.parse(window.localStorage.getItem('detectHidden')) ||
+        defaults.detectHidden;
+
+      globalAccessPointSelection =
+        JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) ||
+        defaults.globalAccessPointSelection;
+
+      startingView =
+        window.localStorage.getItem('startingView') ||
+        defaults.startingView;
 
       $.each(filterableViews, function(i, view) {
         selections[view] = {
