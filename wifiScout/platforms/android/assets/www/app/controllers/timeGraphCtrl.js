@@ -16,8 +16,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         heightFactor: 0.92
       };
 
-      var updateInterval = timeGraphManager.getUpdateInterval(),
-          domain = timeGraphManager.getDomain();
+      var updateInterval = timeGraphManager.getUpdateInterval();
 
       $scope.strings = strings;
       $scope.legendData = undefined;
@@ -117,7 +116,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       function elementUpdateFn(graphClip, graphScalesX, graphScalesY) {
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
-            return graphScalesX(domain[0] + (i-2) * (updateInterval / 1000));
+            return graphScalesX(graphScalesX.domain()[0] + (i-2) * (updateInterval / 1000));
           })
           .y(function(d, i) {
             return graphScalesY(d.level);

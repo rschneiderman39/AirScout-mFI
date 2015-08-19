@@ -1,5 +1,4 @@
 .axis-label {
-	font-size: 2vw;
 	font-weight: bold;
 }
 
@@ -87,9 +86,11 @@ body.pg-loaded > #current-view {
   stroke: #62bf01;
 }
 
+/*
 .axis > .tick {
 	font-size: 2vw;
 }
+*/
 
 #top-bar {
   background-image: url('../images/topBar.png');
