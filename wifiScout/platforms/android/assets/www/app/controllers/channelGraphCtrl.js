@@ -49,7 +49,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
         navRightLabel: globals.strings.channelGraph.label5,
-        range:[constants.noSignal, constants.maxSignal],
+        range:[globalSettings.minSignal(), globalSettings.maxSignal()],
         sliderExtent: undefined,
         width: undefined,
         xAxisTickInterval: 1,
@@ -86,10 +86,6 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       };
     };
 
-    function mySelection() {
-      return globalSettings.getAccessPointSelection('channelGraph');
-    };
-
     function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
                              _ignore1, _ignore2, _ignore3,
                              navLeftClip, navLeftScalesX,
@@ -98,10 +94,8 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(data) {
-          var selectedData = mySelection().apply(data);
-
-          updateParabolas(selectedData);
-          updateLabels(selectedData);
+          updateParabolas(data);
+          updateLabels(data);
         });
       }
 
@@ -135,7 +129,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
             .classed('parabola', true)
             .attr('pointer-events', 'none')
             .attr('d', function(d) {
-              return utils.generateParabola(constants.noSignal, xScale, yScale);
+              return utils.generateParabola(constants.signalFloor, xScale, yScale);
             })
             .attr('transform', function(d) {
               return 'translate(' + xScale(d.channel) + ')';
@@ -161,7 +155,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
             .transition()
             .duration(transitionInterval)
               .attr('d', function(d) {
-                return utils.generateParabola(constants.noSignal, xScale, yScale);
+                return utils.generateParabola(constants.signalFloor, xScale, yScale);
               })
               .remove();
         };
@@ -189,7 +183,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .attr('x', function(d) {
             return graphScalesX(d.channel) - this.getBBox().width / 2;
           })
-          .attr('y', graphScalesY(constants.noSignal))
+          .attr('y', graphScalesY(constants.signalFloor))
 
         labels.order();
 
@@ -210,7 +204,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', graphScalesY(constants.noSignal))
+          .attr('y', graphScalesY(constants.signalFloor))
           .remove();
       };
     };

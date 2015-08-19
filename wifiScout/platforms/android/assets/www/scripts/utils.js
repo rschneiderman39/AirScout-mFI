@@ -27,9 +27,9 @@ utils.generateTriangle = function(width, height) {
 };
 
 utils.generateParabola = function(level, xScale, yScale) {
-  return 'M' + (xScale(0) - xScale(2)) + ' ' + yScale(constants.noSignal) +
-         'Q' + 0 + ' ' + yScale(constants.noSignal + 2 * (level - constants.noSignal)) +
-         ' ' + (xScale(2) - xScale(0)) + ' ' + yScale(constants.noSignal);
+  return 'M' + (xScale(0) - xScale(2)) + ' ' + yScale(constants.signalFloor) +
+         'Q' + 0 + ' ' + yScale(constants.signalFloor + 2 * (level - constants.signalFloor)) +
+         ' ' + (xScale(2) - xScale(0)) + ' ' + yScale(constants.signalFloor);
 };
 
 utils.customSSIDSort = function(ap) {
@@ -99,27 +99,12 @@ function AccessPointSelection(macAddrs, showAll) {
     return selectedAccessPoints;
   };
 
-  this.isSelected = function(mac) {
+  this.contains = function(mac) {
     if (showAll) {
       return true;
     }
 
     return isSelected[mac];
-  };
-
-  this.add = function(mac) {
-    var newMacAddrs = [],
-        origVal = isSelected[mac];
-
-    isSelected[mac] = true;
-
-    $.each(isSelected, function(mac, selected) {
-      if (selected) newMacAddrs.push(mac);
-    });
-
-    isSelected[mac] = origVal;
-
-    return new AccessPointSelection(newMacAddrs, false);
   };
 
   return this;

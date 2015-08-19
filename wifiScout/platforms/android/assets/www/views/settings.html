@@ -1,74 +1,43 @@
 <html>
   <body>
 		<div ng-controller="settingsCtrl">
-			<div class="panel-group" id="accordion1">
-    		<div id="panel1" class="panel panel-default">
+			<div class="panel-group" id="main-panel">
+
+        <div id="range-panel" class="panel panel-default">
     			<!-- Starting View Header -->
-        	<div class="panel-heading accordion-toggle" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne1">
+        	<div class="panel-heading accordion-toggle" data-toggle="collapse" data-target="#range-collapse">
 	          <h4 class="panel-title">
-	            <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
+	            <a data-toggle="collapse" data-target="#range-collapse" href="#range-collapse" class="collapsed">
 	              {{strings.settings.startingViewHeader}}
 	            </a>
 	          </h4>
         	</div>
         	<!-- Starting View Description and Dropdown List -->
-        	<div id="collapseOne1" class="panel-collapse collapse in">
+        	<div id="range-collapse" class="panel-collapse collapse in">
 	          <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
 	          			{{strings.settings.startingViewDescription}}
 	          		</div>
 	          		<div class="col-xs-3">
-			         		<div class="btn-group">
-		  							<button type="button" class="btn btn-default dropdown-toggle selectedStartingView" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
-									  <ul class="dropdown-menu pull-right">
-									   	<li><a ng-click="setStartingView('channelGraph')"> {{strings.viewTitles.channelGraph}}</a></li>
-									    <li><a ng-click="setStartingView('signalStrength')"> {{strings.viewTitles.signalStrength}}</a></li>
-									   	<li><a ng-click="setStartingView('timeGraph')"> {{strings.viewTitles.timeGraph}}</a></li>
-									   	<li><a ng-click="setStartingView('APTable')"> {{strings.viewTitles.APTable}}</a></li>
-									   	<li><a ng-click="setStartingView('channelTable')"> {{strings.viewTitles.channelTable}}</a></li>
-									   	<li><a ng-click="setStartingView('settings')"> {{strings.viewTitles.settings}}</a></li>
-								  	</ul>
-									</div>
+			         		<input id="range-slider" type="text" value="" ></input>
 			         	</div>
 			       	</div>
 			     	</div>
         	</div>
     		</div>
-    		<div class="panel panel-default">
-    			<!-- Global Filtering Header -->
-        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseTwo1">
-          	<h4 class="panel-title">
-	          	<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
-	              {{strings.settings.globalAccessPointSelectionHeader}}
-	            </a>
-	          </h4>
-        	</div>
-        	<!-- Global Filtering Description and Toggle Selector -->
-        	<div id="collapseTwo1" class="panel-collapse collapse">
-	          <div class="panel-body">
-		          <div class="row">
-		          	<div ng-click="showNav()" class="col-xs-9">
-			          	{{strings.settings.globalAccessPointSelectionDescription}}
-			          </div>
-		          	<div class="col-xs-3">
-		          		<input type="checkbox" name="filteringOptions">
-		          	</div>
-		          </div>
-		        </div>
-        	</div>
-    		</div>
-    		<div class="panel panel-default">
+
+    		<div id="hidden-ap-panel" class="panel panel-default">
     			<!-- Detect Hidden APs Header -->
-        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1,#accordion2,#accordion3" data-target="#collapseThree1">
+        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-target="#hidden-ap-collapse">
           	<h4 class="panel-title">
-	          	<a data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" class="collapsed">
+	          	<a data-toggle="collapse" data-target="#hidden-ap-collapse" href="#hidden-ap-collapse" class="collapsed">
 	              {{strings.settings.detectHiddenHeader}}
 	            </a>
 	          </h4>
        		</div>
        		<!-- Detect Hidden APs Description and Toggle Selector -->
-        	<div id="collapseThree1" class="panel-collapse collapse">
+        	<div id="hidden-ap-collapse" class="panel-collapse collapse">
             <div class="panel-body">
 	          	<div class="row">
 		          	<div ng-click="showNav()" class="col-xs-9">
@@ -81,7 +50,9 @@
 	          </div>
         	</div>
     		</div>
+
 			</div>
+
       <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('channelTable', 'right')"></div>
     </div>
 	</body>

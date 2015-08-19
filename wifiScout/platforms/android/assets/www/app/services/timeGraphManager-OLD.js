@@ -166,7 +166,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
           if (accessPoint) {
             datasets[MAC].line.append(curTime, accessPoint.level);
           } else {
-            datasets[MAC].line.append(curTime, constants.noSignal);
+            datasets[MAC].line.append(curTime, constants.signalFloor);
           }
         }
 
@@ -190,7 +190,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
     function init() {
       plot = new SmoothieChart(
         {
-          minValue: constants.noSignal,
+          minValue: constants.signalFloor,
           maxValue: constants.maxSignal,
           millisPerPixel: 60,
           interpolation: 'linear',

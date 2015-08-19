@@ -1,17 +1,16 @@
 "use strict";
 
 var defaults = {
-  startingView: 'settings',
-  globalAccessPointSelection: false,
+  maxSignal: -30,
   detectHidden: false,
   language: 'en',
   region: 'US',
-  filterableViews: ['channelGraph', 'timeGraph', 'APTable']
+  startingView: 'channelGraph'
 };
 
 var constants = {
-  noSignal: -100,
-  maxSignal: -30,
+  signalFloor: -100,
+  signalCeil: 0,
   moderateThresh: 15,
   highThresh: 30,
   updateIntervalFast: 500,

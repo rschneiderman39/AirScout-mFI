@@ -7,59 +7,53 @@ setupService) {
 
   setupService.ready.then(function() {
 
-    var detectHidden = false,
-        globalAccessPointSelection = false,
-        startingView = undefined,
-        updatesPaused = false,
-        selections = {},
-        filterableViews = defaults.filterableViews;
+    var detectHidden,
+        maxSignal,
+        minSignal,
+        currentSelection,
+        updatesPaused = false;
 
     service.detectHidden = function(option) {
       if (option === undefined) {
         return detectHidden;
-      } else if (typeof option === 'boolean') {
+      }
+
+      if (typeof option === 'boolean') {
         detectHidden = option;
         window.localStorage.setItem('detectHidden', JSON.stringify(option));
       }
     };
 
-    service.globalAccessPointSelection = function(option) {
-      if (option === undefined) {
-        return globalAccessPointSelection;
-      } else if (typeof option === 'boolean' && option != globalAccessPointSelection) {
-
-        globalAccessPointSelection = option;
-        window.localStorage.setItem('globalAccessPointSelection',
-                                     JSON.stringify(option));
+    service.accessPointSelection = function(newSelection) {
+      if (newSelection === undefined) {
+        return currentSelection;
       }
-    };
 
-    service.startingView = function(view) {
-      if (view === undefined) {
-        return startingView;
-      } else if (utils.isView(view)) {
-        startingView = view;
-        window.localStorage.setItem('startingView', view);
-      }
-    };
-
-    service.getAccessPointSelection = function(view) {
-      if (globalAccessPointSelection) {
-        return selections['global'];
-      } else {
-        return selections[view];
-      }
-    };
-
-    service.setAccessPointSelection = function(view, newSelection) {
       if (newSelection instanceof AccessPointSelection) {
-        if (globalAccessPointSelection) {
-          selections['global'] = newSelection;
-        } else {
-          selections[view] = newSelection;
-        }
-
+        currentSelection = newSelection;
         document.dispatchEvent(new Event(events.newSelection));
+      }
+    };
+
+    service.maxSignal = function(newMax) {
+      if (newMax === undefined) {
+        return maxSignal;
+      }
+
+      if (typeof newMax === 'number' && newMax > minSignal) {
+        maxSignal = newMax;
+        window.localStorage.setItem('maxSignal', JSON.stringify(newMax));
+      }
+    };
+
+    service.minSignal = function(newMin) {
+      if (newMin === undefined) {
+        return minSignal;
+      }
+
+      if (typeof newMin === 'number' && newMin < maxSignal) {
+        minSignal = newMin;
+        window.localStorage.setItem('minSignal', JSON.stringify(newMin));
       }
     };
 
@@ -74,23 +68,16 @@ setupService) {
     // Create an associative settings array for each view that will
     // use this service
     function init() {
-      detectHidden =
-        JSON.parse(window.localStorage.getItem('detectHidden')) ||
-        defaults.detectHidden;
+      detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) ||
+                     defaults.detectHidden;
 
-      globalAccessPointSelection =
-        JSON.parse(window.localStorage.getItem('globalAccessPointSelection')) ||
-        defaults.globalAccessPointSelection;
+      minSignal = JSON.parse(window.localStorage.getItem('minSignal')) ||
+                 constants.signalFloor;
 
-      startingView =
-        window.localStorage.getItem('startingView') ||
-        defaults.startingView;
+      maxSignal = JSON.parse(window.localStorage.getItem('maxSignal')) ||
+                  defaults.maxSignal;
 
-      $.each(filterableViews, function(i, view) {
-        selections[view] = new AccessPointSelection([], true);
-      });
-
-      selections['global'] = new AccessPointSelection([], true);
+      currentSelection = new AccessPointSelection([], true);
     };
 
     init();

@@ -204,7 +204,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', graphScalesY(constants.noSignal))
+          .attr('y', graphScalesY(constants.signalFloor))
           .remove();
       };
 

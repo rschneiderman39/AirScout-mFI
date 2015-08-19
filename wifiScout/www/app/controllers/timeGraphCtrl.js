@@ -1,14 +1,14 @@
 "use strict";
 
-app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
-  'visBuilder', 'setupService', function($scope, $timeout, timeGraphManager,
+app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGraphManager',
+  'visBuilder', 'setupService', function($scope, $timeout, globalSettings, timeGraphManager,
   visBuilder, setupService) {
 
     setupService.ready.then(function() {
 
       var prefs = {
         domain: timeGraphManager.getDomain(),
-        range: [constants.noSignal, constants.maxSignal],
+        range: [globalSettings.minSignal(), globalSettings.maxSignal()],
         lineWidth: 2,
         highlightedLineWidth: 6,
         highlightOpacity: 0.3,
@@ -87,10 +87,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         $scope.selectedSsid = timeGraphManager.getHighlightedSsid();
         $scope.selectedMac = timeGraphManager.getHighlightedMac();
 
-        updateDuplicateSSIDs();
+        updateDuplicateSsids();
       };
 
-      function updateDuplicateSSIDs() {
+      function updateDuplicateSsids() {
         var found = {},
             duplicates = {};
 
@@ -111,10 +111,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           $scope.selectedSsid = timeGraphManager.getHighlightedSsid();
           $scope.selectedMac = timeGraphManager.getHighlightedMac();
 
-          console.log($scope.selectedSsid);
-          console.log($scope.selectedMac);
-
-          updateDuplicateSSIDs();
+          updateDuplicateSsids();
         });
       };
 

@@ -35,6 +35,14 @@
   content:"\e080";
 }
 
+.slider-handle {
+
+}
+
+.slider-selection {
+
+}
+
 #touch-layer {
   height: 100vh;
   position: relative;

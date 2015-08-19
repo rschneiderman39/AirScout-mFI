@@ -606,7 +606,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         labels.exit()
         .transition()
         .duration(updateInterval * .8)
-          .attr('y', scales.plot.y(constants.noSignal))
+          .attr('y', scales.plot.y(constants.signalFloor))
           .remove();
       };
 

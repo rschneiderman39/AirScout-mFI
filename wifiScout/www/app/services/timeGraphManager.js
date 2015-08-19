@@ -22,7 +22,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       var selectedDatasets = [];
 
       $.each(datasets, function(mac, dataset) {
-        if (mySelection().isSelected(mac)) {
+        if (apSelection().contains(mac)) {
           if (globalSettings.detectHidden() || ! dataset.hidden) {
             selectedDatasets.push(dataset);
           }
@@ -36,7 +36,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       var legendData = [];
 
       $.each(datasets, function(mac, dataset) {
-        if (mySelection().isSelected(mac)) {
+        if (apSelection().contains(mac)) {
           if (globalSettings.detectHidden() || ! dataset.hidden) {
             legendData.push(new LegendItem(dataset));
           }
@@ -87,7 +87,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
 
       document.addEventListener(events.newSelection, function() {
-        if (! mySelection().isSelected(highlightedMac)) {
+        if (! apSelection().contains(highlightedMac)) {
           if (datasets[highlightedMac]) {
             datasets[highlightedMac].highlight = false;
           }
@@ -102,8 +102,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       setInterval(updateDatasets, updateInterval);
     };
 
-    function mySelection() {
-      return globalSettings.getAccessPointSelection('timeGraph');
+    function apSelection() {
+      return globalSettings.accessPointSelection();
     };
 
     function updateDatasets() {
@@ -132,13 +132,13 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           if (correspondingAccessPoint) {
             data.push({ level: correspondingAccessPoint.level });
           } else {
-            data.push({ level: constants.noSignal });
+            data.push({ level: constants.signalFloor });
           }
 
           /* Add dummy end points (to allow fill)*/
-          data.unshift({ level: constants.noSignal });
+          data.unshift({ level: constants.signalFloor });
 
-          data.push({ level: constants.noSignal });
+          data.push({ level: constants.signalFloor });
         });
 
         /* Build new datasets */
@@ -162,15 +162,15 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       var data = [];
 
       for (var j = 0; j < numDataPoints - 1; ++j) {
-        data.push({ level: constants.noSignal });
+        data.push({ level: constants.signalFloor });
       }
 
       data.push({ level: ap.level });
 
       /* Add dummy data points to allow fill */
-      data.unshift({ level: constants.noSignal });
+      data.unshift({ level: constants.signalFloor });
 
-      data.push({ level: constants.noSignal });
+      data.push({ level: constants.signalFloor });
 
       this.ssid = ap.ssid;
       this.hidden = ap.hidden;

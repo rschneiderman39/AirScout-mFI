@@ -58,23 +58,24 @@ accessPoints, globalSettings, APTableState, setupService) {
       }
 
       var updateLoop = setInterval(update, updateInterval);
+      document.addEventListener(events.newSelection, update);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-
+        document.removeEventListener(events.newSelection, update);
         saveState();
       });
     };
 
-    function mySelection() {
-      return globalSettings.getAccessPointSelection('APTable');
+    function apSelection() {
+      return globalSettings.accessPointSelection();
     };
 
     function update() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $timeout(function() {
-            $scope.accessPoints = mySelection().apply(results);
+            $scope.accessPoints = apSelection().apply(results);
           });
         });
       }

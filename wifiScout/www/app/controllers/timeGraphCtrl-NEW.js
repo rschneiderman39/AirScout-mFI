@@ -10,7 +10,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           top: 30,
           bottom: 40
         },
-        range: [constants.noSignal, constants.maxSignal]
+        range: [constants.signalFloor, constants.maxSignal]
       };
 
 

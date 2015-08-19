@@ -5,55 +5,58 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
   setupService.ready.then(function() {
 
-    var view = undefined;
+    var view = undefined,
+        isSelected = {};
 
     $scope.strings = globals.strings;
 
     $scope.accessPoints = [];
 
     $scope.toggleSelected = function(ap) {
-      var currentSelection = mySelection(),
-          newSelection,
-          macAddrs = [];
+      var selectedMacs = [];
 
-      if (currentSelection.isSelected(ap.mac)) {
-
-        $.each($scope.accessPoints, function(i, accPt) {
-          if (currentSelection.isSelected(accPt.mac) && ap.mac !== accPt.mac) {
-            macAddrs.push(accPt.mac);
-          }
-        });
-
-        newSelection = new AccessPointSelection(macAddrs, false);
-
+      if (! isSelected[ap.mac]) {
+        isSelected[ap.mac] = true;
       } else {
-        newSelection = mySelection().add(ap.mac);
+        isSelected[ap.mac] = false;
       }
 
-      mySelection(newSelection);
+      $.each(isSelected, function(mac, selected) {
+        if (selected) selectedMacs.push(mac);
+      });
+
+      apSelection(new AccessPointSelection(selectedMacs, false));
     };
 
     $scope.isSelected = function(ap) {
-      return mySelection().isSelected(ap.mac);
+      return isSelected[ap.mac];
     };
 
     // Select all APs, and show any new AP that later becomes visible
     $scope.selectAll = function() {
-      mySelection(new AccessPointSelection([], true));
+      $.each($scope.accessPoints, function(i, ap) {
+        isSelected[ap.mac] = true;
+      });
+
+      apSelection(new AccessPointSelection([], true));
     };
 
     $scope.unselectAll = function() {
-      mySelection(new AccessPointSelection([], false));
+      $.each($scope.accessPoints, function(i, ap) {
+        isSelected[ap.mac] = false;
+      });
+
+      apSelection(new AccessPointSelection([], false));
     };
 
     $scope.sortSSID = utils.customSSIDSort;
 
-    function mySelection(newSelection) {
+    function apSelection(newSelection) {
       if (newSelection === undefined) {
-        return globalSettings.getAccessPointSelection(view);
-      } else {
-        globalSettings.setAccessPointSelection(view, newSelection);
+        return globalSettings.accessPointSelection();
       }
+
+      globalSettings.accessPointSelection(newSelection);
     };
 
     function onShow() {
@@ -61,7 +64,15 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
       accessPoints.getAll().done(function(results) {
         $scope.$apply(function() {
+          var selectedAccessPoints;
+
           $scope.accessPoints = results;
+
+          selectedAccessPoints = apSelection().apply(results);
+
+          $.each(selectedAccessPoints, function(i, ap) {
+            isSelected[ap.mac] = true;
+          });
         });
       });
     };

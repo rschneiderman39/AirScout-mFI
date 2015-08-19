@@ -12,7 +12,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
       defaultBand: '2_4',              // Band shown on first view open ('2_4' or '5')
       domain2_4: [-1, 15],             // X-scale for 2.4 Ghz band
       domain5: [34, 167],              // X-scale for 5 Ghz band
-      range: [constants.noSignal, constants.maxSignal],  // Y-scale for level
+      range: [constants.signalFloor, constants.maxSignal],  // Y-scale for level
       defaultSliderExtent: [34, 66], // 5Ghz nav viewport extent on first view open
       fillShadeFactor: 0.75,           // [0,...1] Determines how light the fill shade is
       labelPadding: 10,                // Pixels between parabola top and label bottom
@@ -522,7 +522,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .attr('x', function(d) {
             return scales.plot.x(d.channel) - this.getBBox().width / 2;
           })
-          .attr('y', scales.plot.y(constants.noSignal))
+          .attr('y', scales.plot.y(constants.signalFloor))
 
         labels.order();
 
@@ -538,7 +538,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', scales.plot.y(constants.noSignal))
+          .attr('y', scales.plot.y(constants.signalFloor))
           .remove();
       };
 
@@ -579,7 +579,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .classed('parabola', true)
           .attr('pointer-events', 'none')
           .attr('d', function(d) {
-            return generateParabola(constants.noSignal, xScale, yScale);
+            return generateParabola(constants.signalFloor, xScale, yScale);
           })
           .attr('transform', function(d) {
             return 'translate(' + xScale(d.channel) + ')';
@@ -605,7 +605,7 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
           .transition()
           .duration(transitionInterval)
             .attr('d', function(d) {
-              return generateParabola(constants.noSignal, xScale, yScale);
+              return generateParabola(constants.signalFloor, xScale, yScale);
             })
             .remove();
       };

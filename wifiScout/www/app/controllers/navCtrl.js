@@ -10,8 +10,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       };
 
       var navTimeout = null,
-          tourInProgress = false,
-          filterableViews = defaults.filterableViews;
+          tourInProgress = false;
 
       $scope.strings = globals.strings;
 
@@ -77,7 +76,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       };
 
       function init() {
-        $scope.setView(globalSettings.startingView());
+        $scope.setView(defaults.startingView);
       };
 
       init();

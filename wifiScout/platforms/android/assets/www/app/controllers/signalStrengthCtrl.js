@@ -64,11 +64,19 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var listUpdateLoop = setInterval(updateList, listUpdateInterval),
           gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);
 
+      document.addEventListener(events.newSelection, updateList);
+
       $scope.$on('$destroy', function() {
         clearInterval(listUpdateLoop);
         clearInterval(gaugeUpdateLoop);
+
+        document.removeEventListener(events.newSelection, updateList);
       });
 
+    };
+
+    function apSelection() {
+      return globalSettings.accessPointSelection();
     };
 
     function updateList() {
@@ -78,15 +86,15 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             var encountered = {},
                 isDuplicateSSID = {};
 
-            $scope.accessPoints = results;
+            $scope.accessPoints = apSelection().apply(results);
 
-            for (var i = 0; i < $scope.accessPoints.length; ++i) {
-              if (encountered[$scope.accessPoints[i].ssid]) {
-                isDuplicateSSID[$scope.accessPoints[i].ssid] = true;
+            $.each($scope.accessPoints, function(i, ap) {
+              if (encountered[ap.ssid]) {
+                isDuplicateSSID[ap.ssid] = true;
               } else {
-                encountered[$scope.accessPoints[i].ssid] = true;
+                encountered[ap.ssid] = true;
               }
-            }
+            });
 
             $scope.isDuplicateSSID = isDuplicateSSID;
           });
@@ -145,17 +153,17 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       // Scale for text formatting around arcs
       var scale = d3.scale.linear()
-        .domain([constants.noSignal, constants.maxSignal])
+        .domain([globalSettings.minSignal(), globalSettings.maxSignal()])
         .range([0,1])
 
       var ticks = scale.ticks(numLabels);
 
       var levelDegScale = d3.scale.linear()
-        .domain([constants.noSignal, constants.maxSignal])
+        .domain([globalSettings.minSignal(), globalSettings.maxSignal()])
         .range([minLevelAngle, maxLevelAngle]);
 
       var arcDegScale = d3.scale.linear()
-        .domain([constants.noSignal, constants.maxSignal])
+        .domain([globalSettings.minSignal(), globalSettings.maxSignal()])
         .range([minAngle, maxAngle]);
 
       var degreesToRads = Math.PI / 180;
@@ -176,7 +184,7 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
       var minMaxArrowWidth = 10 * scaleFactor;
       var minMaxArrowOffset = ((outerInnerRatio * innerRadius) - innerRadius ) / 4;
 
-      var noSignalStart = arcDegScale(constants.noSignal) * degreesToRads,
+      var noSignalStart = arcDegScale(constants.signalFloor) * degreesToRads,
           badSignalStart = arcDegScale(prefs.badSignalThresh) * degreesToRads,
           okSignalStart = arcDegScale(prefs.okSignalThresh) * degreesToRads,
           goodSignalStart = arcDegScale(prefs.goodSignalThresh) * degreesToRads;
@@ -310,11 +318,11 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         }
 
         if (newValue !== null) {
-          if (newValue > constants.maxSignal) {
-            newValue = constants.maxSignal;
+          if (newValue > globalSettings.maxSignal()) {
+            newValue = globalSettings.maxSignal();
           }
-          else if (newValue < constants.noSignal) {
-            newValue = constants.noSignal;
+          else if (newValue < globalSettings.minSignal()) {
+            newValue = globalSettings.minSignal();
           }
 
           elem.transition()
