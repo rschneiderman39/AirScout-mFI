@@ -23,7 +23,9 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       domain5: [34, 167],
       labelColor: 'black',
       labelPadding: 10,
-      range: [0, 15]
+      range: [0, 15],
+      widthFactor: 0.97,
+      heightFactor: 0.95
     };
 
     function init() {
@@ -31,9 +33,9 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         band: undefined,
         graphDomain: prefs.domain2_4,
         graphMargins: {
-          top: 20,
+          top: 10,
           bottom: 30,
-          left: 60,
+          left: 50,
           right: 0
         },
         gridLineOpacity: 0,
@@ -46,7 +48,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         navMargins: {
           top: 1,
           bottom: 18,
-          left: 60,
+          left: 50,
           right: 0
         },
         navPercent: 0.2,
@@ -59,8 +61,8 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         yAxisTickInterval: 3
       };
 
-      config.width = $(window).width() * 0.95;
-      config.height = ($(window).height() - $('#top-bar').height()) * 0.95;
+      config.width = $(window).width() * prefs.widthFactor;
+      config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
 
       config.band = channelTableState.band() || prefs.defaultBand;
       config.sliderExtent = channelTableState.sliderExtent() || prefs.defaultSliderExtent;

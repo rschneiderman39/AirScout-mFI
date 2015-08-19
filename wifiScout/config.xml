@@ -20,10 +20,10 @@
     <icon src="res/icons/android/icon.png" density="hdpi" />
     <icon src="res/icons/android/icon.png" density="xhdpi" />
 
-    <splash src="res/screens/android/stock.png" density="land-hdpi" />
-    <splash src="res/screens/android/stock.png" density="land-ldpi" />
-    <splash src="res/screens/android/stock.png" density="land-mdpi" />
-    <splash src="res/screens/android/stock.png" density="land-xhdpi" />
+    <splash src="res/screens/android/sofachrome.png" density="land-hdpi" />
+    <splash src="res/screens/android/sofachrome.png" density="land-ldpi" />
+    <splash src="res/screens/android/sofachrome.png" density="land-mdpi" />
+    <splash src="res/screens/android/sofachrome.png" density="land-xhdpi" />
     <!--
     <splash src="res/screens/android/screen-ldpi-landscape.png" density="land-ldpi" />
     <splash src="res/screens/android/screen-mdpi-landscape.png" density="land-mdpi" />

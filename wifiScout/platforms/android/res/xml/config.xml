@@ -15,10 +15,10 @@
     <icon density="mdpi" src="res/icons/android/icon.png" />
     <icon density="hdpi" src="res/icons/android/icon.png" />
     <icon density="xhdpi" src="res/icons/android/icon.png" />
-    <splash density="land-hdpi" src="res/screens/android/stock.png" />
-    <splash density="land-ldpi" src="res/screens/android/stock.png" />
-    <splash density="land-mdpi" src="res/screens/android/stock.png" />
-    <splash density="land-xhdpi" src="res/screens/android/stock.png" />
+    <splash density="land-hdpi" src="res/screens/android/sofachrome.png" />
+    <splash density="land-ldpi" src="res/screens/android/sofachrome.png" />
+    <splash density="land-mdpi" src="res/screens/android/sofachrome.png" />
+    <splash density="land-xhdpi" src="res/screens/android/sofachrome.png" />
     <name>AirScout mFI</name>
     <description />
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team </author>

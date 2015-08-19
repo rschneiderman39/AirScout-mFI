@@ -1,10 +1,5 @@
-.axis-label {
-  float: left;
-  font-size: 1.85vw;
-  font-weight: bold;
-}
-
 #legend {
+  padding-right: 0px;
   position: relative;
   -webkit-transform: translateY(2%);
 }
@@ -43,11 +38,6 @@
   padding: 1vh !important;
 }
 
-#plot {
-  background-color: #c0c0c0;
-  border: 1px;
-}
-
 .scrollable-list {
   -webkit-transform: translateY(2%);
 }
@@ -65,6 +55,7 @@
 }
 
 #time-graph {
+  margin: 0px;
   padding: 0px;
   position: relative;
   -webkit-transform: translateY(3%);

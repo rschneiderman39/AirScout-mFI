@@ -1,3 +1,8 @@
+.axis-label {
+	font-size: 2vw;
+	font-weight: bold;
+}
+
 body {
 	background: #f1f1f1 !important;
 	position: fixed;
@@ -80,6 +85,10 @@ body.pg-loaded > #current-view {
 .nav-toggle-left.active {
   fill: #62bf01;
   stroke: #62bf01;
+}
+
+.axis > .tick {
+	font-size: 2vw;
 }
 
 #top-bar {

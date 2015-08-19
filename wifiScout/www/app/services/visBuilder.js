@@ -100,7 +100,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         elem.graph.axisFn = {};
 
         /* X Axis */
-        var numTicks_xAxis = utils.spanLen(config.graphDomain) / config.yAxisTickInterval + 1;
+        var numTicks_xAxis = utils.spanLen(config.graphDomain) / config.xAxisTickInterval + 1;
 
         scales.graph.x = d3.scale.linear()
           .domain(config.graphDomain)
@@ -120,6 +120,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         /* X Label */
         elem.graph.container.append('text')
           .text(config.labelX)
+          .classed('axis-label', true)
           .attr('x', function() {
             return (dim.graph.width / 2) - (this.getBBox().width / 2);
           })
@@ -144,9 +145,10 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
         /* Y Label */
         elem.graph.container.append('text')
+          .classed('axis-label', true)
           .text(config.labelY)
           .attr('transform', function() {
-            return 'rotate(-90) translate(-' + dim.graph.totalHeight/2 + ', -' + this.getBBox().width/2 + ')';
+            return 'rotate(-90) translate(-' + dim.graph.totalHeight/2 + ', -' + this.getBBox().width/2.5 + ')';
           });
 
         /* Grid lines */

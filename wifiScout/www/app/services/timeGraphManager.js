@@ -7,10 +7,10 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
 
   setupService.ready.then(function() {
 
-    var updateInterval = 1000;
+    var updateInterval = constants.updateIntervalNormal;
 
     var config = {
-      timespan: 30
+      timespan: 60
     };
 
     var datasets = {},

@@ -11,7 +11,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         range: [constants.noSignal, constants.maxSignal],
         lineWidth: 2,
         highlightedLineWidth: 6,
-        highlightOpacity: 0.3
+        highlightOpacity: 0.3,
+        widthFactor: 1,
+        heightFactor: 0.92
       };
 
       var updateInterval = timeGraphManager.getUpdateInterval(),
@@ -43,8 +45,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         var config = {
           graphDomain: prefs.domain,
           graphMargins: {
-            top: 20,
-            bottom: 25,
+            top: 10,
+            bottom: 30,
             left: 50,
             right: 10
           },
@@ -55,33 +57,38 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           navPercent: 0,
           range: prefs.range,
           width: undefined,
-          xAxisTickInterval: 5,
+          xAxisTickInterval: 10,
           yAxisTickInterval: 10
         };
 
-        config.width = $('#time-graph').width();
-        config.height = ($(window).height() - $('#top-bar').height()) * 0.95;
+        var mysteriousPixelOffset = 30;
+
+        config.width = $('#time-graph').width() + mysteriousPixelOffset;
+        config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
 
         var vis = visBuilder.buildVis(config, elementUpdateFn, null,
           null, null, null);
 
-        $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
-        $scope.selectedMacAddr = timeGraphManager.getHighlightedMacAddr();
-
-        updateLegend();
+        restoreState();
 
         document.addEventListener(events.newTimeGraphData, vis.update);
-
         document.addEventListener(events.newLegendData, updateLegend);
 
         $scope.$on('$destroy', function() {
           document.removeEventListener(events.newTimeGraphData, vis.update);
-
           document.removeEventListener(events.newLegendData, updateLegend);
 
           d3.select('#vis').selectAll('*').remove();
         });
 
+      };
+
+      function restoreState() {
+        $scope.legendData = timeGraphManager.getLegendData();
+        $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
+        $scope.selectedMacAddr = timeGraphManager.getHighlightedMacAddr();
+
+        updateDuplicateSSIDs();
       };
 
       function updateDuplicateSSIDs() {
