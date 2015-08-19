@@ -231,7 +231,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings',
       update();
       setInterval(update, updateInterval);
 
-      document.addEventListener(events.newAccessPointSelection['timeGraph'], updateSelection);
+      document.addEventListener(events.newSelection['timeGraph'], updateSelection);
     };
 
     init();

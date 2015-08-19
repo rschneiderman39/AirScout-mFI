@@ -2,29 +2,8 @@
 
 var utils = {};
 
-utils.accessPointSubset = function(accessPoints, macAddrs) {
-  var subset = [],
-      include = {};
-
-  for (var i = 0; i < macAddrs.length; ++i) {
-    include[macAddrs[i]] = true;
-  }
-
-  for (var i = 0; i < accessPoints.length; ++i) {
-    if (include[accessPoints[i].MAC]) {
-      subset.push(accessPoints[i]);
-    }
-  }
-
-  return subset;
-};
-
-utils.getManufacturer = function(macAddr) {
-  return manufacturers[macAddr.slice(0, 8)] || "<unknown>";
-};
-
-utils.deepCopy = function(object) {
-  return JSON.parse(JSON.stringify(object));
+utils.macToManufacturer = function(macAddr) {
+  return manufacturers[macAddr.slice(0, 8)] || globals.strings.unknownManufacturer;
 };
 
 utils.freqToChannel = function(freq) {
@@ -53,11 +32,11 @@ utils.generateParabola = function(level, xScale, yScale) {
          ' ' + (xScale(2) - xScale(0)) + ' ' + yScale(constants.noSignal);
 };
 
-utils.customSSIDSort = function(AP) {
-  if (AP.SSID.charAt(0) === '<') {
-    return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" + AP.BSSID;
+utils.customSSIDSort = function(ap) {
+  if (ap.ssid.charAt(0) === '<') {
+    return "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" + ap.mac;
   } else {
-    return AP.SSID + AP.BSSID;
+    return ap.ssid + ap.mac;
   }
 };
 
@@ -72,7 +51,7 @@ utils.inBand = function(freq, band) {
 };
 
 utils.isView = function(view) {
-  return strings.viewTitles[view] !== undefined;
+  return globals.strings.viewTitles[view] !== undefined;
 };
 
 utils.toNewAlpha = function(color, alpha) {
@@ -94,4 +73,54 @@ utils.toLighterShade = function(color, factor) {
 
 utils.spanLen = function(span) {
   return span[1] - span[0];
+};
+
+function AccessPointSelection(macAddrs, showAll) {
+
+  var isSelected = {};
+
+  $.each(macAddrs, function(i, mac) {
+    isSelected[mac] = true;
+  });
+
+  this.apply = function(accessPoints) {
+    var selectedAccessPoints = [];
+
+    if (showAll) {
+      return accessPoints;
+    }
+
+    $.each(accessPoints, function(i, ap) {
+      if (isSelected[ap.mac]) {
+        selectedAccessPoints.push(ap);
+      }
+    });
+
+    return selectedAccessPoints;
+  };
+
+  this.isSelected = function(mac) {
+    if (showAll) {
+      return true;
+    }
+
+    return isSelected[mac];
+  };
+
+  this.add = function(mac) {
+    var newMacAddrs = [],
+        origVal = isSelected[mac];
+
+    isSelected[mac] = true;
+
+    $.each(isSelected, function(mac, selected) {
+      if (selected) newMacAddrs.push(mac);
+    });
+
+    isSelected[mac] = origVal;
+
+    return new AccessPointSelection(newMacAddrs, false);
+  };
+
+  return this;
 };

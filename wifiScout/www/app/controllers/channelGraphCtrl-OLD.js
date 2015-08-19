@@ -637,12 +637,12 @@ app.controller('channelGraphCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
       var updateLoop = setInterval(vis.update, updateInterval);
 
-      document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
+      document.addEventListener(events.newSelection['channelGraph'], updateSelection);
 
       /* Runs on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        document.removeEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
+        document.removeEventListener(events.newSelection['channelGraph'], updateSelection);
 
         vis.saveState();
         vis.destroy();

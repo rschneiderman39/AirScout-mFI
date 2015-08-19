@@ -18,26 +18,26 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
       var updateInterval = timeGraphManager.getUpdateInterval();
 
-      $scope.strings = strings;
+      $scope.strings = globals.strings;
       $scope.legendData = undefined;
       $scope.isDuplicateSSID = {};
-      $scope.selectedSSID = null;
-      $scope.selectedMacAddr = null;
+      $scope.selectedSsid = null;
+      $scope.selectedMac = null;
 
       $scope.toggleSelected = function(legendItem) {
-        if (legendItem.MAC === $scope.selectedMacAddr) {
-          $scope.selectedMacAddr = null;
-          $scope.selectedSSID = null;
+        if (legendItem.mac === $scope.selectedMac) {
+          $scope.selectedMac = null;
+          $scope.selectedSsid = null;
         } else {
-          $scope.selectedMacAddr = legendItem.MAC;
-          $scope.selectedSSID = legendItem.SSID;
+          $scope.selectedMac = legendItem.mac;
+          $scope.selectedSsid = legendItem.ssid;
         }
 
-        timeGraphManager.toggleHighlight(legendItem.MAC);
+        timeGraphManager.toggleHighlight(legendItem.mac);
       };
 
       $scope.isSelected = function(legendItem) {
-        return legendItem.MAC === $scope.selectedMacAddr;
+        return legendItem.mac === $scope.selectedMac;
       };
 
       function init() {
@@ -51,8 +51,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
           },
           gridLineOpacity: 0.5,
           height: undefined,
-          labelX: strings.timeGraph.labelX,
-          labelY: strings.timeGraph.labelY,
+          labelX: globals.strings.timeGraph.labelX,
+          labelY: globals.strings.timeGraph.labelY,
           navPercent: 0,
           range: prefs.range,
           width: undefined,
@@ -84,8 +84,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
       function restoreState() {
         $scope.legendData = timeGraphManager.getLegendData();
-        $scope.selectedSSID = timeGraphManager.getHighlightedSSID();
-        $scope.selectedMacAddr = timeGraphManager.getHighlightedMacAddr();
+        $scope.selectedSsid = timeGraphManager.getHighlightedSsid();
+        $scope.selectedMac = timeGraphManager.getHighlightedMac();
 
         updateDuplicateSSIDs();
       };
@@ -95,10 +95,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
             duplicates = {};
 
         $.each($scope.legendData, function(i, legendItem) {
-          if (found[legendItem.SSID]) {
-            duplicates[legendItem.SSID] = true;
+          if (found[legendItem.ssid]) {
+            duplicates[legendItem.ssid] = true;
           } else {
-            found[legendItem.SSID] = true;
+            found[legendItem.ssid] = true;
           }
         });
 
@@ -108,6 +108,11 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
       function updateLegend() {
         $timeout(function() {
           $scope.legendData = timeGraphManager.getLegendData();
+          $scope.selectedSsid = timeGraphManager.getHighlightedSsid();
+          $scope.selectedMac = timeGraphManager.getHighlightedMac();
+
+          console.log($scope.selectedSsid);
+          console.log($scope.selectedMac);
 
           updateDuplicateSSIDs();
         });
@@ -127,7 +132,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
 
         var lines = graphClip.selectAll('.data-line')
           .data(datasets, function(d, i) {
-            return d.MAC;
+            return d.mac;
           });
 
         lines.interrupt();
@@ -161,7 +166,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
             }
           })
           .attr('d', function(d) {
-            return lineGenerator(d.dataset);
+            return lineGenerator(d.data);
           })
           .attr('transform', 'translate(' + translation + ')')
           .transition()

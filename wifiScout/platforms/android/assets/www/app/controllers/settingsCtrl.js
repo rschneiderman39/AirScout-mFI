@@ -5,7 +5,7 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
 
   setupService.ready.then(function() {
 
-    $scope.strings = strings;
+    $scope.strings = globals.strings;
 
     $scope.setStartingView = function(view) {
       globalSettings.startingView(view);
@@ -23,18 +23,18 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       });
 
       $("[name='filteringOptions']").bootstrapSwitch({
-      	onText: strings.settings.globalAccessPointSelectionTrue,
-      	offText: strings.settings.globalAccessPointSelectionFalse
+      	onText: globals.strings.settings.globalAccessPointSelectionTrue,
+      	offText: globals.strings.settings.globalAccessPointSelectionFalse
       });
 
       $("[name='hiddenAPOptions']").bootstrapSwitch({
-      	onText: strings.settings.detectHiddenTrue,
-      	offText: strings.settings.detectHiddenFalse
+      	onText: globals.strings.settings.detectHiddenTrue,
+      	offText: globals.strings.settings.detectHiddenFalse
       });
 
       $('input[name="filteringOptions"]').bootstrapSwitch('state', globalSettings.globalAccessPointSelection());
       $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
-      $('.selectedStartingView').html(strings.viewTitles[globalSettings.startingView()] + '  <span class="caret"></span>');
+      $('.selectedStartingView').html(globals.strings.viewTitles[globalSettings.startingView()] + '  <span class="caret"></span>');
 
       $('input[name="filteringOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
       	globalSettings.globalAccessPointSelection(state);

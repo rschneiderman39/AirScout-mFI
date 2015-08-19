@@ -23,15 +23,15 @@ setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
-        content: strings.channelTable.tour.intro
+        content: globals.strings.channelTable.tour.intro
       },
       {
         target: '#nav-left',
-        content: strings.channelTable.tour.band2_4
+        content: globals.strings.channelTable.tour.band2_4
       },
       {
         target: "#nav-right",
-        content: strings.channelTable.tour.band5
+        content: globals.strings.channelTable.tour.band5
       }]
   };
 
@@ -53,27 +53,27 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-        content: strings.APTable.tour.intro
+        content: globals.strings.APTable.tour.intro
       },
       {
         target: "#level-header",
-        content: strings.APTable.tour.level
+        content: globals.strings.APTable.tour.level
       },
       {
         target: "#header",
-        content: strings.APTable.tour.sorting
+        content: globals.strings.APTable.tour.sorting
       },
       {
         target: "#channel-header",
-        content: strings.APTable.tour.channel
+        content: globals.strings.APTable.tour.channel
       },
       {
         target: "#capabilities-header",
-        content: strings.APTable.tour.capabilities
+        content: globals.strings.APTable.tour.capabilities
       },
       {
         target: "#filter-button",
-        content: strings.APTable.tour.filter
+        content: globals.strings.APTable.tour.filter
       }]
   };
 
@@ -96,15 +96,15 @@ setup.tours = function() {
     },
     steps: [{
         target: "#time-graph",
-        content: strings.timeGraph.tour.graph,
+        content: globals.strings.timeGraph.tour.graph,
       },
       {
         target: "#legend",
-        content: strings.timeGraph.tour.list
+        content: globals.strings.timeGraph.tour.list
       },
       {
         target: "#filter-button",
-        content: strings.timeGraph.tour.filter
+        content: globals.strings.timeGraph.tour.filter
       }
     ]
   };
@@ -127,15 +127,15 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-        content: strings.signalStrength.tour.intro
+        content: globals.strings.signalStrength.tour.intro
       },
       {
         target: ".min-level",
-        content: strings.signalStrength.tour.minLevel
+        content: globals.strings.signalStrength.tour.minLevel
       },
       {
         target: ".max-level",
-        content: strings.signalStrength.tour.maxLevel
+        content: globals.strings.signalStrength.tour.maxLevel
       }
     ]
   };
@@ -158,19 +158,19 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-      content: strings.channelGraph.tour.intro
+      content: globals.strings.channelGraph.tour.intro
       },
       {
         target: '#nav-left',
-        content: strings.channelGraph.tour.band2_4
+        content: globals.strings.channelGraph.tour.band2_4
       },
       {
         target: "#nav-right",
-        content: strings.channelGraph.tour.band5
+        content: globals.strings.channelGraph.tour.band5
       },
       {
         target: '#filter-button',
-        content: strings.channelGraph.tour.filter
+        content: globals.strings.channelGraph.tour.filter
       }
     ]
   };

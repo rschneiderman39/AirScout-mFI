@@ -17,8 +17,8 @@
 					<ul class="list list-group scrollable-list">
 						<span data-ng-repeat="ap in accessPoints | orderBy:sortSSID">
 							<li class="listgroupitem" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
-							  <div>{{ap.SSID}}</div>
-								<div ng-show="isDuplicateSSID[ap.SSID]">({{ap.MAC}})</div>
+							  <div>{{ap.ssid}}</div>
+								<div ng-show="isDuplicateSSID[ap.ssid]">({{ap.mac}})</div>
 							</li>
 						</span>
 				  </ul>

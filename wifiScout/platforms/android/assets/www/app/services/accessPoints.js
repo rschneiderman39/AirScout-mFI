@@ -10,35 +10,6 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
       var accessPointColors = {},
           accessPointCount = 0;
 
-      function AccessPoint(scanResult) {
-        var randColor;
-
-        this.SSID = scanResult.SSID || strings.hiddenSSID;
-
-        this.MAC = scanResult.BSSID;
-
-        this.capabilities = scanResult.capabilities;
-
-        this.level = scanResult.level;
-
-        this.frequency = scanResult.frequency;
-
-        this.channel = utils.freqToChannel(this.frequency);
-
-        this.manufacturer = utils.getManufacturer(this.MAC);
-
-        if (accessPointColors[this.MAC]) {
-          this.color = accessPointColors[this.MAC];
-
-        } else {
-          randColor = utils.getRandomColor();
-          this.color = randColor;
-          accessPointColors[this.MAC] = randColor;
-        }
-
-        return this;
-      };
-
       service.count = function() {
         return accessPointCount;
       };
@@ -49,7 +20,7 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
         service.getAll().done(function(accessPoints) {
 
           $.each(accessPoints, function(i, accessPoint) {
-            if (accessPoint.MAC === macAddr) {
+            if (accessPoint.mac === macAddr) {
               defer.resolve(accessPoint);
             }
           });
@@ -87,6 +58,36 @@ app.factory('accessPoints', ['globalSettings', 'setupService', function(
         );
 
         return defer;
+      };
+
+      function AccessPoint(scanResult) {
+        var randColor;
+
+        if (scanResult.SSID === "") {
+          this.ssid = globals.strings.hiddenSSID;
+          this.hidden = true;
+        } else {
+          this.ssid = scanResult.SSID;
+          this.hidden = false;
+        }
+
+        this.mac = scanResult.BSSID;
+        this.capabilities = scanResult.capabilities;
+        this.level = scanResult.level;
+        this.frequency = scanResult.frequency;
+        this.channel = utils.freqToChannel(this.frequency);
+        this.manufacturer = utils.macToManufacturer(this.mac);
+
+        if (accessPointColors[this.mac]) {
+          this.color = accessPointColors[this.mac];
+
+        } else {
+          randColor = utils.getRandomColor();
+          this.color = randColor;
+          accessPointColors[this.mac] = randColor;
+        }
+
+        return this;
       };
 
     });

@@ -23,9 +23,6 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       heightFactor: 0.95
     };
 
-    var selectedMACs = [],
-        showAll;
-
     function init() {
       var config = {
         band: undefined,
@@ -38,10 +35,10 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         },
         gridLineOpacity: 0.5,
         height: undefined,
-        labelX: strings.channelGraph.labelX,
-        labelY: strings.channelGraph.labelY,
+        labelX: globals.strings.channelGraph.labelX,
+        labelY: globals.strings.channelGraph.labelY,
         navLeftDomain: prefs.domain2_4,
-        navLeftLabel: strings.channelGraph.label2_4,
+        navLeftLabel: globals.strings.channelGraph.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
           top: 1,
@@ -51,7 +48,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
-        navRightLabel: strings.channelGraph.label5,
+        navRightLabel: globals.strings.channelGraph.label5,
         range:[constants.noSignal, constants.maxSignal],
         sliderExtent: undefined,
         width: undefined,
@@ -74,13 +71,9 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       var updateLoop = setInterval(vis.update, updateInterval);
 
-      updateSelection();
-      document.addEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-
-        document.removeEventListener(events.newAccessPointSelection['channelGraph'], updateSelection);
 
         vis.saveState();
 
@@ -93,10 +86,8 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       };
     };
 
-    function updateSelection() {
-      var selection = globalSettings.getAccessPointSelection('channelGraph');
-      selectedMACs = selection.macAddrs;
-      showAll = selection.showAll;
+    function mySelection() {
+      return globalSettings.getAccessPointSelection('channelGraph');
     };
 
     function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
@@ -107,13 +98,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(data) {
-          var selectedData;
-
-          if (showAll) {
-            selectedData = data;
-          } else {
-            selectedData = utils.accessPointSubset(data, selectedMACs);
-          }
+          var selectedData = mySelection().apply(data);
 
           updateParabolas(selectedData);
           updateLabels(selectedData);
@@ -143,7 +128,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
             .data(data.sort(function(a, b) {
               return b.level - a.level;
             }), function(d) {
-              return d.MAC;
+              return d.mac;
             });
 
           parabolas.enter().append('path')
@@ -188,7 +173,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .data(data.sort(function(a, b) {
             return b.level - a.level;
           }), function(d) {
-            return d.MAC;
+            return d.mac;
           });
 
         labels.interrupt();
@@ -196,7 +181,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         /* Add new labels where necessary */
         labels.enter().append('text')
           .text(function(d) {
-            return d.SSID !== strings.hiddenSSID ? d.SSID : "";
+            return d.ssid !== globals.strings.hiddenSSID ? d.ssid : "";
           })
           .attr('fill', function(d) {
             return d.color;

@@ -13,7 +13,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
           tourInProgress = false,
           filterableViews = defaults.filterableViews;
 
-      $scope.strings = strings;
+      $scope.strings = globals.strings;
 
       $scope.showNav = function() {
         clearTimeout(navTimeout);
@@ -38,7 +38,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
           $timeout(function() {
             $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
-                $('#view-title').html(strings.viewTitles[view]);
+                $('#view-title').html(globals.strings.viewTitles[view]);
                 $('#current-view').removeClass('anim-in anim-slide-'+direction);
                 globalSettings.updatesPaused(false);
 
@@ -52,7 +52,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
         if (utils.isView(view)) {
           $scope.stopTour();
 
-          $('#view-title').html(strings.viewTitles[view]);
+          $('#view-title').html(globals.strings.viewTitles[view]);
           $state.go(view);
         }
       };

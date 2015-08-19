@@ -14,21 +14,17 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     };
 
     var datasets = {},
-        isSelected = {},
-        showAll = true,
-        highlightedMacAddr = null;
+        highlightedMac = null;
 
     var numDataPoints;
 
     service.getSelectedDatasets = function() {
       var selectedDatasets = [];
 
-      $.each(datasets, function(macAddr) {
-        if (showAll || isSelected[macAddr]) {
-          if (globalSettings.detectHidden() ||
-              datasets[macAddr].SSID !== strings.hiddenSSID) {
-
-            selectedDatasets.push(datasets[macAddr]);
+      $.each(datasets, function(mac, dataset) {
+        if (mySelection().isSelected(mac)) {
+          if (globalSettings.detectHidden() || ! dataset.hidden) {
+            selectedDatasets.push(dataset);
           }
         }
       });
@@ -39,16 +35,10 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     service.getLegendData = function() {
       var legendData = [];
 
-      $.each(datasets, function(macAddr) {
-        if (showAll || isSelected[macAddr]) {
-          if (globalSettings.detectHidden() ||
-              datasets[macAddr].SSID !== strings.hiddenSSID) {
-
-            legendData.push({
-              SSID: datasets[macAddr].SSID,
-              MAC: macAddr,
-              color: datasets[macAddr].color,
-            });
+      $.each(datasets, function(mac, dataset) {
+        if (mySelection().isSelected(mac)) {
+          if (globalSettings.detectHidden() || ! dataset.hidden) {
+            legendData.push(new LegendItem(dataset));
           }
         }
       });
@@ -64,116 +54,99 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       return updateInterval;
     };
 
-    service.toggleHighlight = function(macAddr) {
-      if (datasets[macAddr]) {
-        if (macAddr === highlightedMacAddr) {
-          datasets[macAddr].highlight = false;
-          highlightedMacAddr = null;
+    service.toggleHighlight = function(mac) {
+      if (datasets[mac]) {
+        if (mac === highlightedMac) {
+          datasets[mac].highlight = false;
+          highlightedMac = null;
 
         } else {
-          if (datasets[highlightedMacAddr]) {
-            datasets[highlightedMacAddr].highlight = false;
+          if (datasets[highlightedMac]) {
+            datasets[highlightedMac].highlight = false;
           }
 
-          datasets[macAddr].highlight = true;
-          highlightedMacAddr = macAddr;
+          datasets[mac].highlight = true;
+          highlightedMac = mac;
         }
       }
     };
 
-    service.getHighlightedMacAddr = function() {
-      return highlightedMacAddr;
+    service.getHighlightedMac = function() {
+      return highlightedMac;
     };
 
-    service.getHighlightedSSID = function() {
-      if (datasets[highlightedMacAddr]) {
-        return datasets[highlightedMacAddr].SSID;
+    service.getHighlightedSsid = function() {
+      if (datasets[highlightedMac]) {
+        return datasets[highlightedMac].ssid;
       } else {
         return null;
       }
     };
 
+    function init() {
+      numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
+
+      document.addEventListener(events.newSelection, function() {
+        if (! mySelection().isSelected(highlightedMac)) {
+          if (datasets[highlightedMac]) {
+            datasets[highlightedMac].highlight = false;
+          }
+
+          highlightedMac = null;
+        }
+
+        document.dispatchEvent(new Event(events.newLegendData));
+      });
+
+      updateDatasets();
+      setInterval(updateDatasets, updateInterval);
+    };
+
+    function mySelection() {
+      return globalSettings.getAccessPointSelection('timeGraph');
+    };
+
     function updateDatasets() {
       accessPoints.getAll().done(function(results) {
-        var macAddrToDataPoint = {},
+        var macToAccessPoint = {},
             legendUpdateNeeded = false;
 
-        $.each(results, function(i, dataPoint) {
-          macAddrToDataPoint[dataPoint.MAC] = dataPoint;
+        $.each(results, function(i, ap) {
+          macToAccessPoint[ap.mac] = ap;
         });
 
         /* Update existing datasets */
-        var correspondingDataPoint;
+        var correspondingAccessPoint;
 
-        $.each(datasets, function(macAddr) {
-          var dataset = datasets[macAddr].dataset;
+        $.each(datasets, function(mac) {
+          var data = datasets[mac].data;
 
-          correspondingDataPoint = macAddrToDataPoint[macAddr];
+          correspondingAccessPoint = macToAccessPoint[mac];
 
           /* Remove dummy end points (there to allow fill) */
-          dataset.shift();
-          dataset.pop();
+          data.shift();
+          data.pop();
 
-          dataset.shift();
+          data.shift();
 
-          if (correspondingDataPoint) {
-            dataset.push({
-              level: correspondingDataPoint.level
-            });
+          if (correspondingAccessPoint) {
+            data.push({ level: correspondingAccessPoint.level });
           } else {
-            dataset.push({
-              level: constants.noSignal
-            });
+            data.push({ level: constants.noSignal });
           }
 
           /* Add dummy end points (to allow fill)*/
-          dataset.unshift({
-            level: constants.noSignal
-          });
+          data.unshift({ level: constants.noSignal });
 
-          dataset.push({
-            level: constants.noSignal
-          });
+          data.push({ level: constants.noSignal });
         });
 
         /* Build new datasets */
-        var dataPoint, newDataset;
-
-        $.each(results, function(i, dataPoint) {
-
-          if (! datasets[dataPoint.MAC]) {
-            newDataset = [];
-
-            for (var j = 0; j < numDataPoints - 1; ++j) {
-              newDataset.push({
-                level: constants.noSignal
-              });
-            }
-
-            newDataset.push({
-              level: dataPoint.level
-            });
-
-            /* Add dummy data points to allow fill */
-            newDataset.unshift({
-              level: constants.noSignal
-            });
-
-            newDataset.push({
-              level: constants.noSignal
-            });
-
-            datasets[dataPoint.MAC] = {
-              MAC: dataPoint.MAC,
-              SSID: dataPoint.SSID,
-              color: dataPoint.color,
-              highlight: false,
-              dataset: newDataset
-            }
-
+        $.each(results, function(i, ap) {
+          if (! datasets[ap.mac]) {
+            datasets[ap.mac] = new Dataset(ap);
             legendUpdateNeeded = true;
           }
-
         });
 
         document.dispatchEvent(new Event(events.newTimeGraphData));
@@ -185,30 +158,36 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       });
     };
 
-    function init() {
-      numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
+    function Dataset(ap) {
+      var data = [];
 
-      updateDatasets();
-      setInterval(updateDatasets, updateInterval);
+      for (var j = 0; j < numDataPoints - 1; ++j) {
+        data.push({ level: constants.noSignal });
+      }
 
-      document.addEventListener(events.newAccessPointSelection['timeGraph'],
-                                updateSelection);
+      data.push({ level: ap.level });
+
+      /* Add dummy data points to allow fill */
+      data.unshift({ level: constants.noSignal });
+
+      data.push({ level: constants.noSignal });
+
+      this.ssid = ap.ssid;
+      this.hidden = ap.hidden;
+      this.mac = ap.mac;
+      this.color = ap.color;
+      this.highlight = false;
+      this.data = data;
+
+      return this;
     };
 
-    function updateSelection() {
-      var selection = globalSettings.getAccessPointSelection('timeGraph');
+    function LegendItem(dataset) {
+      this.ssid = dataset.ssid;
+      this.mac = dataset.mac;
+      this.color = dataset.color;
 
-      $.each(isSelected, function(macAddr) {
-        isSelected[macAddr] = false;
-      });
-
-      $.each(selection.macAddrs, function(i, macAddr) {
-        isSelected[macAddr] = true;
-      });
-
-      showAll = selection.showAll;
-
-      document.dispatchEvent(new Event(events.newLegendData));
+      return this;
     };
 
     init();

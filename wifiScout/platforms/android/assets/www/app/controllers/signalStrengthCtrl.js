@@ -27,16 +27,18 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     $scope.selectedSSID = null;
     $scope.selectedMAC = null;
 
+    $scope.strings = globals.strings;
+
     $scope.isSelected = function(ap) {
-      if (typeof ap.MAC !== 'undefined') {
-        return ap.MAC === $scope.selectedMAC;
+      if (typeof ap.mac !== 'undefined') {
+        return ap.mac === $scope.selectedMAC;
       }
     };
 
     $scope.setSelected = function(ap) {
-      if (typeof ap.MAC !== 'undefined') {
-        $scope.selectedSSID = ap.SSID;
-        $scope.selectedMAC = ap.MAC;
+      if (typeof ap.mac !== 'undefined') {
+        $scope.selectedSSID = ap.ssid;
+        $scope.selectedMAC = ap.mac;
       }
       $scope.level = null;
       $scope.minLevel = null;
@@ -79,10 +81,10 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
             $scope.accessPoints = results;
 
             for (var i = 0; i < $scope.accessPoints.length; ++i) {
-              if (encountered[$scope.accessPoints[i].SSID]) {
-                isDuplicateSSID[$scope.accessPoints[i].SSID] = true;
+              if (encountered[$scope.accessPoints[i].ssid]) {
+                isDuplicateSSID[$scope.accessPoints[i].ssid] = true;
               } else {
-                encountered[$scope.accessPoints[i].SSID] = true;
+                encountered[$scope.accessPoints[i].ssid] = true;
               }
             }
 

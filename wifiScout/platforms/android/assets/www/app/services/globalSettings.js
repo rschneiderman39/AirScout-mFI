@@ -31,10 +31,6 @@ setupService) {
         globalAccessPointSelection = option;
         window.localStorage.setItem('globalAccessPointSelection',
                                      JSON.stringify(option));
-
-        $.each(filterableViews, function(i, view) {
-          document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
-        });
       }
     };
 
@@ -49,27 +45,21 @@ setupService) {
 
     service.getAccessPointSelection = function(view) {
       if (globalAccessPointSelection) {
-        return utils.deepCopy(selections['global']);
+        return selections['global'];
       } else {
-        return utils.deepCopy(selections[view]);
+        return selections[view];
       }
     };
 
     service.setAccessPointSelection = function(view, newSelection) {
-      if (newSelection.macAddrs instanceof Array &&
-          typeof newSelection.showAll === 'boolean') {
+      if (newSelection instanceof AccessPointSelection) {
         if (globalAccessPointSelection) {
-          selections['global'] = utils.deepCopy(newSelection);
-
-          $.each(filterableViews, function(i, view) {
-            document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
-          });
-
+          selections['global'] = newSelection;
         } else {
-          selections[view] = utils.deepCopy(newSelection);
-
-          document.dispatchEvent(new Event(events.newAccessPointSelection[view]));
+          selections[view] = newSelection;
         }
+
+        document.dispatchEvent(new Event(events.newSelection));
       }
     };
 
@@ -97,16 +87,10 @@ setupService) {
         defaults.startingView;
 
       $.each(filterableViews, function(i, view) {
-        selections[view] = {
-          macAddrs: [],
-          showAll: true
-        };
+        selections[view] = new AccessPointSelection([], true);
       });
 
-      selections['global'] = {
-        macAddrs: [],
-        showAll: true
-      };
+      selections['global'] = new AccessPointSelection([], true);
     };
 
     init();
