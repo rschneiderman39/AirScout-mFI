@@ -331,6 +331,7 @@
 			if (this.range) {
 				return this.value;
 			}
+
 			return this.value[0];
 		},
 

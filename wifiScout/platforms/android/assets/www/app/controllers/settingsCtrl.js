@@ -1,14 +1,20 @@
 "use strict";
 
-app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
-'setupService', function($scope, $location, globalSettings, setupService) {
+app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettings',
+'setupService', function($scope, $timeout, $location, globalSettings, setupService) {
 
   setupService.ready.then(function() {
 
+    var prefs = {
+      sliderStep: 10
+    };
+
     $scope.strings = globals.strings;
+    $scope.visScaleMin = globalSettings.visScaleMin();
+    $scope.visScaleMax = globalSettings.visScaleMax();
 
     $scope.setMaxSignal = function(max) {
-      globalSettings.maxSignal(max);
+      globalSettings.visScaleMax(max);
     };
 
     function init() {
@@ -16,12 +22,14 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
     };
 
     function prepView() {
+
       var sliderConfig = {
         min: constants.signalFloor,
         max: constants.signalCeil,
-        step: 1,
-        value: [globalSettings.minSignal(), globalSettings.maxSignal()],
-        tooltip: 'show'
+        step: prefs.sliderStep,
+        /* Both values must be negative or the bootstrap-slider plugin freaks out */
+        value: [globalSettings.visScaleMin(), globalSettings.visScaleMax()],
+        tooltip: 'hide'
       };
 
       $("[name='hiddenAPOptions']").bootstrapSwitch({
@@ -35,11 +43,35 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       	globalSettings.detectHidden(state);
       });
 
-      $('#range-slider').slider(sliderConfig)
-        .on('slideStop', function() {
-          console.log($(this).slider('getValue'));
-        });
+      $('#scale-slider').slider(sliderConfig)
+        .on('slide', function() {
+          var rangeStr = $(this)[0].value;
 
+          $timeout(function() {
+            if (rangeStr) {
+              var range = rangeStr.split(',');
+              $scope.visScaleMin = parseInt(range[0]);
+              $scope.visScaleMax = parseInt(range[1]);
+            }
+          });
+        })
+        .on('slideStop', function() {
+          $timeout(function() {
+            if ($scope.visScaleMin === $scope.visScaleMax) {
+              if ($scope.visScaleMin === constants.signalFloor) {
+                $scope.visScaleMax = $scope.visScaleMax + prefs.sliderStep;
+              } else {
+                $scope.visScaleMin = $scope.visScaleMin - prefs.sliderStep;
+              }
+
+              $('#scale-slider').slider('setValue',
+                [$scope.visScaleMin, $scope.visScaleMax]);
+            }
+
+            globalSettings.visScaleMin($scope.visScaleMin);
+            globalSettings.visScaleMax($scope.visScaleMax);
+          });
+        });
     };
 
     init();

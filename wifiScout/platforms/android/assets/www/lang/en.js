@@ -145,12 +145,8 @@ languages['en'] = {
   	deselectAll: 'Deselect All'
   },
   settings: {
-    startingViewHeader: 'Starting View',
-    startingViewDescription: 'The app will default to the selected view on startup.',
-    globalAccessPointSelectionHeader: 'Filtering',
-    globalAccessPointSelectionDescription: 'Global filtering preserves access point selections across all views, while local filtering maintains a separate selection for each view.',
-    globalAccessPointSelectionTrue: 'Global',
-    globalAccessPointSelectionFalse: 'Local',
+    visScaleHeader: 'Graph Scale',
+    visScaleDescription: 'The app will default to the selected view on startup.',
     detectHiddenHeader: 'Hidden Access Points',
     detectHiddenDescription: 'Detect or ignore hidden access points.',
     detectHiddenTrue: 'Detect',

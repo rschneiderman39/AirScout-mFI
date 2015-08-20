@@ -35,6 +35,17 @@
   content:"\e080";
 }
 
+.slider-handle {
+  background-color: #62bf01;
+  background-image: none;
+}
+
+.slider-selection {
+  background-color: #62bf01;
+  background-image: none;
+  opacity: 0.5;
+}
+
 #touch-layer {
   height: 100vh;
   position: relative;

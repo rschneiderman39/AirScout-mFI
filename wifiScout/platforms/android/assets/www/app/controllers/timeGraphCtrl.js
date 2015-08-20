@@ -8,7 +8,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
       var prefs = {
         domain: timeGraphManager.getDomain(),
-        range: [globalSettings.minSignal(), globalSettings.maxSignal()],
+        range: [globalSettings.visScaleMin(), globalSettings.visScaleMax()],
         lineWidth: 2,
         highlightedLineWidth: 6,
         highlightOpacity: 0.3,

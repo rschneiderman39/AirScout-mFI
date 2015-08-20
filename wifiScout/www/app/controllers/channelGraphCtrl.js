@@ -49,7 +49,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
         navRightLabel: globals.strings.channelGraph.label5,
-        range:[globalSettings.minSignal(), globalSettings.maxSignal()],
+        range:[globalSettings.visScaleMin(), globalSettings.visScaleMax()],
         sliderExtent: undefined,
         width: undefined,
         xAxisTickInterval: 1,

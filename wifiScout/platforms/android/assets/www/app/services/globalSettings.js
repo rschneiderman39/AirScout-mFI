@@ -8,8 +8,8 @@ setupService) {
   setupService.ready.then(function() {
 
     var detectHidden,
-        maxSignal,
-        minSignal,
+        visScaleMax,
+        visScaleMin,
         currentSelection,
         updatesPaused = false;
 
@@ -35,25 +35,29 @@ setupService) {
       }
     };
 
-    service.maxSignal = function(newMax) {
+    service.visScaleMax = function(newMax) {
       if (newMax === undefined) {
-        return maxSignal;
+        return visScaleMax;
       }
 
-      if (typeof newMax === 'number' && newMax > minSignal) {
-        maxSignal = newMax;
-        window.localStorage.setItem('maxSignal', JSON.stringify(newMax));
+      if (typeof newMax === 'number' && newMax >= visScaleMin &&
+          newMax >= constants.signalFloor && newMax <= constants.signalCeil) {
+
+        visScaleMax = newMax;
+        window.localStorage.setItem('visScaleMax', JSON.stringify(newMax));
       }
     };
 
-    service.minSignal = function(newMin) {
+    service.visScaleMin = function(newMin) {
       if (newMin === undefined) {
-        return minSignal;
+        return visScaleMin;
       }
 
-      if (typeof newMin === 'number' && newMin < maxSignal) {
-        minSignal = newMin;
-        window.localStorage.setItem('minSignal', JSON.stringify(newMin));
+      if (typeof newMin === 'number' && newMin <= visScaleMax &&
+          newMin >= constants.signalFloor && newMin <= constants.signalCeil) {
+
+        visScaleMin = newMin;
+        window.localStorage.setItem('visScaleMin', JSON.stringify(newMin));
       }
     };
 
@@ -71,11 +75,11 @@ setupService) {
       detectHidden = JSON.parse(window.localStorage.getItem('detectHidden')) ||
                      defaults.detectHidden;
 
-      minSignal = JSON.parse(window.localStorage.getItem('minSignal')) ||
+      visScaleMin = JSON.parse(window.localStorage.getItem('visScaleMin')) ||
                  constants.signalFloor;
 
-      maxSignal = JSON.parse(window.localStorage.getItem('maxSignal')) ||
-                  defaults.maxSignal;
+      visScaleMax = JSON.parse(window.localStorage.getItem('visScaleMax')) ||
+                  defaults.visScaleMax;
 
       currentSelection = new AccessPointSelection([], true);
     };

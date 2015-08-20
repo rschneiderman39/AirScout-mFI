@@ -1,16 +1,18 @@
 "use strict";
 
 var defaults = {
-  maxSignal: -30,
+  visScaleMax: -30,
   detectHidden: false,
   language: 'en',
   region: 'US',
-  startingView: 'channelGraph'
+  startingView: 'channelGraph',
+  backgroundColor: '#f1f1f1',
+  themeColor: '#62bf01'
 };
 
 var constants = {
   signalFloor: -100,
-  signalCeil: 0,
+  signalCeil: -10,
   moderateThresh: 15,
   highThresh: 30,
   updateIntervalFast: 500,
