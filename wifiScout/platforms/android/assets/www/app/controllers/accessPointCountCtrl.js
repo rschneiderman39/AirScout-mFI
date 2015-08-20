@@ -40,10 +40,10 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         },
         gridLineOpacity: 0,
         height: undefined,
-        labelX: strings.accessPointCount.labelX,
-        labelY: strings.accessPointCount.labelY,
+        labelX: globals.strings.accessPointCount.labelX,
+        labelY: globals.strings.accessPointCount.labelY,
         navLeftDomain: prefs.domain2_4,
-        navLeftLabel: strings.accessPointCount.label2_4,
+        navLeftLabel: globals.strings.accessPointCount.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
           top: 1,
@@ -53,7 +53,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
-        navRightLabel: strings.accessPointCount.label5,
+        navRightLabel: globals.strings.accessPointCount.label5,
         range: prefs.range,
         sliderExtent: undefined,
         width: undefined,
@@ -204,7 +204,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', graphScalesY(constants.noSignal))
+          .attr('y', graphScalesY(constants.signalFloor))
           .remove();
       };
 
@@ -351,7 +351,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
       extentMin = xScale.invert(parseFloat(slider.attr('x'))),
       extentMax = xScale.invert(parseFloat(slider.attr('x')) +
-                                      parseFloat(slider.attr('width')));
+                                  parseFloat(slider.attr('width')));
 
       accessPointCountState.band(band);
       accessPointCountState.sliderExtent([extentMin, extentMax]);

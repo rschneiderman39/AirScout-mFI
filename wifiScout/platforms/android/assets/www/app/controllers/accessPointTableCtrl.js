@@ -8,12 +8,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
     var updateInterval;
 
-    var showAll; /* True: display all access points regardless of selection.
-                           False: display only selected access points. */
-
-    var selectedMACs = []; /* Current access point selection. @type {{Array.<string>}} */
-
-    $scope.strings = strings;
+    $scope.strings = globals.strings;
     $scope.accessPoints = [];       // Array of AP data objects to be displayed
     $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
     $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
@@ -36,12 +31,6 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
     /* Used in place of a string predicate to sort access points by SSID. @type {function} */
     $scope.sortSSID = utils.customSSIDSort;
-
-    /* Update the locally stored selection whenever the user changes the selection with the
-       filter modal.
-
-       @param {{showAll: boolean, selectedMACs: Array.<string>}} newSelection - The new selection.
-    */
 
     function init() {
       if (accessPoints.count() < constants.moderateThresh) {
@@ -69,35 +58,24 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       }
 
       var updateLoop = setInterval(update, updateInterval);
-      document.addEventListener(events.newAccessPointSelection['accessPointTable'], updateSelection);
+      document.addEventListener(events.newSelection, update);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        document.removeEventListener(events.newAccessPointSelection['accessPointTable'], updateSelection);
-
+        document.removeEventListener(events.newSelection, update);
         saveState();
       });
     };
 
-    function updateSelection() {
-      var selection = globalSettings.getAccessPointSelection('accessPointTable');
-
-      selectedMACs = selection.macAddrs;
-      showAll = selection.showAll;
-
-      update();
+    function apSelection() {
+      return globalSettings.accessPointSelection();
     };
 
     function update() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $timeout(function() {
-            if (showAll) {
-              $scope.accessPoints = results;
-            } else {
-              $scope.accessPoints =
-              utils.accessPointSubset(results, selectedMACs);
-            }
+            $scope.accessPoints = apSelection().apply(results);
           });
         });
       }
@@ -111,16 +89,14 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
     /* Load the previously used selection and sort ordering. */
     function restoreState() {
-      var selection = globalSettings.getAccessPointSelection('accessPointTable');
-      selectedMACs = selection.macAddrs;
-      showAll = selection.showAll;
-
       var predicate = accessPointTableState.sortPredicate();
+
       if (predicate === 'SSID') {
         $scope.sortPredicate = $scope.sortSSID;
       } else {
         $scope.sortPredicate = predicate;
       }
+
       $scope.sortReverse = accessPointTableState.sortReverse();
     };
 
