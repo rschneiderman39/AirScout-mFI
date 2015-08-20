@@ -9,10 +9,12 @@
   <vs:features />
 
   <log level="debug" />
-
+<!--
   <preference name="SplashScreen" value="screen" />
-  <preference name="SplashScreenDelay" value="4000" />
-  <preference name="SplashMaintainAspectRatio" value="false" />
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="SplashScreenDelay" value="1000" />
+  <preference name="SplashMaintainAspectRatio" value="true" />
+-->
 
   <platform name="android">
     <icon src="res/icons/android/icon.png" density="ldpi" />
@@ -20,10 +22,10 @@
     <icon src="res/icons/android/icon.png" density="hdpi" />
     <icon src="res/icons/android/icon.png" density="xhdpi" />
 
-    <splash src="res/screens/android/sofachrome.png" density="land-hdpi" />
-    <splash src="res/screens/android/sofachrome.png" density="land-ldpi" />
-    <splash src="res/screens/android/sofachrome.png" density="land-mdpi" />
-    <splash src="res/screens/android/sofachrome.png" density="land-xhdpi" />
+    <splash src="res/screens/android/BLACKSPLASH.png" density="land-hdpi" />
+    <splash src="res/screens/android/BLACKSPLASH.png" density="land-ldpi" />
+    <splash src="res/screens/android/BLACKSPLASH.png" density="land-mdpi" />
+    <splash src="res/screens/android/BLACKSPLASH.png" density="land-xhdpi" />
     <!--
     <splash src="res/screens/android/screen-ldpi-landscape.png" density="land-ldpi" />
     <splash src="res/screens/android/screen-mdpi-landscape.png" density="land-mdpi" />

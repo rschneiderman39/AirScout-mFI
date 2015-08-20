@@ -8,14 +8,14 @@ languages['en'] = {
   hiddenSSID: '<hidden>',
   unknownManufacturer: '<unknown>',
   viewTitles: {
-    APTable: 'AP Table',
+    accessPointTable: 'Access Point Table',
     channelGraph: 'Channel Graph',
-    channelTable: 'Channel Table',
+    accessPointCount: 'Access Point Count',
     settings: 'Settings',
     signalStrength: 'Signal Strength',
     timeGraph: 'Time Graph'
   },
-  channelTable : {
+  accessPointCount : {
     label2_4: '2.4 Ghz',
     label5: '5 Ghz',
     labelX: 'Channel',
@@ -37,7 +37,7 @@ languages['en'] = {
         + " unauthorized use may be restricted in your region. "
     }
   },
-  APTable : {
+  accessPointTable : {
     sortSSID: 'SSID',
     sortMAC: 'MAC Address',
     sortManufacturer: 'Vendor',

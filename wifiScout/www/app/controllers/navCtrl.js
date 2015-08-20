@@ -1,7 +1,9 @@
 "use strict";
 
-app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout', 'globalSettings', 'nzTour', 'setupService',
-function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupService) {
+app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout',
+  'globalSettings', 'nzTour', 'setupService',
+  function($scope, $state, $animate, $timeout, globalSettings, nzTour,
+    setupService) {
 
     setupService.ready.then(function() {
 
@@ -15,12 +17,12 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
       $scope.strings = globals.strings;
 
       $scope.showNav = function() {
-        clearTimeout(navTimeout);
+        /* clearTimeout(navTimeout);
         var navBar = $('#nav-bar');
         navBar.css('bottom', '0px');
         navTimeout = setTimeout(function() {
           navBar.css('bottom', 1 - $('#nav-bar').height());
-        }, prefs.navShowInterval);
+        }, prefs.navShowInterval); */
       };
 
       $scope.swipeTo = function(view, direction) {
@@ -58,7 +60,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour, setupServic
 
       $scope.startTour = function() {
         if ($state.current.name !== 'timeGraph' &&
-            $state.current.name !== 'channelTable') {
+            $state.current.name !== 'accessPointCount') {
           globalSettings.updatesPaused(true);
         };
 

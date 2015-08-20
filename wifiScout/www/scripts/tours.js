@@ -23,27 +23,15 @@ setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
-<<<<<<< Updated upstream
-        content: globals.strings.channelTable.tour.intro
+        content: globals.strings.accessPointCount.tour.intro
       },
       {
         target: '#nav-left',
-        content: globals.strings.channelTable.tour.band2_4
+        content: globals.strings.accessPointCount.tour.band2_4
       },
       {
         target: "#nav-right",
-        content: globals.strings.channelTable.tour.band5
-=======
-        content: strings.accessPointCount.tour.intro
-      },
-      {
-        target: '#nav-left',
-        content: strings.accessPointCount.tour.band2_4
-      },
-      {
-        target: "#nav-right",
-        content: strings.accessPointCount.tour.band5
->>>>>>> Stashed changes
+        content: globals.strings.accessPointCount.tour.band5
       }]
   };
 
@@ -65,51 +53,27 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-<<<<<<< Updated upstream
-        content: globals.strings.APTable.tour.intro
+        content: globals.strings.accessPointTable.tour.intro
       },
       {
         target: "#level-header",
-        content: globals.strings.APTable.tour.level
+        content: globals.strings.accessPointTable.tour.level
       },
       {
         target: "#header",
-        content: globals.strings.APTable.tour.sorting
+        content: globals.strings.accessPointTable.tour.sorting
       },
       {
         target: "#channel-header",
-        content: globals.strings.APTable.tour.channel
+        content: globals.strings.accessPointTable.tour.channel
       },
       {
         target: "#capabilities-header",
-        content: globals.strings.APTable.tour.capabilities
+        content: globals.strings.accessPointTable.tour.capabilities
       },
       {
         target: "#filter-button",
-        content: globals.strings.APTable.tour.filter
-=======
-        content: strings.accessPointTable.tour.intro
-      },
-      {
-        target: "#level-header",
-        content: strings.accessPointTable.tour.level
-      },
-      {
-        target: "#header",
-        content: strings.accessPointTable.tour.sorting
-      },
-      {
-        target: "#channel-header",
-        content: strings.accessPointTable.tour.channel
-      },
-      {
-        target: "#capabilities-header",
-        content: strings.accessPointTable.tour.capabilities
-      },
-      {
-        target: "#filter-button",
-        content: strings.accessPointTable.tour.filter
->>>>>>> Stashed changes
+        content: globals.strings.accessPointTable.tour.filter
       }]
   };
 

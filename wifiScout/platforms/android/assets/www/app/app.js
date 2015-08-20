@@ -11,18 +11,18 @@ var app = angular.module('app', ['ngAnimate', 'ui.router', 'uiRouterStyles', 'se
           css: 'css/settings.css'
         }
       })
-      .state('channelTable', {
-        url: "/channelTable",
-        templateUrl: 'views/channelTable.html',
+      .state('accessPointCount', {
+        url: "/accessPointCount",
+        templateUrl: 'views/accessPointCount.html',
         data: {
-          css: 'css/channelTable.css'
+          css: 'css/accessPointCount.css'
         }
       })
-      .state('APTable', {
-        url: "/APTable",
-        templateUrl: 'views/APTable.html',
+      .state('accessPointTable', {
+        url: "/accessPointTable",
+        templateUrl: 'views/accessPointTable.html',
         data: {
-          css: ['css/APTable.css', 'css/sortArrow.css']
+          css: ['css/accessPointTable.css', 'css/sortArrow.css']
         }
       })
       .state('timeGraph', {

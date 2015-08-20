@@ -25,14 +25,14 @@ app.controller('settingsCtrl', ['$scope', '$location', 'globalSettings',
       };
 
       $("[name='hiddenAPOptions']").bootstrapSwitch({
-      	onText: globals.strings.settings.detectHiddenTrue,
-      	offText: globals.strings.settings.detectHiddenFalse
+        onText: globals.strings.settings.detectHiddenTrue,
+        offText: globals.strings.settings.detectHiddenFalse
       });
 
       $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
 
       $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      	globalSettings.detectHidden(state);
+        globalSettings.detectHidden(state);
       });
 
       $('#range-slider').slider(sliderConfig)
