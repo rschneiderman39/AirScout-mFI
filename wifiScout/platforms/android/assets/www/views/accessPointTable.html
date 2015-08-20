@@ -1,27 +1,27 @@
 <html>
 	<body>
-		<div ng-click="showNav()" ng-swipe-left="swipeTo('channelTable', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="APTableCtrl">
+		<div ng-click="showNav()" ng-swipe-left="swipeTo('accessPointCount', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="accessPointTableCtrl">
 			<!-- Fixed table header -->
 			<table class="table">
 	  		<thead class="container-fluid">
       		<tr id="header" class="row">
           	<th class="col-xs-2" ng-click="order('SSID'); $event.stopPropagation()">
-            	<a href="">{{strings.APTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
+            	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
           	<th class="col-xs-2" ng-click="order('MAC'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'MAC'" ng-class="{reverse:sortReverse}"></span></a>
+          		<a href="">{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'MAC'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
 						<th class="col-xs-3" ng-click="order('manufacturer'); $event.stopPropagation()">
-							<a href="">{{strings.APTable.sortManufacturer}}<span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
+							<a href="">{{strings.accessPointTable.sortManufacturer}}<span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
 						</th>
           	<th class="col-xs-1" id="channel-header" ng-click="order('channel'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
+          		<a href="">{{strings.accessPointTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
           	<th class="col-xs-2" id="level-header" ng-click="order('level'); $event.stopPropagation()">
-           		<a href="">{{strings.APTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+           		<a href="">{{strings.accessPointTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
           	<th class="col-xs-2" id="capabilities-header" ng-click="order('capabilities'); $event.stopPropagation()">
-          		<a href="">{{strings.APTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+          		<a href="">{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
           	</th>
       		</tr>
 	      </thead>
@@ -31,8 +31,8 @@
 				<table class="table table-striped">
 		    	<tbody class="container-fluid">
 						<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse">
-			      	<td class="col-xs-2">{{ap.ssid}}</td>
-			      	<td class="col-xs-2">{{ap.mac}}</td>
+			      	<td class="col-xs-2">{{ap.SSID}}</td>
+			      	<td class="col-xs-2">{{ap.MAC}}</td>
 							<td class="col-xs-3">{{ap.manufacturer}}</td>
 			      	<td class="col-xs-1">{{ap.channel}}</td>
 			      	<td class="col-xs-2">{{ap.level}}</td>

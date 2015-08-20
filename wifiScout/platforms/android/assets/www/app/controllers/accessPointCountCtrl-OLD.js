@@ -1,6 +1,6 @@
-app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
-  'channelTableState', 'channelChecker', 'setupService', function($scope, accessPoints,
-  globalSettings, channelTableState, channelChecker, setupService) {
+app.controller('accessPointCountCtrl', ['$scope', 'accessPoints', 'globalSettings',
+  'accessPointCountState', 'channelChecker', 'setupService', function($scope, accessPoints,
+  globalSettings, accessPointCountState, channelChecker, setupService) {
 
   setupService.ready.then(function() {
 
@@ -55,7 +55,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         buildPlot();
         buildNav();
-        vis.setBand(channelTableState.band() || config.defaultBand);
+        vis.setBand(accessPointCountState.band() || config.defaultBand);
       };
 
       /* Pull in new data and update element height */
@@ -81,8 +81,8 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         extentMax = xScale.invert(parseFloat(slider.attr('x')) +
                                         parseFloat(slider.attr('width')));
 
-        channelTableState.band(band);
-        channelTableState.sliderExtent([extentMin, extentMax]);
+        accessPointCountState.band(band);
+        accessPointCountState.sliderExtent([extentMin, extentMax]);
       };
 
       /* Select the band to display.
@@ -164,7 +164,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         /* X Label */
         elem.plot.container.append('text')
-          .text(strings.channelTable.labelX)
+          .text(strings.accessPointCount.labelX)
           .attr('x', function() {
             return (dim.plot.width / 2) - (this.getBBox().width / 2);
           })
@@ -186,7 +186,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
 
         /* Y Label */
         elem.plot.container.append('text')
-          .text(strings.channelTable.labelY)
+          .text(strings.accessPointCount.labelY)
           .attr('transform', function() {
             return 'rotate(-90) translate(-' + dim.plot.totalHeight/2 + ', -' + this.getBBox().width/2 + ')';
           });
@@ -342,7 +342,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
             repositionPlotElements();
           };
 
-          var sliderExtent = channelTableState.sliderExtent() || config.defaultSliderExtent;
+          var sliderExtent = accessPointCountState.sliderExtent() || config.defaultSliderExtent;
 
           elem.nav.right.slider = elem.nav.right.clip.append('rect')
             .attr('id', 'nav-toggle-right')
@@ -606,7 +606,7 @@ app.controller('channelTableCtrl', ['$scope', 'accessPoints', 'globalSettings',
         labels.exit()
         .transition()
         .duration(updateInterval * .8)
-          .attr('y', scales.plot.y(constants.signalFloor))
+          .attr('y', scales.plot.y(constants.noSignal))
           .remove();
       };
 

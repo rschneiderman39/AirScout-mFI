@@ -5,7 +5,7 @@ if (typeof setup === 'undefined') { var setup = {}; }
 var tours = {};
 
 setup.tours = function() {
-  tours.channelTable = {
+  tours.accessPointCount = {
     config: {
       mask: {
         visible: true, // Shows the element mask
@@ -23,6 +23,7 @@ setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
+<<<<<<< Updated upstream
         content: globals.strings.channelTable.tour.intro
       },
       {
@@ -32,10 +33,21 @@ setup.tours = function() {
       {
         target: "#nav-right",
         content: globals.strings.channelTable.tour.band5
+=======
+        content: strings.accessPointCount.tour.intro
+      },
+      {
+        target: '#nav-left',
+        content: strings.accessPointCount.tour.band2_4
+      },
+      {
+        target: "#nav-right",
+        content: strings.accessPointCount.tour.band5
+>>>>>>> Stashed changes
       }]
   };
 
-  tours.APTable = {
+  tours.accessPointTable = {
     config: {
       mask: {
         visible: true,
@@ -53,6 +65,7 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
+<<<<<<< Updated upstream
         content: globals.strings.APTable.tour.intro
       },
       {
@@ -74,6 +87,29 @@ setup.tours = function() {
       {
         target: "#filter-button",
         content: globals.strings.APTable.tour.filter
+=======
+        content: strings.accessPointTable.tour.intro
+      },
+      {
+        target: "#level-header",
+        content: strings.accessPointTable.tour.level
+      },
+      {
+        target: "#header",
+        content: strings.accessPointTable.tour.sorting
+      },
+      {
+        target: "#channel-header",
+        content: strings.accessPointTable.tour.channel
+      },
+      {
+        target: "#capabilities-header",
+        content: strings.accessPointTable.tour.capabilities
+      },
+      {
+        target: "#filter-button",
+        content: strings.accessPointTable.tour.filter
+>>>>>>> Stashed changes
       }]
   };
 

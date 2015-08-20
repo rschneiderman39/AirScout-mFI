@@ -1,14 +1,19 @@
 "use strict";
 
-app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
-'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
-accessPoints, globalSettings, APTableState, setupService) {
+app.controller('accessPointTableCtrl', ['$scope', '$timeout', 'accessPoints',
+'globalSettings', 'accessPointTableState', 'setupService', function($scope, $timeout,
+accessPoints, globalSettings, accessPointTableState, setupService) {
 
   setupService.ready.then(function() {
 
     var updateInterval;
 
-    $scope.strings = globals.strings;
+    var showAll; /* True: display all access points regardless of selection.
+                           False: display only selected access points. */
+
+    var selectedMACs = []; /* Current access point selection. @type {{Array.<string>}} */
+
+    $scope.strings = strings;
     $scope.accessPoints = [];       // Array of AP data objects to be displayed
     $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
     $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
@@ -31,6 +36,12 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Used in place of a string predicate to sort access points by SSID. @type {function} */
     $scope.sortSSID = utils.customSSIDSort;
+
+    /* Update the locally stored selection whenever the user changes the selection with the
+       filter modal.
+
+       @param {{showAll: boolean, selectedMACs: Array.<string>}} newSelection - The new selection.
+    */
 
     function init() {
       if (accessPoints.count() < constants.moderateThresh) {
@@ -58,24 +69,35 @@ accessPoints, globalSettings, APTableState, setupService) {
       }
 
       var updateLoop = setInterval(update, updateInterval);
-      document.addEventListener(events.newSelection, update);
+      document.addEventListener(events.newAccessPointSelection['accessPointTable'], updateSelection);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        document.removeEventListener(events.newSelection, update);
+        document.removeEventListener(events.newAccessPointSelection['accessPointTable'], updateSelection);
+
         saveState();
       });
     };
 
-    function apSelection() {
-      return globalSettings.accessPointSelection();
+    function updateSelection() {
+      var selection = globalSettings.getAccessPointSelection('accessPointTable');
+
+      selectedMACs = selection.macAddrs;
+      showAll = selection.showAll;
+
+      update();
     };
 
     function update() {
       if (! globalSettings.updatesPaused()) {
         accessPoints.getAll().done(function(results) {
           $timeout(function() {
-            $scope.accessPoints = apSelection().apply(results);
+            if (showAll) {
+              $scope.accessPoints = results;
+            } else {
+              $scope.accessPoints =
+              utils.accessPointSubset(results, selectedMACs);
+            }
           });
         });
       }
@@ -83,21 +105,23 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Store current sort ordering. */
     function saveState() {
-      APTableState.sortPredicate($scope.sortPredicate);
-      APTableState.sortReverse($scope.sortReverse);
+      accessPointTableState.sortPredicate($scope.sortPredicate);
+      accessPointTableState.sortReverse($scope.sortReverse);
     };
 
     /* Load the previously used selection and sort ordering. */
     function restoreState() {
-      var predicate = APTableState.sortPredicate();
+      var selection = globalSettings.getAccessPointSelection('accessPointTable');
+      selectedMACs = selection.macAddrs;
+      showAll = selection.showAll;
 
+      var predicate = accessPointTableState.sortPredicate();
       if (predicate === 'SSID') {
         $scope.sortPredicate = $scope.sortSSID;
       } else {
         $scope.sortPredicate = predicate;
       }
-
-      $scope.sortReverse = APTableState.sortReverse();
+      $scope.sortReverse = accessPointTableState.sortReverse();
     };
 
     /* Manually scale the view to the device where needed. */
