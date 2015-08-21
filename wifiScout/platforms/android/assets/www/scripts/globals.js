@@ -31,11 +31,12 @@ var events = {
   newLegendData: 'newlegenddata',
   newSelection: 'newselection',
   newTimeGraphData: 'newtimegraphdata',
-  transitionDone: 'transitionDone'
+  transitionDone: 'transitiondone'
 };
 
 var globals = {
   language: undefined,
   strings: undefined,
-  region: undefined
+  region: undefined,
+  debug: false
 };

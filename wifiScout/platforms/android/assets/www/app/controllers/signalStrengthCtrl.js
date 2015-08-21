@@ -1,7 +1,7 @@
 "use strict";
 
-app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'accessPoints',
-'setupService', function($scope, $timeout, globalSettings, accessPoints, setupService) {
+app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints',
+'setupService', function($scope, globalSettings, accessPoints, setupService) {
 
   setupService.ready.then(function() {
 
@@ -42,9 +42,13 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         $scope.selectedSSID = ap.ssid;
         $scope.selectedMAC = ap.mac;
       }
+
+      updateGauge();
+      /*
       $scope.level = null;
       $scope.minLevel = null;
       $scope.maxLevel = null;
+      */
     };
 
     $scope.sortSSID = utils.customSSIDSort;
@@ -62,28 +66,29 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      console.log(prefs.okSignalThresh);
-      console.log(prefs.goodSignalThresh);
-
       gauge.render();
 
-      document.addEventListener(events.transitionDone, onTransitionDone);
+      $(document).one(events.transitionDone, updateList);
 
-      function onTransitionDone() {
-        document.removeEventListener(events.transitionDone, onTransitionDone);
-        updateList();
-      };
+      var listUpdateLoop = setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          updateList();
+        }
+      }, listUpdateInterval);
 
-      var listUpdateLoop = setInterval(updateList, listUpdateInterval),
-          gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);
+      var gaugeUpdateLoop = setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          updateGauge();
+        }
+      }, gaugeUpdateInterval);
 
-      document.addEventListener(events.newSelection, updateList);
+      $(document).on(events.newSelection, updateList);
 
       $scope.$on('$destroy', function() {
         clearInterval(listUpdateLoop);
         clearInterval(gaugeUpdateLoop);
 
-        document.removeEventListener(events.newSelection, updateList);
+        $(document).off(events.newSelection, updateList);
       });
 
     };
@@ -93,56 +98,56 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
     };
 
     function updateList() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(results) {
-          $scope.$apply(function() {
-            var encountered = {},
-                isDuplicateSSID = {};
+      if (globals.debug) console.log('updating signal strength list');
 
-            $scope.accessPoints = apSelection().apply(results);
+      accessPoints.getAll().done(function(results) {
+        $scope.$apply(function() {
+          var encountered = {},
+              isDuplicateSSID = {};
 
-            $.each($scope.accessPoints, function(i, ap) {
-              if (encountered[ap.ssid]) {
-                isDuplicateSSID[ap.ssid] = true;
-              } else {
-                encountered[ap.ssid] = true;
-              }
-            });
+          $scope.accessPoints = apSelection().apply(results);
 
-            $scope.isDuplicateSSID = isDuplicateSSID;
+          $.each($scope.accessPoints, function(i, ap) {
+            if (encountered[ap.ssid]) {
+              isDuplicateSSID[ap.ssid] = true;
+            } else {
+              encountered[ap.ssid] = true;
+            }
           });
+
+          $scope.isDuplicateSSID = isDuplicateSSID;
         });
-      }
+      });
     };
 
     function updateGauge() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.get($scope.selectedMAC).done(function(result) {
-          $scope.$apply(function() {
-            if (result !== null) {
-              $scope.level = result.level;
+      if (globals.debug) console.log('updating signal strength gauge');
 
-              if ($scope.minLevel === null) {
-                $scope.minLevel = $scope.level;
-              } else if ($scope.level < $scope.minLevel) {
-                $scope.minLevel = $scope.level;
-              }
+      accessPoints.get($scope.selectedMAC).done(function(result) {
+        $scope.$apply(function() {
+          if (result !== null) {
+            $scope.level = result.level;
 
-              if ($scope.maxLevel === null) {
-                $scope.maxLevel = $scope.level;
-              } else if ($scope.level > $scope.maxLevel) {
-                $scope.maxLevel = $scope.level;
-              }
-            } else {
-              $scope.level = null;
+            if ($scope.minLevel === null) {
+              $scope.minLevel = $scope.level;
+            } else if ($scope.level < $scope.minLevel) {
+              $scope.minLevel = $scope.level;
             }
 
-            gauge.updateElement('pointer', $scope.level);
-            gauge.updateElement('minValueIndicator', $scope.minLevel);
-            gauge.updateElement('maxValueIndicator', $scope.maxLevel);
-          });
+            if ($scope.maxLevel === null) {
+              $scope.maxLevel = $scope.level;
+            } else if ($scope.level > $scope.maxLevel) {
+              $scope.maxLevel = $scope.level;
+            }
+          } else {
+            $scope.level = null;
+          }
+
+          gauge.updateElement('pointer', $scope.level);
+          gauge.updateElement('minValueIndicator', $scope.minLevel);
+          gauge.updateElement('maxValueIndicator', $scope.maxLevel);
         });
-      }
+      });
     };
 
     function toRads(deg) {
@@ -320,6 +325,8 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
         else if (elemName === 'maxValueIndicator') {
           elem = maxValueIndicator;
         }
+
+        elem.interrupt();
 
         if (newValue !== null) {
           if (newValue > globalSettings.visScaleMax()) {

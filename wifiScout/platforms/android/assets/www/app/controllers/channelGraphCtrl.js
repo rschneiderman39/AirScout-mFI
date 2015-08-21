@@ -1,9 +1,9 @@
 "use strict";
 
 app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
-  'channelGraphState', 'channelChecker', 'setupService', function($scope,
-  visBuilder, accessPoints,  globalSettings, channelGraphState, channelChecker,
-  setupService) {
+'channelGraphState', 'channelChecker', 'setupService', function($scope,
+visBuilder, accessPoints,  globalSettings, channelGraphState, channelChecker,
+setupService) {
 
   setupService.ready.then(function() {
 
@@ -56,23 +56,22 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         yAxisTickInterval: 10
       };
 
-      config.width = $(window).width() * prefs.widthFactor;
-      config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
+      config.width = $('#current-view').width() * prefs.widthFactor;
+      config.height = $('#current-view').height() * prefs.heightFactor;
 
       config.band = channelGraphState.band() || prefs.defaultBand;
       config.sliderExtent = channelGraphState.sliderExtent() || prefs.defaultSliderExtent;
 
-      var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
-        axisScrollFn, bandChangeFn, saveStateFn);
+      var vis = visBuilder.buildVis(config, elemUpdateCallback, elemScrollCallback,
+        axsiScrollCallback, bandChangeCallback, saveStateCallback);
 
-      document.addEventListener(events.transitionDone, onTransitionDone);
+      $(document).one(events.transitionDone, vis.update);
 
-      function onTransitionDone() {
-        document.removeEventListener(events.transitionDone, onTransitionDone);
-        vis.update();
-      };
-
-      var updateLoop = setInterval(vis.update, updateInterval);
+      var updateLoop = setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          vis.update();
+        }
+      }, updateInterval);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
@@ -81,18 +80,17 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       });
     };
 
-    function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
+    function elemUpdateCallback(graphClip, graphScalesX, graphScalesY,
                              _ignore1, _ignore2, _ignore3,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
                              navScalesY, band) {
+      if (globals.debug) console.log('updating channel graph');
 
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(data) {
-          updateParabolas(data);
-          updateLabels(data);
-        });
-      }
+      accessPoints.getAll().done(function(data) {
+        updateParabolas(data);
+        updateLabels(data);
+      });
 
       function updateParabolas(data) {
         var data2_4Ghz = data.filter(function (d) {
@@ -120,6 +118,8 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
               return d.mac;
             });
 
+          parabolas.interrupt();
+          
           parabolas.enter().append('path')
             .classed('parabola', true)
             .attr('pointer-events', 'none')
@@ -205,7 +205,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
     };
 
     /* Move plot elements to match a new viewport extent */
-    function elementScrollFn(graphClip, graphScalesX) {
+    function elemScrollCallback(graphClip, graphScalesX) {
       /* Move parabolas */
       graphClip.selectAll('.parabola')
         .attr('transform', function(d) {
@@ -220,7 +220,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
     };
 
     /* "Translate" x axis to account for a new slider extent */
-    function axisScrollFn(graphContainer, graphAxisFnX,
+    function axsiScrollCallback(graphContainer, graphAxisFnX,
                           graphScalesX, navRightSlider,
                           navRightScalesX, band) {
 
@@ -242,14 +242,14 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       markDisallowedChannels(graphContainer);
     };
 
-    function bandChangeFn(graphClip, graphScalesX,
+    function bandChangeCallback(graphClip, graphScalesX,
                           graphContainer, graphAxisFnX,
                           navRightSlider, navRightScalesX, band) {
 
-      axisScrollFn(graphContainer, graphAxisFnX, graphScalesX,
+      axsiScrollCallback(graphContainer, graphAxisFnX, graphScalesX,
                    navRightSlider, navRightScalesX, band);
 
-      elementScrollFn(graphClip, graphScalesX, band);
+      elemScrollCallback(graphClip, graphScalesX, band);
 
       graphClip.selectAll('.parabola').remove();
       graphClip.selectAll('text').remove();
@@ -277,7 +277,7 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
           .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function saveStateFn(navRightSlider, navRightScalesX, band) {
+    function saveStateCallback(navRightSlider, navRightScalesX, band) {
       var slider, extentMin, extentMax, xScale;
 
       slider = navRightSlider;

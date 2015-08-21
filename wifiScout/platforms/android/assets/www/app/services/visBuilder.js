@@ -24,7 +24,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // navLeftLabel
     // navRightLabel
 
-    service.buildVis = function(config, updateFn, elemScrollFn,
+    service.buildVis = function(config, elemUpdateFn, elemScrollFn,
       axisScrollFn, bandChangeFn, saveStateFn) {
       var vis = {};
 
@@ -36,13 +36,13 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       vis.update = function() {
         if (hasNav) {
-          updateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
+          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
                    elem.graph.container, elem.graph.axisFn.x, elem.graph.axisFn.y,
                    elem.nav.left.clip, scales.nav.left.x,
                    elem.nav.right.clip, scales.nav.right.x,
                    scales.nav.y, band);
         } else {
-          updateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
+          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
                    elem.graph.axisFn.x, elem.graph.axisFn.y);
         }
 
@@ -294,7 +294,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           setBand('5');
 
           touchStartX = d3.event.changedTouches[0].screenX -
-            document.getElementById('nav-right').getBoundingClientRect().left;
+            $('#nav-right')[0].getBoundingClientRect().left;
 
           sliderStartX = parseFloat(elem.nav.right.slider.attr('x'));
         };
@@ -306,7 +306,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           d3.event.stopPropagation();
 
           touchX = d3.event.changedTouches[0].screenX -
-            document.getElementById('nav-right').getBoundingClientRect().left;
+            $('#nav-right')[0].getBoundingClientRect().left;
 
           sliderX = sliderStartX + (touchX - touchStartX);
 

@@ -1,7 +1,7 @@
 "use strict";
 
-app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettings',
-'setupService', function($scope, $timeout, $location, globalSettings, setupService) {
+app.controller('settingsCtrl', ['$scope', 'globalSettings', 'setupService',
+function($scope, globalSettings, setupService) {
 
   setupService.ready.then(function() {
 
@@ -47,7 +47,7 @@ app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettin
         .on('slide', function() {
           var rangeStr = $(this)[0].value;
 
-          $timeout(function() {
+          $scope.$apply(function() {
             if (rangeStr) {
               var range = rangeStr.split(',');
               $scope.visScaleMin = parseInt(range[0]);
@@ -56,7 +56,7 @@ app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettin
           });
         })
         .on('slideStop', function() {
-          $timeout(function() {
+          $scope.$apply(function() {
             if ($scope.visScaleMin === $scope.visScaleMax) {
               if ($scope.visScaleMax === constants.signalCeil) {
                 $scope.visScaleMin = $scope.visScaleMin - prefs.sliderStep;

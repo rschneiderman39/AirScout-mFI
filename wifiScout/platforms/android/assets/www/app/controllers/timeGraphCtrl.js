@@ -60,22 +60,20 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           yAxisTickInterval: 10
         };
 
-        var mysteriousPixelOffset = 30;
+        config.width = $('#time-graph').width() * prefs.widthFactor;
+        config.height = $('#current-view').height() * prefs.heightFactor;
 
-        config.width = $('#time-graph').width() + mysteriousPixelOffset;
-        config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
-
-        var vis = visBuilder.buildVis(config, elementUpdateFn, null,
+        var vis = visBuilder.buildVis(config, elemUpdateCallback, null,
           null, null, null);
 
         restoreState();
 
-        document.addEventListener(events.newTimeGraphData, vis.update);
-        document.addEventListener(events.newLegendData, updateLegend);
+        $(document).on(events.newTimeGraphData, vis.update);
+        $(document).on(events.newLegendData, updateLegend);
 
         $scope.$on('$destroy', function() {
-          document.removeEventListener(events.newTimeGraphData, vis.update);
-          document.removeEventListener(events.newLegendData, updateLegend);
+          $(document).off(events.newTimeGraphData, vis.update);
+          $(document).off(events.newLegendData, updateLegend);
 
           d3.select('#vis').selectAll('*').remove();
         });
@@ -106,6 +104,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
       };
 
       function updateLegend() {
+        if (globals.debug) console.log('updating timegraph legend');
+
+        /* Using $timeout in place of $scope.$apply to prevent possible
+           angular $digest in progress errors */
         $timeout(function() {
           $scope.legendData = timeGraphManager.getLegendData();
           $scope.selectedSsid = timeGraphManager.getHighlightedSsid();
@@ -115,7 +117,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         });
       };
 
-      function elementUpdateFn(graphClip, graphScalesX, graphScalesY) {
+      function elemUpdateCallback(graphClip, graphScalesX, graphScalesY) {
+        if (globals.debug) console.log('updating timegraph');
+
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
             return graphScalesX(graphScalesX.domain()[0] + (i-2) * (updateInterval / 1000));

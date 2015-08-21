@@ -61,12 +61,8 @@ setupService) {
       }
     };
 
-    service.updatesPaused = function(option) {
-      if (option === undefined) {
-        return updatesPaused;
-      } else if (typeof option === 'boolean') {
-        updatesPaused = option;
-      }
+    service.updatesPaused = function() {
+      return updatesPaused;
     };
 
     // Create an associative settings array for each view that will
@@ -82,6 +78,14 @@ setupService) {
                   defaults.visScaleMax;
 
       currentSelection = new AccessPointSelection([], true);
+
+      $(document).on('pause', function() {
+        updatesPaused = true;
+      });
+
+      $(document).on('resume', function() {
+        updatesPaused = false;
+      });
     };
 
     init();

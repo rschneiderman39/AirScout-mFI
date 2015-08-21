@@ -61,23 +61,22 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         yAxisTickInterval: 3
       };
 
-      config.width = $(window).width() * prefs.widthFactor;
-      config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
+      config.width = $('#current-view').width() * prefs.widthFactor;
+      config.height = $('#current-view').height() * prefs.heightFactor;
 
       config.band = accessPointCountState.band() || prefs.defaultBand;
       config.sliderExtent = accessPointCountState.sliderExtent() || prefs.defaultSliderExtent;
 
-      var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
-        axisScrollFn, bandChangeFn, saveStateFn);
+      var vis = visBuilder.buildVis(config, elemUpdateCallback, elemScrollCallback,
+        axisScrollCallback, bandChangeCallback, saveStateCallback);
 
-      document.addEventListener(events.transitionDone, onTransitionDone);
+      $(document).one(events.transitionDone, vis.update);
 
-      function onTransitionDone() {
-        document.removeEventListener(events.transitionDone, onTransitionDone);
-        vis.update();
-      };
-
-      var updateLoop = setInterval(vis.update, updateInterval);
+      var updateLoop = setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          vis.update();
+        }
+      }, updateInterval);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
@@ -87,41 +86,41 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
     };
 
-    function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
+    function elemUpdateCallback(graphClip, graphScalesX, graphScalesY,
                              graphContainer, graphAxisFnX, graphAxisFnY,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
                              navScalesY) {
+      if (globals.debug) console.log('updating ap count');
 
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(results) {
-          var numOccupants = {},
-              data = [],
-              accessPoint;
+      accessPoints.getAll().done(function(results) {
 
-          for (var i = 0; i < results.length; ++i) {
-            accessPoint = results[i];
+        var numOccupants = {},
+            data = [],
+            accessPoint;
 
-            if (numOccupants[accessPoint.channel] === undefined) {
-              numOccupants[accessPoint.channel] = 1;
+        for (var i = 0; i < results.length; ++i) {
+          accessPoint = results[i];
 
-            } else {
-              numOccupants[accessPoint.channel] += 1;
-            }
+          if (numOccupants[accessPoint.channel] === undefined) {
+            numOccupants[accessPoint.channel] = 1;
+
+          } else {
+            numOccupants[accessPoint.channel] += 1;
           }
+        }
 
-          for (var channel in numOccupants) {
-            data.push({
-              channel: channel,
-              occupancy: numOccupants[channel]
-            });
-          }
+        for (var channel in numOccupants) {
+          data.push({
+            channel: channel,
+            occupancy: numOccupants[channel]
+          });
+        }
 
-          rescaleVertically(data);
-          updateBars(data);
-          updateLabels(data);
-        });
-      }
+        rescaleVertically(data);
+        updateBars(data);
+        updateLabels(data);
+      });
 
       function updateBars(data) {
         updateSection(graphScalesX, graphScalesY, graphClip, data);
@@ -258,7 +257,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
     };
 
     /* Move plot elements to match a new viewport extent */
-    function elementScrollFn(graphClip, graphScalesX) {
+    function elemScrollCallback(graphClip, graphScalesX) {
       /* Move parabolas */
       graphClip.selectAll('.bar')
         .attr('x', function(d) {
@@ -273,7 +272,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
     };
 
     /* "Translate" (really a rescale) x axis to account for a new viewport extent */
-    function axisScrollFn(graphContainer, graphAxisFnX,
+    function axisScrollCallback(graphContainer, graphAxisFnX,
                           graphScalesX, navRightSlider,
                           navRightScalesX, band) {
 
@@ -294,15 +293,15 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
       removeDisallowedChannels(graphContainer);
     };
 
-    function bandChangeFn(graphClip, graphScalesX,
+    function bandChangeCallback(graphClip, graphScalesX,
                           graphContainer, graphAxisFnX,
                           navRightSlider, navRightScalesX, band) {
 
-      axisScrollFn(graphContainer, graphAxisFnX,
+      axisScrollCallback(graphContainer, graphAxisFnX,
                    graphScalesX, navRightSlider,
                    navRightScalesX, band);
 
-      elementScrollFn(graphClip, graphScalesX);
+      elemScrollCallback(graphClip, graphScalesX);
 
       graphClip.selectAll('.bar')
         .attr('width', function(d) {
@@ -340,7 +339,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
           .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function saveStateFn(navRightSlider, navRightScalesX, band) {
+    function saveStateCallback(navRightSlider, navRightScalesX, band) {
       var slider, extentMin, extentMax, xScale;
 
       slider = navRightSlider;

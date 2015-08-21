@@ -86,7 +86,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     function init() {
       numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
 
-      document.addEventListener(events.newSelection, function() {
+      $(document).on(events.newSelection, function() {
         if (! apSelection().contains(highlightedMac)) {
           if (datasets[highlightedMac]) {
             datasets[highlightedMac].highlight = false;
@@ -95,11 +95,26 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           highlightedMac = null;
         }
 
-        document.dispatchEvent(new Event(events.newLegendData));
+        $(document).trigger(events.newLegendData);
       });
 
       updateDatasets();
-      setInterval(updateDatasets, updateInterval);
+
+      setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          updateDatasets();
+        }
+      }, updateInterval);
+
+      $(document).on('pause', clearDatasets);
+
+      function clearDatasets() {
+        datasets = {};
+
+        $(document).trigger(events.newTimeGraphData);
+        $(document).trigger(events.newLegendData);
+      };
+
     };
 
     function apSelection() {
@@ -107,6 +122,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     };
 
     function updateDatasets() {
+      if (globals.debug) console.log('updating timegraph datasets');
+
       accessPoints.getAll().done(function(results) {
         var macToAccessPoint = {},
             legendUpdateNeeded = false;
@@ -149,10 +166,10 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           }
         });
 
-        document.dispatchEvent(new Event(events.newTimeGraphData));
+        $(document).trigger(events.newTimeGraphData);
 
         if (legendUpdateNeeded) {
-          document.dispatchEvent(new Event(events.newLegendData));
+          $(document).trigger(events.newLegendData);
         }
 
       });

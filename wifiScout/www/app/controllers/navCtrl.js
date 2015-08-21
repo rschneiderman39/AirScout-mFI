@@ -51,7 +51,7 @@ app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout',
                 $('#view-title').html(globals.strings.viewTitles[view]);
                 $('#current-view').removeClass('anim-in anim-slide-'+direction);
 
-                document.dispatchEvent(new Event(events.transitionDone));
+                $(document).trigger(events.transitionDone);
               });
           });
         });
@@ -74,7 +74,7 @@ app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout',
               $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
                   $('#current-view').removeClass('anim-in anim-fade');
 
-                  document.dispatchEvent(new Event(events.transitionDone));
+                  $(document).trigger(events.transitionDone);
               });
             });
           });

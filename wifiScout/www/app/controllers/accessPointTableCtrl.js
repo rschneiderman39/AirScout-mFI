@@ -1,7 +1,7 @@
 "use strict";
 
-app.controller('accessPointTableCtrl', ['$scope', '$timeout', 'accessPoints',
-'globalSettings', 'accessPointTableState', 'setupService', function($scope, $timeout,
+app.controller('accessPointTableCtrl', ['$scope', 'accessPoints',
+'globalSettings', 'accessPointTableState', 'setupService', function($scope,
 accessPoints, globalSettings, accessPointTableState, setupService) {
 
   setupService.ready.then(function() {
@@ -45,19 +45,19 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       prepView();
       restoreState();
 
-      document.addEventListener(events.transitionDone, onTransitionDone);
+      $(document).one(events.transitionDone, update);
 
-      function onTransitionDone() {
-        document.removeEventListener(events.transitionDone, onTransitionDone);
-        update();
-      };
+      var updateLoop = setInterval(function() {
+        if (! globalSettings.updatesPaused()) {
+          update();
+        }
+      }, updateInterval);
 
-      var updateLoop = setInterval(update, updateInterval);
-      document.addEventListener(events.newSelection, update);
+      $(document).on(events.newSelection, update);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-        document.removeEventListener(events.newSelection, update);
+        $(document).off(events.newSelection, update);
         saveState();
       });
     };
@@ -67,13 +67,13 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
     };
 
     function update() {
-      if (! globalSettings.updatesPaused()) {
-        accessPoints.getAll().done(function(results) {
-          $timeout(function() {
-            $scope.accessPoints = apSelection().apply(results);
-          });
+      if (globals.debug) console.log('updating ap table');
+
+      accessPoints.getAll().done(function(results) {
+        $scope.$apply(function() {
+          $scope.accessPoints = apSelection().apply(results);
         });
-      }
+      });
     };
 
     /* Store current sort ordering. */
