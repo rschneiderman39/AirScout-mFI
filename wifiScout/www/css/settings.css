@@ -1,28 +1,24 @@
-.bootstrap-switch-handle-on.bootstrap-switch-primary {
+#settings {
+  height: 100%;
+}
+
+#settings .bootstrap-switch-handle-on.bootstrap-switch-primary {
   background-color: #62bf01 !important;
 }
 
-#filter-button {
-  display: none;
-}
-
-#help-button {
-  display: none;
-}
-
-.panel-group {
+#settings .panel-group {
 	padding: 0px !important;
 	margin: 0px !important;
 }
 
-.panel {
+#settings .panel {
     background-color: #fafafa !important;
   /*height: 60vh;*/
   margin: 0px !important;
   padding: 0px !important;
 }
 
-.panel-heading a:after {
+#settings .panel-heading a:after {
   bottom: 23px;
   color: grey;
   content:"\e114";
@@ -31,22 +27,23 @@
   font-size: 15pt;
 }
 
-.panel-heading.collapsed a:after {
+#settings .panel-heading.collapsed a:after {
   content:"\e080";
 }
 
-.slider-handle {
-  background-color: #62bf01;
-  background-image: none;
+#settings #scale-slider-col {
+  padding-left: 1vw;
+  padding-right: 1vw;
 }
 
-.slider-selection {
+#settings .slider-handle {
+  background-color: #62bf01;
+  background-image: none;
+  opacity: 1;
+}
+
+#settings .slider-selection {
   background-color: #62bf01;
   background-image: none;
   opacity: 0.5;
-}
-
-#touch-layer {
-  height: 100vh;
-  position: relative;
 }

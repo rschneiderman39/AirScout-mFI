@@ -3,8 +3,9 @@
 	</head>
 
   <body>
-  	<div ng-click="showNav()" ng-swipe-left="swipeTo('timeGraph', 'left')" ng-swipe-right="swipeTo('channelGraph', 'right')" ng-controller="signalStrengthCtrl" class="container-fluid">
-      <div class="row">
+  	<div id="sg-sth" ng-click="showNav()" ng-swipe-left="swipeTo('settings', 'left')" ng-swipe-right="swipeTo('accessPointTable', 'right')" ng-controller="signalStrengthCtrl" class="container-fluid">
+
+			<div class="row">
 				<!-- Access point list -->
 				<div class="col-xs-3" id="list-section" >
 					<center><h5 class="list-title">{{strings.signalStrength.listHeader}}</h5></center>
@@ -58,8 +59,10 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 
 		<div filter-modal />
+
 	</body>
 </html>

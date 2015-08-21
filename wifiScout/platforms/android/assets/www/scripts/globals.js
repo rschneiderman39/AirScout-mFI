@@ -31,7 +31,7 @@ var events = {
   newLegendData: 'newlegenddata',
   newSelection: 'newselection',
   newTimeGraphData: 'newtimegraphdata',
-  swipeDone: 'swipedone'
+  transitionDone: 'transitionDone'
 };
 
 var globals = {

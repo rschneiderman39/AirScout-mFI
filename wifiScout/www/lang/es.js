@@ -7,15 +7,16 @@ if (typeof languages === 'undefined') {
 languages['es'] = {
   hiddenSSID: '<escondido>',
   unknownManufacturer: '<desconocido>',
+  dBm: 'dBm',
   viewTitles: {
-    APTable: 'Puntos de Acceso',
+    accessPointTable: 'Puntos de Acceso',
     channelGraph: 'Utilization de Canales',
-    channelTable: 'Canales',
+    accessPointCount: 'Canales',
     settings: 'Configuracion',
     signalStrength: 'Fuerza de Senal',
     timeGraph: 'Grafico'
   },
-  channelTable : {
+  accessPointCount : {
     label2_4: '2.4 Ghz',
     label5: '5 Ghz',
     labelX: 'Canal',
@@ -37,7 +38,7 @@ languages['es'] = {
         + " unauthorized use may be restricted in your region. "
     }
   },
-  APTable : {
+  accessPointTable : {
     sortSSID: 'SSID',
     sortMAC: 'Direccion MAC',
     sortManufacturer: 'Vendedor',
@@ -145,12 +146,8 @@ languages['es'] = {
   	deselectAll: 'Anular Seleccion'
   },
   settings: {
-    startingViewHeader: 'Vista Inicial',
-    startingViewDescription: 'La vista inicial de la applicacion.',
-    globalAccessPointSelectionHeader: 'Seleccion',
-    globalAccessPointSelectionDescription: 'Global: Todas las vistas comparten un seleccion. Local: Cada vista tiene seleccion propia.',
-    globalAccessPointSelectionTrue: 'Global',
-    globalAccessPointSelectionFalse: 'Local',
+    visScaleHeader: 'Rango de Nivel',
+    visScaleDescription: 'Arraste los sliders para cambiar el rango de nivel.',
     detectHiddenHeader: 'Puntos de Acceso Escondido',
     detectHiddenDescription: 'Detectar o ignorar puntos de aceso escondido.',
     detectHiddenTrue: 'Detectar',

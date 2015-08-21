@@ -33,14 +33,14 @@ app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettin
       };
 
       $("[name='hiddenAPOptions']").bootstrapSwitch({
-      	onText: globals.strings.settings.detectHiddenTrue,
-      	offText: globals.strings.settings.detectHiddenFalse
+        onText: globals.strings.settings.detectHiddenTrue,
+        offText: globals.strings.settings.detectHiddenFalse
       });
 
       $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
 
       $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      	globalSettings.detectHidden(state);
+        globalSettings.detectHidden(state);
       });
 
       $('#scale-slider').slider(sliderConfig)
@@ -58,10 +58,10 @@ app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettin
         .on('slideStop', function() {
           $timeout(function() {
             if ($scope.visScaleMin === $scope.visScaleMax) {
-              if ($scope.visScaleMin === constants.signalFloor) {
-                $scope.visScaleMax = $scope.visScaleMax + prefs.sliderStep;
-              } else {
+              if ($scope.visScaleMax === constants.signalCeil) {
                 $scope.visScaleMin = $scope.visScaleMin - prefs.sliderStep;
+              } else {
+                $scope.visScaleMax = $scope.visScaleMax + prefs.sliderStep;
               }
 
               $('#scale-slider').slider('setValue',
@@ -72,6 +72,8 @@ app.controller('settingsCtrl', ['$scope', '$timeout', '$location', 'globalSettin
             globalSettings.visScaleMax($scope.visScaleMax);
           });
         });
+
+        $('.slider-horizontal').css('width', '100%');
     };
 
     init();

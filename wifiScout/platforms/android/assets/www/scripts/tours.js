@@ -5,7 +5,7 @@ if (typeof setup === 'undefined') { var setup = {}; }
 var tours = {};
 
 setup.tours = function() {
-  tours.channelTable = {
+  tours.accessPointCount = {
     config: {
       mask: {
         visible: true, // Shows the element mask
@@ -23,19 +23,19 @@ setup.tours = function() {
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
-        content: globals.strings.channelTable.tour.intro
+        content: globals.strings.accessPointCount.tour.intro
       },
       {
         target: '#nav-left',
-        content: globals.strings.channelTable.tour.band2_4
+        content: globals.strings.accessPointCount.tour.band2_4
       },
       {
         target: "#nav-right",
-        content: globals.strings.channelTable.tour.band5
+        content: globals.strings.accessPointCount.tour.band5
       }]
   };
 
-  tours.APTable = {
+  tours.accessPointTable = {
     config: {
       mask: {
         visible: true,
@@ -53,27 +53,27 @@ setup.tours = function() {
       dark: false
     },
     steps: [{
-        content: globals.strings.APTable.tour.intro
+        content: globals.strings.accessPointTable.tour.intro
       },
       {
         target: "#level-header",
-        content: globals.strings.APTable.tour.level
+        content: globals.strings.accessPointTable.tour.level
       },
       {
         target: "#header",
-        content: globals.strings.APTable.tour.sorting
+        content: globals.strings.accessPointTable.tour.sorting
       },
       {
         target: "#channel-header",
-        content: globals.strings.APTable.tour.channel
+        content: globals.strings.accessPointTable.tour.channel
       },
       {
         target: "#capabilities-header",
-        content: globals.strings.APTable.tour.capabilities
+        content: globals.strings.accessPointTable.tour.capabilities
       },
       {
         target: "#filter-button",
-        content: globals.strings.APTable.tour.filter
+        content: globals.strings.accessPointTable.tour.filter
       }]
   };
 

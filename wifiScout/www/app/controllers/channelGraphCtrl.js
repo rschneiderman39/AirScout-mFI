@@ -65,25 +65,20 @@ app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
         axisScrollFn, bandChangeFn, saveStateFn);
 
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      }
+      document.addEventListener(events.transitionDone, onTransitionDone);
+
+      function onTransitionDone() {
+        document.removeEventListener(events.transitionDone, onTransitionDone);
+        vis.update();
+      };
 
       var updateLoop = setInterval(vis.update, updateInterval);
 
-
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-
         vis.saveState();
-
         d3.select('#vis').selectAll('*').remove();
       });
-
-      function firstUpdate() {
-        vis.update();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      };
     };
 
     function elementUpdateFn(graphClip, graphScalesX, graphScalesY,

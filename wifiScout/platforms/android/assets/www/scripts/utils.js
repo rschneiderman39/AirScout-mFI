@@ -50,10 +50,6 @@ utils.inBand = function(freq, band) {
   }
 };
 
-utils.isView = function(view) {
-  return globals.strings.viewTitles[view] !== undefined;
-};
-
 utils.toNewAlpha = function(color, alpha) {
   var attrs = color.split(',');
   attrs[3] = alpha.toString() + ')';

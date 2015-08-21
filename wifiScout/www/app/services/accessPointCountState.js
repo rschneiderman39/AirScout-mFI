@@ -1,6 +1,6 @@
 "use strict";
 
-app.factory('channelTableState', ['setupService', function(setupService) {
+app.factory('accessPointCountState', ['setupService', function(setupService) {
 
   var service = {};
 

@@ -1,8 +1,8 @@
 "use strict";
 
-app.controller('APTableCtrl', ['$scope', '$timeout', 'accessPoints',
-'globalSettings', 'APTableState', 'setupService', function($scope, $timeout,
-accessPoints, globalSettings, APTableState, setupService) {
+app.controller('accessPointTableCtrl', ['$scope', '$timeout', 'accessPoints',
+'globalSettings', 'accessPointTableState', 'setupService', function($scope, $timeout,
+accessPoints, globalSettings, accessPointTableState, setupService) {
 
   setupService.ready.then(function() {
 
@@ -43,19 +43,14 @@ accessPoints, globalSettings, APTableState, setupService) {
       }
 
       prepView();
-
       restoreState();
 
-      function firstUpdate() {
-        update();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      }
+      document.addEventListener(events.transitionDone, onTransitionDone);
 
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      } else {
+      function onTransitionDone() {
+        document.removeEventListener(events.transitionDone, onTransitionDone);
         update();
-      }
+      };
 
       var updateLoop = setInterval(update, updateInterval);
       document.addEventListener(events.newSelection, update);
@@ -83,13 +78,13 @@ accessPoints, globalSettings, APTableState, setupService) {
 
     /* Store current sort ordering. */
     function saveState() {
-      APTableState.sortPredicate($scope.sortPredicate);
-      APTableState.sortReverse($scope.sortReverse);
+      accessPointTableState.sortPredicate($scope.sortPredicate);
+      accessPointTableState.sortReverse($scope.sortReverse);
     };
 
     /* Load the previously used selection and sort ordering. */
     function restoreState() {
-      var predicate = APTableState.sortPredicate();
+      var predicate = accessPointTableState.sortPredicate();
 
       if (predicate === 'SSID') {
         $scope.sortPredicate = $scope.sortSSID;
@@ -97,7 +92,7 @@ accessPoints, globalSettings, APTableState, setupService) {
         $scope.sortPredicate = predicate;
       }
 
-      $scope.sortReverse = APTableState.sortReverse();
+      $scope.sortReverse = accessPointTableState.sortReverse();
     };
 
     /* Manually scale the view to the device where needed. */

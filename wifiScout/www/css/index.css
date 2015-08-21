@@ -42,10 +42,50 @@ body.pg-loaded > #current-view {
   min-height: 0px;
   position: fixed;
   -webkit-transition: bottom 0.5s ease;
+  border: 2px solid rgba(33, 30, 30, 0.14);
 }
 
 #nav-bar div {
 	height: 100%;
+}
+
+#nav-bar-hidden {
+  position: relative;
+  top: -6vh;
+  left: 46vw;
+
+  width: 13.5vh;
+  height: 6vh !important;
+  background-color: #fff;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  border: 2px solid rgba(33, 30, 30, 0.137255);
+  border-bottom: 0;
+
+  /*position: relative;
+  left: 47vw;
+  top: -4.9vh;
+
+  -webkit-border-radius: 180px 180px 0 0;
+
+  padding: 1.5vh 5vh;
+
+  border-top-color: rgba(33, 30, 30, 0.137255);
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-right-color: rgba(33, 30, 30, 0.137255);
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-left-color: rgba(33, 30, 30, 0.137255);
+  border-left-style: solid;
+  border-left-width: 2px;
+
+  background-image: -webkit-linear-gradient(top,#fff 0,#fff 100%);
+  background-image: -webkit-gradient(linear,left top,left,from(#fff),to(#fff)); */
+}
+
+#nav-button {
+  top: -5.5vh;
 }
 
 .nav > li > a:hover {
@@ -86,12 +126,6 @@ body.pg-loaded > #current-view {
   stroke: #62bf01;
 }
 
-/*
-.axis > .tick {
-	font-size: 2vw;
-}
-*/
-
 #top-bar {
   background-image: url('../images/topBar.png');
   height: 11vh;
@@ -114,9 +148,10 @@ body.pg-loaded > #current-view {
 }
 
 /* PATHGATHER */
-/* PATHGATHER */
 .sk-spinner {
+  position: relative;
   margin: 100px auto;
+  margin-top: -30vh !important;
   width: 50px;
   height: 60px;
   text-align: center;
@@ -124,6 +159,7 @@ body.pg-loaded > #current-view {
 }
 
 .sk-spinner > div {
+
   background-color: #FFF;
   height: 100%;
   width: 6px;

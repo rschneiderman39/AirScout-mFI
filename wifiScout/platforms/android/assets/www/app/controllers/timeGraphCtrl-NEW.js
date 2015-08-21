@@ -13,8 +13,6 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'timeGraphManager',
         range: [constants.signalFloor, constants.maxSignal]
       };
 
-
-
       var graph = (function() {
         var graph = {};
 

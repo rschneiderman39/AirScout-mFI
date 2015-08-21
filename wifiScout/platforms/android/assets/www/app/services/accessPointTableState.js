@@ -1,7 +1,7 @@
 "use strict";
 
 /* Globally preserves sort settings for AP Table view. */
-app.factory('APTableState', ['setupService', function(setupService) {
+app.factory('accessPointTableState', ['setupService', function(setupService) {
 
   var service = {};
 

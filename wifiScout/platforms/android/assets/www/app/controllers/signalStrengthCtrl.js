@@ -67,16 +67,12 @@ app.controller('signalStrengthCtrl', ['$scope', '$timeout', 'globalSettings', 'a
 
       gauge.render();
 
-      function firstUpdate() {
-        updateList();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      }
+      document.addEventListener(events.transitionDone, onTransitionDone);
 
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      } else {
+      function onTransitionDone() {
+        document.removeEventListener(events.transitionDone, onTransitionDone);
         updateList();
-      }
+      };
 
       var listUpdateLoop = setInterval(updateList, listUpdateInterval),
           gaugeUpdateLoop = setInterval(updateGauge, gaugeUpdateInterval);

@@ -1,0 +1,65 @@
+<html>
+  <body>
+		<div ng-controller="settingsCtrl">
+			<div class="panel-group" id="main-panel">
+
+        <div id="scale-panel" class="panel panel-default">
+    			<!-- Starting View Header -->
+        	<div class="panel-heading" data-toggle="collapse" data-target="#scale-collapse">
+	          <h4 class="panel-title">
+	            <a data-toggle="collapse" data-target="#scale-collapse" href="#scale-collapse" class="collapsed">
+	              {{strings.settings.visScaleHeader}}
+	            </a>
+	          </h4>
+        	</div>
+        	<!-- Starting View Description and Dropdown List -->
+        	<div id="scale-collapse" class="panel-collapse collapse in">
+	          <div class="panel-body">
+	          	<div class="row">
+		          	<div ng-click="showNav()" class="col-xs-6">
+	          			{{strings.settings.visScaleDescription}}
+	          		</div>
+                <div class="col-xs-1">
+                  <p> {{visScaleMin}} </p>
+                </div>
+	          		<div class="col-xs-4">
+			         		<input id="scale-slider" type="text" value="" ></input>
+			         	</div>
+                <div class="col-xs-1">
+                  <p> {{visScaleMax}} </p>
+                </div>
+			       	</div>
+			     	</div>
+        	</div>
+    		</div>
+
+    		<div id="hidden-ap-panel" class="panel panel-default">
+    			<!-- Detect Hidden APs Header -->
+        	<div class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-target="#hidden-ap-collapse">
+          	<h4 class="panel-title">
+	          	<a data-toggle="collapse" data-target="#hidden-ap-collapse" href="#hidden-ap-collapse" class="collapsed">
+	              {{strings.settings.detectHiddenHeader}}
+	            </a>
+	          </h4>
+       		</div>
+       		<!-- Detect Hidden APs Description and Toggle Selector -->
+        	<div id="hidden-ap-collapse" class="panel-collapse collapse">
+            <div class="panel-body">
+	          	<div class="row">
+		          	<div ng-click="showNav()" class="col-xs-9">
+	          			{{strings.settings.detectHiddenDescription}}
+	          		</div>
+	          		<div class="col-xs-3">
+		          		<input type="checkbox" name="hiddenAPOptions">
+		          	</div>
+	          	</div>
+	          </div>
+        	</div>
+    		</div>
+
+			</div>
+
+      <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')"></div>
+    </div>
+	</body>
+</html>

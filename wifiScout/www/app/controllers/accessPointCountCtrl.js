@@ -1,8 +1,8 @@
 "use strict";
 
-app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
-  'channelTableState', 'channelChecker', 'setupService', function($scope,
-  visBuilder, accessPoints, globalSettings, channelTableState, channelChecker,
+app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
+  'accessPointCountState', 'channelChecker', 'setupService', function($scope,
+  visBuilder, accessPoints, globalSettings, accessPointCountState, channelChecker,
   setupService) {
 
   setupService.ready.then(function() {
@@ -40,10 +40,10 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         },
         gridLineOpacity: 0,
         height: undefined,
-        labelX: globals.strings.channelTable.labelX,
-        labelY: globals.strings.channelTable.labelY,
+        labelX: globals.strings.accessPointCount.labelX,
+        labelY: globals.strings.accessPointCount.labelY,
         navLeftDomain: prefs.domain2_4,
-        navLeftLabel: globals.strings.channelTable.label2_4,
+        navLeftLabel: globals.strings.accessPointCount.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
           top: 1,
@@ -53,7 +53,7 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
-        navRightLabel: globals.strings.channelTable.label5,
+        navRightLabel: globals.strings.accessPointCount.label5,
         range: prefs.range,
         sliderExtent: undefined,
         width: undefined,
@@ -64,30 +64,27 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
       config.width = $(window).width() * prefs.widthFactor;
       config.height = ($(window).height() - $('#top-bar').height()) * prefs.heightFactor;
 
-      config.band = channelTableState.band() || prefs.defaultBand;
-      config.sliderExtent = channelTableState.sliderExtent() || prefs.defaultSliderExtent;
+      config.band = accessPointCountState.band() || prefs.defaultBand;
+      config.sliderExtent = accessPointCountState.sliderExtent() || prefs.defaultSliderExtent;
 
       var vis = visBuilder.buildVis(config, elementUpdateFn, elementScrollFn,
         axisScrollFn, bandChangeFn, saveStateFn);
 
-      if (globalSettings.updatesPaused()) {
-        document.addEventListener(events.swipeDone, firstUpdate);
-      }
+      document.addEventListener(events.transitionDone, onTransitionDone);
+
+      function onTransitionDone() {
+        document.removeEventListener(events.transitionDone, onTransitionDone);
+        vis.update();
+      };
 
       var updateLoop = setInterval(vis.update, updateInterval);
 
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
-
         vis.saveState();
-
         d3.select('#vis').selectAll('*').remove();
       });
 
-      function firstUpdate() {
-        vis.update();
-        document.removeEventListener(events.swipeDone, firstUpdate);
-      };
     };
 
     function elementUpdateFn(graphClip, graphScalesX, graphScalesY,
@@ -351,10 +348,10 @@ app.controller('channelTableCtrl', ['$scope', 'visBuilder', 'accessPoints', 'glo
 
       extentMin = xScale.invert(parseFloat(slider.attr('x'))),
       extentMax = xScale.invert(parseFloat(slider.attr('x')) +
-                                      parseFloat(slider.attr('width')));
+                                  parseFloat(slider.attr('width')));
 
-      channelTableState.band(band);
-      channelTableState.sliderExtent([extentMin, extentMax]);
+      accessPointCountState.band(band);
+      accessPointCountState.sliderExtent([extentMin, extentMax]);
     };
 
     init();

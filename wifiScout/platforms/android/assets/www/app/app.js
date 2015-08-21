@@ -7,44 +7,26 @@ var app = angular.module('app', ['ngAnimate', 'ui.router', 'uiRouterStyles', 'se
       .state('settings', {
         url: "/settings",
         templateUrl: 'views/settings.html',
-        data: {
-          css: 'css/settings.css'
-        }
       })
-      .state('channelTable', {
-        url: "/channelTable",
-        templateUrl: 'views/channelTable.html',
-        data: {
-          css: 'css/channelTable.css'
-        }
+      .state('accessPointCount', {
+        url: "/accessPointCount",
+        templateUrl: 'views/accessPointCount.html',
       })
-      .state('APTable', {
-        url: "/APTable",
-        templateUrl: 'views/APTable.html',
-        data: {
-          css: ['css/APTable.css', 'css/sortArrow.css']
-        }
+      .state('accessPointTable', {
+        url: "/accessPointTable",
+        templateUrl: 'views/accessPointTable.html',
       })
       .state('timeGraph', {
         url: "/timeGraph",
-        templateUrl: 'views/timeGraph.html',
-        data: {
-          css: 'css/timeGraph.css'
-        }
+        templateUrl: 'views/timeGraph.html'
       })
       .state('signalStrength', {
         url: "/signalStrength",
         templateUrl: 'views/signalStrength.html',
-        data: {
-          css: 'css/signalStrength.css'
-        }
       })
       .state('channelGraph', {
         url: "/channelGraph",
         templateUrl: 'views/channelGraph.html',
-        data: {
-          css: 'css/channelGraph.css'
-        }
       });
   })
   .run(['timeGraphManager', function(timeGraphManager) {}]);

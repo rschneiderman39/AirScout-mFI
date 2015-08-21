@@ -1,11 +1,10 @@
 <html>
 	<body>
-	  <div ng-click="showNav(); $event.stopPropagation();" ng-swipe-left="swipeTo('signalStrength', 'left'); $event.stopPropagation();" ng-swipe-right="swipeTo('settings', 'right'); $event.stopPropagation();" ng-controller="channelGraphCtrl">
+	  <div id="ch-gph" ng-click="showNav()" ng-swipe-left="swipeTo('accessPointCount', 'left')" ng-swipe-right="swipeTo('settings', 'right')" ng-controller="channelGraphCtrl">
 
 			<!-- Main visualization goes here -->
 			<div id="vis"></div>
 
 	 	</div>
-		<div filter-modal />
 	</body>
 </html>

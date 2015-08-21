@@ -15,10 +15,10 @@
     <icon density="mdpi" src="res/icons/android/icon.png" />
     <icon density="hdpi" src="res/icons/android/icon.png" />
     <icon density="xhdpi" src="res/icons/android/icon.png" />
-    <splash density="land-hdpi" src="res/screens/android/sofachrome.png" />
-    <splash density="land-ldpi" src="res/screens/android/sofachrome.png" />
-    <splash density="land-mdpi" src="res/screens/android/sofachrome.png" />
-    <splash density="land-xhdpi" src="res/screens/android/sofachrome.png" />
+    <splash density="land-hdpi" src="res/screens/android/BLACKSPLASH.png" />
+    <splash density="land-ldpi" src="res/screens/android/BLACKSPLASH.png" />
+    <splash density="land-mdpi" src="res/screens/android/BLACKSPLASH.png" />
+    <splash density="land-xhdpi" src="res/screens/android/BLACKSPLASH.png" />
     <name>AirScout mFI</name>
     <description />
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team </author>
@@ -27,8 +27,5 @@
     <access origin="*" />
     <vs:features />
     <log level="debug" />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="4000" />
-    <preference name="SplashMaintainAspectRatio" value="false" />
     <preference name="windows-target-version" value="8.1" />
 </widget>

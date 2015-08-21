@@ -12,6 +12,12 @@
     <link href="css/slider.css" rel="stylesheet" />
     <link href="css/please-wait.css" rel="stylesheet" />
     <link href="css/index.css" rel="stylesheet" />
+    <link href="css/channelGraph.css" rel="stylesheet" />
+    <link href="css/accessPointCount.css" rel="stylesheet" />
+    <link href="css/timeGraph.css" rel="stylesheet" />
+    <link href="css/accessPointTable.css" rel="stylesheet" />
+    <link href="css/signalStrength.css" rel="stylesheet" />
+    <link href="css/settings.css" rel="stylesheet" />
     <link href="css/filterModal.css" rel="stylesheet" />
 
     <!-- Scripts -->
@@ -24,7 +30,7 @@
     <script src="scripts/lib/bootstrap.min.js"></script>
     <script src="scripts/lib/bootstrap-switch.min.js"></script>
     <script src="scripts/lib/bootstrap-slider.js"></script>
-    <script src="scripts/lib/smoothie.js"></script>
+    <script src="scripts/lib/hammer.min.js"></script>
     <script src="scripts/lib/nz-tour.min.js"></script>
     <script src="scripts/lib/d3.min.js"></script>
     <script src="scripts/lib/please-wait.min.js"></script>
@@ -36,14 +42,14 @@
     <!-- View title bar -->
     <div id="top-bar" class="row">
       <div class="col-xs-2">
-        <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal">
+        <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()">
       </div>
       <div class="col-xs-8">
         <p id="view-title"></p>
       </div>
       <div class="col-xs-1"></div>
       <div class="col-xs-1" >
-        <input id="help-button" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();">
+        <input id="help-button" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();" ng-show="displayHelpBtn()">
       </div>
     </div>
 
@@ -52,33 +58,34 @@
 
     <!-- Self-collapsing navigation bar -->
     <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
+      <div id="nav-bar-hidden"></div>
       <div class="row">
-        <div class="col-xs-2">
+        <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
             <img class="nav-icon" src="images/channelGraph.png" />
           </div>
         </div>
-        <div class="col-xs-2">
-          <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/signalStrength5.png" />
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/channelTable2.png" />
           </div>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
             <img class="nav-icon" src="images/timeGraphIcon.png" />
           </div>
         </div>
-        <div class="col-xs-2">
-          <div ng-click="setView('APTable'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
             <img class="nav-icon" src="images/table2.png" />
           </div>
         </div>
-        <div class="col-xs-2">
-          <div ng-click="setView('channelTable'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/channelTable2.png" />
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/signalStrength5.png" />
           </div>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('settings'); showNav(); $event.stopPropagation();">
             <img class="nav-icon" src="images/settings.png" />
           </div>
@@ -86,20 +93,19 @@
       </div>
     </nav>
 
-    <!-- Splash screen --
+    <!-- Splash screen -->
      <script type="text/javascript">
       var loading_screen = pleaseWait({
-        logo: "",
+        logo: "images/sofachrome.png",
         backgroundColor: '#62BF01',
         loadingHtml: "<div class='sk-spinner sk-spinner-wave'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>"
       });
 
       setTimeout(function() {
         loading_screen.finish();
-      }, 20);
+      }, 3500);
 
     </script>
-  -->
 
     <!-- Cordova -->
     <script src="cordova.js"></script>
@@ -113,22 +119,22 @@
     <!-- Anglar Services -->
     <script src="app/services/accessPoints.js"></script>
     <script src="app/services/timeGraphManager.js"></script>
-    <script src="app/services/APTableState.js"></script>
+    <script src="app/services/accessPointTableState.js"></script>
     <script src="app/services/channelGraphState.js"></script>
-    <script src="app/services/channelTableState.js"></script>
+    <script src="app/services/accessPointCountState.js"></script>
     <script src="app/services/channelChecker.js"></script>
     <script src="app/services/globalSettings.js"></script>
     <script src="app/services/visBuilder.js"></script>
 
     <!-- Angular Controllers -->
-    <script src="app/controllers/APTableCtrl.js"></script>
+    <script src="app/controllers/accessPointTableCtrl.js"></script>
     <script src="app/controllers/modalCtrl.js"></script>
     <script src="app/controllers/navCtrl.js"></script>
     <script src="app/controllers/signalStrengthCtrl.js"></script>
     <script src="app/controllers/timeGraphCtrl.js"></script>
     <script src="app/controllers/settingsCtrl.js"></script>
     <script src="app/controllers/channelGraphCtrl.js"></script>
-    <script src="app/controllers/channelTableCtrl.js"></script>
+    <script src="app/controllers/accessPointCountCtrl.js"></script>
 
     <!-- Angular Directives -->
     <script src="app/directives/filterModal.js"></script>
@@ -145,5 +151,7 @@
     <script src="scripts/tours.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/manufacturers.js"></script>
+
+    <script src="scripts/index.js"></script>
   </body>
 </html>

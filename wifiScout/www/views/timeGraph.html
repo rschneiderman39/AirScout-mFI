@@ -1,34 +1,36 @@
 <html>
   <body>
-    <div id="touch-layer" ng-click="showNav()" ng-swipe-left="swipeTo('APTable', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')" ng-controller="timeGraphCtrl">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- Scrollable List of APs -->
-          <div class="col-xs-3" id="legend">
-            <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
-            <div id="selected-ap" class="panel panel-default no-padding">
-              <div class="panel-body padded-1vh">
-                <div id="selectedAP" class="padded-1vh">{{selectedSsid !== null ? selectedSsid : "---"}}</div>
-                <div ng-show="isDuplicateSSID[selectedSsid]">({{selectedMac}})</div>
-              </div>
+    <div id="tm-gph" ng-click="showNav()" ng-swipe-left="swipeTo('accessPointTable', 'left')" ng-swipe-right="swipeTo('accessPointCount', 'right')" ng-controller="timeGraphCtrl" class="container-fluid">
+
+      <div class="row">
+        <!-- Scrollable List of APs -->
+        <div class="col-xs-3" id="legend">
+          <center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>
+          <div id="selected-ap" class="panel panel-default no-padding">
+            <div class="panel-body padded-1vh">
+              <div id="selectedAP" class="padded-1vh">{{selectedSsid !== null ? selectedSsid : "---"}}</div>
+              <div ng-show="isDuplicateSSID[selectedSsid]">({{selectedMac}})</div>
             </div>
-            <ul class="list list-group scrollable-list">
-              <span data-ng-repeat="item in legendData | orderBy:sortSSID">
-                <li class="listgroupitem" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
-                  <div class="legend-box" ng-style="{'background-color':item.color}"></div>
-                  <span class="legend-text">{{item.ssid}}</span>
-                  <div class="legend-text" ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>
-                </li>
-              </span>
-            </ul>
           </div>
-          <!-- Time Graph Plot -->
-          <div class="col-xs-9" id="time-graph">
-            <div id="vis"></div>
-          </div>
+          <ul class="list list-group scrollable-list">
+            <span data-ng-repeat="item in legendData | orderBy:sortSSID">
+              <li class="listgroupitem" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
+                <div class="legend-box" ng-style="{'background-color':item.color}"></div>
+                <span class="legend-text">{{item.ssid}}</span>
+                <div class="legend-text" ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>
+              </li>
+            </span>
+          </ul>
+        </div>
+        <!-- Time Graph Plot -->
+        <div class="col-xs-9" id="time-graph">
+          <div id="vis"></div>
         </div>
       </div>
+
     </div>
+
     <div filter-modal />
+
   </body>
 </html>
