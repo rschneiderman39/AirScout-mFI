@@ -72,7 +72,12 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         /* Dimensions */
         dim.graph.totalHeight = config.height * (1 - config.navPercent);
 
-        dim.graph.margins = config.graphMargins;
+        dim.graph.margins = {
+          left: config.graphMargins.left * config.width,
+          right: config.graphMargins.right * config.width,
+          top: config.graphMargins.top * config.height,
+          bottom: config.graphMargins.bottom * config.height
+        };
 
         dim.graph.width = config.width - dim.graph.margins.left - dim.graph.margins.right;
         dim.graph.height = dim.graph.totalHeight - dim.graph.margins.top - dim.graph.margins.bottom;
@@ -80,7 +85,8 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         elem.graph = {};
 
         /* Container */
-        elem.graph.container = d3.select('#graph').classed('chart', true).append('svg')
+        elem.graph.container = d3.select('#graph').append('svg')
+          .style('display', 'block')
           .attr('width', config.width)
           .attr('height', dim.graph.totalHeight)
           .append('g')
@@ -187,7 +193,12 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         /* Dimensions */
         dim.nav.totalHeight = config.height * config.navPercent;
 
-        dim.nav.margins = config.navMargins;
+        dim.nav.margins = {
+          left: config.navMargins.left * config.width,
+          right: config.navMargins.right * config.width,
+          top: config.navMargins.top * config.height,
+          bottom: config.navMargins.bottom * config.height
+        };
 
         dim.nav.width = config.width - dim.nav.margins.left - dim.nav.margins.right;
         dim.nav.height = dim.nav.totalHeight - dim.nav.margins.top - dim.nav.margins.bottom;
@@ -211,6 +222,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
         /* Container */
         elem.nav.left.container = d3.select('#nav-left').append('svg')
+          .style('display', 'block')
           .attr('width', dim.nav.left.totalWidth)
           .attr('height', dim.nav.totalHeight)
           .append('g')
@@ -263,6 +275,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
         /* Container */
         elem.nav.right.container = d3.select('#nav-right').append('svg')
+          .style('display', 'block')
           .attr('width', dim.nav.right.totalWidth)
           .attr('height', dim.nav.totalHeight)
           .append('g')

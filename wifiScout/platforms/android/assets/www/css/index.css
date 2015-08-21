@@ -4,7 +4,9 @@
 
 body {
 	background: #f1f1f1 !important;
+	height: 100%;
 	position: fixed;
+	width: 100%;
 }
 
 body > #current-view {
@@ -18,6 +20,7 @@ body.pg-loaded > #current-view {
 #current-view {
   position: relative;
   overflow: hidden;
+	width: 100%;
 }
 
 #filter-button {
@@ -29,6 +32,24 @@ body.pg-loaded > #current-view {
   outline: none;
 }
 
+@media {
+
+}
+
+.text {
+	font-size: 1.65vw;
+}
+
+.minor-title {
+	font-size: 1.8vw;
+	font-weight: bold;
+}
+
+.major-title {
+	font-size: 1.95vw;
+	font-weight: bold;
+}
+
 #help-button {
   max-height: 8vh;
   max-width: 11.5vh;
@@ -36,6 +57,17 @@ body.pg-loaded > #current-view {
   -webkit-transform: translateY(-50%);
 	top: 50%;
 }
+
+
+/*
+#help-button {
+	color: #f1f1f1;
+	font-size: 4vw;
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+}
+*/
 
 #nav-bar {
   height: 13vh;
@@ -84,6 +116,16 @@ body.pg-loaded > #current-view {
   background-image: -webkit-gradient(linear,left top,left,from(#fff),to(#fff)); */
 }
 
+#nav-bar-interaction-box {
+	top: 92%;
+	height: 8%;
+	left: 46%;
+	margin: 0 auto;
+	position: fixed;
+	visibility: hidden;
+	width: 8%;
+};
+
 #nav-button {
   top: -5.5vh;
 }
@@ -98,7 +140,9 @@ body.pg-loaded > #current-view {
 	margin: auto;
 	position: relative;
   -webkit-transform: translateY(-50%);
+	/*
 	top: 50%;
+	*/
 	width: 8vw;
 }
 
@@ -128,6 +172,7 @@ body.pg-loaded > #current-view {
 
 #top-bar {
   background-image: url('../images/topBar.png');
+	background-size: cover;
   height: 11vh;
   margin: 0px;
 	position: fixed;

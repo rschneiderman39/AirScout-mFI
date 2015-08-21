@@ -43,12 +43,9 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         $scope.selectedMAC = ap.mac;
       }
 
-      updateGauge();
-      /*
       $scope.level = null;
       $scope.minLevel = null;
       $scope.maxLevel = null;
-      */
     };
 
     $scope.sortSSID = utils.customSSIDSort;

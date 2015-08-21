@@ -12,8 +12,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         lineWidth: 2,
         highlightedLineWidth: 6,
         highlightOpacity: 0.3,
-        widthFactor: 1,
-        heightFactor: 0.92
+        heightFactor: 0.94
       };
 
       var updateInterval = timeGraphManager.getUpdateInterval();
@@ -44,10 +43,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         var config = {
           graphDomain: prefs.domain,
           graphMargins: {
-            top: 10,
-            bottom: 30,
-            left: 50,
-            right: 10
+            top: .02,
+            bottom: .08,
+            left: .08,
+            right: .02
           },
           gridLineOpacity: 0.5,
           height: undefined,
@@ -60,7 +59,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           yAxisTickInterval: 10
         };
 
-        config.width = $('#time-graph').width() * prefs.widthFactor;
+        config.width = $('#time-graph').width();
         config.height = $('#current-view').height() * prefs.heightFactor;
 
         var vis = visBuilder.buildVis(config, elemUpdateCallback, null,

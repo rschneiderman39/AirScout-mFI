@@ -17,16 +17,6 @@
   vertical-align: middle;
 }
 
-#tm-gph .legend-text {
-  font-size: 1.65vw;
-}
-
-#tm-gph .legend-title {
-  font-size: 1.85vw;
-  font-weight: bold;
-  position: relative;
-}
-
 #tm-gph .list {
   height: 55vh;
   overflow-y: scroll;
@@ -47,15 +37,9 @@
 }
 
 #tm-gph #selected-ap {
-  font-size: 1.65vw;
   text-align: center;
   background-color: #62bf01;
   color: #fafafa;
-}
-
-#tm-gph .selected-ap-title {
-  font-size: 1.75vw;
-  font-weight: bold;
 }
 
 #tm-gph #time-graph {

@@ -19,8 +19,7 @@ setupService) {
       domain5: [34, 167],
       fillShadeFactor: 0.75,
       labelPadding: 10,
-      widthFactor: 0.97,
-      heightFactor: 0.95
+      heightFactor: 0.97
     };
 
     function init() {
@@ -28,10 +27,10 @@ setupService) {
         band: undefined,
         graphDomain: prefs.domain2_4,
         graphMargins: {
-          top: 10,
-          bottom: 30,
-          left: 50,
-          right: 0
+          top: .04,
+          bottom: .07,
+          left: .06,
+          right: .01
         },
         gridLineOpacity: 0.5,
         height: undefined,
@@ -41,10 +40,10 @@ setupService) {
         navLeftLabel: globals.strings.channelGraph.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
-          top: 1,
-          bottom: 18,
-          left: 50,
-          right: 0
+          top: .02,
+          bottom: .05,
+          left: .06,
+          right: .01
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
@@ -56,7 +55,7 @@ setupService) {
         yAxisTickInterval: 10
       };
 
-      config.width = $('#current-view').width() * prefs.widthFactor;
+      config.width = $('#current-view').width();
       config.height = $('#current-view').height() * prefs.heightFactor;
 
       config.band = channelGraphState.band() || prefs.defaultBand;
@@ -119,7 +118,7 @@ setupService) {
             });
 
           parabolas.interrupt();
-          
+
           parabolas.enter().append('path')
             .classed('parabola', true)
             .attr('pointer-events', 'none')

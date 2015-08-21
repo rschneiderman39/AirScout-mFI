@@ -7,7 +7,7 @@
         <div id="scale-panel" class="panel panel-default">
     			<!-- Starting View Header -->
         	<div class="panel-heading">
-	          <h4 class="panel-title">{{strings.settings.visScaleHeader}}</h4>
+	          <p class="panel-title major-title">{{strings.settings.visScaleHeader}}</p>
         	</div>
         	<!-- Starting View Description and Dropdown List -->
           <div class="panel-body">
@@ -34,16 +34,16 @@
 
     			<!-- Detect Hidden APs Header -->
         	<div class="panel-heading">
-          	<h4 class="panel-title">{{strings.settings.detectHiddenHeader}}</h4>
+          	<p class="panel-title major-title">{{strings.settings.detectHiddenHeader}}</p>
        		</div>
        		<!-- Detect Hidden APs Description and Toggle Selector -->
             <div class="panel-body">
 	          	<div class="row">
-		          	<div ng-click="showNav()" class="col-xs-9">
+		          	<div ng-click="showNav()" class="col-xs-10">
 	          			{{strings.settings.detectHiddenDescription}}
 	          		</div>
-	          		<div class="col-xs-3">
-		          		<input type="checkbox" name="hiddenAPOptions">
+	          		<div class="col-xs-2">
+		          		<input type="checkbox" class="text" name="hiddenAPOptions">
 		          	</div>
 	          	</div>
 	          </div>

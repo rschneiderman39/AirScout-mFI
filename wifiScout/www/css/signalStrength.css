@@ -11,7 +11,6 @@
 }
 
 #sg-sth #gauge g.label text {
-  font-size: 1.60vw;
   text-anchor: middle;
 }
 
@@ -21,7 +20,7 @@
 }
 
 #sg-sth .list {
-  height: 54vh;
+  height: 55vh;
   overflow-y: scroll;
 }
 
@@ -29,17 +28,13 @@
   -webkit-transform: translateY(4%);
 }
 
-#sg-sth .list-title {
-  font-size: 1.75vw;
-  font-weight: bold;
-}
-
 #sg-sth .listgroupitem {
   background-color: #fafafa;
   border: 1px solid #ddd;
-  font-size: 1.65vw;
   margin-bottom: -1px;
-  padding: 1.5vh 2.5vh;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  text-align: center;
 }
 
 #sg-sth .listgroupitem:first-child {
@@ -59,7 +54,6 @@
 }
 
 #sg-sth .level-indicator {
-  font-size: 1.60vw;
   padding-top: 4vh;
   text-align: center;
   -webkit-transform: translateX(17%);
@@ -80,15 +74,9 @@
 }
 
 #sg-sth #selected-ap {
-  font-size: 1.65vw;
   text-align: center;
   background-color: #62bf01;
   color: #fafafa;
-}
-
-#sg-sth .selected-ap-title {
-  font-size: 1.75vw;
-  font-weight: bold;
 }
 
 #sg-sth ::-webkit-scrollbar {

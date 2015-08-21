@@ -31,12 +31,10 @@
 
 #ap-tab td {
   text-align: center;
-  font-size: 12px;
 }
 
 #ap-tab th {
   text-align: center;
-  font-size: 12px;
 }
 
 #ap-tab ::-webkit-scrollbar {
