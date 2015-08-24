@@ -19,7 +19,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 1000, // Animation Duration for the box and mask
+      animationDuration: 0, // Animation Duration for the box and mask
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
