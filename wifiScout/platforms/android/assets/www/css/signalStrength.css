@@ -24,6 +24,7 @@
 }
 
 #sg-sth .list {
+  border: 1px solid #cccccc;
   height: 62vh;
   overflow-y: scroll;
 }
@@ -70,10 +71,6 @@
 #sg-sth .padded-1vh {
   margin: 0px !important;
   padding: 1vh !important;
-}
-
-#sg-sth .scrollable-list {
-  border: 1px solid #cccccc;
 }
 
 #sg-sth #selected-ap {
