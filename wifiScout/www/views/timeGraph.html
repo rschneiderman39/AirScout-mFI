@@ -5,13 +5,16 @@
       <div class="row">
         <!-- Scrollable List of APs -->
         <div class="col-xs-3" id="legend">
-          <center><h5 class="legend-title minor-title">{{strings.timeGraph.legendHeader}}</h5></center>
-          <div id="selected-ap" class="panel panel-default no-padding">
-            <div class="panel-body padded-1vh">
-              <div id="selectedAP" class="padded-1vh">{{selectedSsid !== null ? selectedSsid : "---"}}</div>
-              <div ng-show="isDuplicateSSID[selectedSsid]">({{selectedMac}})</div>
-            </div>
-          </div>
+          <!--<center><h5 class="legend-title">{{strings.timeGraph.legendHeader}}</h5></center>-->
+          <div class="panel panel-default no-padding">
+						<div id="selected-ap" class="panel-body">
+							<div id="selected-ssid">{{selectedSsid !== null ? selectedSsid : " "}}</div>
+							<div id="selected-mac">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
+						</div>
+					</div>
+
+          <hr>
+
           <ul class="list list-group scrollable-list">
             <span data-ng-repeat="item in legendData | orderBy:sortSSID">
               <li class="listgroupitem" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">

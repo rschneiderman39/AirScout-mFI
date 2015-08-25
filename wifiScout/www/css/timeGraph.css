@@ -1,11 +1,19 @@
-#tim-gph {
+#tm-gph {
   height: 100%;
 }
 
+#tm-gph hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1.5vh 0;
+  padding: 0;
+}
+
 #tm-gph #legend {
+  margin-top: 3vh;
   padding-right: 0px;
-  position: relative;
-  -webkit-transform: translateY(2%);
 }
 
 #tm-gph .legend-box {
@@ -18,7 +26,7 @@
 }
 
 #tm-gph .list {
-  height: 55vh;
+  height: 62vh;
   overflow-y: scroll;
 }
 
@@ -32,21 +40,28 @@
   padding: 1vh !important;
 }
 
-#tm-gph .scrollable-list {
-  -webkit-transform: translateY(2%);
+#tm-gph #selected-ap {
+  background-color: #fafafa;
+  color: black;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 2vh 0vh;
+  text-align: center;
+  text-overflow: ellipsis;
 }
 
-#tm-gph #selected-ap {
-  text-align: center;
-  background-color: #62bf01;
-  color: #fafafa;
+#tm-gph #selected-ssid {
+  white-space: pre;
+}
+
+#tm-gph #selected-mac {
+  white-space: pre;
 }
 
 #tm-gph #time-graph {
   margin: 0px;
   padding: 0px;
   position: relative;
-  -webkit-transform: translateY(3%);
 }
 
 #tm-gph .listgroupitem {

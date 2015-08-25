@@ -37,16 +37,16 @@ body.pg-loaded > #current-view {
 }
 
 .text {
-	font-size: 1.65vw;
+	font-size: 1.8vw;
 }
 
 .minor-title {
-	font-size: 1.8vw;
+	font-size: 2vw;
 	font-weight: bold;
 }
 
 .major-title {
-	font-size: 1.95vw;
+	font-size: 2.4vw;
 	font-weight: bold;
 }
 
@@ -168,6 +168,10 @@ body.pg-loaded > #current-view {
 .nav-toggle-left.active {
   fill: #62bf01;
   stroke: #62bf01;
+}
+
+.row {
+	max-height: 100%;
 }
 
 #top-bar {

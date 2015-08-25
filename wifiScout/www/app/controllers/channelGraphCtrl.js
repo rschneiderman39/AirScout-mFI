@@ -28,8 +28,8 @@ setupService) {
         graphDomain: prefs.domain2_4,
         graphMargins: {
           top: .04,
-          bottom: .07,
-          left: .06,
+          bottom: .08,
+          left: .07,
           right: .01
         },
         gridLineOpacity: 0.5,
@@ -42,7 +42,7 @@ setupService) {
         navMargins: {
           top: .02,
           bottom: .05,
-          left: .06,
+          left: .07,
           right: .01
         },
         navPercent: 0.2,

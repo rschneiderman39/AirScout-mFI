@@ -43,9 +43,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         var config = {
           graphDomain: prefs.domain,
           graphMargins: {
-            top: .02,
-            bottom: .08,
-            left: .08,
+            top: .04,
+            bottom: .09,
+            left: .1,
             right: .02
           },
           gridLineOpacity: 0.5,

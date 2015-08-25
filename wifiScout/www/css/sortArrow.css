@@ -1,7 +1,0 @@
-.sortArrow::after {
-  content: '\25b2';
-}
-
-.sortArrow.reverse::after {
-  content: '\25bc';
-}

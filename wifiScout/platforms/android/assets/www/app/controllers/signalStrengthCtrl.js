@@ -26,21 +26,21 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     $scope.minLevel = null;
     $scope.maxLevel = null;
 
-    $scope.selectedSSID = null;
-    $scope.selectedMAC = null;
+    $scope.selectedSsid = null;
+    $scope.selectedMac = null;
 
     $scope.strings = globals.strings;
 
     $scope.isSelected = function(ap) {
       if (typeof ap.mac !== 'undefined') {
-        return ap.mac === $scope.selectedMAC;
+        return ap.mac === $scope.selectedMac;
       }
     };
 
     $scope.setSelected = function(ap) {
       if (typeof ap.mac !== 'undefined') {
-        $scope.selectedSSID = ap.ssid;
-        $scope.selectedMAC = ap.mac;
+        $scope.selectedSsid = ap.ssid;
+        $scope.selectedMac = ap.mac;
       }
 
       $scope.level = null;
@@ -120,7 +120,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
     function updateGauge() {
       if (globals.debug) console.log('updating signal strength gauge');
 
-      accessPoints.get($scope.selectedMAC).done(function(result) {
+      accessPoints.get($scope.selectedMac).done(function(result) {
         $scope.$apply(function() {
           if (result !== null) {
             $scope.level = result.level;
