@@ -114,6 +114,24 @@ body {
   outline: none;
 }
 
+@media {
+
+}
+
+.text {
+	font-size: 1.8vw;
+}
+
+.minor-title {
+	font-size: 1.8vw;
+	font-weight: bold;
+}
+
+.major-title {
+	font-size: 1.95vw;
+	font-weight: bold;
+}
+
 #help-button {
   position: relative;
   -webkit-transform: translateY(-50%);

@@ -13,7 +13,7 @@
 }
 
 #ap-tab .sortArrow::after {
-  content: '\25b2';
+  content: "\e113";
 }
 
 #ap-tab .sortArrow.reverse::after {
