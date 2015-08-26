@@ -1,6 +1,8 @@
-.btn {
-  font-size: 1.8vw;
-  }
+#toggler {
+  position: relative;
+  float: right;
+  padding-right: 1.5vw;
+}
 
 #settings {
   height: 100%;
