@@ -19,7 +19,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 0, // Animation Duration for the box and mask
+      animationDuration: 300, // Animation Duration for the box and mask
       dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [{
@@ -49,7 +49,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 1000,
+      animationDuration: 300,
       dark: false
     },
     steps: [{
@@ -91,7 +91,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 1000,
+      animationDuration: 300,
       dark: false
     },
     steps: [{
@@ -123,7 +123,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 1000,
+      animationDuration: 300,
       dark: false
     },
     steps: [{
@@ -154,7 +154,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 1000,
+      animationDuration: 300,
       dark: false
     },
     steps: [{

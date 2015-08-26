@@ -20,7 +20,7 @@
                   {{strings.dBm}}</p>
               </div>
           		<div id="scale-slider-col" class="col-xs-5">
-		         		<input id="scale-slider" type="text" value="" ></input>
+		         		<input id="scale-slider" type="text" value="" />
 		         	</div>
               <div class="col-xs-1">
                 <p>{{visScaleMax}}
@@ -42,8 +42,8 @@
 		          	<div ng-click="showNav()" class="col-xs-10">
 	          			{{strings.settings.detectHiddenDescription}}
 	          		</div>
-	          		<div class="col-xs-2">
-		          		<input type="checkbox" class="text" name="hiddenAPOptions">
+	          		<div class="col-xs-2" id="toggler">
+                  <input id="toggle-one" type="checkbox" data-toggle="toggle" name="hiddenAPOptions">
 		          	</div>
 	          	</div>
 	          </div>

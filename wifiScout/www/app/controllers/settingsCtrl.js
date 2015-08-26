@@ -32,7 +32,7 @@ function($scope, globalSettings, setupService) {
         tooltip: 'hide'
       };
 
-      $("[name='hiddenAPOptions']").bootstrapSwitch({
+      /*$("[name='hiddenAPOptions']").bootstrapSwitch({
         onText: globals.strings.settings.detectHiddenTrue,
         offText: globals.strings.settings.detectHiddenFalse
       });
@@ -41,7 +41,29 @@ function($scope, globalSettings, setupService) {
 
       $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
         globalSettings.detectHidden(state);
+      });*/
+
+      $(function() {
+        $('#toggle-one').bootstrapToggle({
+          on: globals.strings.settings.detectHiddenTrue,
+          off: globals.strings.settings.detectHiddenFalse,
+          onstyle: 'success',
+          offstyle: 'default'
+        });
       });
+
+      if(globalSettings.detectHidden()) {
+        $('#toggle-one').bootstrapToggle('on');
+      }
+      else {
+        $('#toggle-one').bootstrapToggle('off');
+      }
+
+      $('#toggle-one').change(function(){
+        var state = $(this).prop('checked');
+        globalSettings.detectHidden(state);
+      });
+
 
       $('#scale-slider').slider(sliderConfig)
         .on('slide', function() {
