@@ -1,1 +1,1 @@
-# wifiScout
+# AirScout-mFI
