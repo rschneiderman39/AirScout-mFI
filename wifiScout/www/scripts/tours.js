@@ -19,8 +19,10 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 100, // Animation Duration for the box and mask
-      dark: false // Dark mode (Works great with `mask.visible = false`)
+      animationDuration: 0, // Animation Duration for the box and mask
+      dark: false, // Dark mode (Works great with `mask.visible = false`)
+      heightFactor: 0.5,
+      widthFactor: 0.3
     },
     steps: [{
         content: globals.strings.accessPointCount.tour.intro
@@ -49,7 +51,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 100,
+      animationDuration: 0,
       dark: false
     },
     steps: [{
@@ -91,7 +93,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 100,
+      animationDuration: 0,
       dark: false
     },
     steps: [{
@@ -123,7 +125,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 100,
+      animationDuration: 0,
       dark: false
     },
     steps: [{
@@ -154,7 +156,7 @@ setup.tours = function() {
       previousText: 'Previous',
       nextText: 'Next',
       finishText: 'Finish',
-      animationDuration: 100,
+      animationDuration: 0,
       dark: false
     },
     steps: [{

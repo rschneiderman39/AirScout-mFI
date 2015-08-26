@@ -1,41 +1,38 @@
-<html>
-  <body>
-    <!-- Wrapper -->
-    <div class="modal" id="filter-modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
 
-          <!-- Title -->
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Filtering Options</h4>
+<!-- Wrapper -->
+<div class="modal" id="filter-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Title -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Filtering Options</h4>
+      </div>
+
+      <!-- Content -->
+      <div class="modal-body container-fluid">
+        <div class="row">
+
+          <!-- Selectors -->
+          <div class="col-xs-5" id="sortingDiv">
+            <p>Search by MAC address or SSID:</p>
+            <input type="text" class="col-xs-12" id="query" ng-model="query">
+            <button id="btnShow" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">Select All</button>
+            <button id="btnHide" ng-click="unselectAll()" class="btn btn-default btn-sm" type="button">Deselect All</button>
           </div>
 
-          <!-- Content -->
-          <div class="modal-body container-fluid">
-            <div class="row">
-
-              <!-- Selectors -->
-              <div class="col-xs-5" id="sortingDiv">
-                <p>Search by MAC address or SSID:</p>
-                <input type="text" class="col-xs-12" id="query" ng-model="query">
-                <button id="btnShow" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">Select All</button>
-                <button id="btnHide" ng-click="unselectAll()" class="btn btn-default btn-sm" type="button">Deselect All</button>
-              </div>
-
-              <!-- Access point list -->
-              <div class="col-xs-7">
-                <ul class="list-group scrollable-list" id="modal-list">
-                  <li class="list-group-item nopadding" data-ng-repeat="ap in accessPoints | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
-                    <div id="SSID">{{ap.ssid}}</div>
-                    <div id="MAC">({{ap.mac}})</div>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <!-- Access point list -->
+          <div class="col-xs-7">
+            <ul class="list-group scrollable-list" id="modal-list">
+              <li class="list-group-item nopadding" data-ng-repeat="ap in accessPoints | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
+                <div id="SSID">{{ap.ssid}}</div>
+                <div id="MAC">({{ap.mac}})</div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+</div>

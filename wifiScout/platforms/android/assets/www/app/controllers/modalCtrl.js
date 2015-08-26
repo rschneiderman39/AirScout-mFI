@@ -1,7 +1,8 @@
 "use strict";
 
-app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings',
-'setupService', function($scope, $state, accessPoints, globalSettings, setupService) {
+app.controller('modalCtrl', ['$scope', '$state', '$filter', 'accessPoints',
+'globalSettings', 'setupService', function($scope, $state, $filter, accessPoints,
+globalSettings, setupService) {
 
   setupService.ready.then(function() {
 
@@ -13,19 +14,13 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
     $scope.accessPoints = [];
 
     $scope.toggleSelected = function(ap) {
-      var selectedMacs = [];
-
       if (! isSelected[ap.mac]) {
         isSelected[ap.mac] = true;
       } else {
         isSelected[ap.mac] = false;
       }
 
-      $.each(isSelected, function(mac, selected) {
-        if (selected) selectedMacs.push(mac);
-      });
-
-      apSelection(new AccessPointSelection(selectedMacs, false));
+      updateSelection();
     };
 
     $scope.isSelected = function(ap) {
@@ -51,12 +46,14 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
 
     $scope.sortSSID = utils.customSSIDSort;
 
-    function apSelection(newSelection) {
-      if (newSelection === undefined) {
-        return globalSettings.accessPointSelection();
-      }
+    function init() {
+      prepView();
+      view = $state.current.name;
+    };
 
-      globalSettings.accessPointSelection(newSelection);
+    function prepView() {
+      $('#modal-list').css('height', $(window).height() * 0.6);
+      $('#filter-modal').on('show.bs.modal', onShow);
     };
 
     function onShow() {
@@ -77,14 +74,22 @@ app.controller('modalCtrl', ['$scope', '$state', 'accessPoints', 'globalSettings
       });
     };
 
-    function prepView() {
-      $('#modal-list').css('height', $(window).height() * 0.6);
-      $('#filter-modal').on('show.bs.modal', onShow);
+    function apSelection(newSelection) {
+      if (newSelection === undefined) {
+        return globalSettings.accessPointSelection();
+      }
+
+      globalSettings.accessPointSelection(newSelection);
     };
 
-    function init() {
-      prepView();
-      view = $state.current.name;
+    function updateSelection() {
+      var selectedMacs = [];
+
+      $.each(isSelected, function(mac, selected) {
+        if (selected) selectedMacs.push(mac);
+      });
+
+      apSelection(new AccessPointSelection(selectedMacs, false));
     };
 
     init();

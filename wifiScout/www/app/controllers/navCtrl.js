@@ -97,10 +97,6 @@ app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout',
 
       function init() {
         $scope.setView(defaults.startingView);
-
-        new Hammer($('#nav-bar')[0])
-          .on('panup', $scope.showNav)
-          .on('tap', $scope.showNav);
       };
 
       init();

@@ -1,56 +1,53 @@
-<html>
-  <body>
-		<div id="settings" ng-controller="settingsCtrl" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')">
 
-      <div class="panel-group" id="main-panel">
+<div id="settings" ng-controller="settingsCtrl" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')">
 
-        <div id="scale-panel" class="panel panel-default">
-    			<!-- Starting View Header -->
-        	<div class="panel-heading">
-	          <p class="panel-title major-title">{{strings.settings.visScaleHeader}}</p>
+  <div class="panel-group" id="main-panel">
+
+    <div id="scale-panel" class="panel panel-default">
+			<!-- Starting View Header -->
+    	<div class="panel-heading">
+        <p class="panel-title major-title">{{strings.settings.visScaleHeader}}</p>
+    	</div>
+    	<!-- Starting View Description and Dropdown List -->
+      <div class="panel-body">
+      	<div class="row">
+        	<div class="col-xs-5">
+      			{{strings.settings.visScaleDescription}}
+      		</div>
+          <div class="col-xs-1">
+            <p>{{visScaleMin}}
+              {{strings.dBm}}</p>
+          </div>
+      		<div id="scale-slider-col" class="col-xs-5">
+         		<input id="scale-slider" type="text" value="" ></input>
+         	</div>
+          <div class="col-xs-1">
+            <p>{{visScaleMax}}
+              {{strings.dBm}}</p>
+          </div>
+       	</div>
+     	</div>
+		</div>
+
+		<div id="hidden-ap-panel" class="panel panel-default">
+
+			<!-- Detect Hidden APs Header -->
+    	<div class="panel-heading">
+      	<p class="panel-title major-title">{{strings.settings.detectHiddenHeader}}</p>
+   		</div>
+   		<!-- Detect Hidden APs Description and Toggle Selector -->
+        <div class="panel-body">
+        	<div class="row">
+          	<div ng-click="showNav()" class="col-xs-8">
+        			{{strings.settings.detectHiddenDescription}}
+        		</div>
+        		<div class="col-xs-4">
+          		<input type="checkbox" class="text" name="hiddenAPOptions">
+          	</div>
         	</div>
-        	<!-- Starting View Description and Dropdown List -->
-          <div class="panel-body">
-          	<div class="row">
-	          	<div class="col-xs-5">
-          			{{strings.settings.visScaleDescription}}
-          		</div>
-              <div class="col-xs-1">
-                <p>{{visScaleMin}}
-                  {{strings.dBm}}</p>
-              </div>
-          		<div id="scale-slider-col" class="col-xs-5">
-		         		<input id="scale-slider" type="text" value="" ></input>
-		         	</div>
-              <div class="col-xs-1">
-                <p>{{visScaleMax}}
-                  {{strings.dBm}}</p>
-              </div>
-		       	</div>
-		     	</div>
-    		</div>
+        </div>
+		</div>
 
-    		<div id="hidden-ap-panel" class="panel panel-default">
+	</div>
 
-    			<!-- Detect Hidden APs Header -->
-        	<div class="panel-heading">
-          	<p class="panel-title major-title">{{strings.settings.detectHiddenHeader}}</p>
-       		</div>
-       		<!-- Detect Hidden APs Description and Toggle Selector -->
-            <div class="panel-body">
-	          	<div class="row">
-		          	<div ng-click="showNav()" class="col-xs-8">
-	          			{{strings.settings.detectHiddenDescription}}
-	          		</div>
-	          		<div class="col-xs-4">
-		          		<input type="checkbox" class="text" name="hiddenAPOptions">
-		          	</div>
-	          	</div>
-	          </div>
-    		</div>
-
-			</div>
-
-    </div>
-	</body>
-</html>
+</div>
