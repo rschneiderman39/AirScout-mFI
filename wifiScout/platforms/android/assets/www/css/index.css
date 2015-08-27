@@ -5,6 +5,11 @@
 		font-size: 16px;
 	}
 
+  .toggle.btn-sm{min-width:40px;min-height:20px;}
+  .toggle-on.btn-sm{padding-right:20px}
+  .toggle-off.btn-sm{padding-left:20px}
+
+  .btn,
 	.text {
 		font-size: 16px;
 	}
@@ -33,6 +38,7 @@
 		font-size: 1.8vw;
 	}
 
+  .btn,
 	.text {
 		font-size: 1.8vw;
 	}
@@ -135,6 +141,24 @@ body {
   top: 50%;
   -webkit-transform: translateY(-50%);
   outline: none;
+}
+
+@media {
+
+}
+
+.text {
+	font-size: 1.8vw;
+}
+
+.minor-title {
+	font-size: 1.8vw;
+	font-weight: bold;
+}
+
+.major-title {
+	font-size: 1.95vw;
+	font-weight: bold;
 }
 
 #help-button {

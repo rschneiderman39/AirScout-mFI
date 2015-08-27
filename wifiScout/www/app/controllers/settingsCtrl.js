@@ -48,7 +48,8 @@ function($scope, globalSettings, setupService) {
           on: globals.strings.settings.detectHiddenTrue,
           off: globals.strings.settings.detectHiddenFalse,
           onstyle: 'success',
-          offstyle: 'default'
+          offstyle: 'default',
+          size: 'small'
         });
       });
 

@@ -26,6 +26,13 @@
   background-color: #62bf01 !important;
 }
 
+#toggler {
+  position: relative;
+  float: right;
+  padding-right: 1.5vw;
+}
+
+
 /* Misc */
 #settings .panel-group {
 	padding: 0 !important;
