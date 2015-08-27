@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+
+    <!-- Stylesheets -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="css/bootstrap-toggle.min.css" rel="stylesheet" />
+    <link href="css/slider.css" rel="stylesheet" />
+    <link href="css/nz-tour.css" rel="stylesheet" />
+
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/anim-in.css" rel="stylesheet" />
+    <link href="css/filterModal.css" rel="stylesheet" />
+    <link href="css/channelGraph.css" rel="stylesheet" />
+    <link href="css/accessPointCount.css" rel="stylesheet" />
+    <link href="css/timeGraph.css" rel="stylesheet" />
+    <link href="css/accessPointTable.css" rel="stylesheet" />
+    <link href="css/signalStrength.css" rel="stylesheet" />
+    <link href="css/settings.css" rel="stylesheet" />
+
+    <!-- Frameworks -->
+    <script src="scripts/lib/jquery-2.1.4.min.js"></script>
+    <script src="scripts/lib/angular.min.js"></script>
+    <script src="scripts/lib/angular-animate.min.js"></script>
+    <script src="scripts/lib/angular-ui-router.min.js"></script>
+    <script src="scripts/lib/angular-touch.min.js"></script>
+    <script src="scripts/lib/nz-tour-custom.js"></script>
+    <script src="scripts/lib/bootstrap.min.js"></script>
+    <script src="scripts/lib/bootstrap-toggle.min.js"></script>
+    <script src="scripts/lib/bootstrap-slider.js"></script>
+    <script src="scripts/lib/d3.min.js"></script>
+  </head>
+
+  <body ng-controller="navCtrl">
+  
+    <!-- View title bar -->
+    <div id="top-bar" class="row">
+      <div class="col-xs-2">
+        <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
+      </div>
+      <div class="col-xs-8">
+        <p id="view-title"></p>
+      </div>
+      <div class="col-xs-1"></div>
+      <div class="col-xs-1" >
+        <input id="help-button" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();" ng-show="displayHelpBtn()">
+      </div>
+    </div>
+
+    <!-- View goes here -->
+    <div ui-view id="current-view"></div>
+
+    <div id="nav-bar-interaction-box" ng-click="showNav()" ng-swipe-up="showNav()"></div>
+
+    <!-- Self-collapsing navigation bar -->
+    <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
+      <div id="nav-bar-hidden"></div>
+      <div class="row">
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/channelGraph.png" />
+          </div>
+        </div>
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/channelTable.png" />
+          </div>
+        </div>
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/timeGraph.png" />
+          </div>
+        </div>
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/table.png" />
+          </div>
+        </div>
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/signalStrength.png" />
+          </div>
+        </div>
+        <div class="col-xs-2" id="nav-button">
+          <div ng-click="setView('settings'); showNav(); $event.stopPropagation();">
+            <img class="nav-icon" src="images/settings.png" />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cordova -->
+    <script src="cordova.js"></script>
+    <script src="cordova_plugins.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+    <script src="app/services/setupService.js"></script>
+
+    <!-- Angular App -->
+    <script src="app/app.js"></script>
+
+    <!-- Anglar Services -->
+    <script src="app/services/accessPoints.js"></script>
+    <script src="app/services/timeGraphManager.js"></script>
+    <script src="app/services/accessPointTableState.js"></script>
+    <script src="app/services/channelGraphState.js"></script>
+    <script src="app/services/accessPointCountState.js"></script>
+    <script src="app/services/channelValidator.js"></script>
+    <script src="app/services/globalSettings.js"></script>
+    <script src="app/services/visBuilder.js"></script>
+
+    <!-- Angular Controllers -->
+    <script src="app/controllers/accessPointTableCtrl.js"></script>
+    <script src="app/controllers/filterModalCtrl.js"></script>
+    <script src="app/controllers/navCtrl.js"></script>
+    <script src="app/controllers/signalStrengthCtrl.js"></script>
+    <script src="app/controllers/timeGraphCtrl.js"></script>
+    <script src="app/controllers/settingsCtrl.js"></script>
+    <script src="app/controllers/channelGraphCtrl.js"></script>
+    <script src="app/controllers/accessPointCountCtrl.js"></script>
+
+    <!-- Angular Directives -->
+    <script src="app/directives/filterModal.js"></script>
+
+    <!-- Internationalization -->
+    <script src="lang/en.js"></script>
+    <script src="lang/es.js"></script>
+
+    <!-- Globals and Setup -->
+    <script src="scripts/channels.js"></script>
+    <script src="scripts/globals.js"></script>
+    <script src="scripts/internationalization.js"></script>
+    <script src="scripts/setup.js"></script>
+    <script src="scripts/tours.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/manufacturers.js"></script>
+  </body>
+</html>

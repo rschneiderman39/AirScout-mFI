@@ -1,0 +1,26 @@
+﻿.anim-in-setup.anim-slide-left {
+  -webkit-transform: translateX(100%);
+}
+
+.anim-in-setup.anim-slide-right {
+  -webkit-transform: translateX(-100%);
+}
+
+.anim-in.anim-slide-left {
+  -webkit-transform: translateX(0);
+  -webkit-transition: all 500ms;
+}
+
+.anim-in.anim-slide-right {
+  -webkit-transform: translateX(0);
+  -webkit-transition: all 500ms;
+}
+
+.anim-in-setup.anim-fade {
+  opacity: 0;
+}
+
+.anim-in.anim-fade {
+  opacity: 1;
+  transition: all 500ms;
+}

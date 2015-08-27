@@ -1,0 +1,37 @@
+﻿<!-- Wrapper -->
+<div class="modal" id="filter-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Title -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="major-title">{{strings.filterModal.title}}</div>
+      </div>
+
+      <!-- Content -->
+      <div class="modal-body container-fluid">
+        <div class="row">
+
+          <!-- Selectors -->
+          <div class="col-xs-5">
+            <p>{{strings.filterModal.searchBar}}</p>
+            <input type="text" class="col-xs-12" id="query" ng-model="query">
+            <button id="select-btn" ng-click="selectAll()" class="btn btn-default btn-sm text" type="button">{{strings.filterModal.selectAll}}</button>
+            <button id="deselect-btn" ng-click="unselectAll()" class="btn btn-default btn-sm text" type="button">{{strings.filterModal.deselectAll}}</button>
+          </div>
+
+          <!-- Access point list -->
+          <div class="col-xs-7">
+            <ul class="list-group scrollable-list" id="modal-list">
+              <li class="list-group-item nopadding" data-ng-repeat="ap in accessPoints | filter:query | orderBy:sortSSID" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
+                <div class="centered-text">{{ap.ssid}}</div>
+                <div class="centered-text">({{ap.mac}})</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
