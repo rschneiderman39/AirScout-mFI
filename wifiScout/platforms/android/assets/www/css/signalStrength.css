@@ -1,17 +1,29 @@
+/* View Wrapper */
 #sg-sth {
   height: 100%;
 }
 
-#sg-sth #current-level {
-  font-weight: bold;
-}
-
-#sg-sth #gauge g.label text {
-  text-anchor: middle;
-}
-
-#sg-sth #gauge-section {
+/* Access Point List */
+#sg-sth #list-section {
   margin-top: 3vh;
+  padding-right: 0;
+}
+
+#sg-sth #selected-ap {
+  background-color: #fafafa;
+  color: black;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 2vh 0vh;
+  text-overflow: ellipsis;
+}
+
+#sg-sth #selected-ssid {
+  white-space: pre;
+}
+
+#sg-sth #selected-mac {
+  white-space: pre;
 }
 
 #sg-sth hr {
@@ -29,17 +41,11 @@
   overflow-y: scroll;
 }
 
-#sg-sth #list-section {
-  margin-top: 3vh;
-  padding-right: 0px;
-}
-
 #sg-sth .listgroupitem {
   background-color: #fafafa;
   border: 1px solid #ddd;
   margin-bottom: -1px;
   padding: 2vh 0vh;
-  text-align: center;
 }
 
 #sg-sth .listgroupitem:first-child {
@@ -58,11 +64,24 @@
   color: #fafafa;
 }
 
-#sg-sth .level-indicator {
-  padding-top: 4vh;
-  text-align: center;
+/* Level Indicators */
+#sg-sth #gauge-section {
+  margin-top: 3vh;
 }
 
+#sg-sth #current-level {
+  font-weight: bold;
+}
+
+#sg-sth #gauge g.label text {
+  text-anchor: middle;
+}
+
+#sg-sth .level-indicator {
+  padding-top: 4vh;
+}
+
+/* Misc */
 #sg-sth .no-padding {
   padding: 0px !important;
   margin: 0px !important;
@@ -73,28 +92,7 @@
   padding: 1vh !important;
 }
 
-#sg-sth #selected-ap {
-  background-color: #fafafa;
-  color: black;
-  font-weight: bold;
-  overflow: hidden;
-  padding: 2vh 0vh;
-  text-align: center;
-  text-overflow: ellipsis;
-}
-
-#sg-sth #selected-ssid {
-  white-space: pre;
-}
-
-#sg-sth #selected-mac {
-  white-space: pre;
-}
-
-#sg-sth .spacer {
-  height: 3%;
-}
-
+/* Scrollbar */
 #sg-sth ::-webkit-scrollbar {
   -webkit-appearance: none;
 }

@@ -1,44 +1,12 @@
+/* View Wrapper */
 #tm-gph {
   height: 100%;
 }
 
-#tm-gph hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #cccccc;
-  margin: 1.5vh 0;
-  padding: 0;
-}
-
+/* Legend */
 #tm-gph #legend {
   margin-top: 3vh;
   padding-right: 0px;
-}
-
-#tm-gph .legend-box {
-  display: inline-block;
-  height: 3.75vh;
-  margin-left: 1.5vh;
-  margin-right: 1vh;
-  width: 3.75vh;
-  vertical-align: middle;
-}
-
-#tm-gph .list {
-  border: 1px solid #cccccc;
-  height: 62vh;
-  overflow-y: scroll;
-}
-
-#tm-gph .no-padding {
-  padding: 0px !important;
-  margin: 0px !important;
-}
-
-#tm-gph .padded-1vh {
-  margin: 0px !important;
-  padding: 1vh !important;
 }
 
 #tm-gph #selected-ap {
@@ -59,10 +27,19 @@
   white-space: pre;
 }
 
-#tm-gph #time-graph {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
+#tm-gph hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1.5vh 0;
+  padding: 0;
+}
+
+#tm-gph .list {
+  border: 1px solid #cccccc;
+  height: 62vh;
+  overflow-y: scroll;
 }
 
 #tm-gph .listgroupitem {
@@ -88,6 +65,34 @@
   color: #fafafa;
 }
 
+#tm-gph .legend-box {
+  display: inline-block;
+  height: 3.75vh;
+  margin-left: 1.5vh;
+  margin-right: 1vh;
+  width: 3.75vh;
+  vertical-align: middle;
+}
+
+/* Time Graph */
+#tm-gph #time-graph {
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+}
+
+/* Misc */
+#tm-gph .no-padding {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+#tm-gph .padded-1vh {
+  margin: 0px !important;
+  padding: 1vh !important;
+}
+
+/* Scrollbar */
 #tm-gph ::-webkit-scrollbar {
   -webkit-appearance: none;
 }

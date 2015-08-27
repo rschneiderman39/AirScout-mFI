@@ -132,11 +132,11 @@ setup.tours = function() {
         content: globals.strings.signalStrength.tour.intro
       },
       {
-        target: ".min-level",
+        target: "#min-level",
         content: globals.strings.signalStrength.tour.minLevel
       },
       {
-        target: ".max-level",
+        target: "#max-level",
         content: globals.strings.signalStrength.tour.maxLevel
       }
     ]

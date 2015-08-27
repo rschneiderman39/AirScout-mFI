@@ -1,23 +1,9 @@
+/* View Wrapper */
 #settings {
   height: 100%;
 }
 
-#settings .bootstrap-switch-handle-on.bootstrap-switch-primary {
-  background-color: #62bf01 !important;
-}
-
-#settings .panel-group {
-	padding: 0px !important;
-	margin: 0px !important;
-}
-
-#settings .panel {
-    background-color: #fafafa !important;
-  /*height: 60vh;*/
-  margin: 0px !important;
-  padding: 0px !important;
-}
-
+/* Level Scale Menu */
 #settings #scale-slider-col {
   padding-left: 1vw;
   padding-right: 1vw;
@@ -33,4 +19,21 @@
   background-color: #62bf01;
   background-image: none;
   opacity: 0.5;
+}
+
+/* Detect Hidden Menu */
+#settings .bootstrap-switch-handle-on.bootstrap-switch-primary {
+  background-color: #62bf01 !important;
+}
+
+/* Misc */
+#settings .panel-group {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+#settings .panel {
+  background-color: #fafafa !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

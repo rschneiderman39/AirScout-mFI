@@ -5,6 +5,6 @@
 app.directive('filterModal', function() {
   return {
     templateUrl: 'views/filterModal.html',
-    controller: 'modalCtrl'
+    controller: 'filterModalCtrl'
   };
 });

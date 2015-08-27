@@ -78,7 +78,6 @@ languages['en'] = {
     }
   },
   timeGraph: {
-    legendHeader: 'Select an AP to highlight it:',
     labelX: 'Time (s)',
     labelY: 'Level (dBm)',
     tour: {
@@ -94,7 +93,6 @@ languages['en'] = {
     }
   },
     signalStrength: {
-    listHeader: 'Select an AP to view its signal strength:',
     selectedAPHeader: 'Selected AP:',
     minLevel: 'Min Level',
     currentLevel: 'Current',

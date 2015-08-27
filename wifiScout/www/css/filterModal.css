@@ -1,3 +1,36 @@
+/* Modal Container */
+#filter-modal  .modal-dialog {
+  margin-left: auto;
+  margin-right: auto;
+  width: 55%;
+}
+
+/* Modal Header */
+#filter-modal  #title {
+  margin: 5px;
+}
+
+/* Selection Menu */
+#filter-modal #deselect-btn {
+  display: block;
+  margin: 1vh auto;
+}
+
+#filter-modal  #query {
+  margin-bottom: 3vh;
+}
+
+#filter-modal #select-btn {
+  display: block;
+  margin: 1vh auto;
+}
+
+/* Access Point List */
+#filter-modal  #modal-list {
+  margin-bottom: 0;
+  overflow-y: scroll;
+}
+
 #filter-modal  .list-group-item {
   background-color: #fafafa;
   border: 1px solid #ddd;
@@ -15,37 +48,13 @@
   border-top-width: 0px;
 }
 
-#filter-modal  #MAC {
-  text-align: center;
-}
-
-#filter-modal  .modal-dialog {
-  margin-left: auto;
-  margin-right: auto;
-  width: 55%;
-}
-
-#filter-modal  #modal-list {
-  overflow-y: scroll;
-}
-
+/* Misc */
 #filter-modal  .nopadding {
   margin: 0px !important;
   padding: 5px !important;
 }
 
-#filter-modal  #query {
-  margin-bottom: 15px;
-}
-
-#filter-modal  #SSID {
-  text-align: center;
-}
-
-#filter-modal  #title {
-  margin: 5px;
-}
-
+/* Scrollbar */
 #filter-modal ::-webkit-scrollbar {
   -webkit-appearance: none;
 }

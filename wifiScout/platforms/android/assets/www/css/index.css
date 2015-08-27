@@ -1,7 +1,5 @@
-.axis-label {
-	font-weight: bold;
-}
 
+/* Font Scaling */
 @media screen and (min-width: 889px) {
 	body {
 		font-size: 16px;
@@ -58,6 +56,7 @@
 	}
 }
 
+/* Top Bar Scaling */
 @media screen and (min-height: 700px) {
 	#top-bar {
 		height: 70px;
@@ -94,6 +93,7 @@
 	}
 }
 
+/* Containers */
 body {
 	background: #f1f1f1 !important;
 	height: 100%;
@@ -102,9 +102,32 @@ body {
 }
 
 #current-view {
+	overflow: hidden;
   position: relative;
-  overflow: hidden;
 	width: 100%;
+}
+
+/* Top Bar */
+#top-bar {
+  background-image: url('../images/topBar.png');
+	background-size: cover;
+	border-bottom: 1px solid #888888;
+  height: 10vh;
+  margin: 0px;
+	position: fixed;
+  width: 100vw;
+}
+
+#top-bar > div {
+  height: 100%;
+}
+
+#view-title {
+  color: #fafafa;
+	text-align: center;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
 }
 
 #filter-button {
@@ -120,6 +143,7 @@ body {
 	top: 50%;
 }
 
+/* Nav Bar */
 #nav-bar {
   height: 13vh;
   min-height: 0px;
@@ -200,6 +224,7 @@ body {
   stroke: #62bf01;
 }
 
+/* NzTour */
 nz-tour #nzTour-box {
   min-height: 10vh;
 	width: 30vw;
@@ -225,28 +250,11 @@ nz-tour ::-webkit-scrollbar-track {
   border-radius: 0px;
 }
 
+/* Misc */
+.centered-text {
+	text-align: center;
+}
+
 .row {
 	max-height: 100%;
-}
-
-#top-bar {
-  background-image: url('../images/topBar.png');
-	background-size: cover;
-	border-bottom: 1px solid #888888;
-  height: 10vh;
-  margin: 0px;
-	position: fixed;
-  width: 100vw;
-}
-
-#top-bar > div {
-  height: 100%;
-}
-
-#view-title {
-  color: #fafafa;
-	text-align: center;
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
 }

@@ -78,7 +78,6 @@ languages['es'] = {
     }
   },
   timeGraph: {
-    legendHeader: 'Selecciona un punto de acceso para destacarlo:',
     labelX: 'Segundos Transcurrido',
     labelY: 'Nivel (dBm)',
     tour: {
@@ -94,7 +93,6 @@ languages['es'] = {
     }
   },
     signalStrength: {
-    listHeader: 'Selecciona un punto de acceso para ver la fuerza de su senal:',
     selectedAPHeader: 'AP Seleccionado:',
     minLevel: 'Nivel Minimo',
     currentLevel: 'Nivel Actual',

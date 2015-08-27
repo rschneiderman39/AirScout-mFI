@@ -1,6 +1,6 @@
 "use strict";
 
-app.controller('modalCtrl', ['$scope', '$state', '$filter', 'accessPoints',
+app.controller('filterModalCtrl', ['$scope', '$state', '$filter', 'accessPoints',
 'globalSettings', 'setupService', function($scope, $state, $filter, accessPoints,
 globalSettings, setupService) {
 

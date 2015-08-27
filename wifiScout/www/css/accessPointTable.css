@@ -1,5 +1,11 @@
+/* View Wrapper */
 #ap-tab {
   height: 100%;
+}
+
+/* Table Header */
+#ap-tab th {
+  text-align: center;
 }
 
 #ap-tab a:focus {
@@ -20,6 +26,7 @@
   content: '\25bc';
 }
 
+/* Table Body */
 #ap-tab .table {
   margin-bottom: 0px;
   margin-top: 0px;
@@ -33,10 +40,7 @@
   text-align: center;
 }
 
-#ap-tab th {
-  text-align: center;
-}
-
+/* Scrollbar */
 #ap-tab ::-webkit-scrollbar {
   -webkit-appearance: none;
 }
