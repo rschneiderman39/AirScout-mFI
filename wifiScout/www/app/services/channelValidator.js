@@ -1,6 +1,6 @@
 "use strict";
 
-app.factory('channelChecker', ['setupService', function(setupService) {
+app.factory('channelValidator', ['setupService', function(setupService) {
 
   var service = {};
 

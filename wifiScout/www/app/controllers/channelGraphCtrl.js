@@ -1,8 +1,8 @@
 "use strict";
 
 app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
-'channelGraphState', 'channelChecker', 'setupService', function($scope,
-visBuilder, accessPoints,  globalSettings, channelGraphState, channelChecker,
+'channelGraphState', 'channelValidator', 'setupService', function($scope,
+visBuilder, accessPoints,  globalSettings, channelGraphState, channelValidator,
 setupService) {
 
   setupService.ready.then(function() {
@@ -264,13 +264,13 @@ setupService) {
     function markDisallowedChannels(graphContainer) {
       graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
-          return channelChecker.isAllowableChannel(d) === undefined;
+          return channelValidator.isAllowableChannel(d) === undefined;
         })
           .remove();
 
       graphContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
-          return channelChecker.isAllowableChannel(d) === false;
+          return channelValidator.isAllowableChannel(d) === false;
         })
           .style('opacity', prefs.disallowedChannelOpacity)
           .attr('fill', prefs.disallowedChannelColor);
