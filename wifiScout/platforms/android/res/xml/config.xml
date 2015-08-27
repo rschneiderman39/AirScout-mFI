@@ -11,6 +11,9 @@
     <feature name="WifiAdmin">
         <param name="android-package" value="com.rjfun.cordova.plugin.WifiAdmin" />
     </feature>
+    <preference name="android:versionCode" value="1" />
+    <preference name="android:versionName" value="1.0.0" />
+    <preference name="android-minSdkVersion" value="11" />
     <icon density="ldpi" src="res/icons/android/icon.png" />
     <icon density="mdpi" src="res/icons/android/icon.png" />
     <icon density="hdpi" src="res/icons/android/icon.png" />
@@ -20,12 +23,10 @@
     <splash density="land-mdpi" src="res/screens/android/BLACKSPLASH.png" />
     <splash density="land-xhdpi" src="res/screens/android/BLACKSPLASH.png" />
     <name>AirScout mFI</name>
-    <description />
+    <description>An application that displays helpful information about all in-range visible and hidden access points.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team </author>
-    <preference name="Orientation" value="landscape" />
     <content src="index.html" />
     <access origin="*" />
     <vs:features />
     <log level="debug" />
-    <preference name="windows-target-version" value="8.1" />
 </widget>

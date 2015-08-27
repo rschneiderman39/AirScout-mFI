@@ -32,13 +32,16 @@
   padding-right: 1.5vw;
 }
 
-
 /* Misc */
+/*  Removes default padding added by Bootstrap 
+      on the panels */
 #settings .panel-group {
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
+/*  Removes default padding added by Bootstrap 
+      on the panels and colors the content box */
 #settings .panel {
   background-color: #fafafa !important;
   margin: 0 !important;

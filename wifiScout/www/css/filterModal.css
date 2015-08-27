@@ -39,7 +39,7 @@
 }
 
 #filter-modal  .list-group-item.selected {
-  background-color: #D0ECB3;
+  background-color: #d0ecb3;
   border: 2px solid #62bf01;
   opacity: 1;
 }
@@ -49,7 +49,9 @@
 }
 
 /* Misc */
-#filter-modal  .nopadding {
+/*  The nopadding class removes Bootstrap's default
+      padding and margins for its Modal object */
+#filter-modal .nopadding {
   margin: 0px !important;
   padding: 5px !important;
 }
