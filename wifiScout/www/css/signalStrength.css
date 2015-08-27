@@ -36,7 +36,6 @@
 }
 
 #sg-sth .list {
-  border: 1px solid #cccccc;
   height: 62vh;
   overflow-y: scroll;
 }

@@ -10,8 +10,8 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // height
     // width
     // navPercent
-    // graphMargins
-    // graphDomain
+    // mainMargins
+    // mainDomain
     // labelX
     // range
     // labelY
@@ -36,14 +36,14 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       vis.update = function() {
         if (hasNav) {
-          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
-                   elem.graph.container, elem.graph.axisFn.x, elem.graph.axisFn.y,
+          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+                   elem.main.container, elem.main.axisFn.x, elem.main.axisFn.y,
                    elem.nav.left.clip, scales.nav.left.x,
                    elem.nav.right.clip, scales.nav.right.x,
                    scales.nav.y, band);
         } else {
-          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
-                   elem.graph.axisFn.x, elem.graph.axisFn.y);
+          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+                   elem.main.axisFn.x, elem.main.axisFn.y);
         }
 
       };
@@ -52,7 +52,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         saveStateFn(elem.nav.right.slider, scales.nav.right.x, band);
       };
 
-      buildGraph();
+      buildMain();
 
       if (config.navPercent > 0) {
         buildNav();
@@ -62,116 +62,111 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       return vis;
 
-      /* Derive graph dimensions and add elements to DOM */
-      function buildGraph() {
+      /* Construct the main section of the visualization */
+      function buildMain() {
         d3.select('#vis')
-          .append('div').attr('id', 'graph');
+          .append('div').attr('id', 'main');
 
-        dim.graph = {};
+        dim.main = {};
 
         /* Dimensions */
-        dim.graph.totalHeight = config.height * (1 - config.navPercent);
+        dim.main.totalHeight = config.height * (1 - config.navPercent);
 
-        dim.graph.margins = {
-          left: config.graphMargins.left * config.width,
-          right: config.graphMargins.right * config.width,
-          top: config.graphMargins.top * config.height,
-          bottom: config.graphMargins.bottom * config.height
+        dim.main.margins = {
+          left: config.mainMargins.left * config.width,
+          right: config.mainMargins.right * config.width,
+          top: config.mainMargins.top * config.height,
+          bottom: config.mainMargins.bottom * config.height
         };
 
-        dim.graph.width = config.width - dim.graph.margins.left - dim.graph.margins.right;
-        dim.graph.height = dim.graph.totalHeight - dim.graph.margins.top - dim.graph.margins.bottom;
+        dim.main.width = config.width - dim.main.margins.left - dim.main.margins.right;
+        dim.main.height = dim.main.totalHeight - dim.main.margins.top - dim.main.margins.bottom;
 
-        elem.graph = {};
+        elem.main = {};
 
         /* Container */
-        elem.graph.container = d3.select('#graph').append('svg')
+        elem.main.container = d3.select('#main').append('svg')
           .style('display', 'block')
           .attr('width', config.width)
-          .attr('height', dim.graph.totalHeight)
+          .attr('height', dim.main.totalHeight)
           .append('g')
-            .attr('transform', 'translate(' + dim.graph.margins.left + ',' + dim.graph.margins.top + ')');
+            .attr('transform', 'translate(' + dim.main.margins.left + ',' + dim.main.margins.top + ')');
 
         /* Clip-path */
-        elem.graph.clip = elem.graph.container.append('g')
-          .attr('clip-path', 'url(#graph-clip)')
+        elem.main.clip = elem.main.container.append('svg')
+          .attr('width', dim.main.width)
+          .attr('height', dim.main.height);
 
-        elem.graph.clip.append('clipPath')
-          .attr('id', 'graph-clip')
-          .append('rect')
-            .attr('width', dim.graph.width)
-            .attr('height', dim.graph.height);
-
-        scales.graph = {};
-        elem.graph.axisFn = {};
+        scales.main = {};
+        elem.main.axisFn = {};
 
         /* X Axis */
-        var numTicks_xAxis = utils.spanLen(config.graphDomain) / config.xAxisTickInterval + 1;
+        var numTicks_xAxis = utils.spanLen(config.mainDomain) / config.xAxisTickInterval + 1;
 
-        scales.graph.x = d3.scale.linear()
-          .domain(config.graphDomain)
-          .range([0, dim.graph.width]);
+        scales.main.x = d3.scale.linear()
+          .domain(config.mainDomain)
+          .range([0, dim.main.width]);
 
-        elem.graph.axisFn.x = d3.svg.axis()
-          .scale(scales.graph.x)
+        elem.main.axisFn.x = d3.svg.axis()
+          .scale(scales.main.x)
           .orient('bottom')
           .ticks(numTicks_xAxis)
           .tickSize(1);
 
-        elem.graph.container.append('g')
+        elem.main.container.append('g')
           .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + dim.graph.height + ')')
-          .call(elem.graph.axisFn.x);
+          .attr('transform', 'translate(0,' + dim.main.height + ')')
+          .call(elem.main.axisFn.x);
 
         /* X Label */
-        elem.graph.container.append('text')
+        elem.main.container.append('text')
           .text(config.labelX)
           .classed('axis-label', true)
           .attr('x', function() {
-            return (dim.graph.width / 2) - (this.getBBox().width / 2);
+            return (dim.main.width / 2) - (this.getBBox().width / 2);
           })
-          .attr('y', dim.graph.height + dim.graph.margins.bottom - 1);
+          .attr('y', dim.main.height + dim.main.margins.bottom - 1);
 
         /* Y Axis */
         var numTicks_yAxis = utils.spanLen(config.range) / config.yAxisTickInterval + 1;
 
-        scales.graph.y = d3.scale.linear()
+        scales.main.y = d3.scale.linear()
           .domain(config.range)
-          .range([dim.graph.height, 0]);
+          .range([dim.main.height, 0]);
 
-        elem.graph.axisFn.y = d3.svg.axis()
-          .scale(scales.graph.y)
+        elem.main.axisFn.y = d3.svg.axis()
+          .scale(scales.main.y)
           .orient('left')
           .ticks(numTicks_yAxis)
           .tickSize(1);
 
-        elem.graph.container.append('g')
+        elem.main.container.append('g')
           .attr('class', 'y axis')
-          .call(elem.graph.axisFn.y);
+          .call(elem.main.axisFn.y);
 
         /* Y Label */
-        elem.graph.container.append('text')
+        elem.main.container.append('text')
           .classed('axis-label', true)
           .text(config.labelY)
           .attr('transform', function() {
-            return 'rotate(-90) translate(-' + dim.graph.totalHeight/2 + ', -' + this.getBBox().width/2.5 + ')';
+            return 'rotate(-90) translate(-' + dim.main.totalHeight/2 + ', -' + this.getBBox().width/2.5 + ')';
           });
 
         /* Grid lines */
         for (var i = 1; i < numTicks_yAxis; ++i) {
-          elem.graph.clip.append('path')
+          elem.main.clip.append('path')
             .attr('stroke', 'black')
             .style('opacity', config.gridLineOpacity)
             .attr('d', function() {
-              var y = scales.graph.y(config.range[0] + i * config.yAxisTickInterval);
-              return 'M 0 ' + y + ' H ' + dim.graph.width + ' ' + y;
+              var y = scales.main.y(config.range[0] + i * config.yAxisTickInterval);
+              return 'M 0 ' + y + ' H ' + dim.main.width + ' ' + y;
             });
         }
 
         /* Border */
-        elem.graph.container.append('rect')
-          .attr('width', dim.graph.width - 1)
-          .attr('height', dim.graph.height)
+        elem.main.container.append('rect')
+          .attr('width', dim.main.width - 1)
+          .attr('height', dim.main.height)
           .attr('stroke', 'black')
           .attr('stroke-width', '1')
           .attr('fill', 'transparent')
@@ -229,14 +224,9 @@ app.factory('visBuilder', ['setupService', function(setupService) {
             .attr('transform', 'translate(' + dim.nav.margins.left + ',' + dim.nav.margins.top + ')');
 
         /* Clip-path */
-        elem.nav.left.clip = elem.nav.left.container.append('g')
-          .attr('clip-path', 'url(#nav-clip-left)')
-
-        elem.nav.left.clip.append('clipPath')
-          .attr('id', 'nav-clip-left')
-          .append('rect')
-            .attr('width', dim.nav.left.width)
-            .attr('height', dim.nav.height);
+        elem.nav.left.clip = elem.nav.left.container.append('svg')
+          .attr('width', dim.nav.left.width)
+          .attr('height', dim.nav.height);
 
         scales.nav.left = {};
 
@@ -282,12 +272,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
             .classed('navigator', true)
             .attr('transform', 'translate(0, ' + dim.nav.margins.top + ')');
 
-        elem.nav.right.clip = elem.nav.right.container.append('g')
-          .attr('clip-path', 'url(#nav-clip-right)');
-
-        elem.nav.right.clip.append('clipPath')
-          .attr('id', 'nav-clip-right')
-          .append('rect')
+        elem.nav.right.clip = elem.nav.right.container.append('svg')
           .attr('width', dim.nav.right.width)
           .attr('height', dim.nav.height);
 
@@ -334,11 +319,11 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
           slider.attr('x', sliderX);
 
-          axisScrollFn(elem.graph.container, elem.graph.axisFn.x,
-                       scales.graph.x, elem.nav.right.slider,
+          axisScrollFn(elem.main.container, elem.main.axisFn.x,
+                       scales.main.x, elem.nav.right.slider,
                        scales.nav.right.x, band);
 
-          elemScrollFn(elem.graph.clip, scales.graph.x);
+          elemScrollFn(elem.main.clip, scales.main.x);
         };
 
         var sliderExtent = config.sliderExtent;
@@ -403,8 +388,8 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
           band = newBand;
 
-          bandChangeFn(elem.graph.clip, scales.graph.x, elem.graph.container,
-                       elem.graph.axisFn.x, elem.nav.right.slider,
+          bandChangeFn(elem.main.clip, scales.main.x, elem.main.container,
+                       elem.main.axisFn.x, elem.nav.right.slider,
                        scales.nav.right.x, band);
 
           vis.update();

@@ -41,8 +41,8 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
       function init() {
         var config = {
-          graphDomain: prefs.domain,
-          graphMargins: {
+          mainDomain: prefs.domain,
+          mainMargins: {
             top: .04,
             bottom: .09,
             left: .1,
@@ -116,21 +116,21 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         });
       };
 
-      function elemUpdateCallback(graphClip, graphScalesX, graphScalesY) {
+      function elemUpdateCallback(clip, xScale, yScale) {
         if (globals.debug) console.log('updating timegraph');
 
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
-            return graphScalesX(graphScalesX.domain()[0] + (i-2) * (updateInterval / 1000));
+            return xScale(xScale.domain()[0] + (i-2) * (updateInterval / 1000));
           })
           .y(function(d, i) {
-            return graphScalesY(d.level);
+            return yScale(d.level);
           })
           .interpolate('linear');
 
         var datasets = timeGraphManager.getSelectedDatasets();
 
-        var lines = graphClip.selectAll('.data-line')
+        var lines = clip.selectAll('.data-line')
           .data(datasets, function(d, i) {
             return d.mac;
           });
@@ -147,7 +147,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           .attr('stroke-width', prefs.lineWidth)
           .attr('fill', 'none');
 
-        var translation = graphScalesX(updateInterval / 1000) - graphScalesX(0);
+        var translation = xScale(updateInterval / 1000) - xScale(0);
 
         lines
           .attr('fill', function(d) {

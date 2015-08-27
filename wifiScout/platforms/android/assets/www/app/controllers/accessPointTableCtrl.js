@@ -1,23 +1,32 @@
 "use strict";
 
+/* Handles data updating for the access point table view */
 app.controller('accessPointTableCtrl', ['$scope', 'accessPoints',
 'globalSettings', 'accessPointTableState', 'setupService', function($scope,
 accessPoints, globalSettings, accessPointTableState, setupService) {
 
+  /* Wait until the device is ready before setting up the controller */
   setupService.ready.then(function() {
 
+    /* The time, in milliseconds, between data updates */
     var updateInterval;
 
     $scope.strings = globals.strings;
-    $scope.accessPoints = [];       // Array of AP data objects to be displayed
-    $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
-    $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
+
+    /* Array of AccessPoint objects to be displayed in the table */
+    $scope.accessPoints = [];
+
+    /* String or function used by angular to sort the table elements */
+    $scope.sortPredicate = undefined;
+
+    /* true: Sort direction reversed.  false: Normal behavior */
+    $scope.sortReverse = undefined;
 
     /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
        If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
        is selected as the predicate, a custom ordering function is substituted instead.
 
-       @param {string|function} predicate: The new sort .
+       @param predicate: The new sort predicate (string or function)
     */
     $scope.order = function(predicate) {
       if (predicate === 'SSID') {
@@ -29,13 +38,16 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       }
     };
 
-    /* Used in place of a string predicate to sort access points by SSID. @type {function} */
+    /* Used in place of a string predicate to sort access points by SSID.
+       In its current implementation, the custom sort makes hidden access
+       points appear at the bottom of the table instead of the top */
     $scope.sortSSID = utils.customSSIDSort;
 
     function init() {
+      /* Choose an appropriate update interval.  Too frequent updates seem
+         to cause problems with touch gesture recognition */
       if (accessPoints.count() < constants.moderateThresh) {
         updateInterval = constants.updateIntervalNormal;
-
       } else if (accessPoints.count() < constants.highThresh) {
         updateInterval = constants.updateIntervalSlow;
       } else {
@@ -45,16 +57,22 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       prepView();
       restoreState();
 
+      /* Wait until the transition animation is done before performing
+         first update */
       $(document).one(events.transitionDone, update);
 
+      /* Start the update loop */
       var updateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
           update();
         }
       }, updateInterval);
 
+      /* Ensure that a change to the access point selection in the Filtering
+         options menu is immediately reflected in the table */
       $(document).on(events.newSelection, update);
 
+      /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
         clearInterval(updateLoop);
         $(document).off(events.newSelection, update);
@@ -62,6 +80,8 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       });
     };
 
+    /* @returns the AccessPointSelection object containing the current
+       access point selection */
     function apSelection() {
       return globalSettings.accessPointSelection();
     };
@@ -70,6 +90,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       if (globals.debug) console.log('updating ap table');
 
       accessPoints.getAll().done(function(results) {
+        /* Update DOM */
         $scope.$apply(function() {
           $scope.accessPoints = apSelection().apply(results);
         });

@@ -25,8 +25,8 @@ setupService) {
     function init() {
       var config = {
         band: undefined,
-        graphDomain: prefs.domain2_4,
-        graphMargins: {
+        mainDomain: prefs.domain2_4,
+        mainMargins: {
           top: .04,
           bottom: .08,
           left: .07,
@@ -79,7 +79,7 @@ setupService) {
       });
     };
 
-    function elemUpdateCallback(graphClip, graphScalesX, graphScalesY,
+    function elemUpdateCallback(mainClip, mainScalesX, mainScalesY,
                              _ignore1, _ignore2, _ignore3,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
@@ -101,9 +101,9 @@ setupService) {
         });
 
         if (band === '2_4') {
-          updateSection(graphScalesX, graphScalesY, graphClip, data2_4Ghz);
+          updateSection(mainScalesX, mainScalesY, mainClip, data2_4Ghz);
         } else if (band === '5') {
-          updateSection(graphScalesX, graphScalesY, graphClip, data5Ghz);
+          updateSection(mainScalesX, mainScalesY, mainClip, data5Ghz);
         }
 
         updateSection(navLeftScalesX, navScalesY, navLeftClip, data2_4Ghz);
@@ -157,7 +157,7 @@ setupService) {
 
       function updateLabels(data) {
         /* Bind new data */
-        var labels = graphClip.selectAll('text')
+        var labels = mainClip.selectAll('text')
           .data(data.sort(function(a, b) {
             return b.level - a.level;
           }), function(d) {
@@ -175,9 +175,9 @@ setupService) {
             return d.color;
           })
           .attr('x', function(d) {
-            return graphScalesX(d.channel) - this.getBBox().width / 2;
+            return mainScalesX(d.channel) - this.getBBox().width / 2;
           })
-          .attr('y', graphScalesY(constants.signalFloor))
+          .attr('y', mainScalesY(constants.signalFloor))
 
         labels.order();
 
@@ -191,84 +191,84 @@ setupService) {
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return graphScalesY(d.level) - prefs.labelPadding;
+              return mainScalesY(d.level) - prefs.labelPadding;
             });
 
         /* Remove labels that no longer belong to any data */
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', graphScalesY(constants.signalFloor))
+          .attr('y', mainScalesY(constants.signalFloor))
           .remove();
       };
     };
 
     /* Move plot elements to match a new viewport extent */
-    function elemScrollCallback(graphClip, graphScalesX) {
+    function elemScrollCallback(mainClip, mainScalesX) {
       /* Move parabolas */
-      graphClip.selectAll('.parabola')
+      mainClip.selectAll('.parabola')
         .attr('transform', function(d) {
-          return 'translate(' + graphScalesX(d.channel) + ')';
+          return 'translate(' + mainScalesX(d.channel) + ')';
         });
 
       /* Move labels */
-      graphClip.selectAll('text')
+      mainClip.selectAll('text')
         .attr('x', function(d) {
-          return graphScalesX(d.channel) - this.getBBox().width / 2;
+          return mainScalesX(d.channel) - this.getBBox().width / 2;
         });
     };
 
     /* "Translate" x axis to account for a new slider extent */
-    function axsiScrollCallback(graphContainer, graphAxisFnX,
-                          graphScalesX, navRightSlider,
+    function axsiScrollCallback(mainContainer, mainAxisFnX,
+                          mainScalesX, slider,
                           navRightScalesX, band) {
 
       if (band === '2_4') {
-        graphScalesX.domain(prefs.domain2_4);
+        mainScalesX.domain(prefs.domain2_4);
 
       } else if (band === '5') {
         var xScale = navRightScalesX,
-            slider = navRightSlider;
+            slider = slider;
 
-        graphScalesX
+        mainScalesX
           .domain([xScale.invert(slider.attr('x')),
             xScale.invert(parseFloat(slider.attr('x')) +
             parseFloat(slider.attr('width')))]);
       }
 
-      graphContainer.select('.x.axis').call(graphAxisFnX);
+      mainContainer.select('.x.axis').call(mainAxisFnX);
 
-      markDisallowedChannels(graphContainer);
+      markDisallowedChannels(mainContainer);
     };
 
-    function bandChangeCallback(graphClip, graphScalesX,
-                          graphContainer, graphAxisFnX,
-                          navRightSlider, navRightScalesX, band) {
+    function bandChangeCallback(mainClip, mainScalesX,
+                          mainContainer, mainAxisFnX,
+                          slider, navRightScalesX, band) {
 
-      axsiScrollCallback(graphContainer, graphAxisFnX, graphScalesX,
-                   navRightSlider, navRightScalesX, band);
+      axsiScrollCallback(mainContainer, mainAxisFnX, mainScalesX,
+                   slider, navRightScalesX, band);
 
-      elemScrollCallback(graphClip, graphScalesX, band);
+      elemScrollCallback(mainClip, mainScalesX, band);
 
-      graphClip.selectAll('.parabola').remove();
-      graphClip.selectAll('text').remove();
+      mainClip.selectAll('.parabola').remove();
+      mainClip.selectAll('text').remove();
 
-      graphAxisFnX.ticks(utils.spanLen(graphScalesX.domain()));
-      graphContainer.select('.x.axis').call(graphAxisFnX);
+      mainAxisFnX.ticks(utils.spanLen(mainScalesX.domain()));
+      mainContainer.select('.x.axis').call(mainAxisFnX);
 
-      markDisallowedChannels(graphContainer);
+      markDisallowedChannels(mainContainer);
     };
 
     /* Remove tick marks from X axis which don't correspond
        to a valid channel */
-    function markDisallowedChannels(graphContainer) {
-      graphContainer.selectAll('.x.axis > .tick')
+    function markDisallowedChannels(mainContainer) {
+      mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === undefined;
         })
           .remove();
 
-      graphContainer.selectAll('.x.axis > .tick')
+      mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === false;
         })
@@ -276,10 +276,10 @@ setupService) {
           .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function saveStateCallback(navRightSlider, navRightScalesX, band) {
+    function saveStateCallback(slider, navRightScalesX, band) {
       var slider, extentMin, extentMax, xScale;
 
-      slider = navRightSlider;
+      slider = slider;
       xScale = navRightScalesX;
 
       extentMin = xScale.invert(parseFloat(slider.attr('x'))),
