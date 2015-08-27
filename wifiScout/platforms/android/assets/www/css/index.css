@@ -153,9 +153,10 @@ body {
   outline: none;
 }
 
+/* ?????
 .text {
 	font-size: 1.8vw;
-}
+} */
 
 .minor-title {
 	font-size: 1.8vw;
@@ -200,13 +201,13 @@ body {
 }
 
 #nav-bar-interaction-box {
-	top: 92%;
-	height: 8%;
-	left: 46%;
-	margin: 0 auto;
 	position: fixed;
-	opacity: 0;
+	top: 92%;
+	left: 46%;
+	height: 8%;
 	width: 8%;
+	margin: 0 auto;
+	opacity: 0;
 	z-index: 999999999999;
 };
 
@@ -219,15 +220,12 @@ body {
 }
 
 .nav-icon {
+	position: relative;
 	display: block;
   height: 11vh;
+  width: 14.7vh;
 	margin: auto;
-	position: relative;
   -webkit-transform: translateY(-50%);
-	/*
-	top: 50%;
-	*/
-	width: 14.7vh;
 }
 
 .nav-pane {
@@ -281,6 +279,9 @@ nz-tour ::-webkit-scrollbar-track {
 }
 
 /* Misc */
+/*	The axis-label class bolds the X and Y axis
+			labels in the Channel Graph and Access Point
+			Count views.	*/
 .axis-label {
 	font-weight: bold;
 }

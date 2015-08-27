@@ -1,0 +1,32 @@
+﻿<div id="tm-gph" ng-swipe-left="swipeTo('accessPointTable', 'left')" ng-swipe-right="swipeTo('accessPointCount', 'right')" ng-controller="timeGraphCtrl" class="container-fluid">
+  <div class="row">
+    <div class="col-xs-3" id="legend">
+
+      <!-- Selected AP Box -->
+      <div class="panel panel-default no-padding">
+				<div id="selected-ap" class="panel-body">
+					<div id="selected-ssid">{{selectedSsid !== null ? selectedSsid : " "}}</div>
+					<div id="selected-mac">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
+				</div>
+			</div>
+      <hr>
+
+      <!-- AP List -->
+      <ul class="list list-group scrollable-list">
+        <span data-ng-repeat="item in legendData | orderBy:sortSSID">
+          <li class="listgroupitem" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
+            <div class="legend-box" ng-style="{'background-color':item.color}"></div>
+            <span>{{item.ssid}}</span>
+            <div ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>
+          </li>
+        </span>
+      </ul>
+    </div>
+
+    <!-- Time Graph Plot -->
+    <div class="col-xs-9" id="time-graph">
+      <div id="vis"></div>
+    </div>
+  </div>
+</div>
+<div filter-modal />

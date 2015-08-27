@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="io.cordova.myapp59e6b7fe8dd94a60bf0346ad32fa56d7" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US">
   <name>AirScout mFI</name>
-  <description></description>
+  <description>An application that displays helpful information about all in-range visible and hidden access points.</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">Apache Cordova Team </author>
   <preference name="Orientation" value="landscape" />
   <content src="index.html" />
@@ -11,6 +11,27 @@
   <log level="debug" />
 
   <platform name="android">
+
+    <!-- versionCode is really meant for internal use to check for
+          available upgrades to the app or for other applications 
+          to use - for this reason it should be kept as an integer
+          value and should be incrementally increased with each
+          release independent of whether the release is a major, 
+          minor, or patch.-->
+    <preference name="android:versionCode" value="1" />
+
+    <!-- the versionName is used for external use to describe 
+          the application version to users. versionName can and should be 
+          a string value that represents the <major>.<minor>.<patch>
+          releases. -->
+    <preference name="android:versionName" value="1.0.0" />
+
+    <!-- minSDKVersion sets the oldest possible Android version a 
+          user can be running in order to install the app, if they 
+          are running an earlier version then the installation will
+          be aborted. -->
+    <preference name="android-minSdkVersion" value="11" />
+
     <icon src="res/icons/android/icon.png" density="ldpi" />
     <icon src="res/icons/android/icon.png" density="mdpi" />
     <icon src="res/icons/android/icon.png" density="hdpi" />
