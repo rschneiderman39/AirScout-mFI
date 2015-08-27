@@ -251,6 +251,10 @@ nz-tour ::-webkit-scrollbar-track {
 }
 
 /* Misc */
+.axis-label {
+	font-weight: bold;
+}
+
 .centered-text {
 	text-align: center;
 }
