@@ -9,12 +9,6 @@
   <vs:features />
 
   <log level="debug" />
-<!--
-  <preference name="SplashScreen" value="screen" />
-  <preference name="AutoHideSplashScreen" value="false" />
-  <preference name="SplashScreenDelay" value="1000" />
-  <preference name="SplashMaintainAspectRatio" value="true" />
--->
 
   <platform name="android">
     <icon src="res/icons/android/icon.png" density="ldpi" />
@@ -26,16 +20,12 @@
     <splash src="res/screens/android/BLACKSPLASH.png" density="land-ldpi" />
     <splash src="res/screens/android/BLACKSPLASH.png" density="land-mdpi" />
     <splash src="res/screens/android/BLACKSPLASH.png" density="land-xhdpi" />
-    <!--
-    <splash src="res/screens/android/screen-ldpi-landscape.png" density="land-ldpi" />
-    <splash src="res/screens/android/screen-mdpi-landscape.png" density="land-mdpi" />
-    <splash src="res/screens/android/screen-xhdpi-landscape.png" density="land-xhdpi" />
-  -->
   </platform>
 
+  <!-- Windows Development
   <preference name="windows-target-version" value="8.1" />
 
   <platform name="windows">
   </platform>
-
+  -->
 </widget>

@@ -27,5 +27,4 @@
     <access origin="*" />
     <vs:features />
     <log level="debug" />
-    <preference name="windows-target-version" value="8.1" />
 </widget>

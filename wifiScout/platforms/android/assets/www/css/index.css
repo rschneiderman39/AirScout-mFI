@@ -1,5 +1,7 @@
-
 /* Font Scaling */
+/*	If the screen width is larger than 889px then 
+			the font sizes in the application will be 
+			capped at the sizes listed. */
 @media screen and (min-width: 889px) {
 	body {
 		font-size: 16px;
@@ -33,6 +35,8 @@
 	}
 }
 
+/*	If the device screen width is less than 889px then
+			the font size will scale to the device width. */
 @media screen and (max-width: 888px) {
 	body {
 		font-size: 1.8vw;
@@ -63,6 +67,8 @@
 }
 
 /* Top Bar Scaling */
+/* Device height is greater than 700px - the size of the top
+		bar and elements within it are capped */
 @media screen and (min-height: 700px) {
 	#top-bar {
 		height: 70px;
@@ -81,6 +87,9 @@
 	}
 }
 
+/* Device height is less than 700px - the size of the top
+		bar and elements within it are scaled to the device
+		height */
 @media screen and (max-height: 700px) {
 	#top-bar {
 		height: 10vh;
@@ -117,8 +126,9 @@ body {
 #top-bar {
   background-image: url('../images/topBar.png');
 	background-size: cover;
-	border-bottom: 1px solid #888888;
-  height: 10vh;
+	border-bottom: 1px solid rgba(136, 136, 136, 0.72);
+  /* ?????
+  height: 10vh; */
   margin: 0px;
 	position: fixed;
   width: 100vw;
@@ -141,10 +151,6 @@ body {
   top: 50%;
   -webkit-transform: translateY(-50%);
   outline: none;
-}
-
-@media {
-
 }
 
 .text {

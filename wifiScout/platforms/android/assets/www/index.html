@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html>
 <html ng-app="app">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
@@ -22,7 +20,6 @@
     <link href="css/signalStrength.css" rel="stylesheet" />
     <link href="css/settings.css" rel="stylesheet" />
 
-
     <!-- Frameworks -->
     <script src="scripts/lib/jquery-2.1.4.min.js"></script>
     <script src="scripts/lib/angular.min.js"></script>
@@ -34,11 +31,10 @@
     <script src="scripts/lib/bootstrap-toggle.min.js"></script>
     <script src="scripts/lib/bootstrap-slider.js"></script>
     <script src="scripts/lib/d3.min.js"></script>
-
   </head>
 
   <body ng-controller="navCtrl">
-
+  
     <!-- View title bar -->
     <div id="top-bar" class="row">
       <div class="col-xs-2">
@@ -69,22 +65,22 @@
         </div>
         <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/channelTable2.png" />
+            <img class="nav-icon" src="images/channelTable.png" />
           </div>
         </div>
         <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/timeGraphIcon.png" />
+            <img class="nav-icon" src="images/timeGraph.png" />
           </div>
         </div>
         <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/table2.png" />
+            <img class="nav-icon" src="images/table.png" />
           </div>
         </div>
         <div class="col-xs-2" id="nav-button">
           <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/signalStrength5.png" />
+            <img class="nav-icon" src="images/signalStrength.png" />
           </div>
         </div>
         <div class="col-xs-2" id="nav-button">
@@ -139,6 +135,5 @@
     <script src="scripts/tours.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/manufacturers.js"></script>
-
   </body>
 </html>

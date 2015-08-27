@@ -1,4 +1,4 @@
-/* View Wrapper */
+ /* View Wrapper */
 #ap-tab {
   height: 100%;
 }
@@ -8,12 +8,7 @@
   text-align: center;
 }
 
-#ap-tab a:focus {
-  color: #337ab7;
-  text-decoration: none;
-}
-
-#ap-tab a:hover {
+#ap-tab a {
   color: #337ab7;
   text-decoration: none;
 }
@@ -27,12 +22,14 @@
 }
 
 /* Table Body */
-#ap-tab .table {
+#ap-tab,
+.table {
   margin-bottom: 0px;
   margin-top: 0px;
 }
 
-#ap-tab #table-content {
+#ap-tab,
+#table-content {
   overflow-y: auto;
 }
 
