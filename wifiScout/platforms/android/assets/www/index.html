@@ -51,43 +51,31 @@
     <!-- View goes here -->
     <div ui-view id="current-view"></div>
 
-    <div id="nav-bar-interaction-box" ng-click="showNav()" ng-swipe-up="showNav()"></div>
+    <!--<div id="nav-bar-interaction-box" ng-click="showNav()" ng-swipe-up="showNav()"></div>-->
 
-    <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
-      <div id="nav-bar-hidden"></div>
-      <div class="row">
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/channelGraph.png" />
-          </div>
+    <div id="nav-bar">
+      <div id="nav-bar-tab" ng-click="showNav()"></div>
+      <div id="nav-bar-content" class="row">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/channelGraph.png" />
         </div>
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/channelTable.png" />
-          </div>
+        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/channelTable.png" />
         </div>
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/timeGraph.png" />
-          </div>
+        <div class="col-xs-2" class="nav-button" ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/timeGraph.png" />
         </div>
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/table.png" />
-          </div>
+        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/table.png" />
         </div>
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/signalStrength.png" />
-          </div>
+        <div class="col-xs-2" class="nav-button" ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/signalStrength.png" />
         </div>
-        <div class="col-xs-2" id="nav-button">
-          <div ng-click="setView('settings'); showNav(); $event.stopPropagation();">
-            <img class="nav-icon" src="images/settings.png" />
-          </div>
+        <div class="col-xs-2" class="nav-button" ng-click="setView('settings'); showNav(); $event.stopPropagation();">
+          <img class="nav-icon vertically-centered" src="images/settings.png" />
         </div>
       </div>
-    </nav>
+    </div>
 
     <!-- Cordova -->
     <script src="cordova.js"></script>
@@ -133,5 +121,7 @@
     <script src="scripts/tours.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="scripts/manufacturers.js"></script>
+
+    <script src="scripts/index.js"></script>
   </body>
 </html>

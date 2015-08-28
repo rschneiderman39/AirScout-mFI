@@ -39,21 +39,21 @@
 			the font size will scale to the device width. */
 @media screen and (max-width: 888px) {
 	body {
-		font-size: 1.8vw;
+		font-size: 14px;
 	}
 
   .btn,
 	.text {
-		font-size: 1.8vw;
+		font-size: 14px;
 	}
 
 	.minor-title {
-		font-size: 2vw;
+		font-size: 14px;
 		font-weight: bold;
 	}
 
 	.major-title {
-		font-size: 2.2vw;
+		font-size: 14px;
 		font-weight: bold;
 	}
 
@@ -106,11 +106,13 @@ body {
 	height: 100%;
 	overflow: hidden;
 	position: fixed;
+	height: 100%;
 	width: 100%;
 }
 
 #current-view {
 	overflow: hidden;
+	height: 90%;
 	width: 100%;
 }
 
@@ -151,19 +153,42 @@ body {
 
 /* Nav Bar */
 #nav-bar {
-  height: 13%;
-	max-height: 90px;
-  position: fixed;
-  -webkit-transition: bottom 0.5s ease;
-  border: 2px solid rgba(33, 30, 30, 0.14);
+	height: 17%;
+	position: fixed;
+	top: 100%;
+	-webkit-transform: translateY(-40%);
+	-webkit-transition: -webkit-transform 0.5s ease;
+	width: 100%;
 }
 
-#nav-bar div {
+#nav-bar-tab {
+	background-color: #fff;
+  border-top-left-radius: 110px;
+  border-top-right-radius: 110px;
+  border: 2px solid rgba(33, 30, 30, 0.137255);
+  border-bottom: 2px solid #fff;
+	height: 35%;
+	margin: 0 auto;
+	-webkit-transform: translateY(2px);
+	width: 10%;
+}
+
+#nav-bar-content {
+	background-color: #fff;
+	border: 2px solid rgba(33, 30, 30, 0.14);
+  height: 65%;
+	margin: 0;
+	max-height: 90px;
+  width: 100%;
+}
+
+#nav-bar-content div {
 	height: 100%;
 }
 
-#nav-bar-hidden {
-  position: relative;
+/*
+#nav-bar-tab {
+  position: fixed;
   top: -6vh;
   left: 46vw;
   width: 13.5vh;
@@ -174,8 +199,8 @@ body {
   border: 2px solid rgba(33, 30, 30, 0.137255);
   border-bottom: 0;
 }
+*/
 
-/*
 #nav-bar-interaction-box {
 	position: fixed;
 	top: 92%;
@@ -186,23 +211,21 @@ body {
 	opacity: 0;
 	z-index: 999999999999;
 };
-*/
 
-#nav-button {
-  top: -5.5vh;
-}
 
 .nav > li > a:hover {
   background-color: transparent;
 }
 
+.nav-button {
+  height: 100%;
+}
+
 .nav-icon {
-	position: relative;
 	display: block;
-  height: 11vh;
-  width: 14.7vh;
 	margin: auto;
-  -webkit-transform: translateY(-50%);
+	max-height: 80%;
+	max-width: 100%;
 }
 
 .nav-pane {

@@ -28,11 +28,11 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour,
       var navBar = $('#nav-bar');
 
       /* Show navbar */
-      navBar.css('bottom', '0px');
+      navBar.css('-webkit-transform', 'translateY(-100%)');
 
       /* After timeout expires, autohide navbar */
       navTimeout = setTimeout(function() {
-        navBar.css('bottom', 1 - $('#nav-bar').height());
+        navBar.css('-webkit-transform', 'translateY(-40%)');
       }, 3000);
     };
 

@@ -1,11 +1,5 @@
 "use strict";
 
-(function() {
-  $('#nav-bar').css('bottom',  1 - $('#nav-bar').height());
-
-  $('#current-view').css('height', $(window).height() - $('#top-bar').height());
-})();
-
 document.addEventListener('deviceready', function() {
 
   setup.region().done(function() {
