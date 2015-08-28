@@ -3,7 +3,7 @@
   <name>AirScout mFI</name>
   <description>An application that displays helpful information about all in-range visible and hidden access points.</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">Apache Cordova Team </author>
-  <preference name="Orientation" value="landscape" />
+  <!--<preference name="Orientation" value="landscape" />-->
   <content src="index.html" />
   <access origin="*" />
   <vs:features />
@@ -13,21 +13,21 @@
   <platform name="android">
 
     <!-- versionCode is really meant for internal use to check for
-          available upgrades to the app or for other applications 
+          available upgrades to the app or for other applications
           to use - for this reason it should be kept as an integer
           value and should be incrementally increased with each
-          release independent of whether the release is a major, 
+          release independent of whether the release is a major,
           minor, or patch.-->
     <preference name="android:versionCode" value="1" />
 
-    <!-- the versionName is used for external use to describe 
-          the application version to users. versionName can and should be 
+    <!-- the versionName is used for external use to describe
+          the application version to users. versionName can and should be
           a string value that represents the <major>.<minor>.<patch>
           releases. -->
     <preference name="android:versionName" value="1.0.0" />
 
-    <!-- minSDKVersion sets the oldest possible Android version a 
-          user can be running in order to install the app, if they 
+    <!-- minSDKVersion sets the oldest possible Android version a
+          user can be running in order to install the app, if they
           are running an earlier version then the installation will
           be aborted. -->
     <preference name="android-minSdkVersion" value="11" />

@@ -34,18 +34,17 @@
   </head>
 
   <body ng-controller="navCtrl">
-  
+
     <!-- View title bar -->
-    <div id="top-bar" class="row">
-      <div class="col-xs-2">
-        <input id="filter-button" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
+    <div id="top-bar">
+      <div class="col-xs-1">
+        <input id="filter-button" class="vertically-centered" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
       </div>
-      <div class="col-xs-8">
-        <p id="view-title"></p>
+      <div class="col-xs-10">
+        <p id="view-title" class="vertically-centered"></p>
       </div>
-      <div class="col-xs-1"></div>
-      <div class="col-xs-1" >
-        <input id="help-button" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();" ng-show="displayHelpBtn()">
+      <div class="col-xs-1">
+        <input id="help-button" class="vertically-centered" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();" ng-show="displayHelpBtn()">
       </div>
     </div>
 
@@ -54,7 +53,6 @@
 
     <div id="nav-bar-interaction-box" ng-click="showNav()" ng-swipe-up="showNav()"></div>
 
-    <!-- Self-collapsing navigation bar -->
     <nav id="nav-bar" class="navbar navbar-default navbar-fixed-bottom">
       <div id="nav-bar-hidden"></div>
       <div class="row">

@@ -71,6 +71,11 @@ utils.spanLen = function(span) {
   return span[1] - span[0];
 };
 
+utils.rescale = function() {
+  $('#nav-bar').css('bottom',  1 - $('#nav-bar').height());
+  $('#current-view').css('height', $(window).height() - $('#top-bar').height());
+};
+
 function AccessPointSelection(macAddrs, showAll) {
 
   var isSelected = {};

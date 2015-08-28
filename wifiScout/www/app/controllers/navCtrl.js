@@ -112,6 +112,13 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour,
     };
 
     function init() {
+      utils.rescale();
+
+      $(window).on('resize', function() {
+        console.log('resizing');
+        utils.rescale();
+      });
+
       $scope.setView(defaults.startingView);
     };
 
