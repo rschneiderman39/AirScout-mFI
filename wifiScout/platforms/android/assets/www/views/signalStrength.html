@@ -28,11 +28,12 @@
 			<!-- Signal strength gauge -->
 			<center>
 				<div id="gauge"></div>
+			</center>
 				<div class="row">
 					
 					<!-- Minimum level indicator -->
 					<div id="min-level" class="col-xs-4 level-indicator">
-						<div>{{strings.signalStrength.minLevel}}</div>
+						<center><div>{{strings.signalStrength.minLevel}}</div></center>
 						<div class="panel panel-default">
 							<div class="panel-body padded-1vh centered-text">{{minLevel !== null ? minLevel + " dBm" : "---"}}</div>
 						</div>
@@ -40,7 +41,7 @@
 					
 					<!-- Current level indicator -->
 					<div class="col-xs-4 level-indicator">
-						<div id="current-level">{{strings.signalStrength.currentLevel}}</div>
+						<center><div id="current-level">{{strings.signalStrength.currentLevel}}</div></center>
 						<div class="panel panel-default">
 							<div id="current-level" class="panel-body padded-1vh centered-text">{{level !== null ? level + " dBm" : "---"}}</div>
 						</div>
@@ -48,13 +49,13 @@
 					
 					<!-- Max level indicator -->
 					<div id="max-level" class="col-xs-4 level-indicator">
-						<div>{{strings.signalStrength.maxLevel}}</div>
+						<center><div>{{strings.signalStrength.maxLevel}}</div></center>
 						<div class="panel panel-default">
 						 	<div class="panel-body padded-1vh centered-text">{{maxLevel !== null ? maxLevel + " dBm" : "---"}}</div>
 						</div>
 					</div>
 				</div>
-			</center>
+			
 		</div>
 	</div>
 </div>

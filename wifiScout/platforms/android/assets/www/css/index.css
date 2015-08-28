@@ -39,21 +39,21 @@
 			the font size will scale to the device width. */
 @media screen and (max-width: 888px) {
 	body {
-		font-size: 1.8vw;
+		font-size: 14px;
 	}
 
   .btn,
 	.text {
-		font-size: 1.8vw;
+		font-size: 14px;
 	}
 
 	.minor-title {
-		font-size: 2vw;
+		font-size: 14px;
 		font-weight: bold;
 	}
 
 	.major-title {
-		font-size: 2.2vw;
+		font-size: 14px;
 		font-weight: bold;
 	}
 
@@ -110,10 +110,10 @@
 
 /* Containers */
 body {
-	background: #f1f1f1 !important;
-	height: 100%;
 	position: fixed;
+	height: 100%;
 	width: 100%;
+	background: #f1f1f1 !important;
 }
 
 #current-view {
@@ -151,21 +151,6 @@ body {
   top: 50%;
   -webkit-transform: translateY(-50%);
   outline: none;
-}
-
-/* ?????
-.text {
-	font-size: 1.8vw;
-} */
-
-.minor-title {
-	font-size: 1.8vw;
-	font-weight: bold;
-}
-
-.major-title {
-	font-size: 1.95vw;
-	font-weight: bold;
 }
 
 #help-button {
