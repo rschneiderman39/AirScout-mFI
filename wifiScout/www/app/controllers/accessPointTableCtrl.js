@@ -54,12 +54,8 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
         updateInterval = constants.updateIntervalVerySlow;
       }
 
-      prepView();
+      scaleView();
       restoreState();
-
-      /* Wait until the transition animation is done before performing
-         first update */
-      $(document).one(events.transitionDone, update);
 
       /* Start the update loop */
       var updateLoop = setInterval(function() {
@@ -68,14 +64,26 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
         }
       }, updateInterval);
 
+      /* Wait until the transition animation is done before performing
+         first update */
+      $(document).one(events.transitionDone, update);
+
       /* Ensure that a change to the access point selection in the Filtering
          options menu is immediately reflected in the table */
       $(document).on(events.newSelection, update);
 
+      /* Rescale on device rotate */
+      $(window).on('resize', scaleView);
+
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
+        /* Avoid duplicate event handlers */
+        $(document).off(events.newSelection);
+        $(window).off('resize');
+
+        /* Stop updating */
         clearInterval(updateLoop);
-        $(document).off(events.newSelection, update);
+
         saveState();
       });
     };
@@ -117,8 +125,11 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
     };
 
     /* Manually scale the view to the device where needed. */
-    function prepView() {
-      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
+    function scaleView() {
+      if (globals.debug) console.log('scaling ap table');
+
+      var contentHeight = $(window).height() - $('#top-bar').height()
+                          - $('.table thead').height();
       $('#table-content').height(contentHeight);
     };
 

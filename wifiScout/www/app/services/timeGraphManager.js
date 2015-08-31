@@ -122,7 +122,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     };
 
     function updateDatasets() {
-      if (globals.debug) console.log('updating timegraph datasets');
+      //if (globals.debug) console.log('updating timegraph datasets');
 
       accessPoints.getAll().done(function(results) {
         var macToAccessPoint = {},

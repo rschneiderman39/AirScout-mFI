@@ -27,10 +27,10 @@ setupService) {
         band: undefined,
         mainDomain: prefs.domain2_4,
         mainMargins: {
-          top: .04,
-          bottom: .08,
-          left: .07,
-          right: .01
+          top: 10,
+          bottom: 30,
+          left: 55,
+          right: 10
         },
         gridLineOpacity: 0.5,
         height: undefined,
@@ -40,10 +40,10 @@ setupService) {
         navLeftLabel: globals.strings.channelGraph.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
-          top: .02,
-          bottom: .05,
-          left: .07,
-          right: .01
+          top: 10,
+          bottom: 20,
+          left: 50,
+          right: 10
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
@@ -52,7 +52,8 @@ setupService) {
         sliderExtent: undefined,
         width: undefined,
         xAxisTickInterval: 1,
-        yAxisTickInterval: 10
+        yAxisTickInterval: 10,
+        canvasSelector: '#vis'
       };
 
       config.width = $('#current-view').width();
@@ -61,10 +62,10 @@ setupService) {
       config.band = channelGraphState.band() || prefs.defaultBand;
       config.sliderExtent = channelGraphState.sliderExtent() || prefs.defaultSliderExtent;
 
-      var vis = visBuilder.buildVis(config, elemUpdateCallback, elemScrollCallback,
+      var vis = visBuilder.buildVis(elemUpdateCallback, elemScrollCallback,
         axsiScrollCallback, bandChangeCallback, saveStateCallback);
 
-      $(document).one(events.transitionDone, vis.update);
+      vis.init(config);
 
       var updateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
@@ -72,11 +73,33 @@ setupService) {
         }
       }, updateInterval);
 
+      $(document).one(events.transitionDone, vis.update);
+
+      /* Rescale on screen rotate */
+      $(window).on('resize', handleResize);
+
+      /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
+        /* Avoid duplicate event handlers */
+        $(window).off('resize');
+
+        /* Stop updating */
         clearInterval(updateLoop);
+
         vis.saveState();
-        d3.select('#vis').selectAll('*').remove();
+        vis.destroy();
       });
+
+      /* Rebuild visualization from scratch with appropriate dimensions */
+      function handleResize(){
+        if (globals.debug) console.log('resizing channel graph');
+
+        config.width = $('#current-view').width();
+        config.height = $('#current-view').height() * prefs.heightFactor;
+
+        vis.destroy();
+        vis.init(config);
+      };
     };
 
     function elemUpdateCallback(mainClip, mainScalesX, mainScalesY,

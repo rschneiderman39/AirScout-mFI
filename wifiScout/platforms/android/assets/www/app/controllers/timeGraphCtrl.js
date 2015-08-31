@@ -11,8 +11,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         range: [globalSettings.visScaleMin(), globalSettings.visScaleMax()],
         lineWidth: 2,
         highlightedLineWidth: 6,
-        highlightOpacity: 0.3,
-        heightFactor: 0.94
+        highlightOpacity: 0.3
       };
 
       var updateInterval = timeGraphManager.getUpdateInterval();
@@ -43,10 +42,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         var config = {
           mainDomain: prefs.domain,
           mainMargins: {
-            top: .04,
-            bottom: .09,
-            left: .1,
-            right: .02
+            top: 10,
+            bottom: 30,
+            left: 50,
+            right: 10
           },
           gridLineOpacity: 0.5,
           height: undefined,
@@ -56,26 +55,59 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           range: prefs.range,
           width: undefined,
           xAxisTickInterval: 10,
-          yAxisTickInterval: 10
+          yAxisTickInterval: 10,
+          canvasSelector: '#vis'
         };
 
-        config.width = $('#time-graph').width();
-        config.height = $('#current-view').height() * prefs.heightFactor;
+        format();
 
-        var vis = visBuilder.buildVis(config, elemUpdateCallback, null,
-          null, null, null);
+        config.width = $('#time-graph').width();
+        config.height = $('#time-graph').height();
+
+        var vis = visBuilder.buildVis(elemUpdateCallback);
+
+        vis.init(config);
 
         restoreState();
 
         $(document).on(events.newTimeGraphData, vis.update);
         $(document).on(events.newLegendData, updateLegend);
+        $(window).on('resize', handleResize);
 
         $scope.$on('$destroy', function() {
-          $(document).off(events.newTimeGraphData, vis.update);
-          $(document).off(events.newLegendData, updateLegend);
+          /* Avoid duplicate event handlers */
+          $(document).off(events.newTimeGraphData);
+          $(document).off(events.newLegendData);
+          $(window).off('resize');
 
-          d3.select('#vis').selectAll('*').remove();
+          vis.destroy();
         });
+
+        function format() {
+          $('#legend-list').height($('#legend').height()
+                            - $('#selected-ap-panel').outerHeight(true)
+                            - $('#legend-break').outerHeight(true)
+                            - defaults.padding);
+
+          if ($(window).height() > $(window).width()) {
+            utils.order('#time-graph-wrapper', '#time-graph', '#legend');
+          } else {
+            utils.order('#time-graph-wrapper', '#legend', '#time-graph');
+          }
+        };
+
+        /* Rebuild visualization from scratch with appropriate dimensions */
+        function handleResize() {
+          if (globals.debug) console.log('resizing time graph');
+
+          format();
+
+          config.width = $('#time-graph').width();
+          config.height = $('#time-graph').height();
+
+          vis.destroy();
+          vis.init(config);
+        }
 
       };
 

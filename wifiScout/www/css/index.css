@@ -111,8 +111,12 @@ body {
 }
 
 #current-view {
-	overflow: hidden;
 	height: 90%;
+	width: 100%;
+}
+
+.view-wrapper {
+	height: 100%;
 	width: 100%;
 }
 
@@ -154,6 +158,7 @@ body {
 /* Nav Bar */
 #nav-bar {
 	height: 17%;
+	max-height: 120px;
 	position: fixed;
 	top: 100%;
 	-webkit-transform: translateY(-40%);
@@ -170,7 +175,7 @@ body {
 	height: 35%;
 	margin: 0 auto;
 	-webkit-transform: translateY(2px);
-	width: 10%;
+	width: 100px;
 }
 
 #nav-bar-content {
@@ -178,7 +183,6 @@ body {
 	border: 2px solid rgba(33, 30, 30, 0.14);
   height: 65%;
 	margin: 0;
-	max-height: 90px;
   width: 100%;
 }
 
@@ -211,7 +215,6 @@ body {
 	opacity: 0;
 	z-index: 999999999999;
 };
-
 
 .nav > li > a:hover {
   background-color: transparent;
@@ -299,4 +302,9 @@ nz-tour ::-webkit-scrollbar-track {
 
 .row {
 	max-height: 100%;
+}
+
+.no-padding {
+	margin: 0;
+	padding: 0;
 }

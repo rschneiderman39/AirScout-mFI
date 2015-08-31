@@ -1,31 +1,41 @@
-/* View Wrapper */
-#settings {
-  height: 100%;
+#settings-wrapper
+#min-label {
+  float: right;
+}
+
+#settings-wrapper
+#max-label {
+  float: left;
 }
 
 /* Level Scale Menu */
-#settings #scale-slider-col {
+#settings-wrapper
+#scale-slider-col {
   padding-left: 1vw;
   padding-right: 1vw;
 }
 
-#settings .slider-handle {
+#settings-wrapper
+.slider-handle {
   background-color: #62bf01;
   background-image: none;
   opacity: 1;
 }
 
-#settings .slider-selection {
+#settings-wrapper
+.slider-selection {
   background-color: #62bf01;
   background-image: none;
   opacity: 0.5;
 }
 
 /* Detect Hidden Menu */
-#settings .bootstrap-switch-handle-on.bootstrap-switch-primary {
+#settings-wrapper
+.bootstrap-switch-handle-on.bootstrap-switch-primary {
   background-color: #62bf01 !important;
 }
 
+#settings-wrapper
 #toggler {
   position: relative;
   float: right;
@@ -33,16 +43,18 @@
 }
 
 /* Misc */
-/*  Removes default padding added by Bootstrap 
+/*  Removes default padding added by Bootstrap
       on the panels */
-#settings .panel-group {
+#settings-wrapper
+.panel-group {
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
-/*  Removes default padding added by Bootstrap 
+/*  Removes default padding added by Bootstrap
       on the panels and colors the content box */
-#settings .panel {
+#settings-wrapper
+.panel {
   background-color: #fafafa !important;
   margin: 0 !important;
   padding: 0 !important;

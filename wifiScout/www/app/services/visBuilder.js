@@ -23,16 +23,29 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // navRightDomain
     // navLeftLabel
     // navRightLabel
+    // canvasSelector
 
-    service.buildVis = function(config, elemUpdateFn, elemScrollFn,
+    service.buildVis = function(elemUpdateFn, elemScrollFn,
       axisScrollFn, bandChangeFn, saveStateFn) {
       var vis = {};
 
-      var band;
+      var band, config;
 
       var dim = {}, scales = {}, elem = {};
 
       var hasNav = false;
+
+      vis.init = function(cfg) {
+        config = cfg;
+
+        buildMain();
+
+        if (config.navPercent > 0) {
+          buildNav();
+          hasNav = true;
+          setBand(band || config.band);
+        }
+      };
 
       vis.update = function() {
         if (hasNav) {
@@ -45,26 +58,21 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
                    elem.main.axisFn.x, elem.main.axisFn.y);
         }
-
       };
 
       vis.saveState = function() {
         saveStateFn(elem.nav.right.slider, scales.nav.right.x, band);
       };
 
-      buildMain();
-
-      if (config.navPercent > 0) {
-        buildNav();
-        hasNav = true;
-        setBand(config.band);
-      }
+      vis.destroy = function() {
+        d3.select(config.canvasSelector).selectAll('*').remove();
+      };
 
       return vis;
 
       /* Construct the main section of the visualization */
       function buildMain() {
-        d3.select('#vis')
+        d3.select(config.canvasSelector)
           .append('div').attr('id', 'main');
 
         dim.main = {};
@@ -73,10 +81,10 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         dim.main.totalHeight = config.height * (1 - config.navPercent);
 
         dim.main.margins = {
-          left: config.mainMargins.left * config.width,
-          right: config.mainMargins.right * config.width,
-          top: config.mainMargins.top * config.height,
-          bottom: config.mainMargins.bottom * config.height
+          left: config.mainMargins.left,
+          right: config.mainMargins.right,
+          top: config.mainMargins.top,
+          bottom: config.mainMargins.bottom
         };
 
         dim.main.width = config.width - dim.main.margins.left - dim.main.margins.right;
@@ -175,11 +183,11 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       /* Derive navigator dimensions and add elments to DOM */
       function buildNav() {
-        d3.select('#vis')
+        d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-left')
           .classed('nav-pane', true)
 
-        d3.select('#vis')
+        d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-right')
           .classed('nav-pane', true)
 
@@ -189,10 +197,10 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         dim.nav.totalHeight = config.height * config.navPercent;
 
         dim.nav.margins = {
-          left: config.navMargins.left * config.width,
-          right: config.navMargins.right * config.width,
-          top: config.navMargins.top * config.height,
-          bottom: config.navMargins.bottom * config.height
+          left: config.navMargins.left,
+          right: config.navMargins.right,
+          top: config.navMargins.top,
+          bottom: config.navMargins.bottom
         };
 
         dim.nav.width = config.width - dim.nav.margins.left - dim.nav.margins.right;
@@ -238,7 +246,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           .on('touchstart', function() {
             d3.event.preventDefault();
             d3.event.stopPropagation();
-            setBand('2_4');
+            if (band !== '2_4') setBand('2_4');
           })
           .on('touchend', function() {
             d3.event.preventDefault();
@@ -289,7 +297,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           d3.event.preventDefault();
           d3.event.stopPropagation();
 
-          setBand('5');
+          if (band !== '5') setBand('5');
 
           touchStartX = d3.event.changedTouches[0].screenX -
             $('#nav-right')[0].getBoundingClientRect().left;
@@ -369,31 +377,29 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         /* Labels */
         elem.nav.left.container.append('text')
           .text(config.navLeftLabel)
-          .attr('y', dim.nav.height + dim.nav.margins.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom - 1);
 
         elem.nav.right.container.append('text')
           .text(config.navRightLabel)
-          .attr('y', dim.nav.height + dim.nav.margins.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom - 1);
       };
 
       function setBand(newBand) {
-        if (newBand !== band) {
-          if (newBand ===  '2_4') {
-            elem.nav.right.clip.select('.nav-toggle-right').classed('active', false);
-            elem.nav.left.clip.select('.nav-toggle-left').classed('active', true);
-          } else if (newBand === '5') {
-            elem.nav.left.clip.select('.nav-toggle-left').classed('active', false);
-            elem.nav.right.clip.select('.nav-toggle-right').classed('active', true);
-          }
-
-          band = newBand;
-
-          bandChangeFn(elem.main.clip, scales.main.x, elem.main.container,
-                       elem.main.axisFn.x, elem.nav.right.slider,
-                       scales.nav.right.x, band);
-
-          vis.update();
+        if (newBand ===  '2_4') {
+          elem.nav.right.clip.select('.nav-toggle-right').classed('active', false);
+          elem.nav.left.clip.select('.nav-toggle-left').classed('active', true);
+        } else if (newBand === '5') {
+          elem.nav.left.clip.select('.nav-toggle-left').classed('active', false);
+          elem.nav.right.clip.select('.nav-toggle-right').classed('active', true);
         }
+
+        band = newBand;
+
+        bandChangeFn(elem.main.clip, scales.main.x, elem.main.container,
+                     elem.main.axisFn.x, elem.nav.right.slider,
+                     scales.nav.right.x, band);
+
+        vis.update();
       };
 
     };

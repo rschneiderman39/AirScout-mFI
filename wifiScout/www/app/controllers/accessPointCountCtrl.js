@@ -60,10 +60,10 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         band: undefined,
         mainDomain: prefs.domain2_4,
         mainMargins: {
-          top: .04,
-          bottom: .08,
-          left: .07,
-          right: .01
+          top: 10,
+          bottom: 30,
+          left: 55,
+          right: 10
         },
         gridLineOpacity: 0,
         height: undefined,
@@ -73,10 +73,10 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         navLeftLabel: globals.strings.accessPointCount.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
-          top: .02,
-          bottom: .05,
-          left: .07,
-          right: .01
+          top: 10,
+          bottom: 20,
+          left: 50,
+          right: 10
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
@@ -85,7 +85,8 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         sliderExtent: undefined,
         width: undefined,
         xAxisTickInterval: 1,
-        yAxisTickInterval: 3
+        yAxisTickInterval: 3,
+        canvasSelector: '#vis'
       };
 
       /* Scale the canvas to the container size */
@@ -100,12 +101,10 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
       /* Build the visualization with the our configuration and custom
          callbacks */
-      var vis = visBuilder.buildVis(config, elemUpdateCallback, elemScrollCallback,
+      var vis = visBuilder.buildVis(elemUpdateCallback, elemScrollCallback,
         axisScrollCallback, bandChangeCallback, saveStateCallback);
 
-      /* Wait until the transition animation is done before performing
-         first update */
-      $(document).one(events.transitionDone, vis.update);
+      vis.init(config);
 
       /* Start the update loop */
       var updateLoop = setInterval(function() {
@@ -114,13 +113,33 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         }
       }, updateInterval);
 
+      /* Wait until the transition animation is done before performing
+         first update */
+      $(document).one(events.transitionDone, vis.update);
+
+      /* Rescale on screen rotate */
+      $(window).on('resize', handleResize);
+
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
+        /* Avoid duplicate event handlers */
+        $(window).off('resize');
+
         clearInterval(updateLoop);
         vis.saveState();
-        d3.select('#vis').selectAll('*').remove();
+        vis.destroy();
       });
 
+      /* Rebuild visualization from scratch with appropriate dimensions */
+      function handleResize(){
+        if (globals.debug) console.log('resizing ap count');
+
+        config.width = $('#current-view').width();
+        config.height = $('#current-view').height() * prefs.heightFactor;
+
+        vis.destroy();
+        vis.init(config);
+      };
     };
 
     /* Invoked whenever vis.update() is called on the object returned by
