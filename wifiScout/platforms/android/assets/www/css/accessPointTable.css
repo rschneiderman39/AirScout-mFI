@@ -1,29 +1,76 @@
-@media screen and (orientation:portrait) {
+@media screen and (orientation:landscape) {
   /* portrait-specific styles */
-  #access-point-table-wrapper .full-data {
-    display: none;
+  #access-point-table-wrapper
+  .flex-col.ssid {
+    width: calc(100% / 6);
   }
 
-  #access-point-table-wrapper .partial-data {
+  #access-point-table-wrapper
+  .flex-col.mac {
+    width: calc(100% / 6);
+  }
 
+  #access-point-table-wrapper
+  .flex-col.manufacturer {
+    width: calc(100% / 4);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.channel {
+    width: calc(100% / 12);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.level {
+    max-width: calc(100% / 6);
+    width: calc(100% / 6);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.capabilities {
+    max-width: calc(100% / 6);
+    width: calc(100% / 6);
   }
 }
 
-@media screen and (orientation:landscape) {
+@media screen and (orientation:portrait) and (max-width: 639px){
   /* portrait-specific styles */
-  #access-point-table-wrapper .full-data {
-    
+  #access-point-table-wrapper
+  .flex-col.ssid {
+    width: calc(100% / 3);
   }
 
-  #access-point-table-wrapper .partial-data {
+  #access-point-table-wrapper
+  .flex-col.mac {
+    width: calc(100% / 3);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.manufacturer {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .flex-col.channel {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .flex-col.level {
+    width: calc(100% / 3);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.capabilities {
     display: none;
   }
 }
 
 /* Table Header */
-#access-point-table-wrapper 
+#access-point-table-wrapper
 th {
  text-align: center;
+ white-space: nowrap;
 }
 
 #access-point-table-wrapper
@@ -60,6 +107,7 @@ td {
 }
 
 /* Scrollbar */
+/*
 #access-point-table-wrapper
 ::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -77,3 +125,4 @@ td {
   background-color: #ffffff;
   border-radius: 10px;
 }
+*/

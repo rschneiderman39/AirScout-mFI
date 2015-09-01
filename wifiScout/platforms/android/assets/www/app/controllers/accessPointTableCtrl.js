@@ -9,7 +9,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
   setupService.ready.then(function() {
 
     /* The time, in milliseconds, between data updates */
-    var updateInterval;
+    var updateInterval = constants.updateIntervalSlow;
 
     $scope.strings = globals.strings;
 
@@ -29,7 +29,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
        @param predicate: The new sort predicate (string or function)
     */
     $scope.order = function(predicate) {
-      if (predicate === 'SSID') {
+      if (predicate === 'ssid') {
         $scope.sortReverse = ($scope.sortPredicate === $scope.sortSSID) ? !$scope.sortReverse : false;
         $scope.sortPredicate = $scope.sortSSID;
       } else {
@@ -44,16 +44,6 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
     $scope.sortSSID = utils.customSSIDSort;
 
     function init() {
-      /* Choose an appropriate update interval.  Too frequent updates seem
-         to cause problems with touch gesture recognition */
-      if (accessPoints.count() < constants.moderateThresh) {
-        updateInterval = constants.updateIntervalNormal;
-      } else if (accessPoints.count() < constants.highThresh) {
-        updateInterval = constants.updateIntervalSlow;
-      } else {
-        updateInterval = constants.updateIntervalVerySlow;
-      }
-
       scaleView();
       restoreState();
 

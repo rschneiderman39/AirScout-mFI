@@ -44,34 +44,32 @@
         <p id="view-title" class="vertically-centered"></p>
       </div>
       <div class="col-xs-1">
-        <input id="help-button" class="vertically-centered" type="image" src="images/questionMark.png" ng-click="startTour(); $event.stopPropagation();" ng-show="displayHelpBtn()">
+        <input id="help-button" class="vertically-centered" type="image" src="images/questionMark.png" ng-click="startTour()" ng-show="displayHelpBtn()">
       </div>
     </div>
 
     <!-- View goes here -->
     <div ui-view id="current-view"></div>
 
-    <!--<div id="nav-bar-interaction-box" ng-click="showNav()" ng-swipe-up="showNav()"></div>-->
-
     <div id="nav-bar">
       <div id="nav-bar-tab" ng-click="showNav()"></div>
       <div id="nav-bar-content" class="row">
-        <div class="col-xs-2" class="nav-button" ng-click="setView('channelGraph'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('channelGraph'); showNav();">
           <img class="nav-icon vertically-centered" src="images/channelGraph.png" />
         </div>
-        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointCount'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointCount'); showNav();">
           <img class="nav-icon vertically-centered" src="images/channelTable.png" />
         </div>
-        <div class="col-xs-2" class="nav-button" ng-click="setView('timeGraph'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('timeGraph'); showNav();">
           <img class="nav-icon vertically-centered" src="images/timeGraph.png" />
         </div>
-        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointTable'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('accessPointTable'); showNav();">
           <img class="nav-icon vertically-centered" src="images/table.png" />
         </div>
-        <div class="col-xs-2" class="nav-button" ng-click="setView('signalStrength'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('signalStrength'); showNav();">
           <img class="nav-icon vertically-centered" src="images/signalStrength.png" />
         </div>
-        <div class="col-xs-2" class="nav-button" ng-click="setView('settings'); showNav(); $event.stopPropagation();">
+        <div class="col-xs-2" class="nav-button" ng-click="setView('settings'); showNav();">
           <img class="nav-icon vertically-centered" src="images/settings.png" />
         </div>
       </div>

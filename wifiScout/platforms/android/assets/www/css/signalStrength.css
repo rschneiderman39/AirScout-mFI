@@ -1,5 +1,7 @@
 #gauge {
   height: calc(95% - 70px);
+  margin-top: 10px;
+  text-align: center;
   width: 100%;
 }
 

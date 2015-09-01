@@ -13,7 +13,7 @@
 
     <!-- AP List -->
     <ul class="list-group list scroll-y">
-      <li class="listgroupitem default" data-ng-repeat="item in legendData | orderBy:sortSSID" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
+      <li class="listgroupitem default" data-ng-repeat="item in legendData | orderBy:sortSSID track by item.mac" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item)">
         <div class="legend-box" ng-style="{'background-color':item.color}"></div>
         <div class="legend-ssid">{{item.ssid}}</div>
         <div class="legend-mac" ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>

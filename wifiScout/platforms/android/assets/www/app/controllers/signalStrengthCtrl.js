@@ -175,7 +175,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
     function Gauge(canvasSelector) {
       var width, height, canvasRadius, arcInset,
-          innerRadius, outerRadius, minMaxArrowHeight,
+          arcInnerRadius, arcOuterRadius, minMaxArrowHeight,
           minMaxArrowWidth, minMaxArrowOffset, arrowCircleRadius,
           labelInset;
 
@@ -196,27 +196,29 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
       function format() {
         var baseWidth = 400,
+            baseHeight = 200,
             scaleFactor;
 
-        width = $(canvasSelector).width();
-        height = width / 2;
+        height = $(canvasSelector).height();
+        arrowCircleRadius = 9 * (height / baseHeight);
+        width = (height - arrowCircleRadius) * 2;
+
+        if (width > $(canvasSelector).width()) {
+          width = $(canvasSelector).width();
+        }
+
+        canvasRadius = width / 2;
 
         scaleFactor = width / baseWidth;
 
-        canvasRadius = (baseWidth / 2) * scaleFactor;
+        arcInnerRadius = 155 * scaleFactor;
+        arcOuterRadius = arcInnerRadius * outerInnerRatio;
 
-        innerRadius = 155 * scaleFactor;
-        outerRadius = innerRadius * outerInnerRatio;
-
-        arcInset = canvasRadius - outerRadius;
+        arcInset = canvasRadius - arcOuterRadius;
+        labelInset = 15 * scaleFactor;
 
         minMaxArrowHeight = 10 * scaleFactor;
         minMaxArrowWidth = 10 * scaleFactor;
-
-        arrowCircleRadius = 9 * scaleFactor;
-        height += (arrowCircleRadius + 1);
-
-        labelInset = 15 * scaleFactor;
       };
 
       this.render = function() {
@@ -235,8 +237,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
             goodSignalEnd = toRads(degScale(globalSettings.visScaleMax()));
 
         var noSignalArc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
+          .innerRadius(arcInnerRadius)
+          .outerRadius(arcOuterRadius)
           .startAngle(noSignalStart)
           .endAngle(badSignalStart);
 
@@ -246,8 +248,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
           .attr("transform", "translate(" +canvasRadius +"," +canvasRadius +")");
 
         var badSignalArc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
+          .innerRadius(arcInnerRadius)
+          .outerRadius(arcOuterRadius)
           .startAngle(badSignalStart)
           .endAngle(okSignalStart);
 
@@ -257,8 +259,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
           .attr("transform", "translate(" +canvasRadius +"," +canvasRadius +")");
 
         var okSignalArc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
+          .innerRadius(arcInnerRadius)
+          .outerRadius(arcOuterRadius)
           .startAngle(okSignalStart)
           .endAngle(goodSignalStart);
 
@@ -268,8 +270,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
           .attr("transform", "translate(" +canvasRadius +"," +canvasRadius +")");
 
         var goodSignalArc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
+          .innerRadius(arcInnerRadius)
+          .outerRadius(arcOuterRadius)
           .startAngle(goodSignalStart)
           .endAngle(goodSignalEnd);
 
@@ -311,7 +313,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         pointer.append('path')
           .attr('stroke', 'black')
           .attr('stroke-width', 2)
-          .attr('d', utils.generateTriangle(arrowCircleRadius, innerRadius));
+          .attr('d', utils.generateTriangle(arrowCircleRadius, arcInnerRadius));
 
         /* Draw min and max hold indicators */
         minValueIndicator = arrowCircle.append('g')

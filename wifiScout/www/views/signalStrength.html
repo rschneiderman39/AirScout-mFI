@@ -13,7 +13,7 @@
 
 		<!-- AP List -->
 		<ul class="list-group list scroll-y">
-			<li data-ng-repeat="ap in accessPoints | orderBy:sortSSID" class="listgroupitem default" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap); $event.stopPropagation()">
+			<li data-ng-repeat="ap in accessPoints | orderBy:sortSSID track by ap.mac" class="listgroupitem default" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap)">
 			  <div class="centered-text">{{ap.ssid}}</div>
 				<div class="centered-text" ng-show="isDuplicateSSID[ap.ssid]">({{ap.mac}})</div>
 			</li>
