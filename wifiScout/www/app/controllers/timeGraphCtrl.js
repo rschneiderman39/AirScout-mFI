@@ -59,7 +59,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           canvasSelector: '#vis'
         };
 
-        format();
+        orient();
 
         config.width = $('#time-graph').width();
         config.height = $('#time-graph').height();
@@ -72,7 +72,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
         $(document).on(events.newTimeGraphData, vis.update);
         $(document).on(events.newLegendData, updateLegend);
-        $(window).on('resize', handleResize);
+        $(window).on('resize', redraw);
 
         $scope.$on('$destroy', function() {
           /* Avoid duplicate event handlers */
@@ -83,7 +83,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           vis.destroy();
         });
 
-        function format() {
+        function orient() {
           $('#legend .list').height($('#legend').height()
                             - $('#legend .selection-indicator').outerHeight(true)
                             - $('#legend .divider').outerHeight(true)
@@ -97,10 +97,10 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         };
 
         /* Rebuild visualization from scratch with appropriate dimensions */
-        function handleResize() {
+        function redraw() {
           if (globals.debug) console.log('resizing time graph');
 
-          format();
+          orient();
 
           config.width = $('#time-graph').width();
           config.height = $('#time-graph').height();
