@@ -1,7 +1,29 @@
+@media screen and (orientation:portrait) {
+  /* portrait-specific styles */
+  #access-point-table-wrapper .full-data {
+    display: none;
+  }
+
+  #access-point-table-wrapper .partial-data {
+
+  }
+}
+
+@media screen and (orientation:landscape) {
+  /* portrait-specific styles */
+  #access-point-table-wrapper .full-data {
+    
+  }
+
+  #access-point-table-wrapper .partial-data {
+    display: none;
+  }
+}
+
 /* Table Header */
 #access-point-table-wrapper 
 th {
-  text-align: center;
+ text-align: center;
 }
 
 #access-point-table-wrapper
