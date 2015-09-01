@@ -2,7 +2,8 @@
 /*	If the screen width is larger than 889px then
 			the font sizes in the application will be
 			capped at the sizes listed. */
-@media screen and (min-width: 889px) {
+@media screen and (orientation: landscape) and (min-width: 889px),
+       screen and (orientation: portrait) and (min-height: 889px) {
 	body {
 		font-size: 16px;
 	}
@@ -37,7 +38,8 @@
 
 /*	If the device screen width is less than 889px then
 			the font size will scale to the device width. */
-@media screen and (max-width: 888px) {
+@media screen and (orientation: landscape) and (max-width: 888px),
+       screen and (orientation: portrait) and (max-height: 888px) {
 	body {
 		font-size: 14px;
 	}

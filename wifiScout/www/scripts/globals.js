@@ -39,5 +39,5 @@ var globals = {
   language: undefined,
   strings: undefined,
   region: undefined,
-  debug: true
+  debug: false
 };

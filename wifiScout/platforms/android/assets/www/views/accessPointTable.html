@@ -3,7 +3,7 @@
 	<!-- Fixed table header -->
 	<table class="table">
 		<thead class="container-fluid">
-  		<tr id="header" class="row">
+  		<tr id="header" class="row full-data">
       	<th class="col-xs-2" ng-click="order('SSID'); $event.stopPropagation()">
         	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
       	</th>
@@ -23,6 +23,18 @@
       		<a href="">{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
       	</th>
   		</tr>
+
+  		<tr id="header" class="row partial-data">
+  			<th class="col-xs-4" ng-click="order('SSID'); $event.stopPropagation()">
+        	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+      	<th class="col-xs-4" ng-click="order('MAC'); $event.stopPropagation()">
+      		<a href="">{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'MAC'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+      	<th class="col-xs-4" id="level-header" ng-click="order('level'); $event.stopPropagation()">
+       		<a href="">{{strings.accessPointTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+  		</tr>
     </thead>
 	</table>
 
@@ -30,13 +42,19 @@
 	<div id="table-content">
 		<table class="table table-striped">
     	<tbody class="container-fluid">
-				<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse">
+				<tr class="row full-data" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse">
 	      	<td class="col-xs-2">{{ap.ssid}}</td>
 	      	<td class="col-xs-2">{{ap.mac}}</td>
 					<td class="col-xs-3">{{ap.manufacturer}}</td>
 	      	<td class="col-xs-1">{{ap.channel}}</td>
 	      	<td class="col-xs-2">{{ap.level}}</td>
 	      	<td class="col-xs-2">{{ap.capabilities}}</td>
+	      </tr>
+
+	      <tr class="row partial-data" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse">
+	      	<td class="col-xs-4">{{ap.ssid}}</td>
+	      	<td class="col-xs-4">{{ap.mac}}</td>
+	      	<td class="col-xs-4">{{ap.level}}</td>
 	      </tr>
 			</tbody>
 	  </table>
