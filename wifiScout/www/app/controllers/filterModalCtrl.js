@@ -74,7 +74,10 @@ globalSettings, setupService) {
 
     function prepView() {
       /* Prevent the list from going off the screen */
-      $('#modal-list').css('height', $(window).height() * 0.6);
+      //$('#modal-list').css('height', $(window).height() * 0.6);
+
+      //$('.modal-dialog').css('height', $(window).height() * 0.7);
+      //$('.modal-dialog').css('width', $(window).width() * 0.5);
 
       /* Setup event handler for modal show */
       $('#filter-modal').on('show.bs.modal', onShow);
@@ -85,6 +88,32 @@ globalSettings, setupService) {
        from moving around, no additional access point data is fetched after
        this point. */
     function onShow() {
+      
+      // Find matches
+      var mql = window.matchMedia("(orientation: portrait)");
+
+      // If there are matches, we're in portrait
+      if(mql.matches) {  
+        // Portrait orientation
+        $('#modal-list').css('height', $(window).height() * 0.6);
+      } 
+      else {  
+        // Landscape orientation
+        $('#modal-list').css('height', $(window).height() * 0.65);
+      }
+
+      // Add a media query change listener
+      mql.addListener(function(m) {
+        if(m.matches) {
+          // Changed to portrait
+          $('#modal-list').css('height', $(window).height() * 0.6);
+        }
+        else {
+          // Changed to landscape
+          $('#modal-list').css('height', $(window).height() * 0.65);
+        }
+      });
+
       $scope.stopTour();
 
       accessPoints.getAll().done(function(results) {

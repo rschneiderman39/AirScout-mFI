@@ -1,4 +1,15 @@
 #settings-wrapper
+.no-padding {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+#settings-wrapper
+.no-padding-right {
+  padding-right: 10px !important;
+}
+
+#settings-wrapper
 #min-label {
   float: right;
 }
@@ -39,7 +50,7 @@
 #toggler {
   position: relative;
   float: right;
-  padding-right: 1.5vw;
+  padding-right: 6.0vw;
 }
 
 /* Misc */

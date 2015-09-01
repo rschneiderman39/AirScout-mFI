@@ -63,7 +63,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      format();
+      orient();
 
       gauge.render();
 
@@ -82,15 +82,17 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       }, gaugeUpdateInterval);
 
       $(document).on(events.newSelection, updateList);
+      $(window).on('resize', orient);
 
       $scope.$on('$destroy', function() {
+        $(document).off(events.newSelection);
+        $(window).off('resize');
+
         clearInterval(listUpdateLoop);
         clearInterval(gaugeUpdateLoop);
-
-        $(document).off(events.newSelection, updateList);
       });
 
-      function format() {
+      function orient() {
         $('#access-points .list').height($('#access-points').height()
                           - $('#access-points selection-indicator').outerHeight(true)
                           - $('#access-points divider').outerHeight(true)
@@ -187,8 +189,6 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       function format() {
         var baseWidth = 400,
             scaleFactor;
-
-            console.log('#gauge').width();
 
         width = $('#gauge').width();
         height = width / 2;
