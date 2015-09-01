@@ -1,7 +1,7 @@
 "use strict";
 
-app.factory('globalSettings', ['$timeout', 'setupService', function($timeout,
-setupService) {
+app.factory('globalSettings', ['$rootScope', '$timeout', 'setupService',
+function($rootScope, $timeout, setupService) {
 
   var service = {};
 
@@ -31,7 +31,7 @@ setupService) {
 
       if (newSelection instanceof AccessPointSelection) {
         currentSelection = newSelection;
-        document.dispatchEvent(new Event(events.newSelection));
+        $rootScope.$broadcast(events.newSelection);
       }
     };
 

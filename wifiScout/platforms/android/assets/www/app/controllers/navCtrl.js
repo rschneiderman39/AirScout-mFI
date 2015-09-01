@@ -1,9 +1,9 @@
 "use strict";
 
 /* Handles tours and view switching */
-app.controller('navCtrl', ['$scope', '$state', '$animate', '$timeout',
+app.controller('navCtrl', ['$rootScope', '$scope', '$state', '$animate', '$timeout',
 'globalSettings', 'nzTour', 'setupService',
-function($scope, $state, $animate, $timeout, globalSettings, nzTour,
+function($rootScope, $scope, $state, $animate, $timeout, globalSettings, nzTour,
   setupService) {
 
   /* Wait until the device is ready before setting up the controller */
@@ -67,7 +67,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour,
               $('#view-title').html(globals.strings.viewTitles[view]);
               $('#current-view').removeClass('anim-in anim-slide-'+direction);
 
-              $(document).trigger(events.transitionDone);
+              $rootScope.$broadcast(events.transitionDone);
             });
         });
       });
@@ -90,7 +90,7 @@ function($scope, $state, $animate, $timeout, globalSettings, nzTour,
             $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
                 $('#current-view').removeClass('anim-in anim-fade');
 
-                $(document).trigger(events.transitionDone);
+                $rootScope.$broadcast(events.transitionDone);
             });
           });
         });

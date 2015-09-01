@@ -115,15 +115,15 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
       /* Wait until the transition animation is done before performing
          first update */
-      $(document).one(events.transitionDone, vis.update);
+      $scope.$on(events.transitionDone, vis.update);
 
       /* Rescale on screen rotate */
-      $(window).on('resize', handleResize);
+      $(window).on('resize', redraw);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
         /* Avoid duplicate event handlers */
-        $(window).off('resize');
+        $(window).off('resize', redraw);
 
         clearInterval(updateLoop);
         vis.saveState();
@@ -131,7 +131,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
       });
 
       /* Rebuild visualization from scratch with appropriate dimensions */
-      function handleResize(){
+      function redraw(){
         if (globals.debug) console.log('resizing ap count');
 
         config.width = $('#current-view').width();

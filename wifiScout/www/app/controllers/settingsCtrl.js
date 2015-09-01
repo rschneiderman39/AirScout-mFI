@@ -32,17 +32,6 @@ function($scope, globalSettings, setupService) {
         tooltip: 'hide'
       };
 
-      /*$("[name='hiddenAPOptions']").bootstrapSwitch({
-        onText: globals.strings.settings.detectHiddenTrue,
-        offText: globals.strings.settings.detectHiddenFalse
-      });
-
-      $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
-
-      $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        globalSettings.detectHidden(state);
-      });*/
-
       $(function() {
         $('#toggle-one').bootstrapToggle({
           on: globals.strings.settings.detectHiddenTrue,

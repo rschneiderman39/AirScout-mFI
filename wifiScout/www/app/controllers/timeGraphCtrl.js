@@ -70,31 +70,15 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
         restoreState();
 
-        $(document).on(events.newTimeGraphData, vis.update);
-        $(document).on(events.newLegendData, updateLegend);
+        $scope.$on(events.newTimeGraphData, vis.update);
+        $scope.$on(events.newLegendData, updateLegend);
+
         $(window).on('resize', redraw);
 
         $scope.$on('$destroy', function() {
-          /* Avoid duplicate event handlers */
-          $(document).off(events.newTimeGraphData);
-          $(document).off(events.newLegendData);
-          $(window).off('resize');
-
+          $(window).off('resize', redraw);
           vis.destroy();
         });
-
-        function orient() {
-          $('#legend .list').height($('#legend').height()
-                            - $('#legend .selection-indicator').outerHeight(true)
-                            - $('#legend .divider').outerHeight(true)
-                            - defaults.padding);
-
-          if ($(window).height() > $(window).width()) {
-            utils.order('#time-graph-wrapper', '#time-graph', '#legend');
-          } else {
-            utils.order('#time-graph-wrapper', '#legend', '#time-graph');
-          }
-        };
 
         /* Rebuild visualization from scratch with appropriate dimensions */
         function redraw() {
@@ -109,6 +93,18 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           vis.init(config);
         }
 
+        function orient() {
+          $('#legend .list').height($('#legend').height()
+                            - $('#legend .selection-indicator').outerHeight(true)
+                            - $('#legend .divider').outerHeight(true)
+                            - defaults.padding);
+
+          if ($(window).height() > $(window).width()) {
+            utils.order('#time-graph-wrapper', '#time-graph', '#legend');
+          } else {
+            utils.order('#time-graph-wrapper', '#legend', '#time-graph');
+          }
+        };
       };
 
       function restoreState() {

@@ -20,6 +20,8 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       levelStartAngle: -84
     };
 
+    var gauge;
+
     $scope.accessPoints = [];
     $scope.isDuplicateSSID = {};
     $scope.level = null;
@@ -63,11 +65,11 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      format();
+      orient();
+
+      gauge = new Gauge('#gauge');
 
       gauge.render();
-
-      $(document).one(events.transitionDone, updateList);
 
       var listUpdateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
@@ -81,19 +83,29 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         }
       }, gaugeUpdateInterval);
 
-      $(document).on(events.newSelection, updateList);
+      $scope.$on(events.transitionDone, updateList);
+      $scope.$on(events.newSelection, updateList);
+
+      $(window).on('resize', redraw);
 
       $scope.$on('$destroy', function() {
+        $(window).off('resize', redraw);
+
         clearInterval(listUpdateLoop);
         clearInterval(gaugeUpdateLoop);
-
-        $(document).off(events.newSelection, updateList);
       });
 
-      function format() {
+      function redraw() {
+        orient();
+
+        gauge.destroy();
+        gauge.render();
+      };
+
+      function orient() {
         $('#access-points .list').height($('#access-points').height()
-                          - $('#access-points selection-indicator').outerHeight(true)
-                          - $('#access-points divider').outerHeight(true)
+                          - $('#access-points .selection-indicator').outerHeight(true)
+                          - $('#access-points .divider').outerHeight(true)
                           - defaults.padding);
 
         if ($(window).height() > $(window).width()) {
@@ -161,16 +173,10 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
       });
     };
 
-    function toRads(deg) {
-      return deg * Math.PI / 180;
-    };
-
-    var gauge = (function() {
-      var gauge = {};
-
+    function Gauge(canvasSelector) {
       var width, height, canvasRadius, arcInset,
           innerRadius, outerRadius, minMaxArrowHeight,
-          minMaxArrowWidth, minMaxArrowOffset, arrowCircleSize,
+          minMaxArrowWidth, minMaxArrowOffset, arrowCircleRadius,
           labelInset;
 
       var labelFormat = d3.format(',g');
@@ -184,13 +190,15 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
       var pointer, minValueIndicator, maxValueIndicator;
 
+      function toRads(deg) {
+        return deg * Math.PI / 180;
+      };
+
       function format() {
         var baseWidth = 400,
             scaleFactor;
 
-            console.log('#gauge').width();
-
-        width = $('#gauge').width();
+        width = $(canvasSelector).width();
         height = width / 2;
 
         scaleFactor = width / baseWidth;
@@ -205,16 +213,17 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         minMaxArrowHeight = 10 * scaleFactor;
         minMaxArrowWidth = 10 * scaleFactor;
 
-        arrowCircleSize = 9 * scaleFactor;
+        arrowCircleRadius = 9 * scaleFactor;
+        height += (arrowCircleRadius + 1);
 
         labelInset = 15 * scaleFactor;
       };
 
-      gauge.render = function() {
+      this.render = function() {
         format();
 
         // Canvas to draw all elements on
-        var vis = d3.select("#gauge").append("svg")
+        var vis = d3.select(canvasSelector).append("svg")
           .attr("width", width)
           .attr("height", height);
 
@@ -275,7 +284,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
 
         arrowCircle.append('circle')
           .attr('fill', 'black')
-          .attr('r', arrowCircleSize);
+          .attr('r', arrowCircleRadius);
 
         /* Draw level labels */
         var labelScale = d3.scale.linear()
@@ -302,7 +311,7 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         pointer.append('path')
           .attr('stroke', 'black')
           .attr('stroke-width', 2)
-          .attr('d', utils.generateTriangle(arrowCircleSize, innerRadius));
+          .attr('d', utils.generateTriangle(arrowCircleRadius, innerRadius));
 
         /* Draw min and max hold indicators */
         minValueIndicator = arrowCircle.append('g')
@@ -326,12 +335,12 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
             .attr("fill", 'black');
 
         /* Move pointer and hold arrows to starting position */
-        gauge.updateElement('pointer', null);
-        gauge.updateElement('minValueIndicator', null);
-        gauge.updateElement('maxValueIndicator', null);
+        this.updateElement('pointer', null);
+        this.updateElement('minValueIndicator', null);
+        this.updateElement('maxValueIndicator', null);
       };
 
-      gauge.updateElement = function(elemName, newValue) {
+      this.updateElement = function(elemName, newValue) {
         var elem;
 
         if (elemName === 'pointer') {
@@ -367,9 +376,12 @@ app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints'
         }
       };
 
-      return gauge;
+      this.destroy = function() {
+        d3.select(canvasSelector).selectAll('*').remove();
+      };
 
-    })();
+      return this;
+    };
 
     init();
 

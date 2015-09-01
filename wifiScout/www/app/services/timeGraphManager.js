@@ -1,7 +1,7 @@
 "use strict";
 
-app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService',
-  function(accessPoints, globalSettings, setupService) {
+app.factory('timeGraphManager', ['$rootScope', 'accessPoints', 'globalSettings',
+'setupService', function($rootScope, accessPoints, globalSettings, setupService) {
 
   var service = {};
 
@@ -86,7 +86,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     function init() {
       numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
 
-      $(document).on(events.newSelection, function() {
+      $rootScope.$on(events.newSelection, function() {
         if (! apSelection().contains(highlightedMac)) {
           if (datasets[highlightedMac]) {
             datasets[highlightedMac].highlight = false;
@@ -95,7 +95,7 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           highlightedMac = null;
         }
 
-        $(document).trigger(events.newLegendData);
+        $rootScope.$broadcast(events.newLegendData);
       });
 
       updateDatasets();
@@ -111,8 +111,8 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
       function clearDatasets() {
         datasets = {};
 
-        $(document).trigger(events.newTimeGraphData);
-        $(document).trigger(events.newLegendData);
+        $rootScope.$broadcast(events.newTimeGraphData);
+        $rootScope.$broadcast(events.newLegendData);
       };
 
     };
@@ -122,8 +122,6 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
     };
 
     function updateDatasets() {
-      //if (globals.debug) console.log('updating timegraph datasets');
-
       accessPoints.getAll().done(function(results) {
         var macToAccessPoint = {},
             legendUpdateNeeded = false;
@@ -166,10 +164,10 @@ app.factory('timeGraphManager', ['accessPoints', 'globalSettings', 'setupService
           }
         });
 
-        $(document).trigger(events.newTimeGraphData);
+        $rootScope.$broadcast(events.newTimeGraphData);
 
         if (legendUpdateNeeded) {
-          $(document).trigger(events.newLegendData);
+          $rootScope.$broadcast(events.newLegendData);
         }
 
       });

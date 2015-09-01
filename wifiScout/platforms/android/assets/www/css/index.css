@@ -278,6 +278,14 @@ nz-tour ::-webkit-scrollbar-track {
 }
 
 .row {
+	margin: 0;
+	max-height: 100%;
+	padding: 0;
+}
+
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7,
+.col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+	height: 100%;
 	max-height: 100%;
 }
 
@@ -290,7 +298,7 @@ nz-tour ::-webkit-scrollbar-track {
   background-color: #fafafa;
   border: 1px solid #ddd;
   margin-bottom: -1px;
-  padding: 5px;
+  padding: 10px;
   white-space: nowrap;
 }
 
@@ -300,13 +308,18 @@ nz-tour ::-webkit-scrollbar-track {
   color: #fafafa;
 }
 
-.panel-body.selection-indicator {
+.panel.selection-indicator {
+	margin: 0;
+}
+
+.panel.selection-indicator .panel-body {
   background-color: #fafafa;
   color: black;
   font-weight: bold;
   overflow: hidden;
   padding: 10px 0;
   text-align: center;
+	width: 100%; /* prevent an issue where the content sometimes won't dispplay */
 }
 
 rect.selectable-window {

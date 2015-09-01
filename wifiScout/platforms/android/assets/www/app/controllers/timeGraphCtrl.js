@@ -59,7 +59,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           canvasSelector: '#vis'
         };
 
-        format();
+        orient();
 
         config.width = $('#time-graph').width();
         config.height = $('#time-graph').height();
@@ -70,20 +70,30 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
         restoreState();
 
-        $(document).on(events.newTimeGraphData, vis.update);
-        $(document).on(events.newLegendData, updateLegend);
-        $(window).on('resize', handleResize);
+        $scope.$on(events.newTimeGraphData, vis.update);
+        $scope.$on(events.newLegendData, updateLegend);
+
+        $(window).on('resize', redraw);
 
         $scope.$on('$destroy', function() {
-          /* Avoid duplicate event handlers */
-          $(document).off(events.newTimeGraphData);
-          $(document).off(events.newLegendData);
-          $(window).off('resize');
-
+          $(window).off('resize', redraw);
           vis.destroy();
         });
 
-        function format() {
+        /* Rebuild visualization from scratch with appropriate dimensions */
+        function redraw() {
+          if (globals.debug) console.log('resizing time graph');
+
+          orient();
+
+          config.width = $('#time-graph').width();
+          config.height = $('#time-graph').height();
+
+          vis.destroy();
+          vis.init(config);
+        }
+
+        function orient() {
           $('#legend .list').height($('#legend').height()
                             - $('#legend .selection-indicator').outerHeight(true)
                             - $('#legend .divider').outerHeight(true)
@@ -95,20 +105,6 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
             utils.order('#time-graph-wrapper', '#legend', '#time-graph');
           }
         };
-
-        /* Rebuild visualization from scratch with appropriate dimensions */
-        function handleResize() {
-          if (globals.debug) console.log('resizing time graph');
-
-          format();
-
-          config.width = $('#time-graph').width();
-          config.height = $('#time-graph').height();
-
-          vis.destroy();
-          vis.init(config);
-        }
-
       };
 
       function restoreState() {

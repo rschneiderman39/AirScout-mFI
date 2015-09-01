@@ -66,11 +66,11 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
       /* Wait until the transition animation is done before performing
          first update */
-      $(document).one(events.transitionDone, update);
+      $scope.$on(events.transitionDone, update);
 
       /* Ensure that a change to the access point selection in the Filtering
          options menu is immediately reflected in the table */
-      $(document).on(events.newSelection, update);
+      $scope.$on(events.newSelection, update);
 
       /* Rescale on device rotate */
       $(window).on('resize', scaleView);
@@ -78,8 +78,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
         /* Avoid duplicate event handlers */
-        $(document).off(events.newSelection);
-        $(window).off('resize');
+        $(window).off('resize', scaleView);
 
         /* Stop updating */
         clearInterval(updateLoop);
