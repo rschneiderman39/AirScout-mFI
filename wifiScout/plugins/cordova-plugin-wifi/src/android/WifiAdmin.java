@@ -46,13 +46,11 @@ public class WifiAdmin extends CordovaPlugin {
   }
 
   private PluginResult executeGetWifiInfo(JSONArray inputs, CallbackContext callbackContext) {
-  	Log.w(LOGTAG, "executeGetWifiInfo");
-
 		Context context = cordova.getActivity().getApplicationContext();
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
-		JSONObject obj = new JSONObject();
+		JSONObject ret = new JSONObject();
 
 		try {
 			JSONObject active = new JSONObject();
@@ -66,7 +64,7 @@ public class WifiAdmin extends CordovaPlugin {
 			active.put("RSSI", wifiInfo.getRssi());
 			active.put("LinkSpeed", wifiInfo.getLinkSpeed());
 
-			obj.put("active", active);
+			ret.put("active", active);
 
 			JSONArray available = new JSONArray();
 
@@ -82,21 +80,19 @@ public class WifiAdmin extends CordovaPlugin {
 				available.put(ap);
       }
 
-      obj.put("available", available);
+      ret.put("available", available);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
 			callbackContext.error("JSON Exception");
 		}
 
-		callbackContext.success(obj);
+		callbackContext.success(ret);
 
   	return null;
   }
 
 	private PluginResult executeScan(JSONArray inputs, CallbackContext callbackContext) {
-  	Log.w(LOGTAG, "executeScan");
-
 		Context context = cordova.getActivity().getApplicationContext();
 		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 

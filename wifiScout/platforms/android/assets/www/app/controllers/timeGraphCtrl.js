@@ -84,9 +84,9 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         });
 
         function format() {
-          $('#legend-list').height($('#legend').height()
-                            - $('#selected-ap-panel').outerHeight(true)
-                            - $('#legend-break').outerHeight(true)
+          $('#legend .list').height($('#legend').height()
+                            - $('#legend .selection-indicator').outerHeight(true)
+                            - $('#legend .divider').outerHeight(true)
                             - defaults.padding);
 
           if ($(window).height() > $(window).width()) {

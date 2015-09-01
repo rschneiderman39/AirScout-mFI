@@ -1,18 +1,51 @@
-/* Access Point List */
-#signal-strength-wrapper
-#list-section {
-  margin-top: 3vh;
-  padding-right: 0;
+#gauge {
+  height: calc(100% - 70px);
+  width: 100%;
 }
 
+#values {
+  height: 70px;
+  width: 100%;
+}
+
+@media screen and (orientation:portrait) {
+  #signal-strength-wrapper
+  #access-points {
+    display: block;
+    height: 50%;
+    width: 100%;
+  }
+
+  #signal-strength-wrapper
+  #readings {
+    display: block;
+    height: 50%;
+    width: 100%;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  #signal-strength-wrapper
+  #access-points {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    width: 30%;
+  }
+
+  #signal-strength-wrapper
+  #readings {
+    display: inline-block;
+    height: 97%;
+    vertical-align: top;
+    width: 70%;
+  }
+}
+
+/* Access Point List */
 #signal-strength-wrapper
-#selected-ap {
-  background-color: #fafafa;
-  color: black;
-  font-weight: bold;
-  overflow: hidden;
-  padding: 2vh 0vh;
-  text-overflow: ellipsis;
+#access-points {
+  padding: 10px 10px;
 }
 
 #signal-strength-wrapper
@@ -25,53 +58,10 @@
   white-space: pre;
 }
 
-#signal-strength-wrapper
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #cccccc;
-  margin: 1.5vh 0;
-  padding: 0;
-}
-
-#signal-strength-wrapper
-.list {
-  height: 62vh;
-  overflow-y: scroll;
-}
-
-#signal-strength-wrapper
-.listgroupitem {
-  background-color: #fafafa;
-  border: 1px solid #ddd;
-  margin-bottom: -1px;
-  padding: 2vh 0vh;
-}
-
-#signal-strength-wrapper
-.listgroupitem:first-child {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-#signal-strength-wrapper
-.listgroupitem:last-child {
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-#signal-strength-wrapper
-.listgroupitem.active {
-  background-color: #62bf01;
-  border-color: #62bf01;
-  color: #fafafa;
-}
-
 /* Level Indicators */
 #signal-strength-wrapper
-#gauge-section {
-  margin-top: 3vh;
+#readings {
+  padding: 10px 10px;
 }
 
 #signal-strength-wrapper
@@ -80,26 +70,13 @@ hr {
 }
 
 #signal-strength-wrapper
-#gauge g.label text {
+#readings g.label text {
   text-anchor: middle;
 }
 
 #signal-strength-wrapper
 .level-indicator {
-  padding-top: 4vh;
-}
-
-/* Misc */
-#signal-strength-wrapper
-.no-padding {
-  padding: 0px !important;
-  margin: 0px !important;
-}
-
-#signal-strength-wrapper
-.padded-1vh {
-  margin: 0px !important;
-  padding: 1vh !important;
+  /*padding-top: 4vh;*/
 }
 
 /* Scrollbar */

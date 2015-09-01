@@ -2,18 +2,18 @@
 
   <div id="legend">
     <!-- Selected AP Box -->
-    <div id="selected-ap-panel" class="panel panel-default no-padding">
-			<div id="selected-ap" class="panel-body">
+    <div class="panel panel-default no-padding">
+			<div id="selected-ap" class="panel-body selection-indicator">
 				<div id="selected-ssid">{{selectedSsid !== null ? selectedSsid : " "}}</div>
 				<div id="selected-mac">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
 			</div>
 		</div>
 
-    <hr id="legend-break">
+    <hr class="divider">
 
     <!-- AP List -->
-    <ul id="legend-list" class="list list-group scrollable-list">
-      <li class="listgroupitem" data-ng-repeat="item in legendData | orderBy:sortSSID" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
+    <ul class="list-group list scroll-y">
+      <li class="listgroupitem default" data-ng-repeat="item in legendData | orderBy:sortSSID" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item);$event.stopPropagation()">
         <div class="legend-box" ng-style="{'background-color':item.color}"></div>
         <div class="legend-ssid">{{item.ssid}}</div>
         <div class="legend-mac" ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>

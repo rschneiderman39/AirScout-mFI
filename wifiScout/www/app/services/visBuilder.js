@@ -185,11 +185,11 @@ app.factory('visBuilder', ['setupService', function(setupService) {
       function buildNav() {
         d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-left')
-          .classed('nav-pane', true)
+          .style('display', 'inline-block')
 
         d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-right')
-          .classed('nav-pane', true)
+          .style('display', 'inline-block')
 
         dim.nav = {};
 
@@ -240,7 +240,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
         /* 2.4 Ghz selector */
         elem.nav.left.clip.append('rect')
-          .classed('nav-toggle-left', true)
+          .classed('selectable-window', true)
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height)
           .on('touchstart', function() {
@@ -337,7 +337,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         var sliderExtent = config.sliderExtent;
 
         elem.nav.right.slider = elem.nav.right.clip.append('rect')
-          .classed('nav-toggle-right', true)
+          .classed('selectable-window', true)
           .attr('x', function() {
             return scales.nav.right.x(sliderExtent[0]);
           })
@@ -386,11 +386,11 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       function setBand(newBand) {
         if (newBand ===  '2_4') {
-          elem.nav.right.clip.select('.nav-toggle-right').classed('active', false);
-          elem.nav.left.clip.select('.nav-toggle-left').classed('active', true);
+          elem.nav.right.clip.select('.selectable-window').classed('active', false);
+          elem.nav.left.clip.select('.selectable-window').classed('active', true);
         } else if (newBand === '5') {
-          elem.nav.left.clip.select('.nav-toggle-left').classed('active', false);
-          elem.nav.right.clip.select('.nav-toggle-right').classed('active', true);
+          elem.nav.left.clip.select('.selectable-window').classed('active', false);
+          elem.nav.right.clip.select('.selectable-window').classed('active', true);
         }
 
         band = newBand;
