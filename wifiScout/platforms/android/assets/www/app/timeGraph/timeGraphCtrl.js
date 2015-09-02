@@ -62,7 +62,9 @@ visBuilder, setupSequence) {
 
         var vis;
 
-        $scope.$on(globals.events.transitionDone, function() {
+        var dereg = $scope.$on(globals.events.transitionDone, function() {
+          dereg();
+
           orient();
 
           config.width = $('#time-graph').width();

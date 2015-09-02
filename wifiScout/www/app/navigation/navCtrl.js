@@ -58,7 +58,6 @@ nzTour, setupSequence) {
       $('#view-title').html("");
       $('#current-view').css('visibility', 'hidden');
 
-      console.log('swiping');
       $state.go(view).finally(function() {
         console.log('state changed');
         $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
