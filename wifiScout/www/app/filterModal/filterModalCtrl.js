@@ -77,13 +77,9 @@ $filter, globals, utils, accessPoints, globalSettings, setupSequence) {
       $(window).on('resize', orient);
 
       function orient() {
-        console.log('reorienting');
-
         if (utils.getOrientation() === 'portrait') {
-          console.log('in portrait');
           $('#right-column .list').css('height', $(window).height() * 0.6);
         } else if (utils.getOrientation() === 'landscape') {
-          console.log('in landscape');
           $('#right-column .list').css('height', $(window).height() * 0.65);
         }
       }

@@ -29,20 +29,25 @@
 
 /* Selection Menu */
 #filter-modal
+#left-column {
+  padding: 0;
+}
+
+#filter-modal
 #deselect-btn {
   display: block;
-  margin: 1vh auto;
+  margin: 5px auto;
 }
 
 #filter-modal
 #query {
-  margin-bottom: 3vh;
+  margin-bottom: 10px;
 }
 
 #filter-modal
 #select-btn {
   display: block;
-  margin: 1vh auto;
+  margin: 5px auto;
 }
 
 /* Access Point List */

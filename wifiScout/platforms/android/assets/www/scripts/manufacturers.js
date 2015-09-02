@@ -1,3 +1,6 @@
+/* Create a global object that will map a MAC address prefix to its manufacturer.
+   Generated from the IEEE's OUI file. Last updated: */
+
 "use strict";
 
 var manufacturers = {};
