@@ -1,11 +1,11 @@
 "use strict";
 
 app.factory('timeGraphManager', ['$rootScope', 'accessPoints', 'globalSettings',
-'setupService', function($rootScope, accessPoints, globalSettings, setupService) {
+'setupSequence', function($rootScope, accessPoints, globalSettings, setupSequence) {
 
   var service = {};
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var updateInterval = constants.updateIntervalNormal;
 

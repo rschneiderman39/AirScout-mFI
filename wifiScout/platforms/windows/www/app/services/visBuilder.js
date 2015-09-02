@@ -1,10 +1,10 @@
 "use strict";
 
-app.factory('visBuilder', ['setupService', function(setupService) {
+app.factory('visBuilder', ['setupSequence', function(setupSequence) {
 
   var service = {};
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     /* CONFIG */
     // height

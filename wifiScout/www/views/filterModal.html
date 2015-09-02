@@ -14,7 +14,7 @@
         <div class="row">
 
           <!-- Selectors -->
-          <div class="col-xs-5">
+          <div class="col-xs-5" id="left-column">
             <p>{{strings.filterModal.searchBar}}</p>
             <input type="text" class="col-xs-12" id="query" ng-model="query">
             <button id="select-btn" ng-click="selectAll()" class="btn btn-default btn-sm text" type="button">{{strings.filterModal.selectAll}}</button>
@@ -22,9 +22,9 @@
           </div>
 
           <!-- Access point list -->
-          <div class="col-xs-7">
-            <ul class="list-group scrollable-list" id="modal-list">
-              <li class="list-group-item nopadding" data-ng-repeat="ap in accessPoints | filter:query | orderBy:sortSSID track by ap.mac" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
+          <div class="col-xs-7" id="right-column">
+            <ul class="list-group list scroll-y">
+              <li class="list-group-item" data-ng-repeat="ap in accessPoints | filter:query | orderBy:sortSSID track by ap.mac" ng-click="toggleSelected(ap)" ng-class="{'selected': isSelected(ap)}">
                 <div class="centered-text">{{ap.ssid}}</div>
                 <div class="centered-text">({{ap.mac}})</div>
               </li>

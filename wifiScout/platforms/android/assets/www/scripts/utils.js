@@ -79,6 +79,14 @@ utils.order = function(parentSelector, elem1Selector, elem2Selector) {
   parent.insertBefore(elem1, elem2);
 };
 
+utils.getOrientation = function() {
+  if ($(window).width() > $(window).height()) {
+    return 'landscape';
+  } else {
+    return 'portrait';
+  }
+};
+
 function AccessPointSelection(macAddrs, showAll) {
 
   var isSelected = {};

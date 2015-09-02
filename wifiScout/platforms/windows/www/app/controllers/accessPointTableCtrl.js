@@ -2,11 +2,11 @@
 
 /* Handles data updating for the access point table view */
 app.controller('accessPointTableCtrl', ['$scope', 'accessPoints',
-'globalSettings', 'accessPointTableState', 'setupService', function($scope,
-accessPoints, globalSettings, accessPointTableState, setupService) {
+'globalSettings', 'accessPointTableState', 'setupSequence', function($scope,
+accessPoints, globalSettings, accessPointTableState, setupSequence) {
 
   /* Wait until the device is ready before setting up the controller */
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     /* The time, in milliseconds, between data updates */
     var updateInterval = constants.updateIntervalSlow;

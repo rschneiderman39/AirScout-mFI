@@ -1,9 +1,9 @@
 "use strict";
 
-app.controller('settingsCtrl', ['$scope', 'globalSettings', 'setupService',
-function($scope, globalSettings, setupService) {
+app.controller('settingsCtrl', ['$scope', 'globalSettings', 'setupSequence',
+function($scope, globalSettings, setupSequence) {
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var prefs = {
       sliderStep: 10

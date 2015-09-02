@@ -1,86 +1,78 @@
 /* Modal Container */
-#filter-modal  .modal-dialog {
+#filter-modal
+.modal-dialog {
   margin-left: auto;
   margin-right: auto;
 }
 
 @media screen and (orientation:portrait) {
-  #filter-modal  .modal-dialog {
+  #filter-modal
+  .modal-dialog {
     transform: translateY(16%);
     width: 80%;
   }
 }
 
 @media screen and (orientation:landscape) {
-  #filter-modal  .modal-dialog {
+  #filter-modal
+  .modal-dialog {
     transform: translateY(3%);
     width: 60%;
   }
 }
 
 /* Modal Header */
-#filter-modal  #title {
+#filter-modal
+#title {
   margin: 5px;
 }
 
 /* Selection Menu */
-#filter-modal #deselect-btn {
+#filter-modal
+#deselect-btn {
   display: block;
   margin: 1vh auto;
 }
 
-#filter-modal  #query {
+#filter-modal
+#query {
   margin-bottom: 3vh;
 }
 
-#filter-modal #select-btn {
+#filter-modal
+#select-btn {
   display: block;
   margin: 1vh auto;
 }
 
 /* Access Point List */
-#filter-modal  #modal-list {
-  margin-bottom: 0;
-  overflow-y: scroll;
+#filter-modal
+#right-column {
+  padding-right: 0;
 }
 
-#filter-modal  .list-group-item {
+#filter-modal
+#right-column .list {
+  margin-bottom: 0;
+}
+
+#filter-modal
+.list-group-item {
   background-color: #fafafa;
   border: 1px solid #ddd;
+  padding: 5px 0;
   position: relative;
   z-index: 2;
 }
 
-#filter-modal  .list-group-item.selected {
+#filter-modal
+.list-group-item.selected {
   background-color: #d0ecb3;
   border: 2px solid #62bf01;
   opacity: 1;
 }
 
-#filter-modal  .list-group-item.selected + .list-group-item {
+#filter-modal
+.list-group-item.selected + .list-group-item {
   border-top-width: 0px;
-}
-
-/* Misc */
-/*  The nopadding class removes Bootstrap's default
-      padding and margins for its Modal object */
-#filter-modal .nopadding {
-  margin: 0px !important;
-  padding: 5px !important;
-}
-
-/* Scrollbar */
-#filter-modal ::-webkit-scrollbar {
-  -webkit-appearance: none;
-}
-
-#filter-modal ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, .25);
-  border: none;
-  border-radius: 10px;
-}
-
-#filter-modal ::-webkit-scrollbar-track {
-  background-color: #ffffff;
-  border-radius: 10px;
 }

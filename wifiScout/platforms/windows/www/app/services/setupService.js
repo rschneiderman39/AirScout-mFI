@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('setup', [])
-.service('setupService', ['$document', '$q', function($document, $q) {
+.service('setupSequence', ['$document', '$q', function($document, $q) {
 
   var setup = $q.defer();
 

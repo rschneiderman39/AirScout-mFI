@@ -2,12 +2,12 @@
 
 /* Handles tours and view switching */
 app.controller('navCtrl', ['$rootScope', '$scope', '$state', '$animate', '$timeout',
-'globalSettings', 'nzTour', 'setupService',
+'globalSettings', 'nzTour', 'setupSequence',
 function($rootScope, $scope, $state, $animate, $timeout, globalSettings, nzTour,
-  setupService) {
+  setupSequence) {
 
   /* Wait until the device is ready before setting up the controller */
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var prefs = {
       /* Number of milliseconds for which to display the navbar before

@@ -1,11 +1,11 @@
 "use strict";
 
 app.controller('channelGraphCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
-'channelGraphState', 'channelValidator', 'setupService', function($scope,
+'channelGraphState', 'channelValidator', 'setupSequence', function($scope,
 visBuilder, accessPoints,  globalSettings, channelGraphState, channelValidator,
-setupService) {
+setupSequence) {
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var updateInterval = constants.updateIntervalSlow,
         transitionInterval = updateInterval * .9;

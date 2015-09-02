@@ -2,10 +2,10 @@
 
 /* Handles user interaction with the filtering options modal */
 app.controller('filterModalCtrl', ['$scope', '$state', '$filter', 'accessPoints',
-'globalSettings', 'setupService', function($scope, $state, $filter, accessPoints,
-globalSettings, setupService) {
+'globalSettings', 'setupSequence', function($scope, $state, $filter, accessPoints,
+globalSettings, setupSequence) {
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     /* Feed this bad boy a macAddr and it returns true if the
        corresponding access point is selected. */

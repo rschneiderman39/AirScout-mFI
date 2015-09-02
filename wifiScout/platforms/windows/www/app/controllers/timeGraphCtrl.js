@@ -1,10 +1,10 @@
 "use strict";
 
 app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGraphManager',
-  'visBuilder', 'setupService', function($scope, $timeout, globalSettings, timeGraphManager,
-  visBuilder, setupService) {
+  'visBuilder', 'setupSequence', function($scope, $timeout, globalSettings, timeGraphManager,
+  visBuilder, setupSequence) {
 
-    setupService.ready.then(function() {
+    setupSequence.done.then(function() {
 
       var prefs = {
         domain: timeGraphManager.getDomain(),

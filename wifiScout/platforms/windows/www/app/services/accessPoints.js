@@ -1,11 +1,11 @@
 "use strict";
 
-app.factory('accessPoints', ['globalSettings', 'setupService', function(
-  globalSettings, setupService) {
+app.factory('accessPoints', ['globalSettings', 'setupSequence', function(
+  globalSettings, setupSequence) {
 
     var service = {};
 
-    setupService.ready.then(function() {
+    setupSequence.done.then(function() {
 
       var accessPointColors = {},
           accessPointCount = 0;

@@ -1,9 +1,9 @@
 "use strict";
 
 app.controller('signalStrengthCtrl', ['$scope', 'globalSettings', 'accessPoints',
-'setupService', function($scope, globalSettings, accessPoints, setupService) {
+'setupSequence', function($scope, globalSettings, accessPoints, setupSequence) {
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var gaugeUpdateInterval = constants.updateIntervalNormal,
         listUpdateInterval = 5000;

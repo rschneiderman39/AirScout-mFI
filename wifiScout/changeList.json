@@ -24,7 +24,7 @@
     "res\\icons\\ios\\icon-76.png",
     "www\\fonts\\glyphicons-halflings-regular.woff",
     "res\\screens\\ios\\screen-ipad-portrait-2x.png",
-    "www\\app\\services\\setupService.js",
+    "www\\app\\services\\setupSequence.js",
     "plugins\\android.json",
     "plugins\\cordova-plugin-wifi\\test\\main.js",
     "res\\screens\\ios\\screen-iphone-portrait-2x.png",

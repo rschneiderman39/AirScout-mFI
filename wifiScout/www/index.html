@@ -13,8 +13,6 @@
     <link href="css/index.css" rel="stylesheet" />
     <link href="css/anim-in.css" rel="stylesheet" />
     <link href="css/filterModal.css" rel="stylesheet" />
-    <link href="css/channelGraph.css" rel="stylesheet" />
-    <link href="css/accessPointCount.css" rel="stylesheet" />
     <link href="css/timeGraph.css" rel="stylesheet" />
     <link href="css/accessPointTable.css" rel="stylesheet" />
     <link href="css/signalStrength.css" rel="stylesheet" />
@@ -75,51 +73,64 @@
       </div>
     </div>
 
+    <div filter-modal />
+
     <!-- Cordova -->
     <script src="cordova.js"></script>
     <script src="cordova_plugins.js"></script>
     <script src="scripts/platformOverrides.js"></script>
-    <script src="app/services/setupService.js"></script>
 
-    <!-- Angular App -->
+    <!-- App setup (language, region, etc.) -->
+    <script src="app/setup/setup.js"></script>
+    <script src="app/setup/globals.js"></script>
+    <script src="app/setup/setupSequence.js"></script>
+
+    <!-- Main app -->
     <script src="app/app.js"></script>
 
-    <!-- Anglar Services -->
-    <script src="app/services/accessPoints.js"></script>
-    <script src="app/services/timeGraphManager.js"></script>
-    <script src="app/services/accessPointTableState.js"></script>
-    <script src="app/services/channelGraphState.js"></script>
-    <script src="app/services/accessPointCountState.js"></script>
-    <script src="app/services/channelValidator.js"></script>
-    <script src="app/services/globalSettings.js"></script>
-    <script src="app/services/visBuilder.js"></script>
+    <!-- Channel graph view -->
+    <script src="app/channelGraph/channelGraphCtrl.js"></script>
+    <script src="app/channelGraph/channelGraphState.js"></script>
 
-    <!-- Angular Controllers -->
-    <script src="app/controllers/accessPointTableCtrl.js"></script>
-    <script src="app/controllers/filterModalCtrl.js"></script>
-    <script src="app/controllers/navCtrl.js"></script>
-    <script src="app/controllers/signalStrengthCtrl.js"></script>
-    <script src="app/controllers/timeGraphCtrl.js"></script>
-    <script src="app/controllers/settingsCtrl.js"></script>
-    <script src="app/controllers/channelGraphCtrl.js"></script>
-    <script src="app/controllers/accessPointCountCtrl.js"></script>
+    <!-- Access point count view -->
+    <script src="app/accessPointCount/accessPointCountCtrl.js"></script>
+    <script src="app/accessPointCount/accessPointCountState.js"></script>
 
-    <!-- Angular Directives -->
-    <script src="app/directives/filterModal.js"></script>
+    <!-- Time graph view -->
+    <script src="app/timeGraph/timeGraphCtrl.js"></script>
+    <script src="app/timeGraph/timeGraphManager.js"></script>
 
-    <!-- Internationalization -->
+    <!-- Access point table view -->
+    <script src="app/accessPointTable/accessPointTableCtrl.js"></script>
+    <script src="app/accessPointTable/accessPointTableState.js"></script>
+
+    <!-- Signal strength view -->
+    <script src="app/signalStrength/signalStrengthCtrl.js"></script>
+
+    <!-- Settings -->
+    <script src="app/settings/globalSettings.js"></script>
+    <script src="app/settings/settingsCtrl.js"></script>
+
+    <!-- Filter modal -->
+    <script src="app/filterModal/filterModal.js"></script>
+    <script src="app/filterModal/filterModalCtrl.js"></script>
+
+    <!-- Tools -->
+    <script src="app/tools/accessPoints.js"></script>
+    <script src="app/tools/channelValidator.js"></script>
+    <script src="app/tools/utils.js"></script>
+    <script src="app/tools/visBuilder.js"></script>
+
+    <!-- Navigation -->
+    <script src="app/navigation/navCtrl.js"></script>
+
+    <!-- Languages -->
     <script src="lang/en.js"></script>
     <script src="lang/es.js"></script>
 
-    <!-- Globals and Setup -->
+    <!-- Globals -->
     <script src="scripts/channels.js"></script>
-    <script src="scripts/globals.js"></script>
-    <script src="scripts/internationalization.js"></script>
-    <script src="scripts/setup.js"></script>
-    <script src="scripts/tours.js"></script>
-    <script src="scripts/utils.js"></script>
     <script src="scripts/manufacturers.js"></script>
-
-    <script src="scripts/index.js"></script>
+    <script src="scripts/AccessPointSelection.js"></script>
   </body>
 </html>

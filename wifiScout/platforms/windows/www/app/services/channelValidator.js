@@ -1,10 +1,10 @@
 "use strict";
 
-app.factory('channelValidator', ['setupService', function(setupService) {
+app.factory('channelValidator', ['setupSequence', function(setupSequence) {
 
   var service = {};
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var isAllowableChannel = {};
 

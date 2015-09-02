@@ -3,12 +3,12 @@
 /* Handles data updating and DOM manipulation for the access point count
    view. */
 app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
-  'accessPointCountState', 'channelValidator', 'setupService', function($scope,
+  'accessPointCountState', 'channelValidator', 'setupSequence', function($scope,
   visBuilder, accessPoints, globalSettings, accessPointCountState, channelValidator,
-  setupService) {
+  setupSequence) {
 
   /* Wait until the device is ready before setting up the controller */
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     /* The time, in milliseconds, between data updates */
     var updateInterval = constants.updateIntervalSlow;

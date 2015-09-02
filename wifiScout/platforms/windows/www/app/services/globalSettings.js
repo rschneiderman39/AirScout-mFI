@@ -1,11 +1,11 @@
 "use strict";
 
-app.factory('globalSettings', ['$rootScope', '$timeout', 'setupService',
-function($rootScope, $timeout, setupService) {
+app.factory('globalSettings', ['$rootScope', '$timeout', 'setupSequence',
+function($rootScope, $timeout, setupSequence) {
 
   var service = {};
 
-  setupService.ready.then(function() {
+  setupSequence.done.then(function() {
 
     var detectHidden,
         visScaleMax,
