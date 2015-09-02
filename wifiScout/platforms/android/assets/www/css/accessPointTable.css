@@ -1,5 +1,5 @@
+/* Landscape Specific Styles */
 @media screen and (orientation:landscape) {
-  /* portrait-specific styles */
   #access-point-table-wrapper
   .flex-col.ssid {
     width: calc(100% / 6);
@@ -33,8 +33,8 @@
   }
 }
 
+/* Portrait Specific Styles - when device width is under 639px */
 @media screen and (orientation:portrait) and (max-width: 639px){
-  /* portrait-specific styles */
   #access-point-table-wrapper
   .flex-col.ssid {
     width: calc(100% / 3);
@@ -79,6 +79,7 @@ a {
   text-decoration: none;
 }
 
+/* Sorting arrows - known to be incompatible with Kindle webview */
 #access-point-table-wrapper
 .sortArrow::after {
   content: '\25b2';

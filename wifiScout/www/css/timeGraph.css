@@ -1,3 +1,4 @@
+/* Portrait Specfic Styles */
 @media screen and (orientation:portrait) {
   #time-graph-wrapper
   #legend {
@@ -14,6 +15,7 @@
   }
 }
 
+/* Landscape Specfic Styles */
 @media screen and (orientation:landscape) {
   #time-graph-wrapper
   #legend {
@@ -38,13 +40,9 @@
   padding: 10px 10px;
 }
 
-#time-graph-wrapper
-#selected-ssid {
-  white-space: pre;
-}
-
-#time-graph-wrapper
-#selected-mac {
+/* White space will be preserved by the browswer */
+#time-graph-wrapper #selected-ssid, 
+#time-graph-wrapper #selected-mac {
   white-space: pre;
 }
 

@@ -1,7 +1,5 @@
-/* Font Scaling */
-/*	If the screen width is larger than 889px then
-			the font sizes in the application will be
-			capped at the sizes listed. */
+/*	If the screen width is larger than 889px then the font sizes 
+			in the application will be capped at the sizes listed. */
 @media screen and (orientation: landscape) and (min-width: 889px),
        screen and (orientation: portrait) and (min-height: 889px) {
 	body {
@@ -30,8 +28,8 @@
 	}
 }
 
-/*	If the device screen width is less than 889px then
-			the font size will scale to the device width. */
+/*	If the device screen width is less than 889px then the font 
+			size will scale to the device width. */
 @media screen and (orientation: landscape) and (max-width: 888px),
        screen and (orientation: portrait) and (max-height: 888px) {
 	body {
@@ -175,7 +173,9 @@ img.nav-icon {
 	max-width: 90%;
 }
 
-/* NzTour */
+/* nzTour */
+/* Scales tour boxes to portrait orientation since they don't 
+	 	automatically resize if you reorient the device */
 @media screen and (orientation: portrait) {
 	nz-tour #nzTour-box {
 	  min-height: 10vh;
@@ -183,6 +183,7 @@ img.nav-icon {
 	}
 }
 
+/* Scales tour boxes to landscape orientation */
 @media screen and (orientation: landscape) {
 	nz-tour #nzTour-box {
 	  min-height: 10vh;
@@ -212,11 +213,9 @@ nz-tour #nzTour-content {
 }
 
 /* Misc */
-/*	The axis-label class bolds the X and Y axis
-			labels in the Channel Graph and Access Point
-			Count views.	*/
+/*	The axis-label class bolds the X and Y axis labels in the 
+			Channel Graph and Access Point Count views.	*/
 
-/* Styles */
 .centered-text {
 	text-align: center;
 }
@@ -245,6 +244,8 @@ nz-tour #nzTour-content {
   margin: 10px 0;
 }
 
+/* Overriding some of the boostrap defaults to avoid scaling 
+	 	issues and to custom color the lists */
 .row {
 	margin: 0;
 	max-height: 100%;
@@ -295,6 +296,7 @@ rect.selectable-window {
   stroke-width: 2;
 }
 
+/* Colors the bars in Access Point Count view */
 rect.selectable-window.active {
   fill: #62bf01;
   stroke: #62bf01;
