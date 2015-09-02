@@ -102,7 +102,7 @@ body {
 	height: 80%;
 	max-height: 30px;
 	outline: none;
-	z-index: 999999999;
+	z-index: 999;
 }
 
 #help-button {
@@ -110,7 +110,7 @@ body {
 	height: 80%;
 	max-height: 40px;
 	outline: none;
-	z-index: 999999999;
+	z-index: 999;
 }
 
 /* Nav Bar */
