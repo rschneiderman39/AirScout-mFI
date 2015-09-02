@@ -1,109 +1,82 @@
-﻿/* View Wrapper */
-#tm-gph {
-  height: 100%;
+@media screen and (orientation:portrait) {
+  #time-graph-wrapper
+  #legend {
+    display: block;
+    height: 50%;
+    width: 100%;
+  }
+
+  #time-graph-wrapper
+  #time-graph {
+    display: block;
+    height: 50%;
+    width: 100%;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  #time-graph-wrapper
+  #legend {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    width: 30%;
+  }
+
+  #time-graph-wrapper
+  #time-graph {
+    display: inline-block;
+    height: 97%;
+    vertical-align: top;
+    width: 70%;
+  }
 }
 
 /* Legend */
-#tm-gph #legend {
-  margin-top: 3vh;
-  padding-right: 0px;
+#time-graph-wrapper
+#legend {
+  padding: 10px 10px;
 }
 
-#tm-gph #selected-ap {
-  background-color: #fafafa;
-  color: black;
-  font-weight: bold;
-  overflow: hidden;
-  padding: 2vh 0vh;
-  text-align: center;
-  text-overflow: ellipsis;
-}
-
-#tm-gph #selected-ssid {
+#time-graph-wrapper
+#selected-ssid {
   white-space: pre;
 }
 
-#tm-gph #selected-mac {
+#time-graph-wrapper
+#selected-mac {
   white-space: pre;
 }
 
-#tm-gph hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #cccccc;
-  margin: 1.5vh 0;
-  padding: 0;
-}
-
-#tm-gph .list {
-  border: 1px solid #cccccc;
-  height: 62vh;
-  overflow-y: scroll;
-}
-
-#tm-gph .listgroupitem {
-  background-color: #fafafa;
-  border: 1px solid #ddd;
-  margin-bottom: -1px;
-  padding: 1.5vh 1.25vh;
-}
-
-#tm-gph .listgroupitem:first-child {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-#tm-gph .listgroupitem:last-child {
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-#tm-gph .listgroupitem.active {
-  background-color: #62bf01;
-  border-color: #62bf01;
-  color: #fafafa;
-}
-
-#tm-gph .legend-box {
+#time-graph-wrapper
+.legend-box {
   display: inline-block;
-  height: 3.75vh;
-  margin-left: 1.5vh;
-  margin-right: 1vh;
-  width: 3.75vh;
+  height: 20px;
+  margin: 5px 5px;
+  width: 20px;
   vertical-align: middle;
 }
 
-/* Time Graph */
-#tm-gph #time-graph {
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-}
-
-/* Misc */
-#tm-gph .no-padding {
-  padding: 0px !important;
-  margin: 0px !important;
-}
-
-#tm-gph .padded-1vh {
-  margin: 0px !important;
-  padding: 1vh !important;
+#time-graph-wrapper
+.legend-ssid {
+  display: inline-block;
 }
 
 /* Scrollbar */
-#tm-gph ::-webkit-scrollbar {
+#time-graph-wrapper
+::-webkit-scrollbar {
   -webkit-appearance: none;
 }
 
-#tm-gph ::-webkit-scrollbar-thumb {
+#time-graph-wrapper
+::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, .25);
   border: none;
   border-radius: 10px;
 }
 
-#tm-gph ::-webkit-scrollbar-track {
+#time-graph-wrapper
+::-webkit-scrollbar-track {
   background-color: #ffffff;
   border-radius: 10px;
 }

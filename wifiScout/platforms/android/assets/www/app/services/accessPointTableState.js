@@ -7,7 +7,7 @@ app.factory('accessPointTableState', ['setupService', function(setupService) {
 
   setupService.ready.then(function() {
 
-      var sortPredicate = 'SSID',
+      var sortPredicate = 'ssid',
           sortReverse = false;
 
       /* Get or set the table sort predicate.

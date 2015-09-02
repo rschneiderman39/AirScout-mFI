@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 if (typeof setup === 'undefined') { var setup = {}; }
 
@@ -22,7 +22,7 @@ setup.tours = function() {
       animationDuration: 0, // Animation Duration for the box and mask
       dark: false, // Dark mode (Works great with `mask.visible = false`)
       heightFactor: 0.5,
-      widthFactor: 0.3
+      widthFactor: 0.5
     },
     steps: [{
         content: globals.strings.accessPointCount.tour.intro
@@ -52,7 +52,9 @@ setup.tours = function() {
       nextText: 'Next',
       finishText: 'Finish',
       animationDuration: 0,
-      dark: false
+      dark: false,
+      heightFactor: 0.5,
+      widthFactor: 0.5
     },
     steps: [{
         content: globals.strings.accessPointTable.tour.intro
@@ -94,7 +96,9 @@ setup.tours = function() {
       nextText: 'Next',
       finishText: 'Finish',
       animationDuration: 0,
-      dark: false
+      dark: false,
+      heightFactor: 0.5,
+      widthFactor: 0.5
     },
     steps: [{
         target: "#time-graph",
@@ -126,7 +130,9 @@ setup.tours = function() {
       nextText: 'Next',
       finishText: 'Finish',
       animationDuration: 0,
-      dark: false
+      dark: false,
+      heightFactor: 0.5,
+      widthFactor: 0.5
     },
     steps: [{
         content: globals.strings.signalStrength.tour.intro
@@ -157,7 +163,9 @@ setup.tours = function() {
       nextText: 'Next',
       finishText: 'Finish',
       animationDuration: 0,
-      dark: false
+      dark: false,
+      heightFactor: 0.5,
+      widthFactor: 0.5
     },
     steps: [{
       content: globals.strings.channelGraph.tour.intro
@@ -169,10 +177,6 @@ setup.tours = function() {
       {
         target: "#nav-right",
         content: globals.strings.channelGraph.tour.band5
-      },
-      {
-        target: '#filter-button',
-        content: globals.strings.channelGraph.tour.filter
       }
     ]
   };

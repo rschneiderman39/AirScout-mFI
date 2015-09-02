@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 angular.module('setup', [])
 .service('setupService', ['$document', '$q', function($document, $q) {

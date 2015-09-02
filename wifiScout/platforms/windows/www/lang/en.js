@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 if (typeof languages === 'undefined') {
   var languages = {};

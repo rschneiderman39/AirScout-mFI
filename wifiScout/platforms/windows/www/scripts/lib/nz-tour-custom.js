@@ -1,4 +1,4 @@
-﻿(function() {
+(function() {
     var module = angular.module('nzTour', []);
 
     module.factory('nzTour', function($q, $rootScope, $compile, $timeout) {
@@ -334,6 +334,7 @@
                 };
 
                 // Correct max width and height
+                console.log('settings heights');
                 els.box.css('max-height', maxHeight);
                 els.box.css('max-width', maxWidth);
                 els.content.css('max-height', maxHeight * 0.8);

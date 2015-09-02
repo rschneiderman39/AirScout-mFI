@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 var defaults = {
   visScaleMax: -30,
@@ -7,7 +7,8 @@ var defaults = {
   region: 'US',
   startingView: 'channelGraph',
   backgroundColor: '#f1f1f1',
-  themeColor: '#62bf01'
+  themeColor: '#62bf01',
+  padding: 10
 };
 
 var constants = {

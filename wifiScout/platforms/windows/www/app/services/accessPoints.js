@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 app.factory('accessPoints', ['globalSettings', 'setupService', function(
   globalSettings, setupService) {

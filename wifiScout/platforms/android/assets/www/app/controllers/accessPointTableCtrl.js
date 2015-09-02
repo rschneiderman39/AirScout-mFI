@@ -16,11 +16,12 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
     /* Array of AccessPoint objects to be displayed in the table */
     $scope.accessPoints = [];
 
-    /* String or function used by angular to sort the table elements */
-    $scope.sortPredicate = undefined;
-
     /* true: Sort direction reversed.  false: Normal behavior */
     $scope.sortReverse = undefined;
+
+    $scope.sortPredicate = undefined;
+
+    $scope.sortOrder = undefined;
 
     /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
        If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
@@ -30,18 +31,14 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
     */
     $scope.order = function(predicate) {
       if (predicate === 'ssid') {
-        $scope.sortReverse = ($scope.sortPredicate === $scope.sortSSID) ? !$scope.sortReverse : false;
-        $scope.sortPredicate = $scope.sortSSID;
+        $scope.sortOrder = utils.customSSIDSort;
       } else {
-        $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
-        $scope.sortPredicate = predicate;
+        $scope.sortOrder = predicate;
       }
-    };
 
-    /* Used in place of a string predicate to sort access points by SSID.
-       In its current implementation, the custom sort makes hidden access
-       points appear at the bottom of the table instead of the top */
-    $scope.sortSSID = utils.customSSIDSort;
+      $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
+      $scope.sortPredicate = predicate;
+    };
 
     function init() {
       scaleView();
@@ -96,21 +93,22 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
     /* Store current sort ordering. */
     function saveState() {
-      accessPointTableState.sortPredicate($scope.sortPredicate);
       accessPointTableState.sortReverse($scope.sortReverse);
+      accessPointTableState.sortPredicate($scope.sortPredicate);
     };
 
     /* Load the previously used selection and sort ordering. */
     function restoreState() {
       var predicate = accessPointTableState.sortPredicate();
 
-      if (predicate === 'SSID') {
-        $scope.sortPredicate = $scope.sortSSID;
+      if (predicate === 'ssid') {
+        $scope.sortOrder = utils.customSSIDSort;
       } else {
-        $scope.sortPredicate = predicate;
+        $scope.sortOrder = predicate;
       }
 
       $scope.sortReverse = accessPointTableState.sortReverse();
+      $scope.sortPredicate = predicate;
     };
 
     /* Manually scale the view to the device where needed. */

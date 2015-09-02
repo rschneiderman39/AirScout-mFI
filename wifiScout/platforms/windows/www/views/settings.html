@@ -1,42 +1,42 @@
-﻿<div id="settings" ng-controller="settingsCtrl" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')">
+<div id="settings-wrapper" class="view-wrapper" ng-controller="settingsCtrl" ng-swipe-left="swipeTo('channelGraph', 'left')" ng-swipe-right="swipeTo('signalStrength', 'right')">
   <div id="scale-panel" class="panel panel-default">
-		
+
     <!-- Scale Header -->
   	<div class="panel-heading">
       <p class="panel-title section-title">{{strings.settings.visScaleHeader}}</p>
   	</div>
-  	
+
     <!-- Scale Description and Dropdown List -->
     <div class="panel-body">
     	<div class="row">
       	<div class="col-xs-5">
     			{{strings.settings.visScaleDescription}}
     		</div>
-        <div class="col-xs-1">
-          <p>{{visScaleMin}}
+        <div class="col-xs-1 no-padding-right">
+          <p id="min-label">{{visScaleMin}}
              {{strings.dBm}}</p>
         </div>
-    		<div id="scale-slider-col" class="col-xs-5">
+    		<div id="scale-slider-col" class="col-xs-4">
        		<input id="scale-slider" type="text" value="" />
        	</div>
-        <div class="col-xs-1">
-          <p>{{visScaleMax}}
+        <div class="col-xs-2 no-padding-right">
+          <p id="max-label">{{visScaleMax}}
             {{strings.dBm}}</p>
         </div>
      	</div>
    	</div>
 	</div>
 	<div id="hidden-ap-panel" class="panel panel-default">
-		
+
     <!-- Detect Hidden APs Header -->
   	<div class="panel-heading">
     	<p class="panel-title section-title">{{strings.settings.detectHiddenHeader}}</p>
  		</div>
- 		
+
     <!-- Detect Hidden APs Description and Toggle Selector -->
       <div class="panel-body">
       	<div class="row">
-        	<div ng-click="showNav()" class="col-xs-10">
+        	<div ng-click="showNav()" class="col-xs-5">
       			{{strings.settings.detectHiddenDescription}}
       		</div>
       		<div id="toggler">

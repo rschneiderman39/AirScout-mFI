@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 app.controller('settingsCtrl', ['$scope', 'globalSettings', 'setupService',
 function($scope, globalSettings, setupService) {
@@ -31,17 +31,6 @@ function($scope, globalSettings, setupService) {
         value: [globalSettings.visScaleMin(), globalSettings.visScaleMax()],
         tooltip: 'hide'
       };
-
-      /*$("[name='hiddenAPOptions']").bootstrapSwitch({
-        onText: globals.strings.settings.detectHiddenTrue,
-        offText: globals.strings.settings.detectHiddenFalse
-      });
-
-      $('input[name="hiddenAPOptions"]').bootstrapSwitch('state', globalSettings.detectHidden());
-
-      $('input[name="hiddenAPOptions"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        globalSettings.detectHidden(state);
-      });*/
 
       $(function() {
         $('#toggle-one').bootstrapToggle({

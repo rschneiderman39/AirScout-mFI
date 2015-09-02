@@ -5,7 +5,7 @@
 		<thead class="container-fluid">
   		<tr id="header" class="row">
       	<th class="flex-col ssid" ng-click="order('ssid')">
-        	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === sortSSID" ng-class="{reverse:sortReverse}"></span></a>
+        	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>
       	</th>
       	<th class="flex-col mac" ng-click="order('mac')">
       		<a href="">{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'mac'" ng-class="{reverse:sortReverse}"></span></a>
@@ -30,7 +30,7 @@
 	<div id="table-content">
 		<table class="table table-striped">
     	<tbody class="container-fluid">
-				<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortPredicate:sortReverse track by ap.mac">
+				<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortOrder:sortReverse track by ap.mac">
 	      	<td class="flex-col ssid">{{ap.ssid}}</td>
 	      	<td class="flex-col mac">{{ap.mac}}</td>
 					<td class="flex-col manufacturer">{{ap.manufacturer}}</td>
@@ -42,4 +42,5 @@
 	  </table>
 	</div>
 </div>
+
 <div filter-modal />

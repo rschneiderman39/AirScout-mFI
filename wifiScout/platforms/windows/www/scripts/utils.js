@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 var utils = {};
 
@@ -69,6 +69,14 @@ utils.toLighterShade = function(color, factor) {
 
 utils.spanLen = function(span) {
   return span[1] - span[0];
+};
+
+utils.order = function(parentSelector, elem1Selector, elem2Selector) {
+  var parent = $(parentSelector)[0],
+      elem1 = $(elem1Selector)[0],
+      elem2 = $(elem2Selector)[0];
+
+  parent.insertBefore(elem1, elem2);
 };
 
 function AccessPointSelection(macAddrs, showAll) {

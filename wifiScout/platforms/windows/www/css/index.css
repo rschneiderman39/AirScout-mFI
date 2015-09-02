@@ -1,8 +1,9 @@
-﻿/* Font Scaling */
-/*	If the screen width is larger than 889px then 
-			the font sizes in the application will be 
+/* Font Scaling */
+/*	If the screen width is larger than 889px then
+			the font sizes in the application will be
 			capped at the sizes listed. */
-@media screen and (min-width: 889px) {
+@media screen and (orientation: landscape) and (min-width: 889px),
+       screen and (orientation: portrait) and (min-height: 889px) {
 	body {
 		font-size: 16px;
 	}
@@ -11,14 +12,8 @@
   .toggle-on.btn-sm{padding-right:20px}
   .toggle-off.btn-sm{padding-left:20px}
 
-  .btn,
-	.text {
+  .btn {
 		font-size: 16px;
-	}
-
-	.minor-title {
-		font-size: 18px;
-		font-weight: bold;
 	}
 
 	.section-title {
@@ -26,85 +21,38 @@
 		font-weight: bold;
 	}
 
-	nz-tour #nzTour-actions {
-		font-size: 18px;
-	}
-
 	nz-tour #nzTour-content {
 		font-size: 16px;
+	}
+
+	nz-tour #nzTour-actions {
+		font-size: 18px;
 	}
 }
 
 /*	If the device screen width is less than 889px then
 			the font size will scale to the device width. */
-@media screen and (max-width: 888px) {
+@media screen and (orientation: landscape) and (max-width: 888px),
+       screen and (orientation: portrait) and (max-height: 888px) {
 	body {
-		font-size: 1.8vw;
+		font-size: 14px;
 	}
 
-  .btn,
-	.text {
-		font-size: 1.8vw;
-	}
-
-	.minor-title {
-		font-size: 2vw;
-		font-weight: bold;
+  .btn {
+		font-size: 14px;
 	}
 
 	.section-title {
-		font-size: 2.2vw;
+		font-size: 18px;
 		font-weight: bold;
 	}
 
-	nz-tour #nzTour-actions {
-		font-size: 2vw;
-	}
-
 	nz-tour #nzTour-content {
-		font-size: 1.8vw;
-	}
-}
-
-/* Top Bar Scaling */
-/* Device height is greater than 700px - the size of the top
-		bar and elements within it are capped */
-@media screen and (min-height: 700px) {
-	#top-bar {
-		height: 70px;
+		font-size: 14px;
 	}
 
-	#filter-button {
-		max-height: 42px;
-	}
-
-	#help-button {
-		max-height: 50px;
-	}
-
-	#view-title {
-		font-size: 36px;
-	}
-}
-
-/* Device height is less than 700px - the size of the top
-		bar and elements within it are scaled to the device
-		height */
-@media screen and (max-height: 700px) {
-	#top-bar {
-		height: 10vh;
-	}
-
-	#filter-button {
-		max-height: 6vh;
-	}
-
-	#help-button {
-		max-height: 7.15vh;
-	}
-
-	#view-title {
-		font-size: 6.2vh;
+	nz-tour #nzTour-actions {
+		font-size: 18px;
 	}
 }
 
@@ -112,13 +60,19 @@
 body {
 	background: #f1f1f1 !important;
 	height: 100%;
+	overflow: hidden;
 	position: fixed;
+	height: 100%;
 	width: 100%;
 }
 
 #current-view {
-	overflow: hidden;
-  position: relative;
+	height: 90%;
+	width: 100%;
+}
+
+.view-wrapper {
+	height: 100%;
 	width: 100%;
 }
 
@@ -127,77 +81,70 @@ body {
   background-image: url('../images/topBar.png');
 	background-size: cover;
 	border-bottom: 1px solid rgba(136, 136, 136, 0.72);
-  /* ?????
-  height: 10vh; */
+  height: 10%;
+	max-height: 70px;
   margin: 0px;
-	position: fixed;
+	text-align: center;
   width: 100vw;
 }
 
 #top-bar > div {
-  height: 100%;
+	height: 100%;
 }
 
 #view-title {
   color: #fafafa;
-	text-align: center;
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
+	font-size: 24px;
 }
 
 #filter-button {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  outline: none;
-}
-
-/* ?????
-.text {
-	font-size: 1.8vw;
-} */
-
-.minor-title {
-	font-size: 1.8vw;
-	font-weight: bold;
-}
-
-.section-title {
-	font-size: 1.95vw;
-	font-weight: bold;
+	float: left;
+	height: 80%;
+	max-height: 30px;
+	outline: none;
 }
 
 #help-button {
-  position: relative;
-  -webkit-transform: translateY(-50%);
-	top: 50%;
+	float: right;
+	height: 80%;
+	max-height: 40px;
+	outline: none;
 }
 
 /* Nav Bar */
 #nav-bar {
-  height: 13vh;
-  min-height: 0px;
-  position: fixed;
-  -webkit-transition: bottom 0.5s ease;
-  border: 2px solid rgba(33, 30, 30, 0.14);
-}
-
-#nav-bar div {
-	height: 100%;
+	height: 17%;
+	max-height: 120px;
+	position: fixed;
+	top: 100%;
+	-webkit-transform: translateY(-40%);
+	-webkit-transition: -webkit-transform 0.5s ease;
+	width: 100%;
 }
 
 #nav-bar-tab {
-  position: relative;
-  top: -6vh;
-  left: 46vw;
-  width: 13.5vh;
-  height: 6vh !important;
-  background-color: #fff;
+	background-color: #fff;
   border-top-left-radius: 110px;
   border-top-right-radius: 110px;
   border: 2px solid rgba(33, 30, 30, 0.137255);
-  border-bottom: 0;
+  border-bottom: 2px solid #fff;
+	height: 35%;
+	margin: 0 auto;
+	-webkit-transform: translateY(2px);
+	width: 100px;
+}
+
+#nav-bar-content {
+	background-color: #fff;
+	border: 2px solid rgba(33, 30, 30, 0.14);
+  height: 65%;
+	margin: 0;
+  width: 100%;
+}
+
+#nav-bar-content div {
+	height: 100%;
+	padding: 0;
 }
 
 #nav-bar-interaction-box {
@@ -211,51 +158,34 @@ body {
 	z-index: 999999999999;
 };
 
-#nav-button {
-  top: -5.5vh;
-}
-
 .nav > li > a:hover {
   background-color: transparent;
 }
 
-.nav-icon {
-	position: relative;
+.nav-button {
+  height: 100%;
+}
+
+img.nav-icon {
 	display: block;
-  height: 11vh;
-  width: 14.7vh;
 	margin: auto;
-  -webkit-transform: translateY(-50%);
-}
-
-.nav-pane {
-  display: inline-block;
-}
-
-.nav-toggle-right {
-  fill-opacity: 0.3;
-  stroke-width: 2;
-}
-
-.nav-toggle-right.active {
-  fill: #62bf01;
-  stroke: #62bf01;
-}
-
-.nav-toggle-left {
-  fill-opacity: 0.3;
-  stroke-width: 3;
-}
-
-.nav-toggle-left.active {
-  fill: #62bf01;
-  stroke: #62bf01;
+	max-height: 90%;
+	max-width: 90%;
 }
 
 /* NzTour */
-nz-tour #nzTour-box {
-  min-height: 10vh;
-	width: 30vw;
+@media screen and (orientation: portrait) {
+	nz-tour #nzTour-box {
+	  min-height: 10vh;
+		width: 50vw;
+	}
+}
+
+@media screen and (orientation: landscape) {
+	nz-tour #nzTour-box {
+	  min-height: 10vh;
+		width: 30vw;
+	}
 }
 
 nz-tour #nzTour-content {
@@ -282,14 +212,87 @@ nz-tour ::-webkit-scrollbar-track {
 /*	The axis-label class bolds the X and Y axis
 			labels in the Channel Graph and Access Point
 			Count views.	*/
-.axis-label {
-	font-weight: bold;
-}
 
+/* Styles */
 .centered-text {
 	text-align: center;
 }
 
+.no-padding {
+	margin: 0;
+	padding: 0;
+}
+
+.vertically-centered {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+}
+
+/* Components */
+.axis-label {
+	font-weight: bold;
+}
+
+.divider {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 10px 0;
+}
+
 .row {
+	margin: 0;
 	max-height: 100%;
+	padding: 0;
+}
+
+.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7,
+.col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+	height: 100%;
+	max-height: 100%;
+}
+
+.list.scroll-y {
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.listgroupitem.default {
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  margin-bottom: -1px;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.listgroupitem.default.active {
+  background-color: #62bf01;
+  border-color: #62bf01;
+  color: #fafafa;
+}
+
+.panel.selection-indicator {
+	margin: 0;
+}
+
+.panel.selection-indicator .panel-body {
+  background-color: #fafafa;
+  color: black;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 10px 0;
+  text-align: center;
+	width: 100%; /* prevent an issue where the content sometimes won't dispplay */
+}
+
+rect.selectable-window {
+  fill-opacity: 0.3;
+  stroke-width: 2;
+}
+
+rect.selectable-window.active {
+  fill: #62bf01;
+  stroke: #62bf01;
 }

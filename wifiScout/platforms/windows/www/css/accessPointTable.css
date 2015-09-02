@@ -1,54 +1,126 @@
-﻿ /* View Wrapper */
-#ap-tab {
-  height: 100%;
+@media screen and (orientation:landscape) {
+  /* portrait-specific styles */
+  #access-point-table-wrapper
+  .flex-col.ssid {
+    width: calc(100% / 6);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.mac {
+    width: calc(100% / 6);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.manufacturer {
+    width: calc(100% / 4);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.channel {
+    width: calc(100% / 12);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.level {
+    max-width: calc(100% / 6);
+    width: calc(100% / 6);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.capabilities {
+    max-width: calc(100% / 6);
+    width: calc(100% / 6);
+  }
+}
+
+@media screen and (orientation:portrait) and (max-width: 639px){
+  /* portrait-specific styles */
+  #access-point-table-wrapper
+  .flex-col.ssid {
+    width: calc(100% / 3);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.mac {
+    width: calc(100% / 3);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.manufacturer {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .flex-col.channel {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .flex-col.level {
+    width: calc(100% / 3);
+  }
+
+  #access-point-table-wrapper
+  .flex-col.capabilities {
+    display: none;
+  }
 }
 
 /* Table Header */
-#ap-tab th {
-  text-align: center;
+#access-point-table-wrapper
+th {
+ text-align: center;
+ white-space: nowrap;
 }
 
-#ap-tab a {
+#access-point-table-wrapper
+a {
   color: #337ab7;
   text-decoration: none;
 }
 
-#ap-tab .sortArrow::after {
+#access-point-table-wrapper
+.sortArrow::after {
   content: '\25b2';
 }
 
-#ap-tab .sortArrow.reverse::after {
+#access-point-table-wrapper
+.sortArrow.reverse::after {
   content: '\25bc';
 }
 
 /* Table Body */
-#ap-tab,
+#access-point-table-wrapper
 .table {
   margin-bottom: 0px;
   margin-top: 0px;
 }
 
-#ap-tab,
+#access-point-table-wrapper
 #table-content {
   overflow-y: auto;
 }
 
-#ap-tab td {
+#access-point-table-wrapper
+td {
   text-align: center;
 }
 
 /* Scrollbar */
-#ap-tab ::-webkit-scrollbar {
+#access-point-table-wrapper
+::-webkit-scrollbar {
   -webkit-appearance: none;
 }
 
-#ap-tab ::-webkit-scrollbar-thumb {
+#access-point-table-wrapper
+::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, .5);
   border: none;
   border-radius: 10px;
 }
 
-#ap-tab ::-webkit-scrollbar-track {
+#access-point-table-wrapper
+::-webkit-scrollbar-track {
   background-color: #ffffff;
   border-radius: 10px;
 }

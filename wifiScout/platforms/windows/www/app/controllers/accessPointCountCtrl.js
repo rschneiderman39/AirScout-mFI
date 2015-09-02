@@ -1,41 +1,69 @@
-﻿"use strict";
+"use strict";
 
+/* Handles data updating and DOM manipulation for the access point count
+   view. */
 app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 'globalSettings',
   'accessPointCountState', 'channelValidator', 'setupService', function($scope,
   visBuilder, accessPoints, globalSettings, accessPointCountState, channelValidator,
   setupService) {
 
+  /* Wait until the device is ready before setting up the controller */
   setupService.ready.then(function() {
 
-    var updateInterval = constants.updateIntervalSlow,
-        transitionInterval = updateInterval * .9;
+    /* The time, in milliseconds, between data updates */
+    var updateInterval = constants.updateIntervalSlow;
+
+    /* The animation duration, in milliseconds, for the bars and labels */
+    var transitionInterval = updateInterval * .9;
 
     var prefs = {
-      barStrokeWidth: 0,
-      barStrokeColor: 'none',
-      barFillColor: '#62BF01',
-      barWidth: 0.8,
-      defaultBand: '2_4',
-      defaultSliderExtent: [34, 66],
-      disallowedChannelColor: 'black',
-      disallowedChannelOpacity: 0.35,
-      domain2_4: [-1, 15],
-      domain5: [34, 167],
-      labelColor: 'black',
-      labelPadding: 10,
-      range: [0, 15],
-      heightFactor: 0.97
+      barStrokeWidth: 0,               // Bar border width, in pixels
+      barStrokeColor: 'none',          // Bar border color
+      barFillColor: '#62BF01',         // Bar color
+
+      barWidth: 0.8,                   /* Bar width percent.  A width of 1
+                                        leaves no space between adjacent bars */
+
+      defaultBand: '2_4',              /* The band that is pre-selected on
+                                          first view load */
+
+      defaultSliderExtent: [34, 66],   /* The initial extent of the 5Ghz slider,
+                                        in channel units, on first view load. */
+
+      disallowedChannelOpacity: 0.35,  /* Opacity applied to the labels of
+                                        restricted channels */
+
+      domain2_4: [-1, 15],             /* The extent of the X axis for the 2.4
+                                        Ghz band, in channel units */
+
+      domain5: [34, 167],              /* The extent of the X axis for the 2.4
+                                        Ghz band, in channel units */
+
+      labelColor: 'black',             /* Color of the numeric count labels
+                                        above each bar */
+
+      labelPadding: 10,                /* The number of pixels separating
+                                        each bar from its label */
+
+      range: [0, 15],                  /* The extent of the y axis, in channel
+                                        units */
+
+      heightFactor: 0.97               /* Height of the visualization as a
+                                        percentage of its container height */
     };
 
     function init() {
+      /* This configuration object tells VisBuilder how to construct the
+         skeleton components (axes, labels, containers, etc...).  Refer to
+         VisBuilder comments for an explanation of each parameter. */
       var config = {
         band: undefined,
-        graphDomain: prefs.domain2_4,
-        graphMargins: {
-          top: .04,
-          bottom: .08,
-          left: .07,
-          right: .01
+        mainDomain: prefs.domain2_4,
+        mainMargins: {
+          top: 10,
+          bottom: 30,
+          left: 55,
+          right: 10
         },
         gridLineOpacity: 0,
         height: undefined,
@@ -45,10 +73,10 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         navLeftLabel: globals.strings.accessPointCount.label2_4,
         navLeftPercent: 0.2,
         navMargins: {
-          top: .02,
-          bottom: .05,
-          left: .07,
-          right: .01
+          top: 10,
+          bottom: 20,
+          left: 50,
+          right: 10
         },
         navPercent: 0.2,
         navRightDomain: prefs.domain5,
@@ -57,36 +85,68 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         sliderExtent: undefined,
         width: undefined,
         xAxisTickInterval: 1,
-        yAxisTickInterval: 3
+        yAxisTickInterval: 3,
+        canvasSelector: '#vis'
       };
 
+      /* Scale the canvas to the container size */
       config.width = $('#current-view').width();
       config.height = $('#current-view').height() * prefs.heightFactor;
 
+      /* If this is first view load, configure vis with default slider location
+        and band selection.  Othersiwe, configure with the state that was
+        saved on last view unload. */
       config.band = accessPointCountState.band() || prefs.defaultBand;
       config.sliderExtent = accessPointCountState.sliderExtent() || prefs.defaultSliderExtent;
 
-      var vis = visBuilder.buildVis(config, elemUpdateCallback, elemScrollCallback,
+      /* Build the visualization with the our configuration and custom
+         callbacks */
+      var vis = visBuilder.buildVis(elemUpdateCallback, elemScrollCallback,
         axisScrollCallback, bandChangeCallback, saveStateCallback);
 
-      $(document).one(events.transitionDone, vis.update);
+      vis.init(config);
 
+      /* Start the update loop */
       var updateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
           vis.update();
         }
       }, updateInterval);
 
+      /* Wait until the transition animation is done before performing
+         first update */
+      $scope.$on(events.transitionDone, vis.update);
+
+      /* Rescale on screen rotate */
+      $(window).on('resize', redraw);
+
+      /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
+        /* Avoid duplicate event handlers */
+        $(window).off('resize', redraw);
+
         clearInterval(updateLoop);
         vis.saveState();
-        d3.select('#vis').selectAll('*').remove();
+        vis.destroy();
       });
 
+      /* Rebuild visualization from scratch with appropriate dimensions */
+      function redraw(){
+        if (globals.debug) console.log('resizing ap count');
+
+        config.width = $('#current-view').width();
+        config.height = $('#current-view').height() * prefs.heightFactor;
+
+        vis.destroy();
+        vis.init(config);
+      };
     };
 
-    function elemUpdateCallback(graphClip, graphScalesX, graphScalesY,
-                             graphContainer, graphAxisFnX, graphAxisFnY,
+    /* Invoked whenever vis.update() is called on the object returned by
+       VisBuilder.  It adds, updates, and removes the bars and their labels.
+       Refer to comments in VisBuilder for details. */
+    function elemUpdateCallback(mainClip, mainScalesX, mainScalesY,
+                             mainContainer, mainAxisFnX, mainAxisFnY,
                              navLeftClip, navLeftScalesX,
                              navRightClip, navRightScalesX,
                              navScalesY) {
@@ -94,21 +154,29 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
       accessPoints.getAll().done(function(results) {
 
-        var numOccupants = {},
-            data = [],
-            accessPoint;
+        /* Will map each channel to its number of access points */
+        var numOccupants = {};
 
+        /* Will contain an array of data objects of the form:
+         { channel: <number>, occupancy: <number> }.  To be
+         used by d3 as the dataset */
+        var data = [];
+
+        var ap; // tmp
+
+        /* Determine the access point counts */
         for (var i = 0; i < results.length; ++i) {
-          accessPoint = results[i];
+          ap = results[i];
 
-          if (numOccupants[accessPoint.channel] === undefined) {
-            numOccupants[accessPoint.channel] = 1;
+          if (numOccupants[ap.channel] === undefined) {
+            numOccupants[ap.channel] = 1;
 
           } else {
-            numOccupants[accessPoint.channel] += 1;
+            numOccupants[ap.channel] += 1;
           }
         }
 
+        /* Build dataset */
         for (var channel in numOccupants) {
           data.push({
             channel: channel,
@@ -116,30 +184,58 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
           });
         }
 
+        /* If necessary, change the Y scale to prevent bars from going off
+           the screen */
         rescaleVertically(data);
+
+        /* Update bar and label height with new dataset */
         updateBars(data);
         updateLabels(data);
       });
 
+      /* Update bar heights across the entire visualization.
+
+         @param data - an array of data objects of the form:
+          { channel: <number>, occupancy: <number> }
+      */
       function updateBars(data) {
-        updateSection(graphScalesX, graphScalesY, graphClip, data);
+        /* Update the bars in each section of the visualization (the main
+        window and both nav panes) */
+        updateSection(mainScalesX, mainScalesY, mainClip, data);
         updateSection(navLeftScalesX, navScalesY, navLeftClip, data);
         updateSection(navRightScalesX, navScalesY, navRightClip, data);
 
+        /* A general function for updating the bars in a particular section
+           of the visualization.  Just pass in the appropriate scales
+           and canvases.
+
+           @param xScale - d3 scale object for section's X scale
+           @param yScale - d3 scale object for section's Y scale
+           @param clip -
+           @param data - an array of data objects of the form:
+                   { channel: <number>, occupancy: <number> }
+        */
         function updateSection(xScale, yScale, clip, data) {
+          /* Bind dataset to bar elements */
           var bars = clip.selectAll('.bar')
             .data(data, function(d) {
               return d.channel;
             });
 
+          /* Stop any in-progress transitions */
+          bars.interrupt();
+
+          /* Create a bar for each new data point */
           bars.enter().append('rect')
             .classed('bar', true)
             .attr('width', barWidth(xScale))
+            // Start with 0 height so appearance can be animated
             .attr('height', 0)
             .attr('x', function(d) {
               return xScale(d.channel);
             })
             .attr('transform', function(d) {
+              // Center the bar on the channel label
               return 'translate(-' + (barWidth(xScale) / 2) + ')';
             })
             .attr('y', yScale(0))
@@ -147,8 +243,8 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
             .attr('stroke-width', prefs.barStrokeWidth)
             .attr('stroke', prefs.barStrokeColor);
 
+          /* Transition each bar to its new height */
           bars
-            .interrupt()
             .transition()
             .duration(transitionInterval)
               .attr('y', function(d) {
@@ -158,6 +254,7 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
                 return yScale(0) - yScale(d.occupancy);
               });
 
+          /* Transition out any bars that no longer map to a data point */
           bars.exit()
             .transition()
             .duration(transitionInterval)
@@ -166,57 +263,77 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
         };
       };
 
+      /* Update label positions in the main view.
+
+        @param data - an array of data objects of the form:
+          { channel: <number>, occupancy: <number> }
+      */
       function updateLabels(data) {
-        var labels = graphClip.selectAll('text')
+        /* Bind dataset to label elements */
+        var labels = mainClip.selectAll('text')
           .data(data, function(d) {
             return d.channel;
           });
 
+        /* Stop any in-progress transitions */
+        labels.interrupt();
+
+        /* Create a label for each new data point */
         labels.enter().append('text')
           .text(function(d) {
             return d.occupancy;
           })
           .attr('fill', prefs.labelColor)
           .attr('x', function(d) {
-            return graphScalesX(d.channel);
+            return mainScalesX(d.channel);
           })
           .attr('transform', function(d) {
+            // Center label over bar
             return 'translate(-' + (this.getBBox().width / 2) + ')';
           })
-          .attr('y', graphScalesY(0))
+          .attr('y', mainScalesY(0))
 
+        /* Move each label to its new position */
         labels
-          .interrupt()
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return graphScalesY(d.occupancy) - prefs.labelPadding;
+              return mainScalesY(d.occupancy) - prefs.labelPadding;
             })
             .text(function(d) {
               return d.occupancy;
             });
 
+        /* Remove any labels that don't map to a data point */
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', graphScalesY(constants.signalFloor))
+          .attr('y', mainScalesY(constants.signalFloor))
           .remove();
       };
 
-      /* Rescale the Y axis to bring bars which have left frame back into view */
+      /* Rescale the Y axis to bring bars which have left frame back into view.
+
+        @param data - an array of data objects of the form:
+         { channel: <number>, occupancy: <number> }
+      */
       function rescaleVertically(data) {
+        /* Get the highest access point count in the new datset */
         var maxOccupancy = d3.max(data, function(d) {
           return d.occupancy;
         });
 
-        rescaleSection(graphContainer, graphAxisFnY,
-                       graphClip, graphScalesY);
+        /* Vertically rescale each portion of the visualization accordingly */
+        rescaleSection(mainContainer, mainAxisFnY,
+                       mainClip, mainScalesY);
         rescaleSection(null, null, navLeftClip, navScalesY);
         rescaleSection(null, null, navRightClip, navScalesY);
 
+        /* Rescale a particular section of the visualization */
         function rescaleSection(container, axisFn, clip, yScale) {
           var rescaleNeeded = false;
 
+          /* Do we need a rescale? */
           if (maxOccupancy >= yScale.domain()[1]) {
             yScale.domain([0, maxOccupancy * 1.125]);
             rescaleNeeded = true;
@@ -226,10 +343,12 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
           }
 
           if (rescaleNeeded) {
+            /* Make sure we don't try to rescale non-existent axes */
             if (container && axisFn) {
               container.select('.y.axis').call(axisFn);
             }
 
+            /* Apply the new Y scale to each bar */
             clip.selectAll('.bar')
               .interrupt()
               .attr('height', function(d) {
@@ -237,13 +356,14 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
               })
               .attr('y', function(d) {
                 return yScale(d.occupancy);
-              })
+              });
 
+            /* Apply new Y scale to each label */
             clip.selectAll('text')
               .interrupt()
               .attr('y', function(d) {
                 return yScale(d.occupancy) - prefs.labelPadding;
-              })
+              });
           }
         };
 
@@ -251,103 +371,125 @@ app.controller('accessPointCountCtrl', ['$scope', 'visBuilder', 'accessPoints', 
 
     };
 
-    function barWidth(scale) {
-      return (scale(1) - scale(0)) * prefs.barWidth;
+    /* @param xScale - The d3 scale object representing the X scale
+
+       @returns - The appropriate bar width, in pixels, for the given scale
+    */
+    function barWidth(xScale) {
+      return (xScale(1) - xScale(0)) * prefs.barWidth;
     };
 
-    /* Move plot elements to match a new viewport extent */
-    function elemScrollCallback(graphClip, graphScalesX) {
-      /* Move parabolas */
-      graphClip.selectAll('.bar')
+    /* Move plot elements to match a new 5Ghz slider extent.
+       Called whenever the slider is moved.  Refer to comments in VisBuilder for
+       details
+    */
+    function elemScrollCallback(mainClip, mainScalesX) {
+      /* Move bars */
+      mainClip.selectAll('.bar')
         .attr('x', function(d) {
-          return graphScalesX(d.channel);
+          return mainScalesX(d.channel);
         });
 
       /* Move labels */
-      graphClip.selectAll('text')
+      mainClip.selectAll('text')
         .attr('x', function(d) {
-          return graphScalesX(d.channel);
+          return mainScalesX(d.channel);
         });
     };
 
-    /* "Translate" (really a rescale) x axis to account for a new viewport extent */
-    function axisScrollCallback(graphContainer, graphAxisFnX,
-                          graphScalesX, navRightSlider,
+    /* Rescale x axis to account for a new 5 Ghz slider extent. Called whenever
+       slider is moved. Refer to comments in VisBuilder for details */
+    function axisScrollCallback(mainContainer, mainAxisFnX,
+                          mainScalesX, slider,
                           navRightScalesX, band) {
 
+      /* If we just switched to the 2.4 Ghz band, rescale appropriately */
       if (band === '2_4') {
-        graphScalesX.domain(prefs.domain2_4);
-      } else if (band === '5') {
-        var xScale = navRightScalesX,
-            slider = navRightSlider;
-
-        graphScalesX
-          .domain([xScale.invert(slider.attr('x')),
-            xScale.invert(parseFloat(slider.attr('x')) +
+        mainScalesX.domain(prefs.domain2_4);
+      }
+      /* Otherwise, rescale to the slider extent */
+      else if (band === '5') {
+        mainScalesX
+          .domain([navRightScalesX.invert(slider.attr('x')),
+            navRightScalesX.invert(parseFloat(slider.attr('x')) +
             parseFloat(slider.attr('width')))]);
       }
 
-      graphContainer.select('.x.axis').call(graphAxisFnX);
+      /* Update the axis */
+      mainContainer.select('.x.axis').call(mainAxisFnX);
 
-      removeDisallowedChannels(graphContainer);
+      markRestrictedChannels(mainContainer);
     };
 
-    function bandChangeCallback(graphClip, graphScalesX,
-                          graphContainer, graphAxisFnX,
-                          navRightSlider, navRightScalesX, band) {
+    /* Invoked whenever the user selects a different band.  Refer to comments
+       in VisBuilder for details. */
+    function bandChangeCallback(mainClip, mainScalesX,
+                          mainContainer, mainAxisFnX,
+                          slider, navRightScalesX, band) {
 
-      axisScrollCallback(graphContainer, graphAxisFnX,
-                   graphScalesX, navRightSlider,
+      /* Update the X axis to reflect the new band */
+      axisScrollCallback(mainContainer, mainAxisFnX,
+                   mainScalesX, slider,
                    navRightScalesX, band);
 
-      elemScrollCallback(graphClip, graphScalesX);
+      /* Move elements to their new position */
+      elemScrollCallback(mainClip, mainScalesX);
 
-      graphClip.selectAll('.bar')
+      /* Correct the width of each bar */
+      mainClip.selectAll('.bar')
         .attr('width', function(d) {
-          return barWidth(graphScalesX);
+          return barWidth(mainScalesX);
         })
         .attr('transform', function(d) {
-          return 'translate(-' + (barWidth(graphScalesX) / 2) + ')';
+          return 'translate(-' + (barWidth(mainScalesX) / 2) + ')';
         });
 
-      graphClip.selectAll('text')
+      /* Correnct the text alignment */
+      mainClip.selectAll('text')
         .attr('transform', function(d) {
           return 'translate(-' + (this.getBBox().width / 2) + ')';
         });
 
-      graphAxisFnX.ticks(utils.spanLen(graphScalesX.domain()));
-      graphContainer.select('.x.axis').call(graphAxisFnX);
+      /* Make sure the X axis has enough ticks for all the channels */
+      mainAxisFnX.ticks(utils.spanLen(mainScalesX.domain()));
+      mainContainer.select('.x.axis').call(mainAxisFnX);
 
-      removeDisallowedChannels(graphContainer);
+      markRestrictedChannels(mainContainer);
     };
 
-    /* Remove tick marks from X axis which don't correspond
-       to a valid channel */
-    function removeDisallowedChannels(graphContainer) {
-      graphContainer.selectAll('.x.axis > .tick')
+    /* Grey out any channel labels that represent a restricted channel.
+       Remove any labels that don't correspond to a real channel  (since making
+       a custom axis would be kinda hard)
+
+       @param mainContainer - svg canvas for main section
+    */
+    function markRestrictedChannels(mainContainer) {
+      /* Remove all channel labels that aren't actually channels */
+      mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === undefined;
         })
           .remove();
 
-      graphContainer.selectAll('.x.axis > .tick')
+      /* Grey out restricted channels */
+      mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === false;
         })
           .style('opacity', prefs.disallowedChannelOpacity)
-          .attr('fill', prefs.disallowedChannelColor);
     };
 
-    function saveStateCallback(navRightSlider, navRightScalesX, band) {
-      var slider, extentMin, extentMax, xScale;
+    /* Invoked whenever saveState() is called on the visualization object
+       returned by VisBuilder.  Refer to VisBuidler comments for details */
+    function saveStateCallback(slider, navRightScalesX, band) {
+      var extentMin, extentMax;
 
-      slider = navRightSlider;
-      xScale = navRightScalesX;
-
-      extentMin = xScale.invert(parseFloat(slider.attr('x'))),
-      extentMax = xScale.invert(parseFloat(slider.attr('x')) +
+      /* Get the slider extent */
+      extentMin = navRightScalesX.invert(parseFloat(slider.attr('x'))),
+      extentMax = navRightScalesX.invert(parseFloat(slider.attr('x')) +
                                   parseFloat(slider.attr('width')));
 
+      /* Save our current state */
       accessPointCountState.band(band);
       accessPointCountState.sliderExtent([extentMin, extentMax]);
     };

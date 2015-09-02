@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGraphManager',
   'visBuilder', 'setupService', function($scope, $timeout, globalSettings, timeGraphManager,
@@ -11,8 +11,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         range: [globalSettings.visScaleMin(), globalSettings.visScaleMax()],
         lineWidth: 2,
         highlightedLineWidth: 6,
-        highlightOpacity: 0.3,
-        heightFactor: 0.94
+        highlightOpacity: 0.3
       };
 
       var updateInterval = timeGraphManager.getUpdateInterval();
@@ -41,12 +40,12 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
 
       function init() {
         var config = {
-          graphDomain: prefs.domain,
-          graphMargins: {
-            top: .04,
-            bottom: .09,
-            left: .1,
-            right: .02
+          mainDomain: prefs.domain,
+          mainMargins: {
+            top: 10,
+            bottom: 30,
+            left: 50,
+            right: 10
           },
           gridLineOpacity: 0.5,
           height: undefined,
@@ -56,27 +55,56 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           range: prefs.range,
           width: undefined,
           xAxisTickInterval: 10,
-          yAxisTickInterval: 10
+          yAxisTickInterval: 10,
+          canvasSelector: '#vis'
         };
 
-        config.width = $('#time-graph').width();
-        config.height = $('#current-view').height() * prefs.heightFactor;
+        orient();
 
-        var vis = visBuilder.buildVis(config, elemUpdateCallback, null,
-          null, null, null);
+        config.width = $('#time-graph').width();
+        config.height = $('#time-graph').height();
+
+        var vis = visBuilder.buildVis(elemUpdateCallback);
+
+        vis.init(config);
 
         restoreState();
 
-        $(document).on(events.newTimeGraphData, vis.update);
-        $(document).on(events.newLegendData, updateLegend);
+        $scope.$on(events.newTimeGraphData, vis.update);
+        $scope.$on(events.newLegendData, updateLegend);
+
+        $(window).on('resize', redraw);
 
         $scope.$on('$destroy', function() {
-          $(document).off(events.newTimeGraphData, vis.update);
-          $(document).off(events.newLegendData, updateLegend);
-
-          d3.select('#vis').selectAll('*').remove();
+          $(window).off('resize', redraw);
+          vis.destroy();
         });
 
+        /* Rebuild visualization from scratch with appropriate dimensions */
+        function redraw() {
+          if (globals.debug) console.log('resizing time graph');
+
+          orient();
+
+          config.width = $('#time-graph').width();
+          config.height = $('#time-graph').height();
+
+          vis.destroy();
+          vis.init(config);
+        }
+
+        function orient() {
+          $('#legend .list').height($('#legend').height()
+                            - $('#legend .selection-indicator').outerHeight(true)
+                            - $('#legend .divider').outerHeight(true)
+                            - defaults.padding);
+
+          if ($(window).height() > $(window).width()) {
+            utils.order('#time-graph-wrapper', '#time-graph', '#legend');
+          } else {
+            utils.order('#time-graph-wrapper', '#legend', '#time-graph');
+          }
+        };
       };
 
       function restoreState() {
@@ -116,21 +144,21 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
         });
       };
 
-      function elemUpdateCallback(graphClip, graphScalesX, graphScalesY) {
+      function elemUpdateCallback(clip, xScale, yScale) {
         if (globals.debug) console.log('updating timegraph');
 
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
-            return graphScalesX(graphScalesX.domain()[0] + (i-2) * (updateInterval / 1000));
+            return xScale(xScale.domain()[0] + (i-2) * (updateInterval / 1000));
           })
           .y(function(d, i) {
-            return graphScalesY(d.level);
+            return yScale(d.level);
           })
           .interpolate('linear');
 
         var datasets = timeGraphManager.getSelectedDatasets();
 
-        var lines = graphClip.selectAll('.data-line')
+        var lines = clip.selectAll('.data-line')
           .data(datasets, function(d, i) {
             return d.mac;
           });
@@ -147,7 +175,7 @@ app.controller('timeGraphCtrl', ['$scope', '$timeout', 'globalSettings', 'timeGr
           .attr('stroke-width', prefs.lineWidth)
           .attr('fill', 'none');
 
-        var translation = graphScalesX(updateInterval / 1000) - graphScalesX(0);
+        var translation = xScale(updateInterval / 1000) - xScale(0);
 
         lines
           .attr('fill', function(d) {

@@ -1,67 +1,81 @@
-﻿"use strict";
+"use strict";
 
+/* Handles data updating for the access point table view */
 app.controller('accessPointTableCtrl', ['$scope', 'accessPoints',
 'globalSettings', 'accessPointTableState', 'setupService', function($scope,
 accessPoints, globalSettings, accessPointTableState, setupService) {
 
+  /* Wait until the device is ready before setting up the controller */
   setupService.ready.then(function() {
 
-    var updateInterval;
+    /* The time, in milliseconds, between data updates */
+    var updateInterval = constants.updateIntervalSlow;
 
     $scope.strings = globals.strings;
-    $scope.accessPoints = [];       // Array of AP data objects to be displayed
-    $scope.sortPredicate = undefined; // String or function used by angular to order the elements.
-    $scope.sortReverse = undefined;   // true: Sort direction reversed.  false: Normal behavior.
+
+    /* Array of AccessPoint objects to be displayed in the table */
+    $scope.accessPoints = [];
+
+    /* true: Sort direction reversed.  false: Normal behavior */
+    $scope.sortReverse = undefined;
+
+    $scope.sortPredicate = undefined;
+
+    $scope.sortOrder = undefined;
 
     /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
        If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
        is selected as the predicate, a custom ordering function is substituted instead.
 
-       @param {string|function} predicate: The new sort .
+       @param predicate: The new sort predicate (string or function)
     */
     $scope.order = function(predicate) {
-      if (predicate === 'SSID') {
-        $scope.sortReverse = ($scope.sortPredicate === $scope.sortSSID) ? !$scope.sortReverse : false;
-        $scope.sortPredicate = $scope.sortSSID;
+      if (predicate === 'ssid') {
+        $scope.sortOrder = utils.customSSIDSort;
       } else {
-        $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
-        $scope.sortPredicate = predicate;
+        $scope.sortOrder = predicate;
       }
+
+      $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
+      $scope.sortPredicate = predicate;
     };
 
-    /* Used in place of a string predicate to sort access points by SSID. @type {function} */
-    $scope.sortSSID = utils.customSSIDSort;
-
     function init() {
-      if (accessPoints.count() < constants.moderateThresh) {
-        updateInterval = constants.updateIntervalNormal;
-
-      } else if (accessPoints.count() < constants.highThresh) {
-        updateInterval = constants.updateIntervalSlow;
-      } else {
-        updateInterval = constants.updateIntervalVerySlow;
-      }
-
-      prepView();
+      scaleView();
       restoreState();
 
-      $(document).one(events.transitionDone, update);
-
+      /* Start the update loop */
       var updateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
           update();
         }
       }, updateInterval);
 
-      $(document).on(events.newSelection, update);
+      /* Wait until the transition animation is done before performing
+         first update */
+      $scope.$on(events.transitionDone, update);
 
+      /* Ensure that a change to the access point selection in the Filtering
+         options menu is immediately reflected in the table */
+      $scope.$on(events.newSelection, update);
+
+      /* Rescale on device rotate */
+      $(window).on('resize', scaleView);
+
+      /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
+        /* Avoid duplicate event handlers */
+        $(window).off('resize', scaleView);
+
+        /* Stop updating */
         clearInterval(updateLoop);
-        $(document).off(events.newSelection, update);
+
         saveState();
       });
     };
 
+    /* @returns the AccessPointSelection object containing the current
+       access point selection */
     function apSelection() {
       return globalSettings.accessPointSelection();
     };
@@ -70,6 +84,7 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
       if (globals.debug) console.log('updating ap table');
 
       accessPoints.getAll().done(function(results) {
+        /* Update DOM */
         $scope.$apply(function() {
           $scope.accessPoints = apSelection().apply(results);
         });
@@ -78,26 +93,30 @@ accessPoints, globalSettings, accessPointTableState, setupService) {
 
     /* Store current sort ordering. */
     function saveState() {
-      accessPointTableState.sortPredicate($scope.sortPredicate);
       accessPointTableState.sortReverse($scope.sortReverse);
+      accessPointTableState.sortPredicate($scope.sortPredicate);
     };
 
     /* Load the previously used selection and sort ordering. */
     function restoreState() {
       var predicate = accessPointTableState.sortPredicate();
 
-      if (predicate === 'SSID') {
-        $scope.sortPredicate = $scope.sortSSID;
+      if (predicate === 'ssid') {
+        $scope.sortOrder = utils.customSSIDSort;
       } else {
-        $scope.sortPredicate = predicate;
+        $scope.sortOrder = predicate;
       }
 
       $scope.sortReverse = accessPointTableState.sortReverse();
+      $scope.sortPredicate = predicate;
     };
 
     /* Manually scale the view to the device where needed. */
-    function prepView() {
-      var contentHeight = $(window).height() - $('#top-bar').height() - $('.table thead').height();
+    function scaleView() {
+      if (globals.debug) console.log('scaling ap table');
+
+      var contentHeight = $(window).height() - $('#top-bar').height()
+                          - $('.table thead').height();
       $('#table-content').height(contentHeight);
     };
 

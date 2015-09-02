@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 app.factory('visBuilder', ['setupService', function(setupService) {
 
@@ -10,8 +10,8 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // height
     // width
     // navPercent
-    // graphMargins
-    // graphDomain
+    // mainMargins
+    // mainDomain
     // labelX
     // range
     // labelY
@@ -23,155 +23,158 @@ app.factory('visBuilder', ['setupService', function(setupService) {
     // navRightDomain
     // navLeftLabel
     // navRightLabel
+    // canvasSelector
 
-    service.buildVis = function(config, elemUpdateFn, elemScrollFn,
+    service.buildVis = function(elemUpdateFn, elemScrollFn,
       axisScrollFn, bandChangeFn, saveStateFn) {
       var vis = {};
 
-      var band;
+      var band, config;
 
       var dim = {}, scales = {}, elem = {};
 
       var hasNav = false;
 
+      vis.init = function(cfg) {
+        config = cfg;
+
+        buildMain();
+
+        if (config.navPercent > 0) {
+          buildNav();
+          hasNav = true;
+          setBand(band || config.band);
+        }
+      };
+
       vis.update = function() {
         if (hasNav) {
-          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
-                   elem.graph.container, elem.graph.axisFn.x, elem.graph.axisFn.y,
+          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+                   elem.main.container, elem.main.axisFn.x, elem.main.axisFn.y,
                    elem.nav.left.clip, scales.nav.left.x,
                    elem.nav.right.clip, scales.nav.right.x,
                    scales.nav.y, band);
         } else {
-          elemUpdateFn(elem.graph.clip, scales.graph.x, scales.graph.y,
-                   elem.graph.axisFn.x, elem.graph.axisFn.y);
+          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+                   elem.main.axisFn.x, elem.main.axisFn.y);
         }
-
       };
 
       vis.saveState = function() {
         saveStateFn(elem.nav.right.slider, scales.nav.right.x, band);
       };
 
-      buildGraph();
-
-      if (config.navPercent > 0) {
-        buildNav();
-        hasNav = true;
-        setBand(config.band);
-      }
+      vis.destroy = function() {
+        d3.select(config.canvasSelector).selectAll('*').remove();
+      };
 
       return vis;
 
-      /* Derive graph dimensions and add elements to DOM */
-      function buildGraph() {
-        d3.select('#vis')
-          .append('div').attr('id', 'graph');
+      /* Construct the main section of the visualization */
+      function buildMain() {
+        d3.select(config.canvasSelector)
+          .append('div').attr('id', 'main');
 
-        dim.graph = {};
+        dim.main = {};
 
         /* Dimensions */
-        dim.graph.totalHeight = config.height * (1 - config.navPercent);
+        dim.main.totalHeight = config.height * (1 - config.navPercent);
 
-        dim.graph.margins = {
-          left: config.graphMargins.left * config.width,
-          right: config.graphMargins.right * config.width,
-          top: config.graphMargins.top * config.height,
-          bottom: config.graphMargins.bottom * config.height
+        dim.main.margins = {
+          left: config.mainMargins.left,
+          right: config.mainMargins.right,
+          top: config.mainMargins.top,
+          bottom: config.mainMargins.bottom
         };
 
-        dim.graph.width = config.width - dim.graph.margins.left - dim.graph.margins.right;
-        dim.graph.height = dim.graph.totalHeight - dim.graph.margins.top - dim.graph.margins.bottom;
+        dim.main.width = config.width - dim.main.margins.left - dim.main.margins.right;
+        dim.main.height = dim.main.totalHeight - dim.main.margins.top - dim.main.margins.bottom;
 
-        elem.graph = {};
+        elem.main = {};
 
         /* Container */
-        elem.graph.container = d3.select('#graph').append('svg')
+        elem.main.container = d3.select('#main').append('svg')
           .style('display', 'block')
           .attr('width', config.width)
-          .attr('height', dim.graph.totalHeight)
+          .attr('height', dim.main.totalHeight)
           .append('g')
-            .attr('transform', 'translate(' + dim.graph.margins.left + ',' + dim.graph.margins.top + ')');
+            .attr('transform', 'translate(' + dim.main.margins.left + ',' + dim.main.margins.top + ')');
 
         /* Clip-path */
-        elem.graph.clip = elem.graph.container.append('g')
-          .attr('clip-path', 'url(#graph-clip)')
+        elem.main.clip = elem.main.container.append('svg')
+          .attr('width', dim.main.width)
+          .attr('height', dim.main.height);
 
-        elem.graph.clip.append('clipPath')
-          .attr('id', 'graph-clip')
-          .append('rect')
-            .attr('width', dim.graph.width)
-            .attr('height', dim.graph.height);
-
-        scales.graph = {};
-        elem.graph.axisFn = {};
+        scales.main = {};
+        elem.main.axisFn = {};
 
         /* X Axis */
-        var numTicks_xAxis = utils.spanLen(config.graphDomain) / config.xAxisTickInterval + 1;
+        var numTicks_xAxis = utils.spanLen(config.mainDomain) / config.xAxisTickInterval + 1;
 
-        scales.graph.x = d3.scale.linear()
-          .domain(config.graphDomain)
-          .range([0, dim.graph.width]);
+        scales.main.x = d3.scale.linear()
+          .domain(config.mainDomain)
+          .range([0, dim.main.width]);
 
-        elem.graph.axisFn.x = d3.svg.axis()
-          .scale(scales.graph.x)
+        elem.main.axisFn.x = d3.svg.axis()
+          .scale(scales.main.x)
           .orient('bottom')
           .ticks(numTicks_xAxis)
           .tickSize(1);
 
-        elem.graph.container.append('g')
+        elem.main.container.append('g')
           .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + dim.graph.height + ')')
-          .call(elem.graph.axisFn.x);
+          .attr('transform', 'translate(0,' + dim.main.height + ')')
+          .call(elem.main.axisFn.x);
 
         /* X Label */
-        elem.graph.container.append('text')
+        elem.main.container.append('text')
           .text(config.labelX)
           .classed('axis-label', true)
           .attr('x', function() {
-            return (dim.graph.width / 2) - (this.getBBox().width / 2);
+            return (dim.main.width / 2) - (this.getBBox().width / 2);
           })
-          .attr('y', dim.graph.height + dim.graph.margins.bottom - 1);
+          .attr('y', dim.main.height + dim.main.margins.bottom - 1);
 
         /* Y Axis */
         var numTicks_yAxis = utils.spanLen(config.range) / config.yAxisTickInterval + 1;
 
-        scales.graph.y = d3.scale.linear()
+        scales.main.y = d3.scale.linear()
           .domain(config.range)
-          .range([dim.graph.height, 0]);
+          .range([dim.main.height, 0]);
 
-        elem.graph.axisFn.y = d3.svg.axis()
-          .scale(scales.graph.y)
+        elem.main.axisFn.y = d3.svg.axis()
+          .scale(scales.main.y)
           .orient('left')
           .ticks(numTicks_yAxis)
           .tickSize(1);
 
-        elem.graph.container.append('g')
+        elem.main.container.append('g')
           .attr('class', 'y axis')
-          .call(elem.graph.axisFn.y);
+          .call(elem.main.axisFn.y);
 
         /* Y Label */
-        elem.graph.container.append('text')
+        elem.main.container.append('text')
           .classed('axis-label', true)
           .text(config.labelY)
           .attr('transform', function() {
-            return 'rotate(-90) translate(-' + dim.graph.totalHeight/2 + ', -' + this.getBBox().width/2.5 + ')';
+            return 'rotate(-90) translate(-' + dim.main.totalHeight/2 + ', -' + this.getBBox().width/2.5 + ')';
           });
 
         /* Grid lines */
         for (var i = 1; i < numTicks_yAxis; ++i) {
-          elem.graph.clip.append('path')
+          elem.main.clip.append('path')
             .attr('stroke', 'black')
             .style('opacity', config.gridLineOpacity)
             .attr('d', function() {
-              var y = scales.graph.y(config.range[0] + i * config.yAxisTickInterval);
-              return 'M 0 ' + y + ' H ' + dim.graph.width + ' ' + y;
+              var y = scales.main.y(config.range[0] + i * config.yAxisTickInterval);
+              return 'M 0 ' + y + ' H ' + dim.main.width + ' ' + y;
             });
         }
 
         /* Border */
-        elem.graph.container.append('rect')
-          .attr('width', dim.graph.width - 1)
-          .attr('height', dim.graph.height)
+        elem.main.container.append('rect')
+          .attr('width', dim.main.width - 1)
+          .attr('height', dim.main.height)
           .attr('stroke', 'black')
           .attr('stroke-width', '1')
           .attr('fill', 'transparent')
@@ -180,13 +183,13 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
       /* Derive navigator dimensions and add elments to DOM */
       function buildNav() {
-        d3.select('#vis')
+        d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-left')
-          .classed('nav-pane', true)
+          .style('display', 'inline-block')
 
-        d3.select('#vis')
+        d3.select(config.canvasSelector)
           .append('div').attr('id', 'nav-right')
-          .classed('nav-pane', true)
+          .style('display', 'inline-block')
 
         dim.nav = {};
 
@@ -194,10 +197,10 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         dim.nav.totalHeight = config.height * config.navPercent;
 
         dim.nav.margins = {
-          left: config.navMargins.left * config.width,
-          right: config.navMargins.right * config.width,
-          top: config.navMargins.top * config.height,
-          bottom: config.navMargins.bottom * config.height
+          left: config.navMargins.left,
+          right: config.navMargins.right,
+          top: config.navMargins.top,
+          bottom: config.navMargins.bottom
         };
 
         dim.nav.width = config.width - dim.nav.margins.left - dim.nav.margins.right;
@@ -229,26 +232,21 @@ app.factory('visBuilder', ['setupService', function(setupService) {
             .attr('transform', 'translate(' + dim.nav.margins.left + ',' + dim.nav.margins.top + ')');
 
         /* Clip-path */
-        elem.nav.left.clip = elem.nav.left.container.append('g')
-          .attr('clip-path', 'url(#nav-clip-left)')
-
-        elem.nav.left.clip.append('clipPath')
-          .attr('id', 'nav-clip-left')
-          .append('rect')
-            .attr('width', dim.nav.left.width)
-            .attr('height', dim.nav.height);
+        elem.nav.left.clip = elem.nav.left.container.append('svg')
+          .attr('width', dim.nav.left.width)
+          .attr('height', dim.nav.height);
 
         scales.nav.left = {};
 
         /* 2.4 Ghz selector */
         elem.nav.left.clip.append('rect')
-          .classed('nav-toggle-left', true)
+          .classed('selectable-window', true)
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height)
           .on('touchstart', function() {
             d3.event.preventDefault();
             d3.event.stopPropagation();
-            setBand('2_4');
+            if (band !== '2_4') setBand('2_4');
           })
           .on('touchend', function() {
             d3.event.preventDefault();
@@ -282,12 +280,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
             .classed('navigator', true)
             .attr('transform', 'translate(0, ' + dim.nav.margins.top + ')');
 
-        elem.nav.right.clip = elem.nav.right.container.append('g')
-          .attr('clip-path', 'url(#nav-clip-right)');
-
-        elem.nav.right.clip.append('clipPath')
-          .attr('id', 'nav-clip-right')
-          .append('rect')
+        elem.nav.right.clip = elem.nav.right.container.append('svg')
           .attr('width', dim.nav.right.width)
           .attr('height', dim.nav.height);
 
@@ -304,7 +297,7 @@ app.factory('visBuilder', ['setupService', function(setupService) {
           d3.event.preventDefault();
           d3.event.stopPropagation();
 
-          setBand('5');
+          if (band !== '5') setBand('5');
 
           touchStartX = d3.event.changedTouches[0].screenX -
             $('#nav-right')[0].getBoundingClientRect().left;
@@ -334,17 +327,17 @@ app.factory('visBuilder', ['setupService', function(setupService) {
 
           slider.attr('x', sliderX);
 
-          axisScrollFn(elem.graph.container, elem.graph.axisFn.x,
-                       scales.graph.x, elem.nav.right.slider,
+          axisScrollFn(elem.main.container, elem.main.axisFn.x,
+                       scales.main.x, elem.nav.right.slider,
                        scales.nav.right.x, band);
 
-          elemScrollFn(elem.graph.clip, scales.graph.x);
+          elemScrollFn(elem.main.clip, scales.main.x);
         };
 
         var sliderExtent = config.sliderExtent;
 
         elem.nav.right.slider = elem.nav.right.clip.append('rect')
-          .classed('nav-toggle-right', true)
+          .classed('selectable-window', true)
           .attr('x', function() {
             return scales.nav.right.x(sliderExtent[0]);
           })
@@ -384,31 +377,29 @@ app.factory('visBuilder', ['setupService', function(setupService) {
         /* Labels */
         elem.nav.left.container.append('text')
           .text(config.navLeftLabel)
-          .attr('y', dim.nav.height + dim.nav.margins.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom - 1);
 
         elem.nav.right.container.append('text')
           .text(config.navRightLabel)
-          .attr('y', dim.nav.height + dim.nav.margins.bottom);
+          .attr('y', dim.nav.height + dim.nav.margins.bottom - 1);
       };
 
       function setBand(newBand) {
-        if (newBand !== band) {
-          if (newBand ===  '2_4') {
-            elem.nav.right.clip.select('.nav-toggle-right').classed('active', false);
-            elem.nav.left.clip.select('.nav-toggle-left').classed('active', true);
-          } else if (newBand === '5') {
-            elem.nav.left.clip.select('.nav-toggle-left').classed('active', false);
-            elem.nav.right.clip.select('.nav-toggle-right').classed('active', true);
-          }
-
-          band = newBand;
-
-          bandChangeFn(elem.graph.clip, scales.graph.x, elem.graph.container,
-                       elem.graph.axisFn.x, elem.nav.right.slider,
-                       scales.nav.right.x, band);
-
-          vis.update();
+        if (newBand ===  '2_4') {
+          elem.nav.right.clip.select('.selectable-window').classed('active', false);
+          elem.nav.left.clip.select('.selectable-window').classed('active', true);
+        } else if (newBand === '5') {
+          elem.nav.left.clip.select('.selectable-window').classed('active', false);
+          elem.nav.right.clip.select('.selectable-window').classed('active', true);
         }
+
+        band = newBand;
+
+        bandChangeFn(elem.main.clip, scales.main.x, elem.main.container,
+                     elem.main.axisFn.x, elem.nav.right.slider,
+                     scales.nav.right.x, band);
+
+        vis.update();
       };
 
     };

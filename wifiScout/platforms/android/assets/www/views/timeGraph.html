@@ -13,6 +13,7 @@
 
     <!-- AP List -->
     <ul class="list-group list scroll-y">
+      <!-- Make sure to use track by for much better performance -->
       <li class="listgroupitem default" data-ng-repeat="item in legendData | orderBy:sortSSID track by item.mac" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item)">
         <div class="legend-box" ng-style="{'background-color':item.color}"></div>
         <div class="legend-ssid">{{item.ssid}}</div>
