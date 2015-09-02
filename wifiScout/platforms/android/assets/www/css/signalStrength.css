@@ -1,6 +1,6 @@
 #gauge {
-  height: calc(95% - 70px);
-  margin-top: 10px;
+  height: calc(95% - 75px);
+  margin-top: 0px;
   text-align: center;
   width: 100%;
 }
@@ -8,13 +8,14 @@
 #values {
   height: 70px;
   width: 100%;
+  margin-top: 5px;
 }
 
 @media screen and (orientation:portrait) {
   #signal-strength-wrapper
   #access-points {
     display: block;
-    height: 50%;
+    height: 48%;
     width: 100%;
   }
 
@@ -23,6 +24,10 @@
     display: block;
     height: 50%;
     width: 100%;
+  }
+
+  #values {
+    margin-top: 20px;
   }
 }
 
