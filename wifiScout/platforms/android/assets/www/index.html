@@ -34,23 +34,23 @@
 
     <!-- View title bar -->
     <div id="top-bar">
-      <div class="col-xs-1">
+      <div class="col-xs-2 custom-col-padding">
         <!--
         <input id="filter-button" class="vertically-centered" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
         -->
-        <button type="button" ng-show="displayFilterBtn()" data-toggle="modal" data-target="#filter-modal" class="btn btn-success vertically-centered custom-padding custom-button">
-            <img id="filter-button" src="images/filter.png" />
+        <button id="filter-button" type="button" ng-show="displayFilterBtn()" data-toggle="modal" data-target="#filter-modal" class="btn btn-success vertically-centered top-bar-button bounded-button pull-left">
+            <img id="filter-button-image" src="images/filter.png" />
         </button>
       </div>
-      <div class="col-xs-10">
+      <div class="col-xs-8">
         <p id="view-title" class="vertically-centered"></p>
       </div>
-      <div class="col-xs-1">
+      <div class="col-xs-2 custom-col-padding">
         <!--
         <input id="help-button" class="vertically-centered" type="image" src="images/questionMark.png" ng-click="startTour()" ng-show="displayHelpBtn()">
         -->
-        <button type="button" ng-click="startTour()" ng-show="displayHelpBtn()" class="btn btn-success vertically-centered custom-padding-help custom-button">
-            <img id="help-button" src="images/questionMark2.png" />
+        <button id="help-button" type="button" ng-click="startTour()" ng-show="displayHelpBtn()" class="btn btn-success vertically-centered top-bar-button bounded-button pull-right">
+            <img id="help-button-image" src="images/questionMark2.png" />
         </button>
       </div>
     </div>

@@ -26,14 +26,6 @@
 	nz-tour #nzTour-actions {
 		font-size: 18px;
 	}
-
-  #help-button {
-    max-height: 40px;
-  }
-
-  #filter-button {
-    max-height: 30px;
-  }
 }
 
 /*	If the device screen width is less than 889px then the font
@@ -60,14 +52,6 @@
 	nz-tour #nzTour-actions {
 		font-size: 18px;
 	}
-
-  #help-button {
-    max-height: 35px;
-  }
-
-  #filter-button {
-    max-height: 25px;
-  }
 }
 
 /* Containers */
@@ -109,17 +93,32 @@ body {
 
 #view-title {
   color: #fafafa;
-	font-size: 30px;
+	font-size: 26px;
+}
+
+.bounded-button {
+  max-height: 50px;
+  min-height: 30px;
+  max-width: 50px;
+  min-width: 30px;
+}
+
+#help-button {
+	padding: 1px;
 }
 
 #filter-button {
+	padding: 3px;
+}
+
+#filter-button-image {
 	height: 100%;
 	width: 100%;
 	outline: none;
 	z-index: 999;
 }
 
-#help-button {
+#help-button-image {
 	width: 45%;
 	outline: none;
 	z-index: 999;
@@ -128,7 +127,7 @@ body {
 .btn-success:focus,
 .btn-success:active:focus,
 .btn-success.active:focus,
-.custom-button {
+.top-bar-button {
 	color: #55a601;
 	background-color: #55a601;
 	border-color: #488c01;
@@ -231,13 +230,13 @@ nz-tour #nzTour-content {
 	padding: 0;
 }
 
-.custom-padding-help {
-	padding: 1px;
+
+
+.custom-col-padding {
+	padding-right: 10px !important;
+	padding-left: 10px !important;
 }
 
-.custom-padding {
-	padding: 4px;
-}
 
 .placeholder {
 	white-space: pre;
