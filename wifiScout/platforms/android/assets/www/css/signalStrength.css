@@ -1,3 +1,5 @@
+/* Sets gauge canvas height - NOT the height of the actual gauge,
+    the height of the canvas it is drawn on */
 #gauge {
   height: calc(95% - 75px);
   margin-top: 0px;
@@ -5,16 +7,21 @@
   width: 100%;
 }
 
+/* Sizes and positions the panels that contain the min, max,
+    and current values */ 
 #values {
   height: 70px;
   width: 100%;
   margin-top: 5px;
 }
 
+/* Portrait Specific Styles */
 @media screen and (orientation:portrait) {
   #signal-strength-wrapper
   #access-points {
     display: block;
+    /* Access point list is made slightly smaller to avoid
+        overlapping the navbar tab */
     height: 48%;
     width: 100%;
   }
@@ -31,6 +38,7 @@
   }
 }
 
+/* Landscape Specific Styles */
 @media screen and (orientation:landscape) {
   #signal-strength-wrapper
   #access-points {
@@ -55,13 +63,8 @@
   padding: 10px 10px;
 }
 
-#signal-strength-wrapper
-#selected-ssid {
-  white-space: pre;
-}
-
-#signal-strength-wrapper
-#selected-mac {
+#signal-strength-wrapper #selected-ssid,
+#signal-strength-wrapper #selected-mac {
   white-space: pre;
 }
 

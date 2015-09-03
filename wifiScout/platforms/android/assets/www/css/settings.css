@@ -20,6 +20,7 @@
   padding-right: 1vw;
 }
 
+/* Color and Opacity of the selectors for the scale slider */
 #settings-wrapper
 .slider-handle {
   background-color: #62bf01;
@@ -27,6 +28,7 @@
   opacity: 1;
 }
 
+/* Color and Opacity of the selectors for the scale selection bar */
 #settings-wrapper
 .slider-selection {
   background-color: #62bf01;
