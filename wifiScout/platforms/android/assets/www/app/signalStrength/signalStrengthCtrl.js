@@ -6,8 +6,7 @@ accessPoints, setupSequence) {
 
   setupSequence.done.then(function() {
 
-    var gaugeUpdateInterval = globals.constants.updateIntervalNormal,
-        listUpdateInterval = 5000;
+    var updateInterval = globals.updateIntervals.signalStrength;
 
     var prefs = {
       okSignalThresh: -80,
@@ -23,37 +22,39 @@ accessPoints, setupSequence) {
 
     var gauge;
 
-    $scope.accessPoints = [];
-    $scope.isDuplicateSSID = {};
-    $scope.level = null;
-    $scope.minLevel = null;
-    $scope.maxLevel = null;
+    init();
 
-    $scope.selectedSsid = null;
-    $scope.selectedMac = null;
-
-    $scope.strings = globals.strings;
-
-    $scope.isSelected = function(ap) {
-      if (typeof ap.mac !== 'undefined') {
-        return ap.mac === $scope.selectedMac;
-      }
-    };
-
-    $scope.setSelected = function(ap) {
-      if (typeof ap.mac !== 'undefined') {
-        $scope.selectedSsid = ap.ssid;
-        $scope.selectedMac = ap.mac;
-      }
-
+    function init() {
+      $scope.accessPoints = [];
+      $scope.isDuplicateSSID = {};
       $scope.level = null;
       $scope.minLevel = null;
       $scope.maxLevel = null;
-    };
 
-    $scope.sortSSID = utils.customSSIDSort;
+      $scope.selectedSsid = null;
+      $scope.selectedMac = null;
 
-    function init() {
+      $scope.strings = globals.strings;
+
+      $scope.isSelected = function(ap) {
+        if (typeof ap.mac !== 'undefined') {
+          return ap.mac === $scope.selectedMac;
+        }
+      };
+
+      $scope.setSelected = function(ap) {
+        if (typeof ap.mac !== 'undefined') {
+          $scope.selectedSsid = ap.ssid;
+          $scope.selectedMac = ap.mac;
+        }
+
+        $scope.level = null;
+        $scope.minLevel = null;
+        $scope.maxLevel = null;
+      };
+
+      $scope.sortSSID = utils.customSSIDSort;
+
       if (prefs.okSignalThresh < globalSettings.visScaleMin()) {
         prefs.okSignalThresh = globalSettings.visScaleMin();
       } else if (prefs.okSignalThresh > globalSettings.visScaleMax()) {
@@ -66,7 +67,9 @@ accessPoints, setupSequence) {
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      $scope.$on(globals.events.transitionDone, function() {
+      var dereg = $scope.$on(globals.events.transitionDone, function() {
+        dereg();
+
         orient();
 
         gauge = new Gauge('#gauge');
@@ -75,17 +78,10 @@ accessPoints, setupSequence) {
 
         updateList();
 
-        var listUpdateLoop = setInterval(function() {
-          if (! globalSettings.updatesPaused()) {
-            updateList();
-          }
-        }, listUpdateInterval);
-
-        var gaugeUpdateLoop = setInterval(function() {
-          if (! globalSettings.updatesPaused()) {
-            updateGauge();
-          }
-        }, gaugeUpdateInterval);
+        var updateLoop = setInterval(function() {
+          updateList();
+          updateGauge();
+        }, updateInterval);
 
         $scope.$on(globals.events.newSelection, updateList);
 
@@ -94,8 +90,7 @@ accessPoints, setupSequence) {
         $scope.$on('$destroy', function() {
           $(window).off('resize', redraw);
 
-          clearInterval(listUpdateLoop);
-          clearInterval(gaugeUpdateLoop);
+          clearInterval(updateLoop);
         });
       });
 
@@ -132,7 +127,8 @@ accessPoints, setupSequence) {
           var encountered = {},
               isDuplicateSSID = {};
 
-          $scope.accessPoints = apSelection().apply(results);
+          $scope.accessPoints = globalSettings.accessPointSelection()
+                                  .apply(results);
 
           $.each($scope.accessPoints, function(i, ap) {
             if (encountered[ap.ssid]) {
@@ -370,13 +366,13 @@ accessPoints, setupSequence) {
           }
 
           elem.transition()
-            .duration(gaugeUpdateInterval)
+            .duration(updateInterval)
             .ease('quad')
             .attr('transform', 'rotate(' +degScale(newValue)+ ')');
 
         } else {
           elem.transition()
-            .duration(gaugeUpdateInterval)
+            .duration(updateInterval)
             .ease('quad')
             .attr('transform', 'rotate(' + prefs.minAngle + ')');
         }
@@ -388,8 +384,6 @@ accessPoints, setupSequence) {
 
       return this;
     };
-
-    init();
 
   });
 

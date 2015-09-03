@@ -50,13 +50,13 @@ setupSequence) {
 
       vis.update = function() {
         if (hasNav) {
-          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+          elemUpdateFn(elem.main.canvas, scales.main.x, scales.main.y,
                    elem.main.container, elem.main.axisFn.x, elem.main.axisFn.y,
-                   elem.nav.left.clip, scales.nav.left.x,
-                   elem.nav.right.clip, scales.nav.right.x,
+                   elem.nav.left.canvas, scales.nav.left.x,
+                   elem.nav.right.canvas, scales.nav.right.x,
                    scales.nav.y, band);
         } else {
-          elemUpdateFn(elem.main.clip, scales.main.x, scales.main.y,
+          elemUpdateFn(elem.main.canvas, scales.main.x, scales.main.y,
                    elem.main.axisFn.x, elem.main.axisFn.y);
         }
       };
@@ -102,7 +102,7 @@ setupSequence) {
             .attr('transform', 'translate(' + dim.main.margins.left + ',' + dim.main.margins.top + ')');
 
         /* Clip-path */
-        elem.main.clip = elem.main.container.append('svg')
+        elem.main.canvas = elem.main.container.append('svg')
           .attr('width', dim.main.width)
           .attr('height', dim.main.height);
 
@@ -165,7 +165,7 @@ setupSequence) {
 
         /* Grid lines */
         for (var i = 1; i < numTicks_yAxis; ++i) {
-          elem.main.clip.append('path')
+          elem.main.canvas.append('path')
             .attr('stroke', 'black')
             .style('opacity', config.gridLineOpacity)
             .attr('d', function() {
@@ -235,14 +235,14 @@ setupSequence) {
             .attr('transform', 'translate(' + dim.nav.margins.left + ',' + dim.nav.margins.top + ')');
 
         /* Clip-path */
-        elem.nav.left.clip = elem.nav.left.container.append('svg')
+        elem.nav.left.canvas = elem.nav.left.container.append('svg')
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height);
 
         scales.nav.left = {};
 
         /* 2.4 Ghz selector */
-        elem.nav.left.clip.append('rect')
+        elem.nav.left.canvas.append('rect')
           .classed('selectable-window', true)
           .attr('width', dim.nav.left.width)
           .attr('height', dim.nav.height)
@@ -283,7 +283,7 @@ setupSequence) {
             .classed('navigator', true)
             .attr('transform', 'translate(0, ' + dim.nav.margins.top + ')');
 
-        elem.nav.right.clip = elem.nav.right.container.append('svg')
+        elem.nav.right.canvas = elem.nav.right.container.append('svg')
           .attr('width', dim.nav.right.width)
           .attr('height', dim.nav.height);
 
@@ -334,12 +334,12 @@ setupSequence) {
                        scales.main.x, elem.nav.right.slider,
                        scales.nav.right.x, band);
 
-          elemScrollFn(elem.main.clip, scales.main.x);
+          elemScrollFn(elem.main.canvas, scales.main.x);
         };
 
         var sliderExtent = config.sliderExtent;
 
-        elem.nav.right.slider = elem.nav.right.clip.append('rect')
+        elem.nav.right.slider = elem.nav.right.canvas.append('rect')
           .classed('selectable-window', true)
           .attr('x', function() {
             return scales.nav.right.x(sliderExtent[0]);
@@ -389,16 +389,16 @@ setupSequence) {
 
       function setBand(newBand) {
         if (newBand ===  '2_4') {
-          elem.nav.right.clip.select('.selectable-window').classed('active', false);
-          elem.nav.left.clip.select('.selectable-window').classed('active', true);
+          elem.nav.right.canvas.select('.selectable-window').classed('active', false);
+          elem.nav.left.canvas.select('.selectable-window').classed('active', true);
         } else if (newBand === '5') {
-          elem.nav.left.clip.select('.selectable-window').classed('active', false);
-          elem.nav.right.clip.select('.selectable-window').classed('active', true);
+          elem.nav.left.canvas.select('.selectable-window').classed('active', false);
+          elem.nav.right.canvas.select('.selectable-window').classed('active', true);
         }
 
         band = newBand;
 
-        bandChangeFn(elem.main.clip, scales.main.x, elem.main.container,
+        bandChangeFn(elem.main.canvas, scales.main.x, elem.main.container,
                      elem.main.axisFn.x, elem.nav.right.slider,
                      scales.nav.right.x, band);
 

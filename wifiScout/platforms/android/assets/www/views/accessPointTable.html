@@ -3,6 +3,7 @@
 	<!-- Fixed table header -->
 	<table class="table">
 		<thead class="container-fluid">
+<<<<<<< HEAD
   		<tr id="header" class="row">
       	<th class="col-xs-2" ng-click="order('ssid')">
         	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>
@@ -21,26 +22,53 @@
       	</th>
       	<th class="col-xs-2" id="capabilities-header" ng-click="order('capabilities')">
       		<a href="">{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+=======
+  		<tr class="row">
+      	<th class="flex-col ssid text-center" ng-click="order('ssid')">
+        	<a class="text-nowrap">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+      	<th class="flex-col mac text-center" ng-click="order('mac')">
+      		<a class="text-nowrap">{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'mac'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+				<th class="flex-col manufacturer text-center" ng-click="order('manufacturer')">
+					<a class="text-nowrap">{{strings.accessPointTable.sortManufacturer}}<span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
+				</th>
+      	<th class="flex-col channel text-center" id="channel-header" ng-click="order('channel')">
+      		<a class="text-nowrap">{{strings.accessPointTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+      	<th class="flex-col level text-center" id="level-header" ng-click="order('level')">
+       		<a class="text-nowrap text-center">{{strings.accessPointTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+      	</th>
+      	<th class="flex-col capabilities text-center" id="capabilities-header" ng-click="order('capabilities')">
+      		<a class="text-nowrap">{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+>>>>>>> 3fde52ededd2ebfda901fd61e2858845d175afce
       	</th>
   		</tr>
     </thead>
 	</table>
 
 	<!-- Scrollable table body -->
-	<div id="table-content">
+	<div id="table-content" class="scroll-y">
 		<table class="table table-striped">
     	<tbody class="container-fluid">
 				<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortOrder:sortReverse track by ap.mac">
+<<<<<<< HEAD
 	      	<td class="col-xs-2">{{ap.ssid}}</td>
 	      	<td class="col-xs-2">{{ap.mac}}</td>
 					<td class="col-xs-3">{{ap.manufacturer}}</td>
 	      	<td class="col-xs-1">{{ap.channel}}</td>
 	      	<td class="col-xs-2">{{ap.level}}</td>
 	      	<td class="col-xs-2">{{ap.capabilities}}</td>
+=======
+	      	<td class="flex-col ssid text-center">{{ap.ssid}}</td>
+	      	<td class="flex-col mac text-center">{{ap.mac}}</td>
+					<td class="flex-col manufacturer text-center">{{ap.manufacturer}}</td>
+	      	<td class="flex-col channel text-center">{{ap.channel}}</td>
+	      	<td class="flex-col level text-center">{{ap.level}}</td>
+	      	<td class="flex-col capabilities text-center">{{ap.capabilities}}</td>
+>>>>>>> 3fde52ededd2ebfda901fd61e2858845d175afce
 	      </tr>
 			</tbody>
 	  </table>
 	</div>
 </div>
-
-<div filter-modal />

@@ -29,12 +29,6 @@
   margin: 5px;
 }
 
-/* Selection Menu */
-#filter-modal
-#left-column {
-  padding: 0;
-}
-
 /* Aligns Select/Deselect All buttons in center */
 #filter-modal #deselect-btn,
 #filter-modal #select-btn {
@@ -48,10 +42,6 @@
 }
 
 /* Access Point List */
-#filter-modal
-#right-column {
-  padding-right: 0;
-}
 
 #filter-modal
 #right-column .list {
@@ -63,8 +53,6 @@
   background-color: #fafafa;
   border: 1px solid #ddd;
   padding: 5px 0;
-  position: relative;
-  z-index: 2;
 }
 
 #filter-modal

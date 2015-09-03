@@ -1,7 +1,4 @@
-/* A reusable button that expands to a modal, allowing the user to select
-* which APs they want to display for a given view.
-* Usage: <div filter-modal view="table"></div>
-*/
+/* Simple template for the filter modal */
 app.directive('filterModal', function() {
   return {
     templateUrl: 'views/filterModal.html',

@@ -1,47 +1,49 @@
 "use strict";
 
 /* Handles data updating for the access point table view */
-app.controller('accessPointTableCtrl', ['$scope', 'globals', 'utils', 
+app.controller('accessPointTableCtrl', ['$scope', 'globals', 'utils',
 'accessPoints', 'globalSettings', 'accessPointTableState', 'setupSequence',
 function($scope, globals, utils, accessPoints, globalSettings,
 accessPointTableState, setupSequence) {
 
-  /* Wait until the device is ready before setting up the controller */
+  /* Wait for app setup to complete before setting up the controller */
   setupSequence.done.then(function() {
 
     /* The time, in milliseconds, between data updates */
-    var updateInterval = globals.constants.updateIntervalSlow;
+    var updateInterval = globals.updateIntervals.accessPointTable;
 
-    $scope.strings = globals.strings;
-
-    /* Array of AccessPoint objects to be displayed in the table */
-    $scope.accessPoints = [];
-
-    /* true: Sort direction reversed.  false: Normal behavior */
-    $scope.sortReverse = undefined;
-
-    $scope.sortPredicate = undefined;
-
-    $scope.sortOrder = undefined;
-
-    /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
-       If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
-       is selected as the predicate, a custom ordering function is substituted instead.
-
-       @param predicate: The new sort predicate (string or function)
-    */
-    $scope.order = function(predicate) {
-      if (predicate === 'ssid') {
-        $scope.sortOrder = utils.customSSIDSort;
-      } else {
-        $scope.sortOrder = predicate;
-      }
-
-      $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
-      $scope.sortPredicate = predicate;
-    };
+    init();
 
     function init() {
+      $scope.strings = globals.strings;
+
+      /* Array of AccessPoint objects to be displayed in the table */
+      $scope.accessPoints = [];
+
+      /* true: Sort direction reversed.  false: Normal behavior */
+      $scope.sortReverse = undefined;
+
+      $scope.sortPredicate = undefined;
+
+      $scope.sortOrder = undefined;
+
+      /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
+         If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
+         is selected as the predicate, a custom ordering function is substituted instead.
+
+         @param predicate: The new sort predicate (string or function)
+      */
+      $scope.order = function(predicate) {
+        if (predicate === 'ssid') {
+          $scope.sortOrder = utils.customSSIDSort;
+        } else {
+          $scope.sortOrder = predicate;
+        }
+
+        $scope.sortReverse = ($scope.sortPredicate === predicate) ? !$scope.sortReverse : false;
+        $scope.sortPredicate = predicate;
+      };
+
       scaleView();
       restoreState();
 
@@ -75,19 +77,14 @@ accessPointTableState, setupSequence) {
       });
     };
 
-    /* @returns the AccessPointSelection object containing the current
-       access point selection */
-    function apSelection() {
-      return globalSettings.accessPointSelection();
-    };
-
     function update() {
       if (globals.debug) console.log('updating ap table');
 
       accessPoints.getAll().then(function(results) {
         /* Update DOM */
         $scope.$apply(function() {
-          $scope.accessPoints = apSelection().apply(results);
+          $scope.accessPoints = globalSettings.accessPointSelection()
+                                 .apply(results);
         });
       });
     };
@@ -121,7 +118,6 @@ accessPointTableState, setupSequence) {
       $('#table-content').height(contentHeight);
     };
 
-    init();
   });
 
 }]);

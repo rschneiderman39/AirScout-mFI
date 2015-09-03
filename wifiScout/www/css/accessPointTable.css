@@ -10,12 +10,6 @@
 
 /* Table Header */
 #access-point-table-wrapper
-th {
- text-align: center;
- white-space: nowrap;
-}
-
-#access-point-table-wrapper
 a {
   color: #337ab7;
   text-decoration: none;
@@ -35,16 +29,5 @@ a {
 /* Table Body */
 #access-point-table-wrapper
 .table {
-  margin-bottom: 0px;
-  margin-top: 0px;
-}
-
-#access-point-table-wrapper
-#table-content {
-  overflow-y: auto;
-}
-
-#access-point-table-wrapper
-td {
-  text-align: center;
+  margin: 0;
 }
