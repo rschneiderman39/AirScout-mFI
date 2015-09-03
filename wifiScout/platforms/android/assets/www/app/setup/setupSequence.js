@@ -71,6 +71,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
+          target: '#main',
           content: globals.strings.accessPointCount.tour.intro
         },
         {
@@ -214,6 +215,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
+        target: '#main',
         content: globals.strings.channelGraph.tour.intro
         },
         {

@@ -8,11 +8,7 @@
 }
 
 /* Sizes and positions the panels that contain the min, max,
-<<<<<<< HEAD
-    and current values */ 
-=======
     and current values */
->>>>>>> 3fde52ededd2ebfda901fd61e2858845d175afce
 #values {
   height: 70px;
   width: 100%;
@@ -67,14 +63,6 @@
   padding: 10px 10px;
 }
 
-<<<<<<< HEAD
-#signal-strength-wrapper #selected-ssid,
-#signal-strength-wrapper #selected-mac {
-  white-space: pre;
-}
-
-=======
->>>>>>> 3fde52ededd2ebfda901fd61e2858845d175afce
 /* Level Indicators */
 #signal-strength-wrapper
 #readings {
