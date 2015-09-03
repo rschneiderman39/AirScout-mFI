@@ -1,4 +1,4 @@
-/*	If the screen width is larger than 889px then the font sizes 
+/*	If the screen width is larger than 889px then the font sizes
 			in the application will be capped at the sizes listed. */
 @media screen and (orientation: landscape) and (min-width: 889px),
        screen and (orientation: portrait) and (min-height: 889px) {
@@ -28,7 +28,7 @@
 	}
 }
 
-/*	If the device screen width is less than 889px then the font 
+/*	If the device screen width is less than 889px then the font
 			size will scale to the device width. */
 @media screen and (orientation: landscape) and (max-width: 888px),
        screen and (orientation: portrait) and (max-height: 888px) {
@@ -147,17 +147,6 @@ body {
 	padding: 0;
 }
 
-#nav-bar-interaction-box {
-	position: fixed;
-	top: 92%;
-	left: 46%;
-	height: 8%;
-	width: 8%;
-	margin: 0 auto;
-	opacity: 0;
-	z-index: 999999999999;
-};
-
 .nav > li > a:hover {
   background-color: transparent;
 }
@@ -174,7 +163,7 @@ img.nav-icon {
 }
 
 /* nzTour */
-/* Scales tour boxes to portrait orientation since they don't 
+/* Scales tour boxes to portrait orientation since they don't
 	 	automatically resize if you reorient the device */
 @media screen and (orientation: portrait) {
 	nz-tour #nzTour-box {
@@ -213,16 +202,13 @@ nz-tour #nzTour-content {
 }
 
 /* Misc */
-/*	The axis-label class bolds the X and Y axis labels in the 
-			Channel Graph and Access Point Count views.	*/
-
-.centered-text {
-	text-align: center;
-}
-
 .no-padding {
 	margin: 0;
 	padding: 0;
+}
+
+.placeholder {
+	white-space: pre;
 }
 
 .vertically-centered {
@@ -244,12 +230,10 @@ nz-tour #nzTour-content {
   margin: 10px 0;
 }
 
-/* Overriding some of the boostrap defaults to avoid scaling 
+/* Overriding some of the boostrap defaults to avoid scaling
 	 	issues and to custom color the lists */
 .row {
-	margin: 0;
 	max-height: 100%;
-	padding: 0;
 }
 
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7,
@@ -258,7 +242,7 @@ nz-tour #nzTour-content {
 	max-height: 100%;
 }
 
-.list.scroll-y {
+.scroll-y {
 	overflow-x: hidden;
 	overflow-y: scroll;
 }

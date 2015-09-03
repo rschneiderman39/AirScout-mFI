@@ -3,9 +3,9 @@
 	<div id="access-points" >
 		<!-- Selected AP Box -->
 		<div class="panel panel-default selection-indicator">
-			<div id="selected-ap" class="panel-body">
-				<div id="selected-ssid">{{selectedSsid !== null ? selectedSsid : " "}}</div>
-				<div id="selected-mac">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
+			<div class="panel-body">
+				<div class="placeholder">{{selectedSsid !== null ? selectedSsid : " "}}</div>
+				<div class="placeholder">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
 			</div>
 		</div>
 
@@ -14,8 +14,8 @@
 		<!-- AP List -->
 		<ul class="list-group list scroll-y">
 			<li data-ng-repeat="ap in accessPoints | orderBy:sortSSID track by ap.mac" class="listgroupitem default" ng-class="{ active: isSelected(ap) }" ng-click="setSelected(ap)">
-			  <div class="centered-text">{{ap.ssid}}</div>
-				<div class="centered-text" ng-show="isDuplicateSSID[ap.ssid]">({{ap.mac}})</div>
+			  <div class="text-center">{{ap.ssid}}</div>
+				<div class="text-center" ng-show="isDuplicateSSID[ap.ssid]">({{ap.mac}})</div>
 			</li>
 	  </ul>
 	</div>
@@ -26,26 +26,26 @@
 
 		<div id="values" class="row">
 			<!-- Minimum level indicator -->
-			<div id="min-level" class="col-xs-4">
-				<center><div>{{strings.signalStrength.minLevel}}</div></center>
+			<div class="col-xs-4">
+				<div class="text-center">{{strings.signalStrength.minLevel}}</div>
 				<div class="panel panel-default level-indicator">
-					<div class="panel-body centered-text">{{minLevel !== null ? minLevel + " dBm" : "---"}}</div>
+					<div class="panel-body text-center">{{minLevel !== null ? minLevel + " dBm" : "---"}}</div>
 				</div>
 			</div>
 
 			<!-- Current level indicator -->
 			<div class="col-xs-4">
-				<center><div id="current-level">{{strings.signalStrength.currentLevel}}</div></center>
+				<strong class="text-center">{{strings.signalStrength.currentLevel}}</strong>
 				<div class="panel panel-default level-indicator">
-					<div id="current-level" class="panel-body centered-text">{{level !== null ? level + " dBm" : "---"}}</div>
+					<div class="panel-body text-center">{{level !== null ? level + " dBm" : "---"}}</div>
 				</div>
 			</div>
 
 			<!-- Max level indicator -->
-			<div id="max-level" class="col-xs-4">
-				<center><div>{{strings.signalStrength.maxLevel}}</div></center>
+			<div class="col-xs-4">
+				<div class="text-center">{{strings.signalStrength.maxLevel}}</div>
 				<div class="panel panel-default level-indicator">
-				 	<div class="panel-body centered-text">{{maxLevel !== null ? maxLevel + " dBm" : "---"}}</div>
+				 	<div class="panel-body text-center">{{maxLevel !== null ? maxLevel + " dBm" : "---"}}</div>
 				</div>
 			</div>
 		</div>

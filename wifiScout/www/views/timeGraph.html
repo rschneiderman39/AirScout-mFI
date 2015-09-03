@@ -3,9 +3,9 @@
   <div id="legend">
     <!-- Selected AP Box -->
     <div class="panel panel-default selection-indicator">
-			<div id="selected-ap" class="panel-body">
-				<div id="selected-ssid">{{selectedSsid !== null ? selectedSsid : " "}}</div>
-				<div id="selected-mac">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
+			<div class="panel-body">
+				<div class="placeholder">{{selectedSsid !== null ? selectedSsid : " "}}</div>
+				<div class="placeholder">{{selectedMac !== null ? '(' + selectedMac + ')' : " "}}</div>
 			</div>
 		</div>
 
@@ -16,8 +16,8 @@
       <!-- Make sure to use track by for much better performance -->
       <li class="listgroupitem default" data-ng-repeat="item in legendData | orderBy:sortSSID track by item.mac" ng-class="{ active: isSelected(item) }" ng-click="toggleSelected(item)">
         <div class="legend-box" ng-style="{'background-color':item.color}"></div>
-        <div class="legend-ssid">{{item.ssid}}</div>
-        <div class="legend-mac" ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>
+        <div class="legend-label">{{item.ssid}}</div>
+        <div ng-show="isDuplicateSSID[item.ssid]">({{item.mac}})</div>
       </li>
     </ul>
   </div>

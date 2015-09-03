@@ -63,7 +63,7 @@ $filter, globals, utils, accessPoints, globalSettings, setupSequence) {
 
       /* Deselect all access points on the list.
       */
-      $scope.unselectAll = function() {
+      $scope.deselectAll = function() {
         macAddrIsSelected = {};
 
                         // Empty selection
