@@ -8,6 +8,10 @@
  
 }
 
+#access-point-table-wrapper .no-show {
+	display: none;
+}
+
 /* Table Header */
 #access-point-table-wrapper
 a {
