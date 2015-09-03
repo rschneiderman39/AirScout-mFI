@@ -109,21 +109,30 @@ body {
 
 #view-title {
   color: #fafafa;
-	font-size: 24px;
+	font-size: 30px;
 }
 
 #filter-button {
-	float: left;
-	height: 70%;
+	height: 100%;
+	width: 100%;
 	outline: none;
 	z-index: 999;
 }
 
 #help-button {
-	float: right;
-	height: 80%;
+	width: 45%;
 	outline: none;
 	z-index: 999;
+}
+
+.btn-success:focus,
+.btn-success:active:focus,
+.btn-success.active:focus,
+.custom-button {
+	color: #55a601;
+	background-color: #55a601;
+	border-color: #488c01;
+	outline: none;
 }
 
 /* Nav Bar */
@@ -220,6 +229,14 @@ nz-tour #nzTour-content {
 .no-padding {
 	margin: 0;
 	padding: 0;
+}
+
+.custom-padding-help {
+	padding: 1px;
+}
+
+.custom-padding {
+	padding: 4px;
 }
 
 .placeholder {
