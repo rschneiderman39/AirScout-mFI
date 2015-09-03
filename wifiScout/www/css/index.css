@@ -109,7 +109,7 @@ body {
 
 #view-title {
   color: #fafafa;
-	font-size: 30px;
+	font-size: 26px;
 }
 
 #filter-button {
@@ -232,12 +232,24 @@ nz-tour #nzTour-content {
 }
 
 .custom-padding-help {
+	float: right;
+	min-height: 30px;
+	min-width: 30px;
 	padding: 1px;
 }
 
-.custom-padding {
-	padding: 4px;
+.custom-padding-filter {
+	float: left;
+	min-height: 30px;
+	min-width: 30px;
+	padding: 3px;
 }
+
+.custom-col-padding {
+	padding-right: 10px !important;
+	padding-left: 10px !important;
+}
+
 
 .placeholder {
 	white-space: pre;
