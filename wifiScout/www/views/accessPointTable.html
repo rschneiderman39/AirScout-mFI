@@ -2,7 +2,7 @@
 
 	<!-- Fixed table header -->
 	<table class="table">
-		<thead class="container-fluid">
+		<thead id="header" class="container-fluid">
   		<tr class="row">
       	<th class="flex-col ssid text-center" ng-click="order('ssid')">
         	<a class="text-nowrap">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>

@@ -27,6 +27,14 @@ accessPointTableState, setupSequence) {
 
       $scope.sortOrder = undefined;
 
+      $scope.inPortrait = function() {
+        return utils.getOrientation() === 'portrait';
+      };
+
+      $scope.inLandscape = function() {
+        return utils.getOrientation() === 'landscape';
+      };
+
       /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
          If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
          is selected as the predicate, a custom ordering function is substituted instead.
