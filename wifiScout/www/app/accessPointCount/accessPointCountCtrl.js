@@ -7,11 +7,11 @@ app.controller('accessPointCountCtrl', ['$scope', 'globals', 'visBuilder',
 'setupSequence', function($scope, globals, visBuilder, accessPoints,
 globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
-  /* Wait until the device is ready before setting up the controller */
+  /* Wait for app setup to complete before setting up the controller */
   setupSequence.done.then(function() {
 
     /* The time, in milliseconds, between data updates */
-    var updateInterval = globals.constants.updateIntervalSlow;
+    var updateInterval = globals.updateIntervals.accessPointCount;
 
     /* The animation duration, in milliseconds, for the bars and labels */
     var transitionInterval = updateInterval * .9;
@@ -89,7 +89,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         canvasSelector: '#vis'
       };
 
-      /* Scale the canvas to the container size */
+      /* Choose canvas dimensions that will fit the container */
       config.width = $('#current-view').width();
       config.height = $('#current-view').height() * prefs.heightFactor;
 
@@ -106,7 +106,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
       vis.init(config);
 
-      /* Start the update loop */
+      /* Start the data update loop */
       var updateLoop = setInterval(function() {
         if (! globalSettings.updatesPaused()) {
           vis.update();
@@ -125,7 +125,9 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         /* Avoid duplicate event handlers */
         $(window).off('resize', redraw);
 
+        /* Stop data updates */
         clearInterval(updateLoop);
+
         vis.saveState();
         vis.destroy();
       });
@@ -145,11 +147,11 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
     /* Invoked whenever vis.update() is called on the object returned by
        VisBuilder.  It adds, updates, and removes the bars and their labels.
        Refer to comments in VisBuilder for details. */
-    function elemUpdateCallback(mainClip, mainScalesX, mainScalesY,
-                             mainContainer, mainAxisFnX, mainAxisFnY,
-                             navLeftClip, navLeftScalesX,
-                             navRightClip, navRightScalesX,
-                             navScalesY) {
+    function elemUpdateCallback(mainCanvas, mainScalesX, mainScalesY,
+                                mainContainer, mainAxisFnX, mainAxisFnY,
+                                navLeftCanvas, navLeftScalesX,
+                                navRightCanvas, navRightScalesX,
+                                navScalesY) {
       if (globals.debug) console.log('updating ap count');
 
       accessPoints.getAll().then(function(results) {
@@ -201,9 +203,9 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       function updateBars(data) {
         /* Update the bars in each section of the visualization (the main
         window and both nav panes) */
-        updateSection(mainScalesX, mainScalesY, mainClip, data);
-        updateSection(navLeftScalesX, navScalesY, navLeftClip, data);
-        updateSection(navRightScalesX, navScalesY, navRightClip, data);
+        updateSection(mainScalesX, mainScalesY, mainCanvas, data);
+        updateSection(navLeftScalesX, navScalesY, navLeftCanvas, data);
+        updateSection(navRightScalesX, navScalesY, navRightCanvas, data);
 
         /* A general function for updating the bars in a particular section
            of the visualization.  Just pass in the appropriate scales
@@ -211,13 +213,14 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
            @param xScale - d3 scale object for section's X scale
            @param yScale - d3 scale object for section's Y scale
-           @param clip -
+           @param canvas - the target svg canvas
            @param data - an array of data objects of the form:
                    { channel: <number>, occupancy: <number> }
         */
-        function updateSection(xScale, yScale, clip, data) {
-          /* Bind dataset to bar elements */
-          var bars = clip.selectAll('.bar')
+        function updateSection(xScale, yScale, canvas, data) {
+          /* Bind dataset to existing (or not yet existing) bar elements,
+             using channel as a "key". */
+          var bars = canvas.selectAll('.bar')
             .data(data, function(d) {
               return d.channel;
             });
@@ -235,7 +238,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
               return xScale(d.channel);
             })
             .attr('transform', function(d) {
-              // Center the bar on the channel label
+              // Center the new bars on their channel label
               return 'translate(-' + (barWidth(xScale) / 2) + ')';
             })
             .attr('y', yScale(0))
@@ -270,7 +273,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       */
       function updateLabels(data) {
         /* Bind dataset to label elements */
-        var labels = mainClip.selectAll('text')
+        var labels = mainCanvas.selectAll('text')
           .data(data, function(d) {
             return d.channel;
           });
@@ -325,12 +328,12 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
         /* Vertically rescale each portion of the visualization accordingly */
         rescaleSection(mainContainer, mainAxisFnY,
-                       mainClip, mainScalesY);
-        rescaleSection(null, null, navLeftClip, navScalesY);
-        rescaleSection(null, null, navRightClip, navScalesY);
+                       mainCanvas, mainScalesY);
+        rescaleSection(null, null, navLeftCanvas, navScalesY);
+        rescaleSection(null, null, navRightCanvas, navScalesY);
 
         /* Rescale a particular section of the visualization */
-        function rescaleSection(container, axisFn, clip, yScale) {
+        function rescaleSection(container, axisFn, canvas, yScale) {
           var rescaleNeeded = false;
 
           /* Do we need a rescale? */
@@ -349,7 +352,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
             }
 
             /* Apply the new Y scale to each bar */
-            clip.selectAll('.bar')
+            canvas.selectAll('.bar')
               .interrupt()
               .attr('height', function(d) {
                 return yScale(0) - yScale(d.occupancy);
@@ -359,7 +362,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
               });
 
             /* Apply new Y scale to each label */
-            clip.selectAll('text')
+            canvas.selectAll('text')
               .interrupt()
               .attr('y', function(d) {
                 return yScale(d.occupancy) - prefs.labelPadding;
@@ -383,15 +386,15 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
        Called whenever the slider is moved.  Refer to comments in VisBuilder for
        details
     */
-    function elemScrollCallback(mainClip, mainScalesX) {
+    function elemScrollCallback(mainCanvas, mainScalesX) {
       /* Move bars */
-      mainClip.selectAll('.bar')
+      mainCanvas.selectAll('.bar')
         .attr('x', function(d) {
           return mainScalesX(d.channel);
         });
 
       /* Move labels */
-      mainClip.selectAll('text')
+      mainCanvas.selectAll('text')
         .attr('x', function(d) {
           return mainScalesX(d.channel);
         });
@@ -423,20 +426,20 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
     /* Invoked whenever the user selects a different band.  Refer to comments
        in VisBuilder for details. */
-    function bandChangeCallback(mainClip, mainScalesX,
+    function bandChangeCallback(mainCanvas, mainScalesX,
                           mainContainer, mainAxisFnX,
                           slider, navRightScalesX, band) {
 
       /* Update the X axis to reflect the new band */
       axisScrollCallback(mainContainer, mainAxisFnX,
-                   mainScalesX, slider,
-                   navRightScalesX, band);
+                         mainScalesX, slider,
+                         navRightScalesX, band);
 
       /* Move elements to their new position */
-      elemScrollCallback(mainClip, mainScalesX);
+      elemScrollCallback(mainCanvas, mainScalesX);
 
       /* Correct the width of each bar */
-      mainClip.selectAll('.bar')
+      mainCanvas.selectAll('.bar')
         .attr('width', function(d) {
           return barWidth(mainScalesX);
         })
@@ -445,7 +448,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         });
 
       /* Correnct the text alignment */
-      mainClip.selectAll('text')
+      mainCanvas.selectAll('text')
         .attr('transform', function(d) {
           return 'translate(-' + (this.getBBox().width / 2) + ')';
         });
@@ -484,7 +487,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
     function saveStateCallback(slider, navRightScalesX, band) {
       var extentMin, extentMax;
 
-      /* Get the slider extent */
+      /* Get the current slider extent */
       extentMin = navRightScalesX.invert(parseFloat(slider.attr('x'))),
       extentMax = navRightScalesX.invert(parseFloat(slider.attr('x')) +
                                   parseFloat(slider.attr('width')));

@@ -1,12 +1,12 @@
 "use strict";
 
-/* Handles tours and view switching */
+/* Handles help menu interaction and view switching */
 app.controller('navCtrl', ['$rootScope', '$scope', '$state', '$animate', '$timeout',
 'globals', 'globalSettings', 'nzTour', 'setupSequence',
 function($rootScope, $scope, $state, $animate, $timeout, globals, globalSettings,
 nzTour, setupSequence) {
 
-  /* Wait until the device is ready before setting up the controller */
+  /* Wait for app setup to complete before setting up the controller */
   setupSequence.done.then(function() {
 
     var prefs = {
@@ -15,7 +15,7 @@ nzTour, setupSequence) {
       navShowInterval: 3000
     };
 
-    var navTimeout = null,
+    var navTimeout = null,     
         tourInProgress = false;
 
     $scope.strings = globals.strings;
@@ -52,48 +52,69 @@ nzTour, setupSequence) {
       return $state.current.name !== 'settings';
     };
 
+    /* Change the view and perform a slide in animation
+
+    @param view - the name of the target view
+    @param direction - the direction from which the new view will slide in
+                       ('left' or 'right')
+    */
     $scope.swipeTo = function(view, direction) {
       $scope.stopTour();
 
+      /* Hide the current view and view title */
       $('#view-title').html("");
       $('#current-view').css('visibility', 'hidden');
 
-      console.log('swiping');
+      /* Switch views */
       $state.go(view).finally(function() {
-        console.log('state changed');
+        /* Move the view just past the edge of the screen */
         $('#current-view').addClass('anim-in-setup anim-slide-'+direction);
         $('#current-view').css('visibility', 'normal');
 
+        /* Wait for an angular digest cycle !!IMPORTANT */
         $timeout(function() {
-          console.log('starting anim-in');
+          /* Animate the view back in */
           $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
+              /* Restore view title and remove all animation classes */
               $('#view-title').html(globals.strings.viewTitles[view]);
               $('#current-view').removeClass('anim-in anim-slide-'+direction);
 
-              console.log('transition done');
+              /* Let everyone know we're done with the transition */
               $rootScope.$broadcast(globals.events.transitionDone);
             });
         });
       });
     };
 
+    /* Change the view and perform a fade in animation
+
+    @param view - the name of the target view
+    */
     $scope.setView = function(view) {
       if (view !== $state.current.name) {
         $scope.stopTour();
 
+        /* Hide the current view and view title */
         $('#view-title').html("");
         $('#current-view').css('visibility', 'hidden');
 
+        /* Switch views */
         $state.go(view).finally(function() {
+          /* Restore view title */
           $('#view-title').html(globals.strings.viewTitles[view]);
 
+          /* Make the view transparent */
           $('#current-view').addClass('anim-in-setup anim-fade');
           $('#current-view').css('visibility', 'normal');
 
+          /* Wait for an angular digest cycle !!IMPORTANT */
           $timeout(function() {
+            /* Fade the view in */
             $animate.setClass($('#current-view'), 'anim-in', 'anim-in-setup').finally(function() {
+                /* Remove all animation classes */
                 $('#current-view').removeClass('anim-in anim-fade');
 
+                /* Let everyone know we're done with the transition */
                 $rootScope.$broadcast(globals.events.transitionDone);
             });
           });
@@ -101,6 +122,7 @@ nzTour, setupSequence) {
       }
     };
 
+    /* Start the help modal sequence for the current view */
     $scope.startTour = function() {
       tourInProgress = true;
 
@@ -109,6 +131,7 @@ nzTour, setupSequence) {
       });
     };
 
+    /* If a help modal is open, stop the help modal sequence */
     $scope.stopTour = function() {
       if (tourInProgress) {
         nzTour.stop();
@@ -116,6 +139,7 @@ nzTour, setupSequence) {
     };
 
     function init() {
+      /* Start the app in the desired view */
       $scope.setView(globals.defaults.startingView);
     };
 

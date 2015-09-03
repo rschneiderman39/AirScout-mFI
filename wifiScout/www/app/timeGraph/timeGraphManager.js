@@ -8,7 +8,7 @@ globalSettings, setupSequence) {
 
   setupSequence.done.then(function() {
 
-    var updateInterval = globals.constants.updateIntervalNormal;
+    var updateInterval = globals.updateIntervals.timeGraph;
 
     var config = {
       timespan: 60
@@ -19,72 +19,74 @@ globalSettings, setupSequence) {
 
     var numDataPoints;
 
-    service.getSelectedDatasets = function() {
-      var selectedDatasets = [];
-
-      $.each(datasets, function(mac, dataset) {
-        if (apSelection().contains(mac)) {
-          if (globalSettings.detectHidden() || ! dataset.hidden) {
-            selectedDatasets.push(dataset);
-          }
-        }
-      });
-
-      return selectedDatasets;
-    };
-
-    service.getLegendData = function() {
-      var legendData = [];
-
-      $.each(datasets, function(mac, dataset) {
-        if (apSelection().contains(mac)) {
-          if (globalSettings.detectHidden() || ! dataset.hidden) {
-            legendData.push(new LegendItem(dataset));
-          }
-        }
-      });
-
-      return legendData;
-    };
-
-    service.getDomain = function() {
-      return [-config.timespan, 0];
-    };
-
-    service.getUpdateInterval = function() {
-      return updateInterval;
-    };
-
-    service.toggleHighlight = function(mac) {
-      if (datasets[mac]) {
-        if (mac === highlightedMac) {
-          datasets[mac].highlight = false;
-          highlightedMac = null;
-
-        } else {
-          if (datasets[highlightedMac]) {
-            datasets[highlightedMac].highlight = false;
-          }
-
-          datasets[mac].highlight = true;
-          highlightedMac = mac;
-        }
-      }
-    };
-
-    service.getHighlightedMac = function() {
-      return highlightedMac;
-    };
-
-    service.getHighlightedSsid = function() {
-      if (datasets[highlightedMac]) {
-        return datasets[highlightedMac].ssid;
-      } else {
-        return null;
-      }
-    };
+    init();
 
     function init() {
+      service.getSelectedDatasets = function() {
+        var selectedDatasets = [];
+
+        $.each(datasets, function(mac, dataset) {
+          if (apSelection().contains(mac)) {
+            if (globalSettings.detectHidden() || ! dataset.hidden) {
+              selectedDatasets.push(dataset);
+            }
+          }
+        });
+
+        return selectedDatasets;
+      };
+
+      service.getLegendData = function() {
+        var legendData = [];
+
+        $.each(datasets, function(mac, dataset) {
+          if (apSelection().contains(mac)) {
+            if (globalSettings.detectHidden() || ! dataset.hidden) {
+              legendData.push(new LegendItem(dataset));
+            }
+          }
+        });
+
+        return legendData;
+      };
+
+      service.getDomain = function() {
+        return [-config.timespan, 0];
+      };
+
+      service.getUpdateInterval = function() {
+        return updateInterval;
+      };
+
+      service.toggleHighlight = function(mac) {
+        if (datasets[mac]) {
+          if (mac === highlightedMac) {
+            datasets[mac].highlight = false;
+            highlightedMac = null;
+
+          } else {
+            if (datasets[highlightedMac]) {
+              datasets[highlightedMac].highlight = false;
+            }
+
+            datasets[mac].highlight = true;
+            highlightedMac = mac;
+          }
+        }
+      };
+
+      service.getHighlightedMac = function() {
+        return highlightedMac;
+      };
+
+      service.getHighlightedSsid = function() {
+        if (datasets[highlightedMac]) {
+          return datasets[highlightedMac].ssid;
+        } else {
+          return null;
+        }
+      };
+
       numDataPoints = (config.timespan / (updateInterval / 1000)) + 2;
 
       $rootScope.$on(globals.events.newSelection, function() {
@@ -205,8 +207,6 @@ globalSettings, setupSequence) {
 
       return this;
     };
-
-    init();
 
   });
 

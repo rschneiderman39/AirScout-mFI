@@ -334,7 +334,6 @@
                 };
 
                 // Correct max width and height
-                console.log('settings heights');
                 els.box.css('max-height', maxHeight);
                 els.box.css('max-width', maxWidth);
                 els.content.css('max-height', maxHeight * 0.8);
@@ -746,11 +745,6 @@
                     // Placement Priorities
 
                     function bottom() {
-                        console.log('trying below');
-                        console.log(dims.target.margins.offset.top);
-                        console.log(dims.target.margins.offset.fromBottom);
-                        console.log(maxHeight);
-
                         // Can Below?
                         if (dims.target.margins.offset.fromBottom > maxHeight) {
                             // Can Centered?

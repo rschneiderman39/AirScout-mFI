@@ -17,29 +17,31 @@ visBuilder, setupSequence) {
 
       var updateInterval = timeGraphManager.getUpdateInterval();
 
-      $scope.strings = globals.strings;
-      $scope.legendData = undefined;
-      $scope.isDuplicateSSID = {};
-      $scope.selectedSsid = null;
-      $scope.selectedMac = null;
-
-      $scope.toggleSelected = function(legendItem) {
-        if (legendItem.mac === $scope.selectedMac) {
-          $scope.selectedMac = null;
-          $scope.selectedSsid = null;
-        } else {
-          $scope.selectedMac = legendItem.mac;
-          $scope.selectedSsid = legendItem.ssid;
-        }
-
-        timeGraphManager.toggleHighlight(legendItem.mac);
-      };
-
-      $scope.isSelected = function(legendItem) {
-        return legendItem.mac === $scope.selectedMac;
-      };
+      init();
 
       function init() {
+        $scope.strings = globals.strings;
+        $scope.legendData = undefined;
+        $scope.isDuplicateSSID = {};
+        $scope.selectedSsid = null;
+        $scope.selectedMac = null;
+
+        $scope.toggleSelected = function(legendItem) {
+          if (legendItem.mac === $scope.selectedMac) {
+            $scope.selectedMac = null;
+            $scope.selectedSsid = null;
+          } else {
+            $scope.selectedMac = legendItem.mac;
+            $scope.selectedSsid = legendItem.ssid;
+          }
+
+          timeGraphManager.toggleHighlight(legendItem.mac);
+        };
+
+        $scope.isSelected = function(legendItem) {
+          return legendItem.mac === $scope.selectedMac;
+        };
+
         var config = {
           mainDomain: prefs.domain,
           mainMargins: {
@@ -209,8 +211,6 @@ visBuilder, setupSequence) {
             .attr('transform', 'translate(0)');
 
       };
-
-      init();
 
     });
 

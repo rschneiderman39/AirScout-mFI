@@ -51,9 +51,9 @@
 #time-graph-wrapper
 .legend-box {
   display: inline-block;
-  height: 20px;
-  margin: 5px 5px;
-  width: 20px;
+  height: 15px;
+  margin: 0 5px;
+  width: 15px;
   vertical-align: middle;
 }
 

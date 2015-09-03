@@ -1,27 +1,24 @@
 "use strict";
 
+/* Handles user interaction for the settings view */
 app.controller('settingsCtrl', ['$scope', 'globals', 'globalSettings',
 'setupSequence', function($scope, globals, globalSettings, setupSequence) {
 
+  /* Wait for app setup to complete before setting up the controller */
   setupSequence.done.then(function() {
 
     var prefs = {
-      sliderStep: 10
+      sliderStep: 10 // Granularity (in dBm) of the scale slider
     };
 
-    $scope.strings = globals.strings;
-    $scope.visScaleMin = globalSettings.visScaleMin();
-    $scope.visScaleMax = globalSettings.visScaleMax();
-
-    $scope.setMaxSignal = function(max) {
-      globalSettings.visScaleMax(max);
-    };
+    init();
 
     function init() {
-      prepView();
-    };
+      $scope.strings = globals.strings;
 
-    function prepView() {
+      /* Restore the scale slider to how the user left it */
+      $scope.visScaleMin = globalSettings.visScaleMin();
+      $scope.visScaleMax = globalSettings.visScaleMax();
 
       var sliderConfig = {
         min: globals.constants.signalFloor,
@@ -88,7 +85,6 @@ app.controller('settingsCtrl', ['$scope', 'globals', 'globalSettings',
         $('.slider-horizontal').css('width', '100%');
     };
 
-    init();
   });
 
 }]);

@@ -3,7 +3,8 @@
 app.service('utils', ['globals', function(globals) {
 
   this.macToManufacturer = function(macAddr) {
-    return manufacturers[macAddr.slice(0, 8)] || globals.strings.unknownManufacturer;
+    return manufacturers[macAddr.slice(0, 8)] ||
+           globals.strings.unknownManufacturer;
   };
 
   this.freqToChannel = function(freq) {
@@ -67,12 +68,7 @@ app.service('utils', ['globals', function(globals) {
     return 'hsla(' + hue + ',' + sat + '%,' + lum + '%,' + alpha + ')';
   }
 
-  this.spanLen = function(span) {
-    return span[1] - span[0];
-  };
-
   this.orderElements = function(parentSelector, elem1Selector, elem2Selector) {
-    console.log('ordering elements');
     var parent = $(parentSelector)[0],
         elem1 = $(elem1Selector)[0],
         elem2 = $(elem2Selector)[0];

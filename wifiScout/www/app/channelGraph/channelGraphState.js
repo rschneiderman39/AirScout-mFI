@@ -1,5 +1,8 @@
 "use strict";
 
+/* Stores the selected band and slider location for the access point count
+   view.  This allows is to construct the view the way the user left it,
+   instead of always starting in the same default state on view load. */
 app.factory('channelGraphState', ['setupSequence', function(setupSequence) {
 
   var service = {};
@@ -9,6 +12,7 @@ app.factory('channelGraphState', ['setupSequence', function(setupSequence) {
     var band = undefined,
         sliderExtent = undefined;
 
+    /* Hybrid getter/setter for the selected band */
     service.band = function(newBand) {
       if (newBand === undefined) {
         return band;
@@ -17,6 +21,7 @@ app.factory('channelGraphState', ['setupSequence', function(setupSequence) {
       }
     };
 
+    /* Hybrid getter/setter for the slider extent */
     service.sliderExtent = function(newExtent) {
       if (newExtent === undefined) {
         return sliderExtent
