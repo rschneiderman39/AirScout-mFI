@@ -86,7 +86,11 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         width: undefined,
         xAxisTickInterval: 1,
         yAxisTickInterval: 3,
-        canvasSelector: '#vis'
+        elemUpdateFn: elemUpdateCallback,
+        elemScrollFn: elemScrollCallback,
+        axisScrollFn: axisScrollCallback,
+        bandChangeFn: bandChangeCallback,
+        saveStateFn: saveStateCallback
       };
 
       /* Choose canvas dimensions that will fit the container */
@@ -101,8 +105,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
       /* Build the visualization with the our configuration and custom
          callbacks */
-      var vis = visBuilder.buildVis(elemUpdateCallback, elemScrollCallback,
-        axisScrollCallback, bandChangeCallback, saveStateCallback);
+      var vis = visBuilder.newVisualization('#vis');
 
       vis.init(config);
 
@@ -142,11 +145,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
     /* Invoked whenever vis.update() is called on the object returned by
        VisBuilder.  It adds, updates, and removes the bars and their labels.
        Refer to comments in VisBuilder for details. */
-    function elemUpdateCallback(mainCanvas, mainScalesX, mainScalesY,
-                                mainContainer, mainAxisFnX, mainAxisFnY,
-                                navLeftCanvas, navLeftScalesX,
-                                navRightCanvas, navRightScalesX,
-                                navScalesY) {
+    function elemUpdateCallback(dep) {
       accessPoints.getAll().then(function(results) {
 
         /* Will map each channel to its number of access points */
@@ -196,9 +195,9 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       function updateBars(data) {
         /* Update the bars in each section of the visualization (the main
         window and both nav panes) */
-        updateSection(mainScalesX, mainScalesY, mainCanvas, data);
-        updateSection(navLeftScalesX, navScalesY, navLeftCanvas, data);
-        updateSection(navRightScalesX, navScalesY, navRightCanvas, data);
+        updateSection(dep.mainScaleX, dep.mainScaleY, dep.mainCanvas, data);
+        updateSection(dep.navLeftScaleX, dep.navScaleY, dep.navLeftCanvas, data);
+        updateSection(dep.navRightScaleX, dep.navScaleY, dep.navRightCanvas, data);
 
         /* A general function for updating the bars in a particular section
            of the visualization.  Just pass in the appropriate scales
@@ -266,7 +265,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       */
       function updateLabels(data) {
         /* Bind dataset to label elements */
-        var labels = mainCanvas.selectAll('text')
+        var labels = dep.mainCanvas.selectAll('text')
           .data(data, function(d) {
             return d.channel;
           });
@@ -281,20 +280,20 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
           })
           .attr('fill', prefs.labelColor)
           .attr('x', function(d) {
-            return mainScalesX(d.channel);
+            return dep.mainScaleX(d.channel);
           })
           .attr('transform', function(d) {
             // Center label over bar
             return 'translate(-' + (this.getBBox().width / 2) + ')';
           })
-          .attr('y', mainScalesY(0))
+          .attr('y', dep.mainScaleY(0))
 
         /* Move each label to its new position */
         labels
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return mainScalesY(d.occupancy) - prefs.labelPadding;
+              return dep.mainScaleY(d.occupancy) - prefs.labelPadding;
             })
             .text(function(d) {
               return d.occupancy;
@@ -304,7 +303,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', mainScalesY(globals.constants.signalFloor))
+          .attr('y', dep.mainScaleY(globals.constants.signalFloor))
           .remove();
       };
 
@@ -320,10 +319,10 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
         });
 
         /* Vertically rescale each portion of the visualization accordingly */
-        rescaleSection(mainContainer, mainAxisFnY,
-                       mainCanvas, mainScalesY);
-        rescaleSection(null, null, navLeftCanvas, navScalesY);
-        rescaleSection(null, null, navRightCanvas, navScalesY);
+        rescaleSection(dep.mainContainer, dep.mainAxisFnY,
+                       dep.mainCanvas, dep.mainScaleY);
+        rescaleSection(null, null, dep.navLeftCanvas, dep.navScaleY);
+        rescaleSection(null, null, dep.navRightCanvas, dep.navScaleY);
 
         /* Rescale a particular section of the visualization */
         function rescaleSection(container, axisFn, canvas, yScale) {
@@ -379,96 +378,90 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
        Called whenever the slider is moved.  Refer to comments in VisBuilder for
        details
     */
-    function elemScrollCallback(mainCanvas, mainScalesX) {
+    function elemScrollCallback(dep) {
       /* Move bars */
-      mainCanvas.selectAll('.bar')
+      dep.mainCanvas.selectAll('.bar')
         .attr('x', function(d) {
-          return mainScalesX(d.channel);
+          return dep.mainScaleX(d.channel);
         });
 
       /* Move labels */
-      mainCanvas.selectAll('text')
+      dep.mainCanvas.selectAll('text')
         .attr('x', function(d) {
-          return mainScalesX(d.channel);
+          return dep.mainScaleX(d.channel);
         });
     };
 
     /* Rescale x axis to account for a new 5 Ghz slider extent. Called whenever
        slider is moved. Refer to comments in VisBuilder for details */
-    function axisScrollCallback(mainContainer, mainAxisFnX,
-                          mainScalesX, slider,
-                          navRightScalesX, band) {
+    function axisScrollCallback(dep) {
 
       /* If we just switched to the 2.4 Ghz band, rescale appropriately */
-      if (band === '2_4') {
-        mainScalesX.domain(prefs.domain2_4);
+      if (dep.band === '2_4') {
+        dep.mainScaleX.domain(prefs.domain2_4);
       }
       /* Otherwise, rescale to the slider extent */
-      else if (band === '5') {
-        mainScalesX
-          .domain([navRightScalesX.invert(slider.attr('x')),
-            navRightScalesX.invert(parseFloat(slider.attr('x')) +
-            parseFloat(slider.attr('width')))]);
+      else if (dep.band === '5') {
+        dep.mainScaleX
+          .domain([dep.navRightScaleX.invert(dep.slider.attr('x')),
+            dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x')) +
+            parseFloat(dep.slider.attr('width')))]);
       }
 
       /* Update the axis */
-      mainContainer.select('.x.axis').call(mainAxisFnX);
+      dep.mainContainer.select('.x.axis').call(dep.mainAxisFnX);
 
-      markRestrictedChannels(mainContainer);
+      markRestrictedChannels(dep);
     };
 
     /* Invoked whenever the user selects a different band.  Refer to comments
        in VisBuilder for details. */
-    function bandChangeCallback(mainCanvas, mainScalesX,
-                          mainContainer, mainAxisFnX,
-                          slider, navRightScalesX, band) {
+    function bandChangeCallback(dep) {
 
       /* Update the X axis to reflect the new band */
-      axisScrollCallback(mainContainer, mainAxisFnX,
-                         mainScalesX, slider,
-                         navRightScalesX, band);
+      axisScrollCallback(dep);
 
       /* Move elements to their new position */
-      elemScrollCallback(mainCanvas, mainScalesX);
+      elemScrollCallback(dep);
 
       /* Correct the width of each bar */
-      mainCanvas.selectAll('.bar')
+      dep.mainCanvas.selectAll('.bar')
         .attr('width', function(d) {
-          return barWidth(mainScalesX);
+          return barWidth(dep.mainScaleX);
         })
         .attr('transform', function(d) {
-          return 'translate(-' + (barWidth(mainScalesX) / 2) + ')';
+          return 'translate(-' + (barWidth(dep.mainScaleX) / 2) + ')';
         });
 
       /* Correnct the text alignment */
-      mainCanvas.selectAll('text')
+      dep.mainCanvas.selectAll('text')
         .attr('transform', function(d) {
           return 'translate(-' + (this.getBBox().width / 2) + ')';
         });
 
       /* Make sure the X axis has enough ticks for all the channels */
-      mainAxisFnX.ticks(mainScalesX.domain()[1] - mainScalesX.domain()[0]);
-      mainContainer.select('.x.axis').call(mainAxisFnX);
+      dep.mainAxisFnX.ticks(dep.mainScaleX.domain()[1] - dep.mainScaleX.domain()[0]);
+      dep.mainContainer.select('.x.axis').call(dep.mainAxisFnX);
 
-      markRestrictedChannels(mainContainer);
+      markRestrictedChannels(dep);
     };
 
     /* Grey out any channel labels that represent a restricted channel.
        Remove any labels that don't correspond to a real channel  (since making
        a custom axis would be kinda hard)
 
-       @param mainContainer - svg canvas for main section
+       @param dep.mainContainer - svg canvas for main section
     */
-    function markRestrictedChannels(mainContainer) {
+    function markRestrictedChannels(dep) {
       /* Remove all channel labels that aren't actually channels */
-      mainContainer.selectAll('.x.axis > .tick')
+      dep.mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === undefined;
         })
           .remove();
 
       /* Grey out restricted channels */
-      mainContainer.selectAll('.x.axis > .tick')
+      dep.mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === false;
         })
@@ -477,16 +470,16 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
 
     /* Invoked whenever saveState() is called on the visualization object
        returned by VisBuilder.  Refer to VisBuidler comments for details */
-    function saveStateCallback(slider, navRightScalesX, band) {
+    function saveStateCallback(dep) {
       var extentMin, extentMax;
 
       /* Get the current slider extent */
-      extentMin = navRightScalesX.invert(parseFloat(slider.attr('x'))),
-      extentMax = navRightScalesX.invert(parseFloat(slider.attr('x')) +
-                                  parseFloat(slider.attr('width')));
+      extentMin = dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x'))),
+      extentMax = dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x')) +
+                                  parseFloat(dep.slider.attr('width')));
 
       /* Save our current state */
-      accessPointCountState.band(band);
+      accessPointCountState.band(dep.band);
       accessPointCountState.sliderExtent([extentMin, extentMax]);
     };
 

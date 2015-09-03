@@ -233,6 +233,10 @@ nz-tour #nzTour-content {
 }
 
 /* Components */
+.btn {
+  outline: none !important;
+}
+
 .axis-label {
 	font-weight: bold;
 }

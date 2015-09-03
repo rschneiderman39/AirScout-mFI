@@ -78,7 +78,11 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
         width: undefined,
         xAxisTickInterval: 1,
         yAxisTickInterval: 10,
-        canvasSelector: '#vis'
+        elemUpdateFn: elemUpdateCallback,
+        elemScrollFn: elemScrollCallback,
+        axisScrollFn: axisScrollCallback,
+        bandChangeFn: bandChangeCallback,
+        saveStateFn: saveStateCallback
       };
 
       /* Choose canvas dimensions that will fit the container */
@@ -93,8 +97,7 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
 
       /* Build the visualization with the our configuration and custom
          callbacks */
-      var vis = visBuilder.buildVis(elemUpdateCallback, elemScrollCallback,
-        axsiScrollCallback, bandChangeCallback, saveStateCallback);
+      var vis = visBuilder.newVisualization('#vis');
 
       vis.init(config);
 
@@ -134,11 +137,7 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
     /* Invoked whenever vis.update() is called on the object returned by
        VisBuilder.  It adds, updates, and removes the parabolas and their labels.
        Refer to comments in VisBuilder for details. */
-    function elemUpdateCallback(mainCanvas, mainScalesX, mainScalesY,
-                                mainContainer, mainAxisFnX, mainAxisFnY,
-                                navLeftCanvas, navLeftScalesX,
-                                navRightCanvas, navRightScalesX,
-                                navScalesY, band) {
+    function elemUpdateCallback(dep) {
       accessPoints.getAll().then(function(data) {
         updateParabolas(data);
         updateLabels(data);
@@ -160,15 +159,15 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
 
         /* Update the main panel with the dataset corresponding to the
            selected band */
-        if (band === '2_4') {
-          updateSection(mainScalesX, mainScalesY, mainCanvas, data2_4Ghz);
-        } else if (band === '5') {
-          updateSection(mainScalesX, mainScalesY, mainCanvas, data5Ghz);
+        if (dep.band === '2_4') {
+          updateSection(dep.mainScaleX, dep.mainScaleY, dep.mainCanvas, data2_4Ghz);
+        } else if (dep.band === '5') {
+          updateSection(dep.mainScaleX, dep.mainScaleY, dep.mainCanvas, data5Ghz);
         }
 
         /* Update both navigation panels with the appropriate datasets */
-        updateSection(navLeftScalesX, navScalesY, navLeftCanvas, data2_4Ghz);
-        updateSection(navRightScalesX, navScalesY, navRightCanvas, data5Ghz);
+        updateSection(dep.navLeftScaleX, dep.navScaleY, dep.navLeftCanvas, data2_4Ghz);
+        updateSection(dep.navRightScaleX, dep.navScaleY, dep.navRightCanvas, data5Ghz);
 
         /* A general function for updating the parabolas in a particular section
            of the visualization.  Just pass in the appropriate scales
@@ -238,7 +237,7 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
 
       function updateLabels(data) {
         /* Bind dataset to the labels */
-        var labels = mainCanvas.selectAll('text')
+        var labels = dep.mainCanvas.selectAll('text')
           .data(data.sort(function(a, b) {
             return b.level - a.level;
           }), function(d) {
@@ -257,9 +256,9 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
             return d.color;
           })
           .attr('x', function(d) {
-            return mainScalesX(d.channel) - this.getBBox().width / 2;
+            return dep.mainScaleX(d.channel) - this.getBBox().width / 2;
           })
-          .attr('y', mainScalesY(globals.constants.signalFloor))
+          .attr('y', dep.mainScaleY(globals.constants.signalFloor))
 
         labels.order();
 
@@ -274,14 +273,14 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
           .transition()
           .duration(transitionInterval)
             .attr('y', function(d) {
-              return mainScalesY(d.level) - prefs.labelPadding;
+              return dep.mainScaleY(d.level) - prefs.labelPadding;
             });
 
         /* Transition out any labels that no longer map to a data point */
         labels.exit()
         .transition()
         .duration(transitionInterval)
-          .attr('y', mainScalesY(globals.constants.signalFloor))
+          .attr('y', dep.mainScaleY(globals.constants.signalFloor))
           .remove();
       };
     };
@@ -290,83 +289,77 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
        Called whenever the slider is moved.  Refer to comments in VisBuilder for
        details
     */
-    function elemScrollCallback(mainCanvas, mainScalesX) {
+    function elemScrollCallback(dep) {
       /* Move parabolas */
-      mainCanvas.selectAll('.parabola')
+      dep.mainCanvas.selectAll('.parabola')
         .attr('transform', function(d) {
-          return 'translate(' + mainScalesX(d.channel) + ')';
+          return 'translate(' + dep.mainScaleX(d.channel) + ')';
         });
 
       /* Move labels */
-      mainCanvas.selectAll('text')
+      dep.mainCanvas.selectAll('text')
         .attr('x', function(d) {
                                           // Make sure label is centered
-          return mainScalesX(d.channel) - this.getBBox().width / 2;
+          return dep.mainScaleX(d.channel) - this.getBBox().width / 2;
         });
     };
 
     /* Rescale x axis to account for a new 5 Ghz slider extent. Called whenever
        slider is moved. Refer to comments in VisBuilder for details */
-    function axsiScrollCallback(mainContainer, mainAxisFnX,
-                          mainScalesX, slider,
-                          navRightScalesX, band) {
+    function axisScrollCallback(dep) {
 
       /* If we just switched to the 2.4 Ghz band, rescale appropriately */
-      if (band === '2_4') {
-        mainScalesX.domain(prefs.domain2_4);
+      if (dep.band === '2_4') {
+        dep.mainScaleX.domain(prefs.domain2_4);
 
       }
       /* Otherwise, rescale to the slider extent */
-      else if (band === '5') {
-        mainScalesX
-          .domain([navRightScalesX.invert(slider.attr('x')),
-            navRightScalesX.invert(parseFloat(slider.attr('x')) +
-            parseFloat(slider.attr('width')))]);
+      else if (dep.band === '5') {
+        dep.mainScaleX
+          .domain([dep.navRightScaleX.invert(dep.slider.attr('x')),
+            dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x')) +
+            parseFloat(dep.slider.attr('width')))]);
       }
 
       /* Update the axis */
-      mainContainer.select('.x.axis').call(mainAxisFnX);
+      dep.mainContainer.select('.x.axis').call(dep.mainAxisFnX);
 
-      markRestrictedChannels(mainContainer);
+      markRestrictedChannels(dep);
     };
 
     /* Invoked whenever the user selects a different band.  Refer to comments
        in VisBuilder for details. */
-    function bandChangeCallback(mainCanvas, mainScalesX,
-                          mainContainer, mainAxisFnX,
-                          slider, navRightScalesX, band) {
-
+    function bandChangeCallback(dep) {
       /* Update the X axis to reflect the new band */
-      axsiScrollCallback(mainContainer, mainAxisFnX, mainScalesX,
-                         slider, navRightScalesX, band);
+      axisScrollCallback(dep);
 
       /* Clear all elements from the main panel */
-      mainCanvas.selectAll('.parabola').remove();
-      mainCanvas.selectAll('text').remove();
+      dep.mainCanvas.selectAll('.parabola').remove();
+      dep.mainCanvas.selectAll('text').remove();
 
       /* Make sure the X axis has enough ticks for all the channels */
-      mainAxisFnX.ticks(mainScalesX.domain()[1] - mainScalesX.domain()[0]);
-      mainContainer.select('.x.axis').call(mainAxisFnX);
+      dep.mainAxisFnX.ticks(dep.mainScaleX.domain()[1] - dep.mainScaleX.domain()[0]);
+      dep.mainContainer.select('.x.axis').call(dep.mainAxisFnX);
 
-      markRestrictedChannels(mainContainer);
+      markRestrictedChannels(dep);
     };
 
     /* Grey out any channel labels that represent a restricted channel.
        Remove any labels that don't correspond to a real channel  (since making
        a custom axis would be kinda hard)
 
-       @param mainContainer - svg canvas for main section
+       @param dep.mainContainer - svg canvas for main section
     */
-    function markRestrictedChannels(mainContainer) {
+    function markRestrictedChannels(dep) {
       /* Remove all channel labels that aren't actually channels */
-      mainContainer.selectAll('.x.axis > .tick')
+      dep.mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === undefined;
         })
           .remove();
 
       /* Grey out restricted channels */
-      mainContainer.selectAll('.x.axis > .tick')
+      dep.mainContainer.selectAll('.x.axis > .tick')
         .filter(function(d) {
           return channelValidator.isAllowableChannel(d) === false;
         })
@@ -376,16 +369,16 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
 
     /* Invoked whenever saveState() is called on the visualization object
        returned by VisBuilder.  Refer to VisBuidler comments for details */
-    function saveStateCallback(slider, navRightScalesX, band) {
+    function saveStateCallback(dep) {
       var extentMin, extentMax;
 
       /* Get the current slider extent */
-      extentMin = navRightScalesX.invert(parseFloat(slider.attr('x'))),
-      extentMax = navRightScalesX.invert(parseFloat(slider.attr('x')) +
-                                      parseFloat(slider.attr('width')));
+      extentMin = dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x'))),
+      extentMax = dep.navRightScaleX.invert(parseFloat(dep.slider.attr('x')) +
+                                      parseFloat(dep.slider.attr('width')));
 
       /* Save our current state */
-      channelGraphState.band(band);
+      channelGraphState.band(dep.band);
       channelGraphState.sliderExtent([extentMin, extentMax]);
     };
 

@@ -59,7 +59,7 @@ visBuilder, setupSequence) {
           width: undefined,
           xAxisTickInterval: 10,
           yAxisTickInterval: 10,
-          canvasSelector: '#vis'
+          elemUpdateFn: elemUpdateCallback
         };
 
         var vis;
@@ -72,7 +72,7 @@ visBuilder, setupSequence) {
           config.width = $('#time-graph').width();
           config.height = $('#time-graph').height();
 
-          vis = visBuilder.buildVis(elemUpdateCallback);
+          vis = visBuilder.newVisualization('#vis');
           vis.init(config);
 
           $scope.$on(globals.events.orientationChanged, renderFromScratch);
@@ -153,21 +153,22 @@ visBuilder, setupSequence) {
         });
       };
 
-      function elemUpdateCallback(clip, xScale, yScale) {
+      function elemUpdateCallback(dep) {
         if (globals.debug) console.log('updating timegraph');
 
         var lineGenerator = d3.svg.line()
           .x(function(d, i) {
-            return xScale(xScale.domain()[0] + (i-2) * (updateInterval / 1000));
+            return dep.mainScaleX(dep.mainScaleX.domain()[0]
+                                  + (i-2) * (updateInterval / 1000));
           })
           .y(function(d, i) {
-            return yScale(d.level);
+            return dep.mainScaleY(d.level);
           })
           .interpolate('linear');
 
         var datasets = timeGraphManager.getSelectedDatasets();
 
-        var lines = clip.selectAll('.data-line')
+        var lines = dep.mainCanvas.selectAll('.data-line')
           .data(datasets, function(d, i) {
             return d.mac;
           });
@@ -184,7 +185,7 @@ visBuilder, setupSequence) {
           .attr('stroke-width', prefs.lineWidth)
           .attr('fill', 'none');
 
-        var translation = xScale(updateInterval / 1000) - xScale(0);
+        var translation = dep.mainScaleX(updateInterval / 1000) - dep.mainScaleX(0);
 
         lines
           .attr('fill', function(d) {

@@ -7,34 +7,59 @@ setupSequence) {
 
   setupSequence.done.then(function() {
 
-    /* CONFIG */
-    // height
-    // width
-    // navPercent
-    // mainMargins
-    // mainDomain
-    // labelX
-    // range
-    // labelY
-    // gridLineOpacity
-    // yAxisTickInterval
-    // xAxisTicks
-    // navMargins
-    // navLeftDomain
-    // navRightDomain
-    // navLeftLabel
-    // navRightLabel
-    // canvasSelector
+    /* CONFIG
+    height:      Total height of visualization in pixels
 
-    service.buildVis = function(elemUpdateFn, elemScrollFn,
-      axisScrollFn, bandChangeFn, saveStateFn) {
+    width:       Total width of visualization in pixels
+
+    navPercent:  Percentage of visualization to be occupied by nav pane. Set
+                 to 0 to disable the navigation pane entirely.
+
+    mainMargins: {left: , right:, top:, bottom: } Margins, in pixels, of main pane
+
+    mainDomain:  Inclusive extent of the main pane's X axis
+
+    labelX:      Label applied to the X axis of the main pane
+
+    range:       Inlusive extent of the main pane's Y axis
+
+    labelY:      Label applied to main pane's Y axis
+
+    gridLineOpacity:   The opacity of the horizontal gridlines
+
+    yAxisTickInterval: Number of units between Y axis ticks on main pane
+
+    navMargins: {left: , right:, top:, bottom: } Margins, in pixels, of nav pane
+
+    navLeftDomain: Inclusive domain of left navigation pane
+
+    navRightDomain: Inclusive domain of right navigation pane
+
+    navLeftLabel:  Text to be placed below left navigation pane
+
+    navRightLabel: Text to be placed below right navigation pane
+
+    elemUpdateFn:  The function used to generate and update elements
+
+    elemScrollFn:  The function used to translate elements when the visualization
+                   is scrolled.
+
+    axisScrollFn: The function used to adjust the axis when the visualization is
+                  scrolled.
+
+    bandChangeFn: The function to be invoked when the user selects a different
+                  band from the navigation pane
+
+    saveStateFn:  A function that can be triggered by calling saveState
+                  on the returned visualization
+    */
+
+    service.newVisualization = function(canvasSelector) {
       var vis = {};
 
-      var band, config;
+      var band, config, hasNav = false;
 
       var dim = {}, scales = {}, elem = {};
-
-      var hasNav = false;
 
       vis.init = function(cfg) {
         config = cfg;
@@ -42,38 +67,49 @@ setupSequence) {
         buildMain();
 
         if (config.navPercent > 0) {
-          buildNav();
           hasNav = true;
+          buildNav();
           setBand(band || config.band);
         }
       };
 
       vis.update = function() {
-        if (hasNav) {
-          elemUpdateFn(elem.main.canvas, scales.main.x, scales.main.y,
-                   elem.main.container, elem.main.axisFn.x, elem.main.axisFn.y,
-                   elem.nav.left.canvas, scales.nav.left.x,
-                   elem.nav.right.canvas, scales.nav.right.x,
-                   scales.nav.y, band);
-        } else {
-          elemUpdateFn(elem.main.canvas, scales.main.x, scales.main.y,
-                   elem.main.axisFn.x, elem.main.axisFn.y);
-        }
+        var dependencies = {
+          mainCanvas: elem.main.canvas,
+          mainScaleX: scales.main.x,
+          mainScaleY: scales.main.y,
+          mainContainer: elem.main.container,
+          mainAxisFnX: elem.main.axisFn.x,
+          mainAxisFnY: elem.main.axisFn.y,
+          navLeftCanvas: hasNav ? elem.nav.left.canvas : undefined,
+          navLeftScaleX: hasNav ? scales.nav.left.x : undefined,
+          navRightCanvas: hasNav ? elem.nav.right.canvas : undefined,
+          navRightScaleX: hasNav ? scales.nav.right.x : undefined,
+          navScaleY: hasNav ? scales.nav.y : undefined,
+          band: band
+        };
+
+        config.elemUpdateFn(dependencies);
       };
 
       vis.saveState = function() {
-        saveStateFn(elem.nav.right.slider, scales.nav.right.x, band);
+        var dependencies = {
+          slider: hasNav ? elem.nav.right.slider : undefined,
+          navRightScaleX: hasNav ? scales.nav.right.x : undefined
+        };
+
+        config.saveStateFn(dependencies);
       };
 
       vis.destroy = function() {
-        d3.select(config.canvasSelector).selectAll('*').remove();
+        d3.select(canvasSelector).selectAll('*').remove();
       };
 
       return vis;
 
       /* Construct the main section of the visualization */
       function buildMain() {
-        d3.select(config.canvasSelector)
+        d3.select(canvasSelector)
           .append('div').attr('id', 'main');
 
         dim.main = {};
@@ -186,11 +222,11 @@ setupSequence) {
 
       /* Derive navigator dimensions and add elments to DOM */
       function buildNav() {
-        d3.select(config.canvasSelector)
+        d3.select(canvasSelector)
           .append('div').attr('id', 'nav-left')
           .style('display', 'inline-block')
 
-        d3.select(config.canvasSelector)
+        d3.select(canvasSelector)
           .append('div').attr('id', 'nav-right')
           .style('display', 'inline-block')
 
@@ -330,11 +366,23 @@ setupSequence) {
 
           slider.attr('x', sliderX);
 
-          axisScrollFn(elem.main.container, elem.main.axisFn.x,
-                       scales.main.x, elem.nav.right.slider,
-                       scales.nav.right.x, band);
+          var dependencies = {
+            mainContainer: elem.main.container,
+            mainAxisFnX: elem.main.axisFn.x,
+            mainScaleX: scales.main.x,
+            slider: hasNav ? elem.nav.right.slider : undefined,
+            navRightScaleX: hasNav ? scales.nav.right.x: undefined,
+            band: band
+          };
 
-          elemScrollFn(elem.main.canvas, scales.main.x);
+          config.axisScrollFn(dependencies);
+
+          dependencies = {
+            mainCanvas: elem.main.canvas,
+            mainScaleX: scales.main.x
+          };
+
+          config.elemScrollFn(dependencies);
         };
 
         var sliderExtent = config.sliderExtent;
@@ -398,9 +446,17 @@ setupSequence) {
 
         band = newBand;
 
-        bandChangeFn(elem.main.canvas, scales.main.x, elem.main.container,
-                     elem.main.axisFn.x, elem.nav.right.slider,
-                     scales.nav.right.x, band);
+        var dependencies = {
+          mainCanvas: elem.main.canvas,
+          mainScaleX: scales.main.x,
+          mainContainer: elem.main.container,
+          mainAxisFnX: elem.main.axisFn.x,
+          slider: elem.nav ? elem.nav.right.slider : undefined,
+          navRightScaleX: scales.nav ? scales.nav.right.x: undefined,
+          band: band
+        };
+
+        config.bandChangeFn(dependencies);
 
         vis.update();
       };
