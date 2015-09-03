@@ -71,13 +71,10 @@ accessPointTableState, setupSequence) {
       $scope.$on(globals.events.newSelection, update);
 
       /* Rescale on device rotate */
-      $(window).on('resize', scaleView);
+      $scope.$on(globals.events.orientationChange, scaleView);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
-        /* Avoid duplicate event handlers */
-        $(window).off('resize', scaleView);
-
         /* Stop updating */
         clearInterval(updateLoop);
 
@@ -119,11 +116,7 @@ accessPointTableState, setupSequence) {
 
     /* Manually scale the view to the device where needed. */
     function scaleView() {
-      if (globals.debug) console.log('scaling ap table');
-
-      var contentHeight = $(window).height() - $('#top-bar').height()
-                          - $('.table thead').height();
-      $('#table-content').height(contentHeight);
+      $('tbody').height($('.view-wrapper').height() - $('thead').height());
     };
 
   });

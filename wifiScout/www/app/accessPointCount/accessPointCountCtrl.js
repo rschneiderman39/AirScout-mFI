@@ -133,9 +133,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       });
 
       /* Rebuild visualization from scratch with appropriate dimensions */
-      function redraw(){
-        if (globals.debug) console.log('resizing ap count');
-
+      function redraw() {
         config.width = $('#current-view').width();
         config.height = $('#current-view').height() * prefs.heightFactor;
 

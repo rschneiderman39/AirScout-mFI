@@ -28,7 +28,7 @@
 			<!-- Minimum level indicator -->
 			<div class="col-xs-4">
 				<div class="text-center">{{strings.signalStrength.minLevel}}</div>
-				<div class="panel panel-default level-indicator">
+				<div id="min-level" class="panel panel-default level-indicator">
 					<div class="panel-body text-center">{{minLevel !== null ? minLevel + " dBm" : "---"}}</div>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 			<!-- Max level indicator -->
 			<div class="col-xs-4">
 				<div class="text-center">{{strings.signalStrength.maxLevel}}</div>
-				<div class="panel panel-default level-indicator">
+				<div id="max-level" class="panel panel-default level-indicator">
 				 	<div class="panel-body text-center">{{maxLevel !== null ? maxLevel + " dBm" : "---"}}</div>
 				</div>
 			</div>

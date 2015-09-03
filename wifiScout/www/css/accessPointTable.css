@@ -1,11 +1,67 @@
-/* Landscape Specific Styles */
 @media screen and (orientation:landscape) {
+  /* portrait-specific styles */
+  #access-point-table-wrapper
+  .col-xs-2.ssid {
+    width: 20%;
+  }
 
+  #access-point-table-wrapper
+  .col-xs-2.mac {
+    width: 20%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.manufacturer {
+    width: 19%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.channel {
+    width: 13%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.level {
+    width: 10%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.capabilities {
+    width: 18%;
+  }
 }
 
-/* Portrait Specific Styles - when device width is under 639px */
 @media screen and (orientation:portrait) and (max-width: 639px){
+  /* portrait-specific styles */
+  #access-point-table-wrapper
+  .col-xs-2.ssid {
+    width: 40%;
+  }
 
+  #access-point-table-wrapper
+  .col-xs-2.mac {
+    width: 40%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.manufacturer {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.channel {
+    display: none;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.level {
+    width: 20%;
+  }
+
+  #access-point-table-wrapper
+  .col-xs-2.capabilities {
+    display: none;
+  }
 }
 
 /* Table Header */
@@ -27,6 +83,12 @@ a {
 }
 
 /* Table Body */
+.header-fixed > thead,
+.header-fixed > tbody {
+    display: block;
+    padding: 0;
+}
+
 #access-point-table-wrapper
 .table {
   margin: 0;

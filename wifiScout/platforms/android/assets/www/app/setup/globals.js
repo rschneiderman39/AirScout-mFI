@@ -34,6 +34,7 @@ setupModule.service('globals', function() {
     newLegendData: 'newlegenddata',
     newSelection: 'newselection',
     newTimeGraphData: 'newtimegraphdata',
+    orientationChanged: 'orientationchanged',
     transitionDone: 'transitiondone'
   };
 

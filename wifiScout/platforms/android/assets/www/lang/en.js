@@ -43,7 +43,7 @@ languages['en'] = {
     sortMAC: 'MAC Address',
     sortManufacturer: 'Vendor',
     sortChannel: 'Channel',
-    sortLevel: 'Level (dBm)',
+    sortLevel: 'Level',
     sortCapabilities: 'Capabilities',
     tour: {
       intro: "This view displays all available information about all"

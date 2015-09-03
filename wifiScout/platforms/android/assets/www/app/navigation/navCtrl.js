@@ -141,6 +141,18 @@ nzTour, setupSequence) {
     function init() {
       /* Start the app in the desired view */
       $scope.setView(globals.defaults.startingView);
+
+      var mql = window.matchMedia("(orientation: portrait)");
+
+      function inPortrait() {
+        return mql.matches;
+      };
+
+      mql.addListener(function() {
+        var orientation = inPortrait() ? 'portrait' : 'landscape';
+        console.log(orientation);
+        $rootScope.$broadcast(globals.events.orientationChange, orientation);
+      })
     };
 
     init();

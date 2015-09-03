@@ -27,6 +27,14 @@ accessPointTableState, setupSequence) {
 
       $scope.sortOrder = undefined;
 
+      $scope.inPortrait = function() {
+        return utils.getOrientation() === 'portrait';
+      };
+
+      $scope.inLandscape = function() {
+        return utils.getOrientation() === 'landscape';
+      };
+
       /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
          If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
          is selected as the predicate, a custom ordering function is substituted instead.
@@ -63,13 +71,10 @@ accessPointTableState, setupSequence) {
       $scope.$on(globals.events.newSelection, update);
 
       /* Rescale on device rotate */
-      $(window).on('resize', scaleView);
+      $scope.$on(globals.events.orientationChange, scaleView);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
-        /* Avoid duplicate event handlers */
-        $(window).off('resize', scaleView);
-
         /* Stop updating */
         clearInterval(updateLoop);
 
@@ -111,11 +116,7 @@ accessPointTableState, setupSequence) {
 
     /* Manually scale the view to the device where needed. */
     function scaleView() {
-      if (globals.debug) console.log('scaling ap table');
-
-      var contentHeight = $(window).height() - $('#top-bar').height()
-                          - $('.table thead').height();
-      $('#table-content').height(contentHeight);
+      $('tbody').height($('.view-wrapper').height() - $('thead').height());
     };
 
   });

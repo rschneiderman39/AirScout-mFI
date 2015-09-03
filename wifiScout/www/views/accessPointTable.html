@@ -1,44 +1,38 @@
 <div id="access-point-table-wrapper" class="view-wrapper" ng-swipe-left="swipeTo('signalStrength', 'left')" ng-swipe-right="swipeTo('timeGraph', 'right')" ng-controller="accessPointTableCtrl">
 
-	<!-- Fixed table header -->
-	<table class="table">
-		<thead class="container-fluid">
-  		<tr id="header" class="row">
-      	<th ng-click="order('ssid')" ng-class="{col-xs-2:inLandscape, no-show:inPortrait}">
-        	<a href="">{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>
-      	</th>
-      	<th ng-click="order('mac')" ng-class="{col-xs-2:inLandscape, no-show:inPortrait}">
-      		<a href="">{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'mac'" ng-class="{reverse:sortReverse}"></span></a>
-      	</th>
-				<th ng-click="order('manufacturer')" ng-class="{col-xs-3:inLandscape, no-show:inPortrait}">
-					<a href="">{{strings.accessPointTable.sortManufacturer}}<span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
-				</th>
-      	<th id="channel-header" ng-click="order('channel')" ng-class="{col-xs-1:inLandscape, no-show:inPortrait}">
-      		<a href="">{{strings.accessPointTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse"></span></a>
-      	</th>
-      	<th id="level-header" ng-click="order('level')" ng-class="{col-xs-2:inLandscape, no-show:inPortrait}">
-       		<a href="">{{strings.accessPointTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse"></span></a>
-      	</th>
-      	<th id="capabilities-header" ng-click="order('capabilities')" ng-class="{col-xs-2:inLandscape, no-show:inPortrait}">
-      		<a href="">{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
-      	</th>
-  		</tr>
-    </thead>
-	</table>
-
 	<!-- Scrollable table body -->
-	<div id="table-content" class="scroll-y">
-		<table class="table table-striped">
-    	<tbody class="container-fluid">
+		<table class="table table-striped header-fixed">
+			<thead class="container-fluid">
+	  		<tr id="header" class="row text-nowrap">
+	      	<th class="col-xs-2 ssid" ng-click="order('ssid')">
+	        	<a>{{strings.accessPointTable.sortSSID}}<span class="sortArrow" ng-show="sortPredicate === 'ssid'" ng-class="{reverse:sortReverse}"></span></a>
+	      	</th>
+	      	<th class="col-xs-2 mac" ng-click="order('mac')">
+	      		<a>{{strings.accessPointTable.sortMAC}}<span class="sortArrow" ng-show="sortPredicate === 'mac'" ng-class="{reverse:sortReverse}"></span></a>
+	      	</th>
+					<th class="col-xs-2 manufacturer" ng-click="order('manufacturer')">
+						<a>{{strings.accessPointTable.sortManufacturer}}<span class="sortArrow" ng-show="sortPredicate === 'manufacturer'" ng-class="{reverse:sortReverse}"></span></a>
+					</th>
+	      	<th class="col-xs-2 channel" id="channel-header" ng-click="order('channel')">
+	      		<a>{{strings.accessPointTable.sortChannel}}<span class="sortArrow" ng-show="sortPredicate === 'channel'" ng-class="{reverse:sortReverse}"></span></a>
+	      	</th>
+	      	<th class="col-xs-2 level" id="level-header" ng-click="order('level')">
+	       		<a>{{strings.accessPointTable.sortLevel}}<span class="sortArrow" ng-show="sortPredicate === 'level'" ng-class="{reverse:sortReverse}"></span></a>
+	      	</th>
+	      	<th class="col-xs-2 capabilities" id="capabilities-header" ng-click="order('capabilities')">
+	      		<a>{{strings.accessPointTable.sortCapabilities}}<span class="sortArrow" ng-show="sortPredicate === 'capabilities'" ng-class="{reverse:sortReverse}"></span></a>
+	      	</th>
+	  		</tr>
+	    </thead>
+    	<tbody class="container-fluid scroll-y">
 				<tr class="row" data-ng-repeat="ap in accessPoints | orderBy:sortOrder:sortReverse track by ap.mac">
-	      	<td ng-class="{col-xs-2:inLandscape, col-xs-6:inPortrait}">{{ap.ssid}}</td>
-	      	<td ng-class="{col-xs-2:inLandscape, col-xs-6:inPortrait}">{{ap.mac}}</td>
-					<td ng-class="{col-xs-3:inLandscape, no-show:inPortrait}">{{ap.manufacturer}}</td>
-	      	<td ng-class="{col-xs-1:inLandscape, no-show:inPortrait}">{{ap.channel}}</td>
-	      	<td ng-class="{col-xs-2:inLandscape, col-xs-6:inPortrait}">{{ap.level}}</td>
-	      	<td ng-class="{col-xs-2:inLandscape, no-show:inPortrait}">{{ap.capabilities}}</td>
+	      	<td class="col-xs-2 ssid">{{ap.ssid}}</td>
+	      	<td class="col-xs-2 mac">{{ap.mac}}</td>
+					<td class="col-xs-2 manufacturer">{{ap.manufacturer}}</td>
+	      	<td class="col-xs-2 channel">{{ap.channel}}</td>
+	      	<td class="col-xs-2 level">{{ap.level}}</td>
+	      	<td class="col-xs-2 capabilities">{{ap.capabilities}}</td>
 	      </tr>
 			</tbody>
 	  </table>
-	</div>
 </div>
