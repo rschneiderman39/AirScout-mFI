@@ -71,7 +71,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
-          target: '#main',
+          target: '#view-title',
           content: globals.strings.accessPointCount.tour.intro
         },
         {
@@ -104,7 +104,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
-          target: '#access-point-table-wrapper',
+          target: '#view-title',
           content: globals.strings.accessPointTable.tour.intro
         },
         {
@@ -183,6 +183,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
+          target: '#view-title',
           content: globals.strings.signalStrength.tour.intro
         },
         {
@@ -216,7 +217,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
-        target: '#main',
+        target: '#view-title',
         content: globals.strings.channelGraph.tour.intro
         },
         {
