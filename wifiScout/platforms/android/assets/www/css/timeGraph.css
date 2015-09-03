@@ -40,6 +40,15 @@
   padding: 10px 10px;
 }
 
+<<<<<<< HEAD
+/* White space will be preserved by the browswer */
+#time-graph-wrapper #selected-ssid, 
+#time-graph-wrapper #selected-mac {
+  white-space: pre;
+}
+
+=======
+>>>>>>> 3fde52ededd2ebfda901fd61e2858845d175afce
 #time-graph-wrapper
 .legend-box {
   display: inline-block;
