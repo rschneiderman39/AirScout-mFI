@@ -64,10 +64,10 @@ visBuilder, setupSequence) {
 
         var vis;
 
-        var dereg = $scope.$on(globals.events.transitionDone, function() {
-          dereg();
+        var cancelHandler = $scope.$on(globals.events.transitionDone, function() {
+          cancelHandler();
 
-          orient();
+          configureToOrientation();
 
           config.width = $('#time-graph').width();
           config.height = $('#time-graph').height();
@@ -75,7 +75,7 @@ visBuilder, setupSequence) {
           vis = visBuilder.buildVis(elemUpdateCallback);
           vis.init(config);
 
-          $(window).on('resize', redraw);
+          $scope.$on(globals.events.orientationChanged, renderFromScratch);
 
           restoreState();
 
@@ -85,16 +85,15 @@ visBuilder, setupSequence) {
           $scope.$on(globals.events.newLegendData, updateLegend);
 
           $scope.$on('$destroy', function() {
-            $(window).off('resize', redraw);
             vis.destroy();
           });
         });
 
         /* Rebuild visualization from scratch with appropriate dimensions */
-        function redraw() {
+        function renderFromScratch() {
           if (globals.debug) console.log('resizing time graph');
 
-          orient();
+          configureToOrientation();
 
           config.width = $('#time-graph').width();
           config.height = $('#time-graph').height();
@@ -103,7 +102,7 @@ visBuilder, setupSequence) {
           vis.init(config);
         }
 
-        function orient() {
+        function configureToOrientation() {
           $('#legend .list').height($('#legend').height()
                             - $('#legend .selection-indicator').outerHeight(true)
                             - $('#legend .divider').outerHeight(true)

@@ -67,10 +67,10 @@ accessPoints, setupSequence) {
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      var dereg = $scope.$on(globals.events.transitionDone, function() {
-        dereg();
+      var cancelHandler = $scope.$on(globals.events.transitionDone, function() {
+        cancelHandler();
 
-        orient();
+        configureToOrientation();
 
         gauge = new Gauge('#gauge');
 
@@ -85,23 +85,21 @@ accessPoints, setupSequence) {
 
         $scope.$on(globals.events.newSelection, updateList);
 
-        $(window).on('resize', redraw);
+        $scope.$on(globals.events.orientationChanged, renderFromScratch);
 
         $scope.$on('$destroy', function() {
-          $(window).off('resize', redraw);
-
           clearInterval(updateLoop);
         });
       });
 
-      function redraw() {
-        orient();
+      function renderFromScratch() {
+        configureToOrientation();
 
         gauge.destroy();
         gauge.render();
       };
 
-      function orient() {
+      function configureToOrientation() {
         $('#access-points .list').height($('#access-points').height()
                           - $('#access-points .selection-indicator').outerHeight(true)
                           - $('#access-points .divider').outerHeight(true)

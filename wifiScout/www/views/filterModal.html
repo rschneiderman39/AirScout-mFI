@@ -17,8 +17,10 @@
           <div class="col-xs-5">
             <p>{{strings.filterModal.searchBar}}</p>
             <input type="text" class="col-xs-12" id="query" ng-model="query">
-            <button id="select-btn" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">{{strings.filterModal.selectAll}}</button>
-            <button id="deselect-btn" ng-click="deselectAll()" class="btn btn-default btn-sm" type="button">{{strings.filterModal.deselectAll}}</button>
+            <div class="btn-group-vertical" role="group">
+              <button id="select-btn" ng-click="selectAll()" class="btn btn-default btn-sm" type="button">{{strings.filterModal.selectAll}}</button>
+              <button id="deselect-btn" ng-click="deselectAll()" class="btn btn-default btn-sm" type="button">{{strings.filterModal.deselectAll}}</button>
+            </div>
           </div>
 
           <!-- Access point list -->

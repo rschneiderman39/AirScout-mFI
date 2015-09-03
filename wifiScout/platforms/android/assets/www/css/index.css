@@ -26,6 +26,14 @@
 	nz-tour #nzTour-actions {
 		font-size: 18px;
 	}
+
+  #help-button {
+    max-height: 40px;
+  }
+
+  #filter-button {
+    max-height: 30px;
+  }
 }
 
 /*	If the device screen width is less than 889px then the font
@@ -52,6 +60,14 @@
 	nz-tour #nzTour-actions {
 		font-size: 18px;
 	}
+
+  #help-button {
+    max-height: 35px;
+  }
+
+  #filter-button {
+    max-height: 25px;
+  }
 }
 
 /* Containers */
@@ -81,6 +97,7 @@ body {
 	border-bottom: 1px solid rgba(136, 136, 136, 0.72);
   height: 10%;
 	max-height: 70px;
+  min-height: 30px
   margin: 0px;
 	text-align: center;
   width: 100vw;
@@ -97,8 +114,7 @@ body {
 
 #filter-button {
 	float: left;
-	height: 80%;
-	max-height: 30px;
+	height: 70%;
 	outline: none;
 	z-index: 999;
 }
@@ -106,7 +122,6 @@ body {
 #help-button {
 	float: right;
 	height: 80%;
-	max-height: 40px;
 	outline: none;
 	z-index: 999;
 }
@@ -230,8 +245,12 @@ nz-tour #nzTour-content {
   margin: 10px 0;
 }
 
-/* Overriding some of the boostrap defaults to avoid scaling
-	 	issues and to custom color the lists */
+.table.header-fixed > thead,
+.table.header-fixed > tbody {
+    display: block;
+    padding: 0;
+}
+
 .row {
 	max-height: 100%;
 }

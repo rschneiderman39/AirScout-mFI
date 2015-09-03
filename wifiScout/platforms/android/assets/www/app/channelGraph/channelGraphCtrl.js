@@ -110,13 +110,10 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
       $scope.$on(globals.events.transitionDone, vis.update);
 
       /* Rescale on screen rotate */
-      $(window).on('resize', redraw);
+      $scope.$on(globals.events.orientationChanged, renderFromScratch);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
-        /* Avoid duplicate event handlers */
-        $(window).off('resize', redraw);
-
         /* Stop data updates */
         clearInterval(updateLoop);
 
@@ -125,9 +122,7 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
       });
 
       /* Rebuild visualization from scratch with appropriate dimensions */
-      function redraw(){
-        if (globals.debug) console.log('resizing channel graph');
-
+      function renderFromScratch() {
         config.width = $('#current-view').width();
         config.height = $('#current-view').height() * prefs.heightFactor;
 
@@ -144,8 +139,6 @@ globalSettings, channelGraphState, channelValidator, setupSequence) {
                                 navLeftCanvas, navLeftScalesX,
                                 navRightCanvas, navRightScalesX,
                                 navScalesY, band) {
-      if (globals.debug) console.log('updating channel graph');
-
       accessPoints.getAll().then(function(data) {
         updateParabolas(data);
         updateLabels(data);

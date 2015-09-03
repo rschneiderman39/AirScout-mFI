@@ -73,11 +73,11 @@ $filter, globals, utils, accessPoints, globalSettings, setupSequence) {
       /* Setup event handler for modal show */
       $('#filter-modal').on('show.bs.modal', onShow);
 
-      orient();
+      setHeight();
 
-      $(window).on('resize', orient);
+      $scope.$on(globals.events.orientationChanged, setHeight);
 
-      function orient() {
+      function setHeight() {
         if (utils.getOrientation() === 'portrait') {
           $('#right-column .list').css('height', $(window).height() * 0.6);
         } else if (utils.getOrientation() === 'landscape') {

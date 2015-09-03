@@ -5,7 +5,7 @@
 
     <!-- Stylesheets -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/bootstrap-theme.css" rel="stylesheet" />
+    <!--<link href="css/bootstrap-theme.css" rel="stylesheet" />-->
     <link href="css/bootstrap-toggle.min.css" rel="stylesheet" />
     <link href="css/slider.css" rel="stylesheet" />
     <link href="css/nz-tour.css" rel="stylesheet" />
@@ -34,15 +34,11 @@
   <body ng-controller="navCtrl">
 
     <!-- View title bar -->
-    <div id="top-bar">
-      <div class="col-xs-1">
-        <input id="filter-button" class="vertically-centered" type="image" src="images/filter.png" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
-      </div>
-      <div class="col-xs-10">
-        <p id="view-title" class="vertically-centered"></p>
-      </div>
-      <div class="col-xs-1">
-        <input id="help-button" class="vertically-centered" type="image" src="images/questionMark.png" ng-click="startTour()" ng-show="displayHelpBtn()">
+    <div id="top-bar" class="row">
+      <div class="col-xs-12">
+      <button class="btn btn-default pull-left" type="button" data-toggle="modal" data-target="#filter-modal" ng-show="displayFilterBtn()" />
+      <p id="view-title" class="vertically-centered"></p>
+      <button class="btn btn-default pull-right" type="button" ng-click="startTour()" ng-show="displayHelpBtn()">
       </div>
     </div>
 

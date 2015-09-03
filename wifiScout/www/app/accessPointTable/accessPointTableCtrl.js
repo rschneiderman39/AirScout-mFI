@@ -27,14 +27,6 @@ accessPointTableState, setupSequence) {
 
       $scope.sortOrder = undefined;
 
-      $scope.inPortrait = function() {
-        return utils.getOrientation() === 'portrait';
-      };
-
-      $scope.inLandscape = function() {
-        return utils.getOrientation() === 'landscape';
-      };
-
       /* Triggered whenever a sort arrow is clicked. The sort predicate is changed to the new predicate.
          If the new predicate is the same as the current one, the sort direction is reversed. If 'SSID'
          is selected as the predicate, a custom ordering function is substituted instead.
@@ -52,7 +44,7 @@ accessPointTableState, setupSequence) {
         $scope.sortPredicate = predicate;
       };
 
-      scaleView();
+      scaleTableBody();
       restoreState();
 
       /* Start the update loop */
@@ -71,20 +63,16 @@ accessPointTableState, setupSequence) {
       $scope.$on(globals.events.newSelection, update);
 
       /* Rescale on device rotate */
-      $scope.$on(globals.events.orientationChange, scaleView);
+      $scope.$on(globals.events.orientationChanged, scaleTableBody);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
-        /* Stop updating */
         clearInterval(updateLoop);
-
         saveState();
       });
     };
 
     function update() {
-      if (globals.debug) console.log('updating ap table');
-
       accessPoints.getAll().then(function(results) {
         /* Update DOM */
         $scope.$apply(function() {
@@ -114,8 +102,8 @@ accessPointTableState, setupSequence) {
       $scope.sortPredicate = predicate;
     };
 
-    /* Manually scale the view to the device where needed. */
-    function scaleView() {
+    /* Manually scale table body to view height. */
+    function scaleTableBody() {
       $('tbody').height($('.view-wrapper').height() - $('thead').height());
     };
 

@@ -118,13 +118,10 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       $scope.$on(globals.events.transitionDone, vis.update);
 
       /* Rescale on screen rotate */
-      $(window).on('resize', redraw);
+      $scope.$on(globals.events.orientationChanged, renderFromScratch);
 
       /* Run cleanup on view unload */
       $scope.$on('$destroy', function() {
-        /* Avoid duplicate event handlers */
-        $(window).off('resize', redraw);
-
         /* Stop data updates */
         clearInterval(updateLoop);
 
@@ -133,7 +130,7 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
       });
 
       /* Rebuild visualization from scratch with appropriate dimensions */
-      function redraw() {
+      function renderFromScratch() {
         config.width = $('#current-view').width();
         config.height = $('#current-view').height() * prefs.heightFactor;
 
@@ -150,8 +147,6 @@ globalSettings, accessPointCountState, channelValidator, setupSequence) {
                                 navLeftCanvas, navLeftScalesX,
                                 navRightCanvas, navRightScalesX,
                                 navScalesY) {
-      if (globals.debug) console.log('updating ap count');
-
       accessPoints.getAll().then(function(results) {
 
         /* Will map each channel to its number of access points */

@@ -83,8 +83,8 @@ a {
 }
 
 /* Table Body */
-.header-fixed > thead,
-.header-fixed > tbody {
+.table.header-fixed > thead,
+.table.header-fixed > tbody {
     display: block;
     padding: 0;
 }

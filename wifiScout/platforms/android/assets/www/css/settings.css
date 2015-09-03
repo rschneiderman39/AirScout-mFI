@@ -43,7 +43,7 @@
 
 /* Detect Hidden Menu */
 #settings-wrapper
-.bootstrap-switch-handle-on.bootstrap-switch-primary {
+.toggle-group > .btn-success {
   background-color: #62bf01 !important;
 }
 

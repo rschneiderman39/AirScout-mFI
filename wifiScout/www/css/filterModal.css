@@ -29,13 +29,6 @@
   margin: 5px;
 }
 
-/* Aligns Select/Deselect All buttons in center */
-#filter-modal #deselect-btn,
-#filter-modal #select-btn {
-  display: block;
-  margin: 5px auto;
-}
-
 #filter-modal
 #query {
   margin-bottom: 10px;
