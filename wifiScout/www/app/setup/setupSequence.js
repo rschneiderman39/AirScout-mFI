@@ -104,6 +104,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
         widthFactor: 0.5
       },
       steps: [{
+          target: '#access-point-table-wrapper',
           content: globals.strings.accessPointTable.tour.intro
         },
         {
