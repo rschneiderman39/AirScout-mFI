@@ -96,12 +96,21 @@ body {
 	font-size: 26px;
 }
 
-.bounded-button {
+@media screen and (min-height: 500px) {
+	.bounded-button {
   max-height: 50px;
-  min-height: 30px;
   max-width: 50px;
-  min-width: 30px;
 }
+}
+
+@media screen and (max-height: 499px) {
+	.bounded-button {
+  max-height: 25px;
+  max-width: 30px;
+}
+}
+
+
 
 #help-button {
 	padding: 1px;
