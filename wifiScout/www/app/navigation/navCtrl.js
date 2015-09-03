@@ -15,7 +15,7 @@ nzTour, setupSequence) {
       navShowInterval: 3000
     };
 
-    var navTimeout = null,     
+    var navTimeout = null,
         tourInProgress = false;
 
     $scope.strings = globals.strings;

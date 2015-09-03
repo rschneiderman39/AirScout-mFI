@@ -67,7 +67,9 @@ accessPoints, setupSequence) {
         prefs.goodSignalThresh = globalSettings.visScaleMax();
       }
 
-      $scope.$on(globals.events.transitionDone, function() {
+      var dereg = $scope.$on(globals.events.transitionDone, function() {
+        dereg();
+
         orient();
 
         gauge = new Gauge('#gauge');

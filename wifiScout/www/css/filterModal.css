@@ -5,6 +5,7 @@
   margin-right: auto;
 }
 
+/* Portrait Specific Styles */
 @media screen and (orientation:portrait) {
   #filter-modal
   .modal-dialog {
@@ -13,6 +14,7 @@
   }
 }
 
+/* Landscape Specific Styles */
 @media screen and (orientation:landscape) {
   #filter-modal
   .modal-dialog {
@@ -33,8 +35,9 @@
   padding: 0;
 }
 
-#filter-modal
-#deselect-btn {
+/* Aligns Select/Deselect All buttons in center */
+#filter-modal #deselect-btn,
+#filter-modal #select-btn {
   display: block;
   margin: 5px auto;
 }
@@ -42,12 +45,6 @@
 #filter-modal
 #query {
   margin-bottom: 10px;
-}
-
-#filter-modal
-#select-btn {
-  display: block;
-  margin: 5px auto;
 }
 
 /* Access Point List */

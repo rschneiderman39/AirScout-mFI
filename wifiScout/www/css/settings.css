@@ -1,10 +1,4 @@
 #settings-wrapper
-.no-padding {
-  padding: 0px !important;
-  margin: 0px !important;
-}
-
-#settings-wrapper
 .no-padding-right {
   padding-right: 10px !important;
 }
@@ -26,6 +20,7 @@
   padding-right: 1vw;
 }
 
+/* Color and Opacity of the selectors for the scale slider */
 #settings-wrapper
 .slider-handle {
   background-color: #62bf01;
@@ -33,11 +28,12 @@
   opacity: 1;
 }
 
+/* Color and Opacity of the selectors for the scale selection bar */
 #settings-wrapper
 .slider-selection {
   background-color: #62bf01;
   background-image: none;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* Detect Hidden Menu */
@@ -54,10 +50,9 @@
 }
 
 /* Misc */
-/*  Removes default padding added by Bootstrap
-      on the panels */
-#settings-wrapper
-.panel-group {
+/*  Removes default padding added by Bootstrap on the panels */
+#settings-wrapper .panel-group,
+#settings-wrapper .no-padding {
 	padding: 0 !important;
 	margin: 0 !important;
 }
