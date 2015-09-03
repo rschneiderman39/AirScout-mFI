@@ -106,7 +106,8 @@ visBuilder, setupSequence) {
           $('#legend .list').height($('#legend').height()
                             - $('#legend .selection-indicator').outerHeight(true)
                             - $('#legend .divider').outerHeight(true)
-                            - globals.defaults.padding);
+                            - 10);
+                            // arbitary padding
 
           if (utils.getOrientation() === 'portrait') {
             utils.orderElements('#time-graph-wrapper', '#time-graph', '#legend');

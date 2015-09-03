@@ -4,6 +4,7 @@ if (typeof languages === 'undefined') {
   var languages = {};
 }
 
+/* Languages are keyed by lowercase 2 character language code */
 languages['en'] = {
   hiddenSSID: '<hidden>',
   unknownManufacturer: '<unknown>',

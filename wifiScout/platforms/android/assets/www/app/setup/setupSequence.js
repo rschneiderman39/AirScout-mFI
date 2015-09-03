@@ -1,14 +1,18 @@
 "use strict";
 
+/* Bootsraps the region and language setup for the app */
 setupModule.service('setupSequence', ['globals', function(globals) {
 
   var done = $.Deferred();
   this.done = done;
 
   $(document).on('deviceready', function() {
+    /* Set up everthing in the right order */
     setupLanguage().then(function() {
       setupRegion().then(function() {
         setupTours();
+
+        /* Trigger inialization of controllers and services in main app */
         done.resolve();
       });
     });
@@ -34,6 +38,8 @@ setupModule.service('setupSequence', ['globals', function(globals) {
   function setupRegion() {
     var progress = $.Deferred();
 
+    /* KNOWN "BUG".  For Android, this always returns the same value
+       as getPreferredLanguage */
     navigator.globalization.getLocaleName(
       function success(locale) {
         var regionCode = locale.value.split('-')[1];
@@ -50,6 +56,7 @@ setupModule.service('setupSequence', ['globals', function(globals) {
     return progress;
   };
 
+  /* See the docs for nzTour: https://github.com/nozzle/nzTour */
   function setupTours() {
     globals.tours.accessPointCount = {
       config: {

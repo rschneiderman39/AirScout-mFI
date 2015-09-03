@@ -3,14 +3,18 @@
 setupModule.service('globals', function() {
 
   this.defaults = {
-    visScaleMax: -30,
-    detectHidden: false,
-    language: 'en',
-    region: 'US',
+    visScaleMax: -30,              /* Default upper bound for the signal level
+                                      on the Y axes of the visualizations.
+                                      Also affects the speedometer */
+
+    detectHidden: false,           /* The default setting for detecting
+                                      hidden access points */
+
+    language: 'en',                /* Default language */
+
+    region: 'US',                  /* Default region */
+
     startingView: 'channelGraph',
-    backgroundColor: '#f1f1f1',
-    themeColor: '#62bf01',
-    padding: 10
   };
 
   this.constants = {

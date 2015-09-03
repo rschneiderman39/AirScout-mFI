@@ -103,7 +103,8 @@ accessPoints, setupSequence) {
         $('#access-points .list').height($('#access-points').height()
                           - $('#access-points .selection-indicator').outerHeight(true)
                           - $('#access-points .divider').outerHeight(true)
-                          - globals.defaults.padding);
+                          - 10);
+                          // arbitrary padding
 
         if (utils.getOrientation() === 'portrait') {
           utils.orderElements('#signal-strength-wrapper', '#readings', '#access-points');
