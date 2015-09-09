@@ -7,17 +7,12 @@ setupSequence) {
 
   setupSequence.done.then(function() {
 
-    var isAllowableChannel = {};
+    var isAllowableChannel = channels[globals.region] || 
+                             channels[globals.defaults.region];
 
     service.isAllowableChannel = function(channel) {
       return isAllowableChannel[channel];
     };
-
-    function init() {
-      isAllowableChannel = channels[globals.region] || channels[globals.defaults.region];
-    };
-
-    init();
 
   });
 
