@@ -145,6 +145,7 @@ globalSettings, setupSequence) {
           data.shift();
           data.pop();
 
+          /* Drop the oldest data point */
           data.shift();
 
           if (correspondingAccessPoint) {
@@ -155,7 +156,6 @@ globalSettings, setupSequence) {
 
           /* Add dummy end points (to allow fill)*/
           data.unshift({ level: globals.constants.signalFloor });
-
           data.push({ level: globals.constants.signalFloor });
         });
 
@@ -187,7 +187,6 @@ globalSettings, setupSequence) {
 
       /* Add dummy data points to allow fill */
       data.unshift({ level: globals.constants.signalFloor });
-
       data.push({ level: globals.constants.signalFloor });
 
       this.ssid = ap.ssid;
